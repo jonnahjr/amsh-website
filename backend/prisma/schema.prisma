@@ -1,0 +1,502 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+// ============================================================
+// USERS & AUTH
+// ============================================================
+
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  password     String
+  name         String
+  role         String @default("USER")
+  avatar       String?
+  isActive     Boolean  @default(true)
+  lastLogin    DateTime?
+  refreshToken String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relations
+  posts       Post[]
+  jobs        Job[]
+  research    Research[]
+  submissions FormSubmission[]
+
+  @@map("users")
+}
+
+// ============================================================
+// SITE SETTINGS (CMS)
+// ============================================================
+
+model SiteSetting {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String
+  type      String   @default("text") // text, image, json, boolean
+  group     String   @default("general")
+  label     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("site_settings")
+}
+
+// ============================================================
+// PAGES (Page Builder CMS)
+// ============================================================
+
+
+model Page {
+  id          String     @id @default(cuid())
+  title       String
+  slug        String     @unique
+  content     String
+  metaTitle   String?
+  metaDesc    String?
+  status      String @default("DRAFT")
+  isHome      Boolean    @default(false)
+  order       Int        @default(0)
+  heroImage   String?
+  template    String     @default("default")
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@map("pages")
+}
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+
+model NavItem {
+  id       String    @id @default(cuid())
+  label    String
+  href     String
+  order    Int       @default(0)
+  parentId String?
+  parent   NavItem?  @relation("NavChildren", fields: [parentId], references: [id])
+  children NavItem[] @relation("NavChildren")
+  isActive Boolean   @default(true)
+  target   String    @default("_self")
+  icon     String?
+
+  @@map("nav_items")
+}
+
+// ============================================================
+// MEDIA LIBRARY
+// ============================================================
+
+
+model Media {
+  id         String    @id @default(cuid())
+  filename   String
+  originalName String
+  url        String
+  publicId   String?   // Cloudinary public ID
+  type       String @default("IMAGE")
+  mimeType   String
+  size       Int       // bytes
+  width      Int?
+  height     Int?
+  alt        String?
+  caption    String?
+  folder     String?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  @@map("media")
+}
+
+// ============================================================
+// BLOGS / NEWS / ANNOUNCEMENTS
+// ============================================================
+
+
+
+model Category {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String   @unique
+  color     String   @default("#1B4F8A")
+  posts     Post[]
+  createdAt DateTime @default(now())
+
+  @@map("categories")
+}
+
+model Post {
+  id          String     @id @default(cuid())
+  title       String
+  slug        String     @unique
+  excerpt     String?
+  content     String
+  featuredImage String?
+  type        String   @default("BLOG")
+  status      String @default("DRAFT")
+  authorId    String
+  author      User       @relation(fields: [authorId], references: [id])
+  categoryId  String?
+  category    Category?  @relation(fields: [categoryId], references: [id])
+  tags        String? // JSON array
+  views       Int        @default(0)
+  metaTitle   String?
+  metaDesc    String?
+  publishedAt DateTime?
+  eventDate   DateTime?
+  eventLocation String?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@map("posts")
+}
+
+// ============================================================
+// SERVICES & DEPARTMENTS
+// ============================================================
+
+model Department {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String
+  image       String?
+  icon        String?
+  order       Int      @default(0)
+  isActive    Boolean  @default(true)
+  services    Service[]
+  doctors     Doctor[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("departments")
+}
+
+model Service {
+  id           String     @id @default(cuid())
+  name         String
+  slug         String     @unique
+  description  String
+  content      String?
+  image        String?
+  icon         String?
+  departmentId String?
+  department   Department? @relation(fields: [departmentId], references: [id])
+  order        Int        @default(0)
+  isActive     Boolean    @default(true)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  @@map("services")
+}
+
+// ============================================================
+// DOCTORS / STAFF
+// ============================================================
+
+model Doctor {
+  id           String     @id @default(cuid())
+  name         String
+  title        String     // Dr., Prof., etc.
+  specialty    String
+  qualification String
+  bio          String?
+  image        String?
+  email        String?
+  phone        String?
+  departmentId String?
+  department   Department? @relation(fields: [departmentId], references: [id])
+  order        Int        @default(0)
+  isActive     Boolean    @default(true)
+  isLeadership Boolean    @default(false)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  @@map("doctors")
+}
+
+// ============================================================
+// RESEARCH
+// ============================================================
+
+
+model Research {
+  id          String         @id @default(cuid())
+  title       String
+  abstract    String
+  authors     String? // JSON array
+  keywords    String? // JSON array
+  document    String?        // File URL
+  category    String
+  status      String @default("PENDING")
+  submittedBy String?
+  user        User?          @relation(fields: [submittedBy], references: [id])
+  publishedAt DateTime?
+  journal     String?
+  doi         String?
+  views       Int            @default(0)
+  downloads   Int            @default(0)
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  @@map("research")
+}
+
+// ============================================================
+// CPD (Continuing Professional Development)
+// ============================================================
+
+
+model CPDCourse {
+  id           String       @id @default(cuid())
+  title        String
+  description  String
+  content      String?
+  instructor   String
+  duration     String       // e.g. "2 days", "8 hours"
+  category     String
+  level        String       @default("Intermediate")
+  image        String?
+  documents    String? // JSON array
+  startDate    DateTime?
+  endDate      DateTime?
+  location     String?
+  isOnline     Boolean      @default(false)
+  capacity     Int?
+  price        Float        @default(0)
+  cpdPoints    Int          @default(0)
+  status       String @default("DRAFT")
+  registrations CPDRegistration[]
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  @@map("cpd_courses")
+}
+
+model CPDRegistration {
+  id         String    @id @default(cuid())
+  courseId   String
+  course     CPDCourse @relation(fields: [courseId], references: [id])
+  firstName  String
+  lastName   String
+  email      String
+  phone      String
+  profession String
+  workplace  String
+  licenseNo  String?
+  status     String    @default("PENDING") // PENDING, APPROVED, REJECTED, COMPLETED
+  certificate String?  // Certificate URL
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  @@map("cpd_registrations")
+}
+
+// ============================================================
+// CAREERS / JOBS
+// ============================================================
+
+
+
+model Job {
+  id           String      @id @default(cuid())
+  title        String
+  department   String
+  type         String     @default("FULL_TIME")
+  location     String
+  description  String
+  requirements String
+  benefits     String?
+  salary       String?
+  deadline     DateTime
+  status       String   @default("DRAFT")
+  postedById   String
+  postedBy     User        @relation(fields: [postedById], references: [id])
+  applications JobApplication[]
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  @@map("jobs")
+}
+
+model JobApplication {
+  id          String   @id @default(cuid())
+  jobId       String
+  job         Job      @relation(fields: [jobId], references: [id])
+  firstName   String
+  lastName    String
+  email       String
+  phone       String
+  coverLetter String?
+  cvUrl       String
+  status      String   @default("PENDING") // PENDING, REVIEWED, SHORTLISTED, REJECTED, HIRED
+  notes       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("job_applications")
+}
+
+// ============================================================
+// FORMS & SURVEYS
+// ============================================================
+
+model Form {
+  id          String           @id @default(cuid())
+  title       String
+  description String?
+  fields      String
+  isActive    Boolean          @default(true)
+  isPublic    Boolean          @default(true)
+  submissions FormSubmission[]
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  @@map("forms")
+}
+
+model FormSubmission {
+  id        String   @id @default(cuid())
+  formId    String
+  form      Form     @relation(fields: [formId], references: [id])
+  data      String
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id])
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+
+  @@map("form_submissions")
+}
+
+// ============================================================
+// APPOINTMENTS
+// ============================================================
+
+
+model Appointment {
+  id          String            @id @default(cuid())
+  firstName   String
+  lastName    String
+  email       String
+  phone       String
+  department  String
+  doctor      String?
+  date        DateTime
+  time        String
+  reason      String?
+  status      String @default("PENDING")
+  notes       String?
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  @@map("appointments")
+}
+
+// ============================================================
+// NEWSLETTER
+// ============================================================
+
+model NewsletterSubscriber {
+  id          String   @id @default(cuid())
+  email       String   @unique
+  name        String?
+  isActive    Boolean  @default(true)
+  subscribedAt DateTime @default(now())
+
+  @@map("newsletter_subscribers")
+}
+
+// ============================================================
+// CONTACT MESSAGES
+// ============================================================
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  subject   String
+  message   String
+  isRead    Boolean  @default(false)
+  isReplied Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@map("contact_messages")
+}
+
+// ============================================================
+// ANALYTICS
+// ============================================================
+
+model PageView {
+  id        String   @id @default(cuid())
+  path      String
+  userAgent String?
+  ipAddress String?
+  referer   String?
+  country   String?
+  createdAt DateTime @default(now())
+
+  @@map("page_views")
+}
+
+model VisitorStat {
+  id           String   @id @default(cuid())
+  date         DateTime @unique
+  totalVisits  Int      @default(0)
+  uniqueVisitors Int    @default(0)
+  pageViews    Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("visitor_stats")
+}
+
+// ============================================================
+// TESTIMONIALS
+// ============================================================
+
+model Testimonial {
+  id        String   @id @default(cuid())
+  name      String
+  role      String?
+  content   String
+  rating    Int      @default(5)
+  image     String?
+  isActive  Boolean  @default(true)
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+
+  @@map("testimonials")
+}
+
+// ============================================================
+// FAQ
+// ============================================================
+
+model FAQ {
+  id        String   @id @default(cuid())
+  question  String
+  answer    String
+  category  String?
+  order     Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("faqs")
+}

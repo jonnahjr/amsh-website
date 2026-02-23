@@ -1,0 +1,15 @@
+{
+    "name": "amsh-workspace",
+    "version": "1.0.0",
+    "private": true,
+    "scripts": {
+        "dev:backend": "cd backend && npm run dev",
+        "dev:frontend": "cd frontend && npm run dev",
+        "dev": "npx concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+        "install:all": "npx concurrently \"cd backend && npm install\" \"cd frontend && npm install\"",
+        "db:setup": "cd backend && npx prisma generate && npx prisma db push && npm run seed"
+    },
+    "devDependencies": {
+        "concurrently": "^8.2.2"
+    }
+}
