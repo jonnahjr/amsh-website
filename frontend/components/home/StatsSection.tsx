@@ -11,7 +11,7 @@ export default function StatsSection() {
     ];
 
     return (
-        <section className="relative -mt-16 z-20 overflow-hidden py-10 bg-transparent">
+        <section className="relative z-20 overflow-hidden py-16 bg-white">
             <div className="relative group overflow-hidden">
                 {/* Shadow markers to indicate more content */}
                 <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-gray-50 via-gray-50/80 to-transparent z-10 pointer-events-none"></div>

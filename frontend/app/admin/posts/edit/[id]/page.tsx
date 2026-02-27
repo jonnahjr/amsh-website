@@ -1,2 +1,2 @@
-import PostEditorPage from '../new/page';
+import PostEditorPage from '../../new/page';
 export default PostEditorPage;

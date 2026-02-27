@@ -33,23 +33,54 @@ export default function AboutPage() {
             <Navbar />
             <main>
                 {/* Hero */}
-                <section className="bg-gradient-to-br from-blue-950 via-blue-900 to-blue-800 py-24 text-white">
-                    <div className="container-custom">
-                        <div className="max-w-3xl">
-                            <span className="inline-flex items-center gap-2 px-4 py-1.5 bg-white/10 border border-white/20 rounded-full text-cyan-300 text-sm font-semibold mb-6">
-                                🏛️ About AMSH
-                            </span>
-                            <h1 className="text-4xl md:text-6xl font-black leading-tight mb-6">
-                                Ethiopia's Premier<br />
-                                <span className="text-cyan-300">Mental Health Hospital</span>
+                <section className="relative min-h-screen bg-blue-950 flex items-center overflow-hidden">
+                    {/* Background Pattern */}
+                    <div className="absolute inset-0 opacity-10">
+                        <div className="absolute inset-0" style={{
+                            backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)',
+                            backgroundSize: '48px 48px',
+                        }} />
+                    </div>
+
+                    {/* Decorative Blue Orbs */}
+                    <div className="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[120px] animate-float pointer-events-none" />
+                    <div className="absolute bottom-1/4 left-1/4 w-[400px] h-[400px] bg-blue-400/5 rounded-full blur-[100px] animate-float pointer-events-none" style={{ animationDelay: '1.5s' }} />
+
+                    {/* Content */}
+                    <div className="container-custom relative z-10 py-24">
+                        <div className="max-w-4xl">
+                            {/* Badge */}
+                            <div className="animate-fade-in-up mb-6">
+                                <span className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 backdrop-blur-sm border border-white/10 rounded-full text-blue-200 text-sm font-semibold uppercase tracking-widest">
+                                    ✦ Ethiopia's Premier Mental Health Hospital
+                                </span>
+                            </div>
+
+                            {/* Title */}
+                            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-black text-white leading-[1.1] mb-8 animate-fade-in-up tracking-tighter" style={{ animationDelay: '0.1s' }}>
+                                Ethiopia's Premier <br />
+                                <span className="text-gray-400 italic font-medium">Mental Health Hospital</span>
                             </h1>
-                            <p className="text-blue-200 text-xl leading-relaxed">
-                                Serving Ethiopia since 1930 as the only public specialized mental health hospital,
-                                AMSH has touched millions of lives with compassionate, expert psychiatric care.
+
+                            {/* Subtitle */}
+                            <p className="text-lg md:text-2xl text-blue-100/80 max-w-3xl mb-12 leading-relaxed animate-fade-in-up font-medium" style={{ animationDelay: '0.2s' }}>
+                                Serving Ethiopia since 1930 as the only public specialized mental health hospital, AMSH has touched millions of lives with compassionate, expert psychiatric care.
                             </p>
-                            <div className="flex flex-wrap gap-4 mt-8">
-                                <Link href="/appointment" className="btn-accent">Book Appointment</Link>
-                                <Link href="/contact" className="border border-white/30 text-white px-6 py-3 rounded-xl font-semibold hover:bg-white/10 transition-colors">Contact Us</Link>
+
+                            {/* CTAs */}
+                            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
+                                <Link href="/appointment" className="px-10 py-5 bg-white text-blue-950 rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-blue-50 transition-all shadow-2xl hover:-translate-y-1">
+                                    📅 Book Appointment
+                                </Link>
+                                <Link href="/contact" className="inline-flex items-center gap-2 text-white border-2 border-white/20 px-10 py-5 rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-white/10 transition-all duration-300">
+                                    Contact Us
+                                </Link>
+                            </div>
+
+                            {/* Accent Tag */}
+                            <div className="mt-12 flex items-center gap-4 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
+                                <div className="w-3 h-3 rounded-full bg-blue-400 animate-pulse shadow-[0_0_15px_rgba(96,165,250,0.5)]" />
+                                <span className="text-blue-200 text-sm font-black uppercase tracking-widest">90+ Years of Dedicated Mental Health Services</span>
                             </div>
                         </div>
                     </div>
@@ -292,40 +323,206 @@ export default function AboutPage() {
                                     <p className="text-gray-400 text-xs mt-1">{person.dept}</p>
                                 </div>
                             ))}
+                            ```
                         </div>
                     </div>
                 </section>
 
                 {/* Org Structure */}
-                <section id="structure" className="section bg-blue-950 text-white">
-                    <div className="container-custom">
-                        <div className="text-center mb-10">
-                            <span className="inline-flex items-center gap-2 px-4 py-1.5 bg-white/10 border border-white/20 text-cyan-300 rounded-full text-sm font-semibold mb-4">
+                <section id="structure" className="section bg-gray-50 relative overflow-hidden">
+                    <div className="container-custom relative z-10">
+                        <div className="text-center mb-16">
+                            <span className="section-badge text-blue-900 border-yellow-400 bg-yellow-50">
                                 🗂️ Organizational Structure
                             </span>
-                            <h2 className="text-3xl font-black text-white">How We're Organized</h2>
+                            <h2 className="text-3xl md:text-5xl font-black text-gray-900 mt-4 mb-4 tracking-tighter">
+                                Hospital <span className="text-blue-600 italic">Hierarchy</span>
+                            </h2>
                         </div>
-                        <div className="max-w-2xl mx-auto">
-                            {/* Simple org chart */}
-                            <div className="bg-white/10 rounded-2xl p-6 text-center mb-4">
-                                <div className="font-bold text-cyan-300">Director General</div>
+
+                        <div className="max-w-[1440px] mx-auto pb-20 px-4">
+                            {/* LEVEL 1: TOP EXECUTIVE (Blue) */}
+                            <div className="flex justify-center mb-12 relative">
+                                {/* DG Node */}
+                                <div className="relative z-30 group">
+                                    <div className="bg-blue-950 text-white p-10 rounded-2xl border-4 border-yellow-400 text-center shadow-[0_0_30px_rgba(37,99,235,0.3)] group-hover:scale-105 transition-all duration-500 relative">
+                                        <div className="text-3xl mb-2">🏛️</div>
+                                        <div className="text-4xl font-black mb-1">ዋና ዳይሬክተር</div>
+                                        <div className="text-blue-100 text-lg font-bold tracking-[0.2em] uppercase opacity-80">Director General</div>
+
+                                        {/* Line down to first split */}
+                                        <div className="absolute top-full left-1/2 w-1 h-12 -translate-x-1/2 animate-line-flow-v z-10 flex flex-col items-center">
+                                            <div className="w-full h-full" />
+                                            {/* Arrowhead */}
+                                            <svg viewBox="0 0 20 10" className="w-4 h-2 fill-yellow-400 -mt-1"><polygon points="0,0 20,0 10,10" /></svg>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div className="flex justify-center">
-                                <div className="w-0.5 h-8 bg-white/30" />
+
+                            {/* CORE BRANCHES LAYER 2 (Elite Tier - 5 columns) */}
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 relative pt-8">
+                                {/* Horizontal Yellow Line for desktop - CONNECTS ALL 5 BRANCHES */}
+                                <div className="hidden lg:block absolute top-0 left-[10%] right-[10%] h-1 animate-line-flow-h line-glow" />
+
+                                {/* Connection Dots at Junctions (10%, 30%, 50%, 70%, 90%) */}
+                                <div className="hidden lg:block absolute top-0 left-[10%] w-2 h-2 bg-yellow-400 rounded-full -translate-x-1/2 -translate-y-[2px] z-30 shadow-[0_0_8px_white]" />
+                                <div className="hidden lg:block absolute top-0 left-[30%] w-2 h-2 bg-yellow-400 rounded-full -translate-x-1/2 -translate-y-[2px] z-30 shadow-[0_0_8px_white]" />
+                                <div className="hidden lg:block absolute top-0 left-[50%] w-2 h-2 bg-yellow-400 rounded-full -translate-x-1/2 -translate-y-[2px] z-30 shadow-[0_0_8px_white]" />
+                                <div className="hidden lg:block absolute top-0 left-[70%] w-2 h-2 bg-yellow-400 rounded-full -translate-x-1/2 -translate-y-[2px] z-30 shadow-[0_0_8px_white]" />
+                                <div className="hidden lg:block absolute top-0 left-[90%] w-2 h-2 bg-yellow-400 rounded-full -translate-x-1/2 -translate-y-[2px] z-30 shadow-[0_0_8px_white]" />
+
+                                {/* 1. DG OFFICE */}
+                                <div className="space-y-6 relative">
+                                    <div className="hidden lg:block absolute -top-8 left-1/2 w-1 h-8 -translate-x-1/2 animate-line-flow-v" />
+                                    <div className="bg-blue-950 p-4 rounded-lg shadow-md border-2 border-blue-600 text-center mb-4 relative z-20 group">
+                                        <div className="text-white font-black text-lg leading-tight">ዋና ዳይሬክተር ጽ/ቤት ኃላፊ</div>
+                                        <div className="text-blue-100 text-[13px] uppercase font-bold tracking-tighter mt-1">Office Head</div>
+                                        <div className="absolute top-full left-1/2 w-1 h-4 -translate-x-1/2 animate-line-flow-v flex flex-col items-center">
+                                            <div className="w-full h-full" />
+                                            <svg viewBox="0 0 20 10" className="w-3 h-1.5 fill-yellow-400 -mt-0.5"><polygon points="0,0 20,0 10,10" /></svg>
+                                        </div>
+                                    </div>
+                                    <div className="space-y-3 relative flex flex-col items-center">
+                                        {[
+                                            { en: 'Legal', am: 'የሕግ ጉዳዮች' },
+                                            { en: 'Ethics', am: 'ሥነ-ምግባር' },
+                                            { en: 'Social', am: 'ማህበራዊ' },
+                                            { en: 'PR', am: 'ኮሙኒኬሽን' },
+                                            { en: 'Audit', am: 'ኦዲት' }
+                                        ].map(item => (
+                                            <div key={item.en} className="relative w-full">
+                                                <div className="bg-[#266BB3] py-3 px-1 rounded shadow-sm border border-[#1F568C] text-center flex flex-col items-center justify-center min-h-[64px] group hover:bg-[#327EC2] transition-all hover:-translate-y-0.5 text-base font-black leading-tight break-words text-white">
+                                                    <div>{item.am}</div>
+                                                    <div className="text-blue-100/70 text-[13px] uppercase tracking-tighter mt-0.5">{item.en}</div>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* 2. MEDICAL & EDUCATION */}
+                                <div className="space-y-6 relative">
+                                    <div className="hidden lg:block absolute -top-8 left-1/2 w-1 h-8 -translate-x-1/2 animate-line-flow-v" />
+                                    <div className="bg-blue-950 p-4 rounded-lg shadow-md border-2 border-blue-600 text-center mb-4 relative z-20">
+                                        <div className="text-white font-black text-lg leading-tight">የሕክምና አገልግሎት፣ ትምህርት ጥራት ምክትል</div>
+                                        <div className="text-blue-100 text-[13px] uppercase font-bold tracking-tighter mt-1">Med/Edu Deputy</div>
+                                        <div className="absolute top-full left-1/2 w-1 h-4 -translate-x-1/2 animate-line-flow-v flex flex-col items-center">
+                                            <div className="w-full h-full" />
+                                            <svg viewBox="0 0 20 10" className="w-3 h-1.5 fill-yellow-400 -mt-0.5"><polygon points="0,0 20,0 10,10" /></svg>
+                                        </div>
+                                    </div>
+                                    <div className="space-y-3 relative flex flex-col items-center">
+                                        {[
+                                            { en: 'Health Info', am: 'የጤና መረጃ' },
+                                            { en: 'Med Quality', am: 'የሕክምና ጥራት' },
+                                            { en: 'Edu Quality', am: 'ትምህርት ጥራት' }
+                                        ].map(item => (
+                                            <div key={item.en} className="relative w-full z-10 hover:scale-[1.02] transition-transform">
+                                                <div className="bg-[#266BB3] w-full py-3 px-1 rounded shadow-sm border border-[#1F568C] text-center flex flex-col items-center justify-center min-h-[64px] text-base font-black leading-tight break-words text-white">
+                                                    <div>{item.am}</div>
+                                                    <div className="text-blue-100/70 text-[13px] uppercase tracking-tighter mt-0.5">{item.en}</div>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* 3. ADMIN & DEV */}
+                                <div className="space-y-6 relative">
+                                    <div className="hidden lg:block absolute -top-8 left-1/2 w-1 h-8 -translate-x-1/2 animate-line-flow-v" />
+                                    <div className="bg-blue-950 p-4 rounded-lg shadow-md border-2 border-blue-600 text-center mb-4 relative z-20">
+                                        <div className="text-white font-black text-lg leading-tight">የአስተዳደር ልማት ዋና ሥራ አስፈፃሚ</div>
+                                        <div className="text-blue-100 text-[13px] uppercase font-bold tracking-tighter mt-1">Admin & Development</div>
+                                        <div className="absolute top-full left-1/2 w-1 h-4 -translate-x-1/2 animate-line-flow-v flex flex-col items-center">
+                                            <div className="w-full h-full" />
+                                            <svg viewBox="0 0 20 10" className="w-3 h-1.5 fill-yellow-400 -mt-0.5"><polygon points="0,0 20,0 10,10" /></svg>
+                                        </div>
+                                    </div>
+                                    <div className="space-y-3 relative flex flex-col items-center">
+                                        {[
+                                            { en: 'Strategy', am: 'ስትራቴጂክ' },
+                                            { en: 'HR', am: 'የሰው ሀብት' },
+                                            { en: 'ICT', am: 'አይሲቲ' },
+                                            { en: 'Finance', am: 'ፋይናንስ' },
+                                            { en: 'Procurement', am: 'ግዥ' }
+                                        ].map(item => (
+                                            <div key={item.en} className="relative flex items-center w-full">
+                                                <div className="bg-[#266BB3] w-full py-3 px-1 rounded shadow-sm border border-[#1F568C] text-center flex flex-col items-center justify-center min-h-[64px] text-base font-black leading-tight break-words text-white">
+                                                    <div>{item.am}</div>
+                                                    <div className="text-blue-100/70 text-[13px] uppercase tracking-tighter mt-0.5">{item.en}</div>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* 4. RESEARCH & TRAINING */}
+                                <div className="space-y-6 relative">
+                                    <div className="hidden lg:block absolute -top-8 left-1/2 w-1 h-8 -translate-x-1/2 animate-line-flow-v" />
+                                    <div className="bg-blue-950 p-4 rounded-lg border-2 border-blue-600 text-center shadow-md mb-4 relative z-20 group">
+                                        <div className="text-white font-black text-lg leading-tight">የምርምር፣ ትምህርትና ሥልጠና ምክትል</div>
+                                        <div className="text-blue-100 text-[13px] uppercase font-bold tracking-tighter mt-1">Research & Training</div>
+                                        <div className="absolute top-full left-1/2 w-1 h-4 -translate-x-1/2 animate-line-flow-v flex flex-col items-center">
+                                            <div className="w-full h-full" />
+                                            <svg viewBox="0 0 20 10" className="w-3 h-1.5 fill-yellow-400 -mt-0.5"><polygon points="0,0 20,0 10,10" /></svg>
+                                        </div>
+                                    </div>
+                                    <div className="space-y-3 relative flex flex-col items-center">
+                                        {[
+                                            { en: 'Research', am: 'የምርምር' },
+                                            { en: 'Education', am: 'ትምህርት' },
+                                            { en: 'Training', am: 'ሥልጠና' }
+                                        ].map(item => (
+                                            <div key={item.en} className="relative w-full">
+                                                <div className="bg-[#266BB3] py-3 px-1 rounded-lg border border-[#1F568C] shadow-sm text-center flex flex-col items-center justify-center min-h-[64px] text-base font-black leading-tight break-words text-white">
+                                                    <div>{item.am}</div>
+                                                    <div className="text-blue-100/60 text-[13px] uppercase tracking-tighter mt-0.5">{item.en}</div>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* 5. MEDICAL SERVICES - MOVED UP TO LAYER 2 */}
+                                <div className="space-y-6 relative">
+                                    {/* Vertical Connect to Horizontal */}
+                                    <div className="hidden lg:block absolute -top-8 left-1/2 w-1 h-8 -translate-x-1/2 animate-line-flow-v" />
+
+                                    <div className="bg-blue-950 p-4 rounded-lg border-2 border-blue-600 text-center shadow-md mb-4 relative z-20 group hover:scale-[1.02] transition-transform">
+                                        <div className="text-white font-black text-lg leading-tight">የሕክምና አገልግሎት ምክትል ዋና ዳይሬክተር</div>
+                                        <div className="text-blue-100 text-[13px] uppercase font-bold tracking-tighter mt-1 opacity-70">Medical Services Deputy</div>
+                                        {/* Connector down to sub-units */}
+                                        <div className="absolute top-full left-1/2 w-1 h-4 -translate-x-1/2 animate-line-flow-v flex flex-col items-center">
+                                            <div className="w-full h-full" />
+                                            <svg viewBox="0 0 20 10" className="w-3 h-1.5 fill-yellow-400 -mt-0.5"><polygon points="0,0 20,0 10,10" /></svg>
+                                        </div>
+                                    </div>
+
+                                    <div className="space-y-3 relative flex flex-col items-center">
+                                        {[
+                                            { en: 'Laboratory', am: 'ላቦራቶሪ' },
+                                            { en: 'Nursing', am: 'ነርሲንግ' },
+                                            { en: 'Pharmacy', am: 'ፋርማሲ' },
+                                            { en: 'Bio-Med', am: 'ባዮ-ሜዲካል' },
+                                            { en: 'Psychiatric', am: 'የስነ-አእምሮ' },
+                                            { en: 'Records', am: 'የታካሚ መረጃ' },
+                                            { en: 'Community', am: 'የማህበረሰብ' },
+                                            { en: 'Emergency', am: 'ድንገተኛ' },
+                                            { en: 'Inpatient', am: 'የተኛ ታካሚ' },
+                                            { en: 'Referrals', am: 'ሪፈራል' }
+                                        ].map(item => (
+                                            <div key={item.en} className="relative w-full">
+                                                <div className="bg-[#266BB3] py-3 px-1 rounded shadow-sm border border-[#1F568C] text-center flex flex-col items-center justify-center min-h-[64px] hover:bg-[#327EC2] transition-all z-10 text-base font-black leading-tight break-words text-white">
+                                                    <div>{item.am}</div>
+                                                    <div className="text-blue-100/60 text-[13px] uppercase tracking-tighter mt-0.5">{item.en}</div>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
                             </div>
-                            <div className="grid grid-cols-3 gap-4">
-                                {['Medical Director', 'Finance Director', 'Admin Director'].map(role => (
-                                    <div key={role} className="bg-white/10 rounded-xl p-4 text-center text-sm font-semibold text-blue-100">{role}</div>
-                                ))}
-                            </div>
-                            <div className="flex justify-center gap-16 mt-1">
-                                {[null, null, null].map((_, i) => <div key={i} className="w-0.5 h-6 bg-white/30" />)}
-                            </div>
-                            <div className="grid grid-cols-3 gap-4">
-                                {['Clinical Depts', 'Accounts', 'HR & IT'].map(dept => (
-                                    <div key={dept} className="bg-white/5 rounded-xl p-3 text-center text-xs text-blue-200 border border-white/10">{dept}</div>
-                                ))}
-                            </div>
+
                         </div>
                     </div>
                 </section>

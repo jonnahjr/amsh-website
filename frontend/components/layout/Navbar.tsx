@@ -27,23 +27,43 @@ const navLinks = [
         href: '/services',
         children: [
             { label: 'All Services', href: '/services' },
-            { label: 'Emergency', href: '/services/emergency-service' },
-            { label: 'Outpatient', href: '/services/outpatient' },
-            { label: 'Inpatient', href: '/services/inpatient' },
-            { label: 'Pharmacy', href: '/services/pharmacy' },
-            { label: 'Laboratory', href: '/services/laboratory' },
-            { label: 'EEG Services', href: '/services/eeg' },
+            { label: 'Clinical Mental Health Services', href: '/services/clinical-mental-health' },
+            { label: 'Psychological Services', href: '/services/psychological-services' },
+            { label: 'Addiction & Substance Abuse', href: '/services/addiction-substance-abuse' },
+            { label: 'Child & Adolescent Mental Health', href: '/services/child-adolescent' },
+            { label: 'Rehabilitation Services', href: '/services/rehabilitation' },
+            { label: 'Telepsychiatry Services', href: '/services/telepsychiatry' },
+            { label: 'Pharmacy Services', href: '/services/pharmacy' },
+            { label: 'Laboratory Services', href: '/services/laboratory' },
+            { label: 'Training & Education', href: '/services/training-education' },
+            { label: 'Research Services', href: '/services/research' },
+            { label: 'Community Mental Health', href: '/services/community-mental-health' },
+            { label: 'Forensic Psychiatry Services', href: '/services/forensic-psychiatry' },
+            { label: 'Referral Services', href: '/services/referral-services' },
+            { label: 'Counseling Services', href: '/services/counseling-services' },
+            { label: 'Promotion & Prevention', href: '/services/promotion-prevention' },
         ],
     },
     {
         label: 'Departments',
         href: '/departments',
         children: [
-            { label: 'Adult Psychiatry', href: '/departments/adult-psychiatry' },
-            { label: 'Child Psychiatry', href: '/departments/child-psychiatry' },
-            { label: 'Addiction Treatment', href: '/departments/addiction-treatment' },
-            { label: 'Emergency', href: '/departments/emergency' },
-            { label: 'Clinical Psychology', href: '/departments/psychology' },
+            { label: 'All Departments', href: '/departments' },
+            { label: 'Clinical Mental Health', href: '/departments/clinical-mental-health' },
+            { label: 'Psychological Services', href: '/departments/psychological-services' },
+            { label: 'Addiction & Substance Abuse', href: '/departments/addiction-substance-abuse' },
+            { label: 'Child & Adolescent', href: '/departments/child-adolescent' },
+            { label: 'Rehabilitation Services', href: '/departments/rehabilitation' },
+            { label: 'Telepsychiatry Services', href: '/departments/telepsychiatry' },
+            { label: 'Pharmacy Services', href: '/departments/pharmacy' },
+            { label: 'Laboratory Services', href: '/departments/laboratory' },
+            { label: 'Training & Education', href: '/departments/training-education' },
+            { label: 'Research Services', href: '/departments/research' },
+            { label: 'Community Mental Health', href: '/departments/community-mental-health' },
+            { label: 'Forensic Psychiatry', href: '/departments/forensic-psychiatry' },
+            { label: 'Referral Services', href: '/departments/referral-services' },
+            { label: 'Counseling Services', href: '/departments/counseling-services' },
+            { label: 'Promotion & Prevention', href: '/departments/promotion-prevention' },
         ],
     },
     { label: 'Research', href: '/research' },
@@ -95,7 +115,7 @@ export default function Navbar() {
                         <span className="text-blue-200">Mon - Fri: 2:30 AM - 10:00 AM</span>
                     </div>
                     <div className="flex items-center gap-4">
-                        <Link href="/appointment" className="flex items-center gap-1.5 bg-cyan-500 hover:bg-cyan-400 text-white px-4 py-1 rounded-full text-xs font-semibold transition-colors">
+                        <Link href="/appointment" className="flex items-center gap-1.5 bg-cyan-500 hover:bg-blue-50 text-white hover:text-blue-950 px-4 py-1 rounded-full text-xs font-semibold hover:-translate-y-1 transition-all hover:shadow-2xl">
                             📅 Book Appointment
                         </Link>
                         <Link href="/admin" className="text-blue-300 hover:text-white transition-colors text-xs">
@@ -115,11 +135,11 @@ export default function Navbar() {
 
                         {/* LOGO */}
                         <Link href="/" className="flex items-center gap-3 flex-shrink-0 group">
-                            <div className="relative w-14 h-14 overflow-hidden rounded-xl bg-white shadow-lg transition-transform group-hover:scale-105">
+                            <div className="relative w-14 h-14 overflow-hidden transition-transform group-hover:scale-105 flex items-center justify-center p-0">
                                 <img
                                     src="/images/logo.png"
                                     alt="AMSH Logo"
-                                    className="w-full h-full object-contain p-1"
+                                    className="w-full h-full object-contain p-0"
                                 />
                             </div>
                             <div>

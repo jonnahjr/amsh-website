@@ -78,7 +78,7 @@ export default function NewsSection() {
                 ) : (
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         {displayPosts.map((post, i) => (
-                            <Link key={post.id} href={`/news/${post.slug}`} className="card group">
+                            <Link key={post.id} href={`/news/${post.slug}`} className="card group hover:-translate-y-2 hover:shadow-2xl transition-all duration-500">
                                 {/* Image Area */}
                                 <div className={`h-48 flex items-center justify-center text-white relative overflow-hidden ${i === 0 ? 'bg-gradient-to-br from-blue-700 to-blue-900' :
                                     i === 1 ? 'bg-gradient-to-br from-emerald-700 to-teal-900' :

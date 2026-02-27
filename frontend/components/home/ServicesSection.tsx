@@ -5,53 +5,71 @@ import { CalendarIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
 
 const services = [
     {
-        icon: '🚨',
+        icon: '🚑',
         name: 'Emergency Service',
         slug: 'emergency-service',
-        description: 'Available 24/7 for acute psychiatric emergencies. Call 991 immediately for mental health crises.',
+        description: '24/7 rapid psychiatric intervention, crisis stabilization, and immediate mental health support.',
         highlight: true
     },
     {
-        icon: '🧠',
-        name: 'Outpatient Services (OPD)',
-        slug: 'outpatient',
-        description: 'Comprehensive outpatient psychiatric evaluation, diagnosis, and treatment by specialized psychiatrists.'
+        icon: '🏥',
+        name: 'Outpatient Services',
+        slug: 'outpatient-services',
+        description: 'Expert psychiatric consultations, specialized clinics, and comprehensive follow-up care for diverse mental health needs.'
     },
     {
         icon: '🛏️',
         name: 'Inpatient Services',
-        slug: 'inpatient',
-        description: 'Full residential psychiatric care for patients requiring intensive, supervised mental health treatment.'
+        slug: 'inpatient-services',
+        description: 'Compassionate 24/7 intensive psychiatric care and therapeutic recovery within a safe, restorative environment.'
     },
     {
-        icon: '👶',
-        name: 'Child & Adolescent Psychiatry',
-        slug: 'child-psychiatry',
-        description: 'Specialized mental health evaluation and treatment tailored for children and adolescents.'
+        icon: '⚡',
+        name: 'EEG Services',
+        slug: 'eeg-services',
+        description: 'Advanced neurophysiological diagnostics and brain mapping to support precise clinical assessment and planning.'
+    },
+    {
+        icon: '🧠',
+        name: 'Psychological Services',
+        slug: 'psychological-services',
+        description: 'Psychological assessment and therapies including CBT, family, group, and trauma counseling.'
     },
     {
         icon: '💊',
-        name: 'Addiction Treatment',
-        slug: 'addiction-treatment',
-        description: 'Evidence-based addiction treatment and rehabilitation programs for substance use disorders.'
+        name: 'Addiction & Substance Abuse',
+        slug: 'addiction-substance-abuse',
+        description: 'Detoxification, rehabilitation programs, and counseling for alcohol and drug addiction.'
+    },
+    {
+        icon: '🔄',
+        name: 'Rehabilitation Services',
+        slug: 'rehabilitation',
+        description: 'Occupational therapy, social skills training, and psychosocial rehabilitation programs.'
+    },
+    {
+        icon: '⚕️',
+        name: 'Pharmacy Services',
+        slug: 'pharmacy',
+        description: 'On-site pharmacy providing psychiatric medications, counseling, and prescription management.'
     },
     {
         icon: '🔬',
         name: 'Laboratory Services',
         slug: 'laboratory',
-        description: 'Full diagnostic laboratory services supporting accurate psychiatric diagnoses and treatment monitoring.'
+        description: 'Comprehensive blood tests, drug screening, and medical screening tests.'
     },
     {
-        icon: '💊',
-        name: 'Pharmacy',
-        slug: 'pharmacy',
-        description: 'Enriched pharmacy stocked with all essential psychiatric medications, conveniently on-site.'
+        icon: '⚖️',
+        name: 'Forensic Psychiatry Services',
+        slug: 'forensic-psychiatry',
+        description: 'Mental health evaluation for legal purposes, criminal responsibility, and fitness-to-stand-trial.'
     },
     {
-        icon: '⚡',
-        name: 'EEG Services',
-        slug: 'eeg',
-        description: 'Electroencephalogram (EEG) diagnostic testing for neurological and psychiatric conditions assessment.'
+        icon: '🏥',
+        name: 'Referral Services',
+        slug: 'referral-services',
+        description: 'National referral center receiving patients from health centers, regional hospitals, and private clinics.'
     },
 ];
 
@@ -75,7 +93,7 @@ export default function ServicesSection() {
                     {services.map((service, i) => (
                         <div
                             key={service.slug}
-                            className="group relative bg-[#0A1A31] rounded-[2.5rem] p-7 text-white transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl flex flex-col h-full border border-white/5 overflow-hidden"
+                            className="group relative bg-blue-950 rounded-[2.5rem] p-7 text-white transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl flex flex-col h-full border border-white/5 overflow-hidden"
                         >
 
                             <div className="relative z-10 flex flex-col h-full text-center items-center">
@@ -96,7 +114,7 @@ export default function ServicesSection() {
                                 <div className="mt-auto w-full space-y-3 pt-6 border-t border-white/5">
                                     <Link
                                         href="/appointment"
-                                        className="flex items-center justify-center gap-2 w-full py-3 bg-white text-blue-950 rounded-xl font-black uppercase tracking-wider text-[9px] hover:bg-cyan-400 transition-all shadow-md"
+                                        className="flex items-center justify-center gap-2 w-full py-3 bg-white text-blue-950 rounded-xl font-black uppercase tracking-wider text-[9px] hover:bg-blue-50 hover:-translate-y-1 transition-all shadow-md hover:shadow-2xl"
                                     >
                                         <CalendarIcon className="w-3 h-3" />
                                         Book

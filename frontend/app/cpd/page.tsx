@@ -37,24 +37,54 @@ export default function CPDPage() {
             <Navbar />
             <main className="bg-gray-50 pb-24">
                 {/* Hero */}
-                <section className="bg-blue-900 py-24 text-white relative overflow-hidden">
-                    <div className="container-custom relative z-10">
-                        <div className="max-w-3xl">
-                            <span className="inline-flex items-center gap-2 px-4 py-1.5 bg-white/10 border border-white/20 rounded-full text-cyan-300 text-[10px] font-black uppercase tracking-widest mb-6">
-                                Professional Excellence
-                            </span>
-                            <h1 className="text-4xl md:text-7xl font-black mb-6 leading-tight">
-                                Elevating Mental Health<br />
-                                <span className="text-cyan-300">Professionalism</span>
+                <section className="relative min-h-[70vh] bg-blue-950 flex items-center overflow-hidden">
+                    {/* Background Pattern */}
+                    <div className="absolute inset-0 opacity-10">
+                        <div className="absolute inset-0" style={{
+                            backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)',
+                            backgroundSize: '48px 48px',
+                        }} />
+                    </div>
+
+                    {/* Decorative Blue Orbs */}
+                    <div className="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[120px] animate-float pointer-events-none" />
+                    <div className="absolute bottom-1/4 left-1/4 w-[400px] h-[400px] bg-blue-400/5 rounded-full blur-[100px] animate-float pointer-events-none" style={{ animationDelay: '1.5s' }} />
+
+                    {/* Content */}
+                    <div className="container-custom relative z-10 py-24">
+                        <div className="max-w-4xl">
+                            {/* Badge */}
+                            <div className="animate-fade-in-up mb-6">
+                                <span className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 backdrop-blur-sm border border-white/10 rounded-full text-blue-200 text-sm font-semibold uppercase tracking-widest">
+                                    ✦ Professional Excellence
+                                </span>
+                            </div>
+
+                            {/* Title */}
+                            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white leading-[1.1] mb-8 animate-fade-in-up tracking-tighter" style={{ animationDelay: '0.1s' }}>
+                                Elevating Mental Health <br />
+                                <span className="text-gray-400 italic font-medium">Professionalism</span>
                             </h1>
-                            <p className="text-blue-100 text-xl font-medium leading-relaxed max-w-2xl">
-                                Pursue excellence with our Continuing Professional Development (CPD) programs,
-                                designed specifically for the next generation of mental health champions.
+
+                            {/* Subtitle */}
+                            <p className="text-lg md:text-2xl text-blue-100/60 max-w-3xl mb-12 leading-relaxed animate-fade-in-up font-medium" style={{ animationDelay: '0.2s' }}>
+                                Pursue excellence with our Continuing Professional Development (CPD) programs, designed specifically for the next generation of mental health champions.
                             </p>
+
+                            {/* CTAs */}
+                            <div className="flex flex-col sm:flex-row items-center gap-6 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
+                                <button className="px-10 py-5 bg-white text-blue-950 rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-blue-50 transition-all shadow-2xl hover:-translate-y-1">
+                                    Explore Courses
+                                </button>
+                                <button className="inline-flex items-center gap-2 text-white border-2 border-white/20 px-10 py-5 rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-white/10 transition-all duration-300">
+                                    Join the Network
+                                </button>
+                            </div>
                         </div>
                     </div>
+
                     {/* Background Decoration */}
-                    <div className="absolute top-1/2 right-0 w-[600px] h-[600px] bg-white text-blue-900/5 select-none pointer-events-none translate-x-1/3 -translate-y-1/2">
+                    <div className="absolute top-1/2 right-0 w-[500px] h-[500px] bg-white text-blue-900/5 select-none pointer-events-none translate-x-1/4 -translate-y-1/2 animate-float">
                         <AcademicCapIcon className="w-full h-full" />
                     </div>
                 </section>

@@ -79,7 +79,7 @@ export default function CoreValuesSection() {
                             <div className="relative z-10">
                                 {/* Icon Header */}
                                 <div className="flex items-center justify-between mb-10">
-                                    <div className="w-16 h-16 bg-white/10 backdrop-blur-xl rounded-3xl flex items-center justify-center text-cyan-400 border border-white/10 group-hover:bg-cyan-400 group-hover:text-blue-950 transition-all duration-500 shadow-xl">
+                                    <div className="w-16 h-16 bg-white/10 backdrop-blur-xl rounded-3xl flex items-center justify-center text-cyan-400 border border-white/10 group-hover:bg-blue-50 group-hover:text-blue-950 transition-all duration-500 shadow-xl">
                                         <div className="group-hover:scale-110 transition-transform">
                                             {val.iconComp}
                                         </div>
@@ -97,7 +97,7 @@ export default function CoreValuesSection() {
                             </div>
 
                             {/* Decorative Edge Glow */}
-                            <div className="absolute bottom-0 right-0 w-32 h-32 bg-cyan-400/5 rounded-tl-[100px] -mr-16 -mb-16 group-hover:bg-cyan-400/20 transition-all duration-700" />
+                            <div className="absolute bottom-0 right-0 w-32 h-32 bg-cyan-400/5 rounded-tl-[100px] -mr-16 -mb-16 group-hover:bg-blue-50/20 transition-all duration-700" />
                         </div>
                     ))}
                 </div>

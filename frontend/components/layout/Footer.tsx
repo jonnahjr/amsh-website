@@ -43,11 +43,11 @@ export default function Footer() {
                     {/* Brand */}
                     <div className="lg:col-span-2">
                         <Link href="/" className="flex items-center gap-4 mb-6 group">
-                            <div className="relative w-16 h-16 bg-white rounded-2xl p-1 shadow-xl shadow-blue-950/20 transition-transform group-hover:scale-105">
+                            <div className="relative w-16 h-16 flex items-center justify-center p-0 transition-transform group-hover:scale-105">
                                 <img
                                     src="/images/logo.png"
                                     alt="AMSH Logo"
-                                    className="w-full h-full object-contain"
+                                    className="w-full h-full object-contain p-0"
                                 />
                             </div>
                             <div>

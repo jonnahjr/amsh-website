@@ -35,32 +35,53 @@ export default function ResearchPage() {
             <EmergencyBanner />
             <Navbar />
             <main className="bg-white">
-                {/* Hero Section */}
-                <section className="bg-gradient-to-br from-blue-950 via-blue-900 to-indigo-900 py-24 text-white relative">
-                    <div className="container-custom relative z-10 text-center">
-                        <span className="inline-flex items-center gap-2 px-4 py-1.5 bg-white/10 border border-white/20 rounded-full text-cyan-300 text-[10px] font-black uppercase tracking-widest mb-6">
-                            Research & Innovation
-                        </span>
-                        <h1 className="text-4xl md:text-6xl font-black mb-6">Advancing Mental Health<br /><span className="text-cyan-300">Knowledge in Africa</span></h1>
-                        <p className="text-blue-200 text-lg max-w-2xl mx-auto mb-10">
-                            AMSH is a leading center for psychiatric research, conducting impactful studies that shape mental health policy and clinical practice across the continent.
-                        </p>
-                        <div className="flex flex-wrap justify-center gap-4">
-                            <a href="#submit" className="bg-cyan-500 text-blue-950 px-8 py-4 rounded-xl font-black text-xs uppercase tracking-widest hover:bg-cyan-400 transition-all shadow-2xl shadow-cyan-500/20">
-                                Submit Proposal
-                            </a>
-                            <a href="#publications" className="border-2 border-white/30 text-white px-8 py-4 rounded-xl font-black text-xs uppercase tracking-widest hover:bg-white/10 transition-all">
-                                Browse Publications
-                            </a>
-                        </div>
+                {/* Hero */}
+                <section className="relative min-h-[70vh] bg-blue-950 flex items-center overflow-hidden">
+                    {/* Background Pattern */}
+                    <div className="absolute inset-0 opacity-10">
+                        <div className="absolute inset-0" style={{
+                            backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)',
+                            backgroundSize: '48px 48px',
+                        }} />
                     </div>
 
-                    {/* Abstract shapes */}
-                    <div className="absolute bottom-0 right-0 w-96 h-96 bg-cyan-500/10 rounded-full blur-[120px] translate-x-1/2 translate-y-1/2" />
-                    <div className="absolute top-0 left-0 w-96 h-96 bg-blue-500/10 rounded-full blur-[120px] -translate-x-1/2 -translate-y-1/2" />
-                </section>
+                    {/* Decorative Blue Orbs */}
+                    <div className="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[120px] animate-float pointer-events-none" />
+                    <div className="absolute bottom-1/4 left-1/4 w-[400px] h-[400px] bg-blue-400/5 rounded-full blur-[100px] animate-float pointer-events-none" style={{ animationDelay: '1.5s' }} />
 
-                {/* Strategic Priorities */}
+                    {/* Content */}
+                    <div className="container-custom relative z-10 py-24 text-center">
+                        <div className="max-w-4xl mx-auto">
+                            {/* Badge */}
+                            <div className="animate-fade-in-up mb-6">
+                                <span className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 backdrop-blur-sm border border-white/10 rounded-full text-blue-200 text-sm font-semibold uppercase tracking-widest">
+                                    ✦ Research & Innovation
+                                </span>
+                            </div>
+
+                            {/* Title */}
+                            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white leading-[1.1] mb-8 animate-fade-in-up tracking-tighter" style={{ animationDelay: '0.1s' }}>
+                                Advancing Mental Health <br />
+                                <span className="text-gray-400 italic font-medium">Knowledge in Africa</span>
+                            </h1>
+
+                            {/* Subtitle */}
+                            <p className="text-lg md:text-2xl text-blue-100/60 max-w-2xl mx-auto mb-12 leading-relaxed animate-fade-in-up font-medium" style={{ animationDelay: '0.2s' }}>
+                                AMSH is a leading center for psychiatric research, conducting impactful studies that shape mental health policy and clinical practice across the continent.
+                            </p>
+
+                            {/* CTAs */}
+                            <div className="flex flex-col sm:flex-row items-center justify-center gap-6 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
+                                <a href="#submit" className="px-10 py-5 bg-white text-blue-950 rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-blue-50 transition-all shadow-2xl hover:-translate-y-1">
+                                    Submit Proposal
+                                </a>
+                                <a href="#publications" className="inline-flex items-center gap-2 text-white border-2 border-white/20 px-10 py-5 rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-white/10 transition-all duration-300">
+                                    Browse Publications
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
                 <section className="py-20 bg-gray-50 border-b border-gray-100">
                     <div className="container-custom">
                         <div className="text-center mb-16">
@@ -74,8 +95,8 @@ export default function ResearchPage() {
                                 { icon: <InboxArrowDownIcon className="w-8 h-8" />, title: 'Public Health', text: 'Studying epidemiological trends and mental health delivery systems.' },
                                 { icon: <BookOpenIcon className="w-8 h-8" />, title: 'Policy Research', text: 'Shaping mental health legislation and resource allocation strategies.' }
                             ].map((item, i) => (
-                                <div key={i} className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-xl transition-all group">
-                                    <div className="text-blue-900 mb-6 group-hover:scale-110 transition-transform origin-left">{item.icon}</div>
+                                <div key={i} className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-500 group">
+                                    <div className="text-blue-900 mb-6 group-hover:scale-110 transition-transform duration-500 origin-left">{item.icon}</div>
                                     <h3 className="text-lg font-black text-gray-900 mb-3">{item.title}</h3>
                                     <p className="text-gray-500 text-sm leading-relaxed">{item.text}</p>
                                 </div>
@@ -101,7 +122,7 @@ export default function ResearchPage() {
                             {loading ? (
                                 [...Array(3)].map((_, i) => <div key={i} className="h-32 bg-gray-50 rounded-3xl animate-pulse" />)
                             ) : publications.map((pub) => (
-                                <div key={pub.id} className="p-8 bg-white border border-gray-100 rounded-[32px] shadow-sm hover:shadow-lg transition-all flex flex-col md:flex-row gap-8 items-center">
+                                <div key={pub.id} className="p-8 bg-white border border-gray-100 rounded-[32px] shadow-sm hover:shadow-lg hover:-translate-y-2 transition-all duration-500 flex flex-col md:flex-row gap-8 items-center">
                                     <div className="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-900 text-2xl font-black flex-shrink-0">
                                         {pub.year}
                                     </div>
@@ -161,7 +182,7 @@ export default function ResearchPage() {
                         </div>
                     </div>
                 </section>
-            </main>
+            </main >
             <Footer />
             <ChatbotButton />
         </>

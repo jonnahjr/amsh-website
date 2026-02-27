@@ -338,4 +338,40 @@
   .prose-amsh {
     @apply prose prose-lg max-w-none prose-headings:font-bold prose-headings:text-gray-900 prose-p:text-gray-600 prose-a:text-blue-900 prose-a:no-underline hover:prose-a:underline prose-img:rounded-xl;
   }
+
+  @keyframes lineFlowVertical {
+    0% {
+      background-position: 0% 0%;
+    }
+
+    100% {
+      background-position: 0% -200%;
+    }
+  }
+
+  @keyframes lineFlowHorizontal {
+    0% {
+      background-position: 0% 0%;
+    }
+
+    100% {
+      background-position: -200% 0%;
+    }
+  }
+
+  .animate-line-flow-v {
+    background: linear-gradient(to bottom, #fbbf24, #fef3c7, #fbbf24);
+    background-size: 100% 200%;
+    animation: lineFlowVertical 3s linear infinite;
+  }
+
+  .animate-line-flow-h {
+    background: linear-gradient(to right, #fbbf24, #fef3c7, #fbbf24);
+    background-size: 200% 100%;
+    animation: lineFlowHorizontal 3s linear infinite;
+  }
+
+  .line-glow {
+    box-shadow: 0 0 10px rgba(251, 191, 36, 0.4);
+  }
 }

@@ -55,15 +55,43 @@ export default function NewsPage() {
             <Navbar />
 
             <main className="bg-gray-50 min-h-screen">
-                {/* Header */}
-                <div className="bg-blue-900 py-20 text-white">
-                    <div className="container-custom text-center">
-                        <h1 className="text-4xl md:text-5xl font-black mb-6">News & Announcements</h1>
-                        <p className="text-blue-100 text-lg max-w-2xl mx-auto">
-                            Stay updated with the latest happenings, events, and medical breakthroughs at Amanuel Mental Specialized Hospital.
-                        </p>
+                {/* Hero */}
+                <section className="relative min-h-[60vh] bg-blue-950 flex items-center overflow-hidden">
+                    {/* Background Pattern */}
+                    <div className="absolute inset-0 opacity-10">
+                        <div className="absolute inset-0" style={{
+                            backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)',
+                            backgroundSize: '48px 48px',
+                        }} />
                     </div>
-                </div>
+
+                    {/* Decorative Blue Orbs */}
+                    <div className="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[120px] animate-float pointer-events-none" />
+                    <div className="absolute bottom-1/4 left-1/4 w-[400px] h-[400px] bg-blue-400/5 rounded-full blur-[100px] animate-float pointer-events-none" style={{ animationDelay: '1.5s' }} />
+
+                    {/* Content */}
+                    <div className="container-custom relative z-10 py-24 text-center">
+                        <div className="max-w-4xl mx-auto">
+                            {/* Badge */}
+                            <div className="animate-fade-in-up mb-6">
+                                <span className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 backdrop-blur-sm border border-white/10 rounded-full text-blue-200 text-sm font-semibold uppercase tracking-widest">
+                                    ✦ Hospital News & Media
+                                </span>
+                            </div>
+
+                            {/* Title */}
+                            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white leading-[1.1] mb-8 animate-fade-in-up tracking-tighter" style={{ animationDelay: '0.1s' }}>
+                                Latest Updates <br />
+                                <span className="text-gray-400 italic font-medium">& Announcements</span>
+                            </h1>
+
+                            {/* Subtitle */}
+                            <p className="text-lg md:text-2xl text-blue-100/60 max-w-2xl mx-auto leading-relaxed animate-fade-in-up font-medium" style={{ animationDelay: '0.2s' }}>
+                                Follow our journey in transforming mental health care in Ethiopia through research, community outreach, and clinical excellence.
+                            </p>
+                        </div>
+                    </div>
+                </section>
 
                 {/* Search & Filter */}
                 <div className="container-custom -mt-8">
@@ -115,7 +143,7 @@ export default function NewsPage() {
                                     <Link
                                         key={post.id}
                                         href={`/news/${post.slug}`}
-                                        className="group bg-white rounded-[32px] overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-gray-100 flex flex-col"
+                                        className="group bg-white rounded-[32px] overflow-hidden shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 border border-gray-100 flex flex-col"
                                     >
                                         <div className="relative h-64 overflow-hidden">
                                             <img
@@ -150,7 +178,7 @@ export default function NewsPage() {
                         )}
                     </div>
                 </section>
-            </main>
+            </main >
 
             <Footer />
         </>
