@@ -109,19 +109,6 @@ export default function ServicesPage() {
                     <div className="container-custom relative z-10 py-28 text-center">
                         <div className="max-w-5xl mx-auto">
 
-                            {/* Accreditation badges */}
-                            <div className="flex flex-wrap items-center justify-center gap-3 mb-10">
-                                {[
-                                    { icon: '🌍', text: 'WHO Affiliated' },
-                                    { icon: '🏆', text: 'Nationally Accredited' },
-                                    { icon: '✅', text: 'ISO-Quality Standards' },
-                                    { icon: '🎓', text: 'Academic Teaching Hospital' },
-                                ].map((badge) => (
-                                    <span key={badge.text} className="inline-flex items-center gap-2 px-4 py-1.5 bg-white/5 backdrop-blur border border-white/10 rounded-full text-blue-200 text-xs font-semibold tracking-widest uppercase">
-                                        <span>{badge.icon}</span> {badge.text}
-                                    </span>
-                                ))}
-                            </div>
 
                             {/* Masthead Title */}
                             <h1 className="text-4xl sm:text-5xl md:text-7xl font-black text-white leading-[1.05] mb-6 tracking-tighter">
