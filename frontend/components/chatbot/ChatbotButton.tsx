@@ -24,7 +24,7 @@ export default function ChatbotButton() {
     useEffect(scrollToBottom, [messages]);
 
     const quickReplies = [
-        '📅 Book appointment', '🏥 Services offered', '📞 Contact info',
+        '🏥 Services offered', '📞 Contact info',
         '📚 CPD courses', '🚨 Emergency care', '🔬 Research',
     ];
 
@@ -98,8 +98,8 @@ export default function ChatbotButton() {
                                     <div className="w-7 h-7 rounded-full bg-blue-900 flex items-center justify-center text-sm mr-2 mt-1 flex-shrink-0">🤖</div>
                                 )}
                                 <div className={`max-w-[80%] rounded-2xl px-4 py-2.5 text-sm ${msg.role === 'user'
-                                        ? 'bg-blue-900 text-white rounded-tr-sm'
-                                        : 'bg-white text-gray-800 shadow-sm border border-gray-100 rounded-tl-sm'
+                                    ? 'bg-blue-900 text-white rounded-tr-sm'
+                                    : 'bg-white text-gray-800 shadow-sm border border-gray-100 rounded-tl-sm'
                                     }`}>
                                     {msg.content}
                                 </div>

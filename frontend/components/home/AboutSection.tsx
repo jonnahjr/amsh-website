@@ -112,8 +112,8 @@ export default function AboutSection() {
                                     <Link href="/about" className="px-10 py-5 bg-white text-blue-950 rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-blue-50 transition-all shadow-2xl">
                                         Read Our Story
                                     </Link>
-                                    <Link href="/appointment" className="px-10 py-5 bg-white/10 border border-white/20 text-white rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-white/20 transition-all backdrop-blur-md">
-                                        Get Involved
+                                    <Link href="/services" className="px-10 py-5 bg-white/10 border border-white/20 text-white rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-white/20 transition-all backdrop-blur-md">
+                                        View Services
                                     </Link>
                                 </div>
                             </div>

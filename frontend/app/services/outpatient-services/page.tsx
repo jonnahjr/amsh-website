@@ -61,8 +61,8 @@ export default function OutpatientServicesPage() {
 
                             {/* CTAs */}
                             <div className="flex flex-col sm:flex-row items-center justify-center gap-6 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
-                                <Link href="/appointment" className="px-10 py-5 bg-white text-blue-950 rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-blue-50 transition-all shadow-2xl hover:-translate-y-1">
-                                    📅 Book Appointment
+                                <Link href="/contact" className="px-10 py-5 bg-white text-blue-950 rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-blue-50 transition-all shadow-2xl hover:-translate-y-1">
+                                    📞 Contact Hospital
                                 </Link>
                                 <a href="tel:+2511118685385" className="inline-flex items-center gap-2 text-white border-2 border-white/20 px-10 py-5 rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-white/10 transition-all duration-300">
                                     <PhoneIcon className="w-5 h-5" /> Contact Clinic
@@ -200,8 +200,8 @@ export default function OutpatientServicesPage() {
                                     By providing timely diagnostic interventions and expert medication management, we strive to reduce the burden of mental illness in families across Ethiopia.
                                 </p>
                                 <div className="flex flex-col sm:flex-row justify-center gap-4">
-                                    <Link href="/appointment" className="px-10 py-5 bg-blue-900 text-white rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-gray-900 transition-all shadow-xl hover:-translate-y-1">
-                                        Book Consultation
+                                    <Link href="/contact" className="px-10 py-5 bg-blue-900 text-white rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-gray-900 transition-all shadow-xl hover:-translate-y-1">
+                                        Contact Us
                                     </Link>
                                     <Link href="/services" className="px-10 py-5 bg-gray-100 text-gray-600 rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-gray-200 transition-all">
                                         All Services

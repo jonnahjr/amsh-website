@@ -23,7 +23,7 @@ const footerLinks: Record<string, FooterLink[]> = {
         { label: 'Publications', href: '/research' },
         { label: 'FAQ', href: '/faq' },
         { label: 'Newsletter', href: '/#newsletter' },
-        { label: 'Online Appointment', href: '/appointment' },
+        { label: 'Patient Services', href: '/services' },
         { label: 'MOH Ethiopia', href: 'https://www.moh.gov.et', external: true },
     ],
     'External Links': [

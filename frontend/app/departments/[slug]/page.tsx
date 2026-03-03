@@ -73,8 +73,8 @@ export default function DepartmentDetailPage() {
                                 {dept.description}
                             </p>
                             <div className="flex gap-4">
-                                <Link href="/appointment" className="btn-primary">📅 Book Appointment</Link>
-                                <Link href="/contact" className="btn-secondary">Contact Dept</Link>
+                                <Link href="/contact" className="px-8 py-4 bg-blue-900 text-white rounded-xl font-bold hover:bg-blue-800 transition-all">Contact Department</Link>
+                                <Link href="/services" className="px-8 py-4 border border-blue-900 text-blue-900 rounded-xl font-bold hover:bg-blue-50 transition-all">Our Services</Link>
                             </div>
                         </div>
 

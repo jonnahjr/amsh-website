@@ -374,4 +374,51 @@
   .line-glow {
     box-shadow: 0 0 10px rgba(251, 191, 36, 0.4);
   }
+
+  /* Mesh Gradient Animation */
+  @keyframes meshGradient {
+    0% {
+      background-position: 0% 50%;
+    }
+
+    50% {
+      background-position: 100% 50%;
+    }
+
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  .animate-mesh {
+    background-size: 200% 200%;
+    animation: meshGradient 15s ease infinite;
+  }
+
+  /* 3D Perspective Utilities */
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+
+  /* Glassmorphism Refinement */
+  .glass-premium {
+    @apply bg-white/10 backdrop-blur-2xl border border-white/20 shadow-[0_8px_32px_0_rgba(31, 38, 135, 0.2)];
+  }
+
+  /* Status Pulse */
+  .status-pulse {
+    @apply relative flex h-2 w-2;
+  }
+
+  .status-pulse-inner {
+    @apply animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75;
+  }
+
+  .status-pulse-dot {
+    @apply relative inline-flex rounded-full h-2 w-2 bg-cyan-500;
+  }
 }

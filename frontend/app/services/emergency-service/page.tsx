@@ -63,8 +63,8 @@ export default function EmergencyServicePage() {
                                 <a href="tel:+2511118685385" className="px-10 py-5 bg-red-600 text-white rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-red-500 transition-all shadow-2xl shadow-red-600/20 hover:-translate-y-1 flex items-center gap-2">
                                     <PhoneIcon className="w-5 h-5" /> Call Hotline
                                 </a>
-                                <Link href="/appointment" className="inline-flex items-center gap-2 text-white border-2 border-white/20 px-10 py-5 rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-white/10 transition-all duration-300">
-                                    <CalendarIcon className="w-5 h-5" /> Book Follow-up
+                                <Link href="/contact" className="inline-flex items-center gap-2 text-white border-2 border-white/20 px-10 py-5 rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-white/10 transition-all duration-300">
+                                    Contact Hospital
                                 </Link>
                             </div>
                         </div>
@@ -207,8 +207,8 @@ export default function EmergencyServicePage() {
                                     By providing timely and high-quality emergency care, we strive to either prevent complications entirely or minimize the impact of physical and mental trauma.
                                 </p>
                                 <div className="flex flex-col sm:flex-row justify-center gap-4">
-                                    <Link href="/appointment" className="px-10 py-5 bg-blue-900 text-white rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-gray-900 transition-all shadow-xl hover:-translate-y-1">
-                                        Hospital Appointment
+                                    <Link href="/contact" className="px-10 py-5 bg-blue-900 text-white rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-gray-900 transition-all shadow-xl hover:-translate-y-1">
+                                        Contact Hospital
                                     </Link>
                                     <Link href="/contact" className="px-10 py-5 bg-gray-100 text-gray-600 rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-gray-200 transition-all">
                                         Contact Us

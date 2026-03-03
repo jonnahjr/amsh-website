@@ -134,12 +134,12 @@ export default function ServicesPage() {
 
                             {/* CTA Buttons */}
                             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-20">
-                                <Link href="/appointment" className="inline-flex items-center gap-3 px-8 py-4 bg-white text-blue-950 rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-cyan-400 transition-all shadow-2xl hover:-translate-y-1">
-                                    <CalendarIcon className="w-5 h-5" /> Book Appointment
-                                </Link>
-                                <a href="#services-grid" className="inline-flex items-center gap-3 px-8 py-4 border-2 border-white/20 text-white rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-white/10 transition-all">
-                                    Explore Services <ArrowRightIcon className="w-4 h-4" />
+                                <a href="#services-grid" className="inline-flex items-center gap-3 px-10 py-5 bg-white text-blue-950 rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-cyan-400 transition-all shadow-2xl hover:-translate-y-1">
+                                    Explore Our Services <ArrowRightIcon className="w-5 h-5" />
                                 </a>
+                                <Link href="/contact" className="inline-flex items-center gap-3 px-10 py-5 border-2 border-white/20 text-white rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-white/10 transition-all">
+                                    <PhoneIcon className="w-5 h-5" /> Contact Hospital
+                                </Link>
                             </div>
 
                             {/* Live Stats Bar */}
@@ -241,18 +241,12 @@ export default function ServicesPage() {
                                     </div>
 
                                     {/* Card Actions */}
-                                    <div className="grid grid-cols-2 gap-3 pt-6 border-t border-white/5">
-                                        <Link
-                                            href="/appointment"
-                                            className="flex items-center justify-center gap-2 py-3 bg-white text-blue-950 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-cyan-400 transition-all"
-                                        >
-                                            <CalendarIcon className="w-3.5 h-3.5" /> Book Now
-                                        </Link>
+                                    <div className="pt-6 border-t border-white/5">
                                         <Link
                                             href={`/services/${service.slug}`}
-                                            className="flex items-center justify-center gap-2 py-3 border border-white/10 text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-white hover:text-blue-950 transition-all group/btn"
+                                            className="flex items-center justify-center gap-3 py-4 border border-white/10 text-white rounded-xl text-xs font-black uppercase tracking-widest hover:bg-white hover:text-blue-950 transition-all group/btn"
                                         >
-                                            Details <ArrowRightIcon className="w-3 h-3 group-hover/btn:translate-x-1 transition-transform" />
+                                            View Full Details <ArrowRightIcon className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
                                         </Link>
                                     </div>
 
@@ -287,11 +281,11 @@ export default function ServicesPage() {
                                 Accepting patients from across Ethiopia and the East African region. Our team of specialists is ready to provide the highest standard of psychiatric care.
                             </p>
                             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                                <Link href="/appointment" className="inline-flex items-center gap-3 px-8 py-4 bg-white text-blue-950 rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-cyan-400 transition-all shadow-2xl hover:-translate-y-1">
-                                    <CalendarIcon className="w-5 h-5" /> Book an Appointment
+                                <Link href="/contact" className="inline-flex items-center gap-3 px-10 py-5 bg-white text-blue-950 rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-cyan-400 transition-all shadow-2xl hover:-translate-y-1">
+                                    <PhoneIcon className="w-5 h-5" /> Get in Touch
                                 </Link>
-                                <Link href="/contact" className="inline-flex items-center gap-3 px-8 py-4 border-2 border-white/20 text-white rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-white/10 transition-all">
-                                    <PhoneIcon className="w-5 h-5" /> Contact Us
+                                <Link href="/departments" className="inline-flex items-center gap-3 px-10 py-5 border-2 border-white/20 text-white rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-white/10 transition-all">
+                                    <ArrowRightIcon className="w-5 h-5" /> View Departments
                                 </Link>
                             </div>
                             <p className="mt-8 text-blue-300/40 text-xs uppercase tracking-widest">

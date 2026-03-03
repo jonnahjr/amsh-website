@@ -397,8 +397,8 @@ export default function ServiceDetailPage() {
                             </p>
 
                             <div className="flex flex-col sm:flex-row items-center justify-center gap-6 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
-                                <Link href="/appointment" className="px-10 py-5 bg-white text-blue-950 rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-blue-50 transition-all shadow-2xl hover:-translate-y-1">
-                                    📅 Book Appointment
+                                <Link href="/contact" className="px-10 py-5 bg-white text-blue-950 rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-blue-50 transition-all shadow-2xl hover:-translate-y-1">
+                                    📞 Contact Hospital
                                 </Link>
                                 <a href="tel:+2511118685385" className="inline-flex items-center gap-2 text-white border-2 border-white/20 px-10 py-5 rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-white/10 transition-all duration-300">
                                     <PhoneIcon className="w-5 h-5" /> Contact Center
@@ -495,8 +495,8 @@ export default function ServiceDetailPage() {
                                     "{service.goal}"
                                 </div>
                                 <div className="flex flex-col sm:flex-row justify-center gap-6">
-                                    <Link href="/appointment" className="px-12 py-6 bg-white text-gray-900 rounded-2xl font-black uppercase tracking-widest text-sm hover:scale-105 transition-all shadow-2xl active:scale-95">
-                                        Secure Care Now
+                                    <Link href="/contact" className="px-12 py-6 bg-white text-gray-900 rounded-2xl font-black uppercase tracking-widest text-sm hover:scale-105 transition-all shadow-2xl active:scale-95">
+                                        📞 Contact Us
                                     </Link>
                                     <Link href="/services" className="px-12 py-6 bg-transparent border border-white/20 text-white rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-white/10 transition-all">
                                         View Grid
