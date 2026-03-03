@@ -320,7 +320,7 @@ export default function DepartmentsPage() {
                         </div>
 
                         {/* Advanced Grid with 3D Interaction */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 min-h-[400px]">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4 min-h-[400px]">
                             {filteredDepartments.map((dept, index) => {
                                 const Icon = dept.icon;
                                 return (
@@ -333,44 +333,44 @@ export default function DepartmentsPage() {
                                             transitionDelay: `${index * 50}ms`
                                         }}
                                     >
-                                        <div className="h-full bg-blue-950 border border-white/5 rounded-[2.5rem] p-8 transition-all duration-700 ease-out group-hover:rotate-x-2 group-hover:rotate-y-[-2px] group-hover:shadow-[0_40px_80px_rgba(30,58,138,0.3)] flex flex-col relative overflow-hidden group-hover:-translate-y-4">
+                                        <div className="h-full bg-blue-950 border border-white/5 rounded-[2rem] p-6 transition-all duration-700 ease-out group-hover:rotate-x-2 group-hover:rotate-y-[-2px] group-hover:shadow-[0_30px_60px_rgba(30,58,138,0.3)] flex flex-col relative overflow-hidden group-hover:-translate-y-2">
                                             {/* Dynamic Color Glow */}
-                                            <div className={`absolute -top-24 -right-24 w-48 h-48 bg-gradient-to-br ${dept.color} opacity-0 group-hover:opacity-20 blur-[60px] transition-opacity duration-700`} />
+                                            <div className={`absolute -top-20 -right-20 w-40 h-40 bg-gradient-to-br ${dept.color} opacity-0 group-hover:opacity-20 blur-[50px] transition-opacity duration-700`} />
 
                                             {/* Category & Status */}
-                                            <div className="flex items-center justify-between mb-6">
-                                                <span className="text-[9px] font-black uppercase tracking-[0.2em] text-white/20 bg-white/5 px-3 py-1.5 rounded-full group-hover:bg-white/10 group-hover:text-cyan-400 transition-all duration-500">
+                                            <div className="flex items-center justify-between mb-4">
+                                                <span className="text-[8px] font-black uppercase tracking-[0.2em] text-white/20 bg-white/5 px-2.5 py-1 rounded-full group-hover:bg-white/10 group-hover:text-cyan-400 transition-all duration-500">
                                                     {categories.find(c => c.id === dept.category)?.label}
                                                 </span>
                                                 {dept.category === 'clinical' && (
-                                                    <div className="flex items-center gap-2">
-                                                        <span className="status-pulse h-1.5 w-1.5">
+                                                    <div className="flex items-center gap-1.5">
+                                                        <span className="status-pulse h-1 w-1">
                                                             <span className="status-pulse-inner"></span>
-                                                            <span className="status-pulse-dot h-1.5 w-1.5"></span>
+                                                            <span className="status-pulse-dot h-1 w-1"></span>
                                                         </span>
                                                         <span className="text-[8px] font-black uppercase tracking-widest text-cyan-400">Live</span>
                                                     </div>
                                                 )}
                                             </div>
 
-                                            <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${dept.color} flex items-center justify-center text-white mb-6 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-2xl`}>
-                                                <Icon className="w-6 h-6" />
+                                            <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${dept.color} flex items-center justify-center text-white mb-4 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-xl`}>
+                                                <Icon className="w-5 h-5" />
                                             </div>
 
-                                            <h3 className="text-xl font-black text-white mb-4 tracking-tighter leading-none group-hover:text-cyan-400 transition-colors duration-500">
+                                            <h3 className="text-lg font-black text-white mb-3 tracking-tighter leading-none group-hover:text-cyan-400 transition-colors duration-500">
                                                 {dept.name}
                                             </h3>
 
-                                            <p className="text-blue-100/60 text-sm leading-relaxed mb-8 flex-1 font-medium">
+                                            <p className="text-blue-100/60 text-[11px] leading-relaxed mb-6 flex-1 font-medium">
                                                 {dept.desc}
                                             </p>
 
-                                            <div className="pt-6 border-t border-white/5 flex items-center justify-between">
-                                                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-cyan-400/40 group-hover:text-cyan-400 group-hover:translate-x-2 transition-all duration-500">
+                                            <div className="pt-4 border-t border-white/5 flex items-center justify-between">
+                                                <span className="text-[8px] font-black uppercase tracking-[0.3em] text-cyan-400/30 group-hover:text-cyan-400 group-hover:translate-x-1 transition-all duration-500">
                                                     Explore
                                                 </span>
-                                                <div className={`w-10 h-10 rounded-full border border-white/10 flex items-center justify-center bg-white/5 text-cyan-400 group-hover:bg-cyan-500 group-hover:text-white group-hover:border-cyan-500 group-hover:scale-110 transition-all duration-500 shadow-sm`}>
-                                                    <ArrowRightIcon className="w-4 h-4" />
+                                                <div className={`w-8 h-8 rounded-full border border-white/10 flex items-center justify-center bg-white/5 text-cyan-400 group-hover:bg-cyan-500 group-hover:text-white group-hover:border-cyan-500 group-hover:scale-110 transition-all duration-500 shadow-sm`}>
+                                                    <ArrowRightIcon className="w-3.5 h-3.5" />
                                                 </div>
                                             </div>
                                         </div>
