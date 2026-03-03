@@ -33,25 +33,18 @@ const services = [
 
 const categories = ['All', 'Clinical', 'Diagnostic', 'Rehabilitation', 'Training'];
 
-const categoryColors: Record<string, string> = {
-    Clinical: 'border-blue-500 bg-blue-50',
-    Diagnostic: 'border-emerald-500 bg-emerald-50',
-    Rehabilitation: 'border-violet-500 bg-violet-50',
-    Training: 'border-amber-500 bg-amber-50',
-};
-
 const categoryTagColors: Record<string, string> = {
-    Clinical: 'bg-blue-100 text-blue-700',
-    Diagnostic: 'bg-emerald-100 text-emerald-700',
-    Rehabilitation: 'bg-violet-100 text-violet-700',
-    Training: 'bg-amber-100 text-amber-700',
+    Clinical: 'bg-white/10 text-cyan-300',
+    Diagnostic: 'bg-white/10 text-emerald-300',
+    Rehabilitation: 'bg-white/10 text-violet-300',
+    Training: 'bg-white/10 text-amber-300',
 };
 
-const categoryBorderColors: Record<string, string> = {
-    Clinical: 'border-blue-500',
-    Diagnostic: 'border-emerald-500',
-    Rehabilitation: 'border-violet-500',
-    Training: 'border-amber-500',
+const categoryIconBg: Record<string, string> = {
+    Clinical: 'bg-white/5 border border-white/10',
+    Diagnostic: 'bg-white/5 border border-white/10',
+    Rehabilitation: 'bg-white/5 border border-white/10',
+    Training: 'bg-white/5 border border-white/10',
 };
 
 const stats = [
@@ -224,46 +217,48 @@ export default function ServicesPage() {
                             {filtered.map((service) => (
                                 <div
                                     key={service.slug}
-                                    className={`group relative bg-white rounded-2xl border-l-4 ${categoryBorderColors[service.category] || 'border-blue-500'} border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-1 flex flex-col overflow-hidden`}
+                                    className="group relative bg-blue-950 rounded-[2rem] p-8 text-white transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl flex flex-col overflow-hidden border border-white/5"
                                 >
                                     {/* Card Top */}
-                                    <div className="p-7 flex-1">
-                                        <div className="flex items-start justify-between mb-5">
+                                    <div className="flex-1">
+                                        <div className="flex items-start justify-between mb-6">
                                             {/* Icon */}
-                                            <div className={`w-14 h-14 rounded-2xl flex items-center justify-center text-3xl ${categoryColors[service.category] || 'bg-blue-50'}`}>
+                                            <div className="w-14 h-14 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center text-3xl group-hover:bg-blue-900 transition-all duration-500">
                                                 {service.icon}
                                             </div>
                                             {/* Tag */}
-                                            <span className={`text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full ${categoryTagColors[service.category] || 'bg-blue-100 text-blue-700'}`}>
+                                            <span className={`text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full ${categoryTagColors[service.category] || 'bg-white/10 text-cyan-300'}`}>
                                                 {service.tag}
                                             </span>
                                         </div>
 
-                                        <h3 className="text-lg font-black text-gray-900 mb-2 leading-tight group-hover:text-blue-900 transition-colors">
+                                        <h3 className="text-xl font-black text-white mb-3 leading-tight group-hover:text-cyan-400 transition-colors">
                                             {service.name}
                                         </h3>
-                                        <p className="text-gray-500 text-sm leading-relaxed">
+                                        <p className="text-blue-100/70 text-sm leading-relaxed mb-8">
                                             {service.description}
                                         </p>
                                     </div>
 
-                                    {/* Card Divider */}
-                                    <div className="h-px bg-gray-100 mx-7" />
-
                                     {/* Card Actions */}
-                                    <div className="p-5 flex items-center justify-between gap-3">
+                                    <div className="grid grid-cols-2 gap-3 pt-6 border-t border-white/5">
                                         <Link
                                             href="/appointment"
-                                            className="flex items-center gap-2 px-4 py-2.5 bg-blue-950 text-white rounded-xl text-xs font-black uppercase tracking-widest hover:bg-blue-900 transition-all"
+                                            className="flex items-center justify-center gap-2 py-3 bg-white text-blue-950 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-cyan-400 transition-all"
                                         >
                                             <CalendarIcon className="w-3.5 h-3.5" /> Book Now
                                         </Link>
                                         <Link
                                             href={`/services/${service.slug}`}
-                                            className="flex items-center gap-2 px-4 py-2.5 border border-gray-200 text-gray-600 rounded-xl text-xs font-black uppercase tracking-widest hover:border-blue-300 hover:text-blue-900 transition-all group/btn"
+                                            className="flex items-center justify-center gap-2 py-3 border border-white/10 text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-white hover:text-blue-950 transition-all group/btn"
                                         >
-                                            Learn More <ArrowRightIcon className="w-3 h-3 group-hover/btn:translate-x-1 transition-transform" />
+                                            Details <ArrowRightIcon className="w-3 h-3 group-hover/btn:translate-x-1 transition-transform" />
                                         </Link>
+                                    </div>
+
+                                    {/* Faded background icon */}
+                                    <div className="absolute -bottom-4 -right-4 text-8xl opacity-[0.03] group-hover:opacity-[0.06] transition-opacity pointer-events-none select-none">
+                                        {service.icon}
                                     </div>
                                 </div>
                             ))}
