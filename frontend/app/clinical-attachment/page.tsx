@@ -19,10 +19,11 @@ import {
     InformationCircleIcon,
     BanknotesIcon,
     XMarkIcon,
+    ArrowRightIcon,
 } from '@heroicons/react/24/outline';
 
 export default function ClinicalAttachmentPage() {
-    const [category, setCategory] = useState<'GOVERNMENT' | 'PRIVATE' | null>(null);
+    const [category, setCategory] = useState<'GOVERNMENT' | 'PRIVATE' | 'SELF_SPONSORED' | null>(null);
     const [isApplyModalOpen, setIsApplyModalOpen] = useState(false);
     const [formData, setFormData] = useState({
         institutionName: '',
@@ -38,7 +39,7 @@ export default function ClinicalAttachmentPage() {
         agreement: false,
     });
 
-    const openApplyModal = (cat: 'GOVERNMENT' | 'PRIVATE') => {
+    const openApplyModal = (cat: 'GOVERNMENT' | 'PRIVATE' | 'SELF_SPONSORED') => {
         setCategory(cat);
         setIsApplyModalOpen(true);
     };
@@ -55,7 +56,10 @@ export default function ClinicalAttachmentPage() {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        alert('Clinical attachment application submitted! We will contact the institution shortly.');
+        const message = category === 'SELF_SPONSORED'
+            ? 'Application submitted! We will contact you directly shortly.'
+            : 'Clinical attachment application submitted! We will contact the institution shortly.';
+        alert(message);
         setIsApplyModalOpen(false);
     };
 
@@ -171,6 +175,81 @@ export default function ClinicalAttachmentPage() {
                             </button>
                         </div>
                     </div>
+
+                    {/* Self-Sponsored Individual Applicants */}
+                    <div className="mt-10">
+                        <div className="bg-white rounded-[40px] p-10 lg:p-16 border border-gray-100 shadow-sm hover:shadow-2xl transition-all duration-500 group overflow-hidden relative">
+                            {/* Decorative background icon */}
+                            <div className="absolute -right-10 -bottom-10 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity">
+                                <UserGroupIcon className="w-64 h-64" />
+                            </div>
+
+                            <div className="grid lg:grid-cols-2 gap-16 items-center relative z-10">
+                                <div>
+                                    <div className="w-20 h-20 bg-emerald-50 rounded-[24px] flex items-center justify-center text-emerald-600 mb-8 group-hover:scale-110 transition-transform">
+                                        <UserGroupIcon className="w-10 h-10" />
+                                    </div>
+                                    <h2 className="text-3xl md:text-4xl font-black text-blue-950 mb-4 uppercase tracking-tighter">Individual / Self-Sponsored</h2>
+                                    <p className="text-emerald-600 font-black text-sm uppercase tracking-widest mb-6 flex items-center gap-2">
+                                        <CheckBadgeIcon className="w-5 h-5" /> Independent Career Path
+                                    </p>
+                                    <p className="text-gray-500 font-medium leading-relaxed mb-10 text-lg">
+                                        Direct application for licensed professionals or independent students seeking
+                                        unaffiliated clinical exposure. Perfect for international rotations or credit recovery.
+                                    </p>
+
+                                    <div className="grid sm:grid-cols-2 gap-8 mb-10">
+                                        <div>
+                                            <h4 className="text-xs font-black text-gray-400 uppercase tracking-widest mb-4">Core requirements</h4>
+                                            <ul className="space-y-3">
+                                                {[
+                                                    "Current ID or Passport",
+                                                    "Professional License (if applicable)",
+                                                    "Degree / Transcript copies",
+                                                    "Personal Statement of Intent"
+                                                ].map((doc, i) => (
+                                                    <li key={i} className="flex items-center gap-3 text-sm font-bold text-gray-700">
+                                                        <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                                                        {doc}
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                        <div>
+                                            <h4 className="text-xs font-black text-gray-400 uppercase tracking-widest mb-4">Financials</h4>
+                                            <div className="p-4 bg-emerald-50 rounded-2xl border border-emerald-100">
+                                                <p className="text-[10px] font-black text-emerald-800 uppercase tracking-widest leading-loose">
+                                                    Individual fees apply per month. Includes supervision and facility access.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <button
+                                        onClick={() => openApplyModal('SELF_SPONSORED')}
+                                        className="inline-flex items-center gap-4 px-12 py-5 bg-blue-950 text-white rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-blue-800 transition-all shadow-xl shadow-blue-900/10"
+                                    >
+                                        Start Individual Application <ArrowRightIcon className="w-4 h-4 ml-2" />
+                                    </button>
+                                </div>
+
+                                <div className="hidden lg:grid grid-cols-2 gap-4">
+                                    <div className="space-y-4">
+                                        <div className="h-40 bg-gray-50 rounded-3xl" />
+                                        <div className="h-60 bg-blue-50 rounded-3xl flex items-center justify-center">
+                                            <BuildingLibraryIcon className="w-12 h-12 text-blue-200" />
+                                        </div>
+                                    </div>
+                                    <div className="space-y-4 pt-12">
+                                        <div className="h-60 bg-emerald-50 rounded-3xl flex items-center justify-center">
+                                            <CheckBadgeIcon className="w-12 h-12 text-emerald-200" />
+                                        </div>
+                                        <div className="h-40 bg-gray-50 rounded-3xl" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </section>
 
@@ -189,8 +268,14 @@ export default function ClinicalAttachmentPage() {
                         <div className="p-12 lg:p-16">
                             <div className="mb-12">
                                 <span className="text-blue-600 text-[10px] font-black uppercase tracking-[0.2em] mb-4 block">Attachment Portal</span>
-                                <h2 className="text-4xl font-black text-blue-950 mb-2">Institutional Application</h2>
-                                <p className="text-gray-500 font-medium">Category: <span className="text-blue-900 font-black">{category === 'GOVERNMENT' ? 'Government Institution' : 'Private College/University'}</span></p>
+                                <h2 className="text-4xl font-black text-blue-950 mb-2">
+                                    {category === 'SELF_SPONSORED' ? 'Individual Application' : 'Institutional Application'}
+                                </h2>
+                                <p className="text-gray-500 font-medium text-sm">Category: <span className="text-blue-900 font-black">
+                                    {category === 'GOVERNMENT' && 'Government Institution'}
+                                    {category === 'PRIVATE' && 'Private College/University'}
+                                    {category === 'SELF_SPONSORED' && 'Self-Sponsored Applicant'}
+                                </span></p>
 
                                 {category === 'PRIVATE' && (
                                     <div className="mt-6 p-4 bg-blue-50 rounded-2xl border border-blue-100 flex gap-4 items-center">
@@ -205,8 +290,10 @@ export default function ClinicalAttachmentPage() {
                             <form onSubmit={handleSubmit} className="space-y-10">
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                     <div className="space-y-4">
-                                        <label className="block text-xs font-black text-gray-400 uppercase tracking-widest ml-1">University / College Name</label>
-                                        <input required name="institutionName" value={formData.institutionName} onChange={handleInputChange} type="text" placeholder="Official Name" className="w-full px-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-blue-900 transition-all font-bold text-sm" />
+                                        <label className="block text-xs font-black text-gray-400 uppercase tracking-widest ml-1">
+                                            {category === 'SELF_SPONSORED' ? 'Full Legal Name' : 'University / College Name'}
+                                        </label>
+                                        <input required name="institutionName" value={formData.institutionName} onChange={handleInputChange} type="text" placeholder={category === 'SELF_SPONSORED' ? "As on ID" : "Official Name"} className="w-full px-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-blue-900 transition-all font-bold text-sm" />
                                     </div>
                                     <div className="space-y-4">
                                         <label className="block text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Clinical Department</label>
@@ -220,7 +307,7 @@ export default function ClinicalAttachmentPage() {
                                         <label className="block text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Number of Students</label>
                                         <div className="relative">
                                             <UserGroupIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-300" />
-                                            <input required name="studentCount" value={formData.studentCount} onChange={handleInputChange} type="number" placeholder="Total Students" className="w-full pl-12 pr-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-blue-900 transition-all font-bold text-sm" />
+                                            <input required name="studentCount" value={formData.studentCount} onChange={handleInputChange} type="number" placeholder={category === 'SELF_SPONSORED' ? "Enter 1" : "Total Students"} className="w-full pl-12 pr-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-blue-900 transition-all font-bold text-sm" />
                                         </div>
                                     </div>
                                     <div className="space-y-4">
@@ -267,11 +354,13 @@ export default function ClinicalAttachmentPage() {
                                         <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Excel / PDF</p>
                                         <input required type="file" className="hidden" />
                                     </label>
-                                    {category === 'PRIVATE' ? (
+                                    {category === 'PRIVATE' || category === 'SELF_SPONSORED' ? (
                                         <label className="p-6 bg-gray-50 border border-dashed border-gray-200 rounded-[32px] text-center group hover:bg-white hover:shadow-xl transition-all cursor-pointer">
                                             <BanknotesIcon className="w-10 h-10 text-gray-300 mx-auto mb-3 group-hover:text-blue-900" />
-                                            <h4 className="text-xs font-black text-gray-900 mb-1">Payment Proof</h4>
-                                            <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Bank Slip / Transfer</p>
+                                            <h4 className="text-xs font-black text-gray-900 mb-1">
+                                                {category === 'SELF_SPONSORED' ? 'Financial Guarantee' : 'Payment Proof'}
+                                            </h4>
+                                            <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Bank Slip / Document</p>
                                             <input required type="file" className="hidden" />
                                         </label>
                                     ) : (
@@ -298,7 +387,7 @@ export default function ClinicalAttachmentPage() {
                                 </div>
 
                                 <button type="submit" className="w-full py-6 bg-blue-950 text-white rounded-[24px] font-black uppercase tracking-[0.2em] text-sm hover:bg-blue-800 transition-all shadow-2xl shadow-blue-900/20 hover:-translate-y-1">
-                                    Finalize institutional Application
+                                    Finalize {category === 'SELF_SPONSORED' ? 'Personal' : 'Institutional'} Application
                                 </button>
                             </form>
                         </div>
