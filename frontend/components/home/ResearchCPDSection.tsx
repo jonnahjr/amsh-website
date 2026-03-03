@@ -42,9 +42,6 @@ export default function ResearchCPDSection() {
 
             <div className="container-custom relative z-10">
                 <div className="text-center max-w-4xl mx-auto mb-16">
-                    <span className="inline-flex items-center gap-2 px-4 py-1.5 bg-blue-900/10 border border-blue-900/20 text-blue-900 rounded-full text-[10px] font-black uppercase tracking-[0.2em] mb-6">
-                        ✦ Research & Professional Development
-                    </span>
                     <h2 className="text-4xl md:text-6xl lg:text-7xl font-black text-blue-950 mb-8 tracking-tighter leading-tight">
                         Advancing Mental Health<br />
                         <span className="text-blue-900 italic">Knowledge Across Africa</span>

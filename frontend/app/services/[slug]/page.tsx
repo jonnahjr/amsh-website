@@ -335,7 +335,7 @@ export default function ServiceDetailPage() {
                 badge: 'Specialized Care',
                 description: apiService.description || apiService.short_description,
                 introduction: apiService.content || apiService.description,
-                vision: 'To provide world-class clinical excellence in all specialized medical fields.',
+                vision: 'To provide exceptional clinical excellence in all specialized medical fields.',
                 mission: [
                     'Providing high-quality diagnostic and treatment services.',
                     'Advancing medical knowledge through research and education.',
@@ -384,7 +384,7 @@ export default function ServiceDetailPage() {
                         <div className="max-w-4xl mx-auto">
                             <div className="animate-fade-in-up mb-6">
                                 <span className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 backdrop-blur-sm border border-white/10 rounded-full text-blue-200 text-sm font-semibold uppercase tracking-widest">
-                                    ✦ {service.badge}
+                                    {service.badge}
                                 </span>
                             </div>
 

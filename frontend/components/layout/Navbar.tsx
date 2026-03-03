@@ -67,8 +67,8 @@ const navLinks = [
         ],
     },
     { label: 'Research', href: '/research' },
-    { label: 'CPD', href: '/cpd' },
-    { label: 'Careers', href: '/careers' },
+    { label: 'CPD Training', href: '/cpd' },
+    { label: 'Clinical Attachment', href: '/clinical-attachment' },
     {
         label: 'News',
         href: '/news',
@@ -115,9 +115,6 @@ export default function Navbar() {
                         <span className="text-blue-200">Mon - Fri: 2:30 AM - 10:00 AM</span>
                     </div>
                     <div className="flex items-center gap-4">
-                        <Link href="/appointment" className="flex items-center gap-1.5 bg-cyan-500 hover:bg-blue-50 text-white hover:text-blue-950 px-4 py-1 rounded-full text-xs font-semibold hover:-translate-y-1 transition-all hover:shadow-2xl">
-                            📅 Book Appointment
-                        </Link>
                         <Link href="/admin" className="text-blue-300 hover:text-white transition-colors text-xs">
                             Admin Portal
                         </Link>
@@ -131,14 +128,14 @@ export default function Navbar() {
                 : 'bg-white/90 backdrop-blur-md py-4'
                 }`}>
                 <div className="container-custom">
-                    <div className="flex items-center justify-between h-24">
+                    <div className="flex items-center justify-between h-16">
 
                         {/* LOGO - DYNAMIC FLOATING EFFECT */}
-                        <Link href="/" className="flex items-center gap-3 flex-shrink-0 group relative z-[60]">
-                            <div className={`relative overflow-hidden transition-all duration-700 ease-in-out flex items-center justify-center p-0 rounded-full shadow-2xl border-4 ring-4 ring-white
+                        <Link href="/" className="flex items-center gap-3 flex-shrink-0 group relative z-[60] -ml-16">
+                            <div className={`relative overflow-hidden transition-all duration-700 ease-in-out flex items-center justify-center p-0 rounded-full shadow-2xl border-4 ring-4 ring-white -ml-6
                                 ${scrolled
-                                    ? 'w-16 h-16 border-cyan-400/30 shadow-cyan-400/10'
-                                    : 'w-32 h-32 -mb-16 border-cyan-400/60 shadow-cyan-400/40 scale-110 translate-y-2'}`}
+                                    ? 'w-12 h-12 border-cyan-400/30 shadow-cyan-400/10'
+                                    : 'w-24 h-24 -mb-12 border-cyan-400/60 shadow-cyan-400/40 scale-110 translate-y-2'}`}
                             >
                                 <video
                                     src="/images/PixVerse_V5.6_Image_Text_360P_Create_a_premium.mp4"
@@ -148,13 +145,12 @@ export default function Navbar() {
                                     playsInline
                                     className="w-full h-full object-cover p-0"
                                 />
-                                {!scrolled && (
-                                    <div className="absolute inset-0 bg-gradient-to-t from-blue-900/40 to-transparent pointer-events-none" />
-                                )}
+                                <div className="absolute inset-0 bg-gradient-to-t from-blue-900/40 to-transparent pointer-events-none" />
                             </div>
-                            <div className={`transition-all duration-500 ${scrolled ? 'opacity-100 translate-x-0' : 'opacity-100 translate-x-2'}`}>
+                            {/* Text beside the logo */}
+                            <div className="flex flex-col">
                                 <div className={`font-black text-blue-900 leading-tight uppercase tracking-tight transition-all duration-500 ${scrolled ? 'text-lg' : 'text-xl'}`}>AMSH</div>
-                                <div className={`text-gray-500 font-bold leading-tight transition-all duration-500 ${scrolled ? 'text-[10px] sm:text-xs' : 'text-xs sm:text-sm'}`}>Amanuel Mental Specialized Hospital</div>
+                                <div className={`text-gray-500 font-bold leading-tight transition-all duration-500 ${scrolled ? 'text-xs' : 'text-sm'}`}>Amanuel Mental Specialized Hospital</div>
                             </div>
                         </Link>
 
@@ -250,11 +246,6 @@ export default function Navbar() {
                                 </div>
                             ))}
 
-                            <div className="pt-4 border-t border-gray-100">
-                                <Link href="/appointment" className="btn-primary w-full justify-center">
-                                    📅 Book Appointment
-                                </Link>
-                            </div>
                         </div>
                     </div>
                 )}

@@ -173,7 +173,7 @@ export default function ServicesPage() {
                             {/* Badge */}
                             <div className="animate-fade-in-up mb-6">
                                 <span className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 backdrop-blur-sm border border-white/10 rounded-full text-blue-200 text-sm font-semibold uppercase tracking-widest">
-                                    ✦ Specialized Medical Excellence
+                                    Specialized Medical Excellence
                                 </span>
                             </div>
 
@@ -257,9 +257,9 @@ export default function ServicesPage() {
                                             </Link>
                                             <Link
                                                 href={`/services/${service.slug}`}
-                                                className="flex items-center justify-center gap-2 py-4 bg-transparent border border-white/10 text-white rounded-xl hover:bg-white hover:text-blue-950 transition-all after:absolute after:inset-0 after:z-10"
+                                                className="flex items-center justify-center gap-2 py-4 bg-transparent border border-white/10 text-white rounded-xl hover:bg-white hover:text-blue-950 transition-all"
                                             >
-                                                Clinical Details <ArrowRightIcon className="w-3 h-3" />
+                                                Details <ArrowRightIcon className="w-3 h-3" />
                                             </Link>
                                         </div>
                                     </div>

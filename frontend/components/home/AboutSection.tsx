@@ -21,7 +21,7 @@ export default function AboutSection() {
 
             <div className="px-6 md:px-12 lg:px-24 relative z-10 w-full">
                 {/* Header - Wide and Prominent */}
-                <div className="flex flex-col items-center justify-center text-center mb-24 max-w-6xl mx-auto">
+                <div className="flex flex-col items-center justify-center text-center mb-24 max-w-6xl mx-auto -mt-12 -translate-y-4">
                     <div className="inline-flex items-center gap-3 px-6 py-2.5 bg-blue-950 text-white text-[10px] font-black uppercase tracking-[0.5em] rounded-full mb-8 shadow-2xl shadow-blue-900/30">
                         <span className="flex h-2 w-2 relative">
                             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>

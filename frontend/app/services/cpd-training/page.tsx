@@ -43,7 +43,7 @@ export default function CPDTrainingPage() {
                             {/* Badge */}
                             <div className="animate-fade-in-up mb-6">
                                 <span className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 backdrop-blur-sm border border-white/10 rounded-full text-blue-200 text-sm font-semibold uppercase tracking-widest">
-                                    ✦ Professional Excellence & Career Growth
+                                    Professional Excellence & Career Growth
                                 </span>
                             </div>
 
@@ -55,7 +55,7 @@ export default function CPDTrainingPage() {
 
                             {/* Subtitle */}
                             <p className="text-lg md:text-2xl text-blue-100/60 max-w-2xl mx-auto mb-12 leading-relaxed animate-fade-in-up font-medium" style={{ animationDelay: '0.2s' }}>
-                                Accredited Continuing Professional Development (CPD) programs designed to empower mental health practitioners with world-class skills and accredited knowledge.
+                                Accredited Continuing Professional Development (CPD) programs designed to empower mental health practitioners with advanced skills and accredited knowledge.
                             </p>
 
                             {/* CTAs */}

@@ -7,17 +7,16 @@ import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 const heroSlides = [
     {
         id: 1,
-        badge: '✦ Ethiopia\'s Premier Mental Health Hospital',
+        badge: '',
         title: 'Comprehensive Mental Health Care You Can Trust',
         subtitle: 'Serving Ethiopia since 1930 with expert psychiatric care, research, and professional development. Your mental health is our priority.',
-        primaryCTA: { label: '📅 Book Appointment', href: '/appointment' },
-        secondaryCTA: { label: 'Our Services', href: '/services' },
+        primaryCTA: { label: 'Our Services', href: '/services' },
         bg: 'bg-blue-950',
         accent: '90+ Years of Dedicated Mental Health Services',
     },
     {
         id: 2,
-        badge: '✦ World-Class Psychiatric Care',
+        badge: '',
         title: 'Advanced Treatment for Mind & Mental Wellness',
         subtitle: 'From child psychiatry to addiction treatment, our specialized departments offer evidence-based care with compassion and expertise.',
         primaryCTA: { label: '🏥 View Services', href: '/services' },
@@ -27,7 +26,7 @@ const heroSlides = [
     },
     {
         id: 3,
-        badge: '✦ Research & Professional Development',
+        badge: '',
         title: 'Advancing Mental Health Knowledge Across Africa',
         subtitle: 'Join our CPD programs, research initiatives, and professional networks to enhance your expertise and contribute to mental health advancement.',
         primaryCTA: { label: '📚 CPD Courses', href: '/cpd' },
@@ -68,14 +67,16 @@ export default function HeroSection() {
             <div className="absolute bottom-1/4 left-1/4 w-[400px] h-[400px] bg-blue-400/5 rounded-full blur-[100px] animate-float pointer-events-none" style={{ animationDelay: '1.5s' }} />
 
             {/* Content */}
-            <div className="container-custom relative z-10 py-24">
+            <div className="container-custom relative z-10 py-24 -translate-y-10">
                 <div className="max-w-4xl">
                     {/* Badge */}
-                    <div key={`badge-${current}`} className="animate-fade-in-up mb-6">
-                        <span className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 backdrop-blur-sm border border-white/10 rounded-full text-blue-200 text-sm font-semibold uppercase tracking-widest">
-                            {slide.badge}
-                        </span>
-                    </div>
+                    {slide.badge && (
+                        <div key={`badge-${current}`} className="animate-fade-in-up mb-6">
+                            <span className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 backdrop-blur-sm border border-white/10 rounded-full text-blue-200 text-sm font-semibold uppercase tracking-widest">
+                                {slide.badge}
+                            </span>
+                        </div>
+                    )}
 
                     {/* Title */}
                     <h1
@@ -95,18 +96,21 @@ export default function HeroSection() {
                         {slide.subtitle}
                     </p>
 
-                    {/* CTAs */}
                     <div
                         key={`cta-${current}`}
                         className="flex flex-col sm:flex-row items-start sm:items-center gap-6 animate-fade-in-up"
                         style={{ animationDelay: '0.3s' }}
                     >
-                        <Link href={slide.primaryCTA.href} className="px-10 py-5 bg-white text-blue-950 rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-blue-50 transition-all shadow-2xl hover:-translate-y-1">
-                            {slide.primaryCTA.label}
-                        </Link>
-                        <Link href={slide.secondaryCTA.href} className="inline-flex items-center gap-2 text-white border-2 border-white/20 px-10 py-5 rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-white/10 transition-all duration-300">
-                            {slide.secondaryCTA.label}
-                        </Link>
+                        {slide.primaryCTA && (
+                            <Link href={slide.primaryCTA.href} className="px-10 py-5 bg-white text-blue-950 rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-blue-50 transition-all shadow-2xl hover:-translate-y-1">
+                                {slide.primaryCTA.label}
+                            </Link>
+                        )}
+                        {slide.secondaryCTA && (
+                            <Link href={slide.secondaryCTA.href} className="inline-flex items-center gap-2 text-white border-2 border-white/20 px-10 py-5 rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-white/10 transition-all duration-300">
+                                {slide.secondaryCTA.label}
+                            </Link>
+                        )}
                     </div>
 
                     {/* Accent Tag */}

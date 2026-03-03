@@ -55,7 +55,7 @@ export default function CoreValuesSection() {
             <div className="absolute top-0 left-0 w-full h-[600px] bg-blue-50/50 -skew-y-3 origin-top-left pointer-events-none" />
 
             <div className="container-custom relative z-10 w-full">
-                <div className="text-center max-w-4xl mx-auto mb-20 px-4">
+                <div className="text-center max-w-4xl mx-auto mb-20 px-4 -mt-12 -translate-y-4">
                     <div className="inline-flex items-center gap-2 px-6 py-2 bg-blue-900 text-white text-[10px] font-black uppercase tracking-[0.4em] rounded-full mb-8 shadow-xl">
                         <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
                         Our Foundation

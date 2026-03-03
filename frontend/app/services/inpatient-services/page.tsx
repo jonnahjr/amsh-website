@@ -43,7 +43,7 @@ export default function InpatientServicesPage() {
                             {/* Badge */}
                             <div className="animate-fade-in-up mb-6">
                                 <span className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 backdrop-blur-sm border border-white/10 rounded-full text-blue-200 text-sm font-semibold uppercase tracking-widest">
-                                    ✦ Intensive Care & Recovery
+                                    Intensive Care & Recovery
                                 </span>
                             </div>
 
@@ -154,7 +154,7 @@ export default function InpatientServicesPage() {
                                     </div>
                                     <h2 className="text-4xl font-black text-gray-900 mb-8 tracking-tighter uppercase leading-tight">Our <span className="text-blue-900">Vision</span></h2>
                                     <p className="text-xl text-gray-600 leading-relaxed font-medium">
-                                        To provide a world-class sanctuary for mental restoration, recognized for safety, therapeutic excellence, and the dignity of every admitted patient.
+                                        To provide a specialized sanctuary for mental restoration, recognized for safety, therapeutic excellence, and the dignity of every admitted patient.
                                     </p>
                                 </div>
                             </div>

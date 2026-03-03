@@ -53,24 +53,6 @@ const services = [
         slug: 'pharmacy',
         description: 'On-site pharmacy providing psychiatric medications, counseling, and prescription management.'
     },
-    {
-        icon: '🔬',
-        name: 'Laboratory Services',
-        slug: 'laboratory',
-        description: 'Comprehensive blood tests, drug screening, and medical screening tests.'
-    },
-    {
-        icon: '⚖️',
-        name: 'Forensic Psychiatry Services',
-        slug: 'forensic-psychiatry',
-        description: 'Mental health evaluation for legal purposes, criminal responsibility, and fitness-to-stand-trial.'
-    },
-    {
-        icon: '🏥',
-        name: 'Referral Services',
-        slug: 'referral-services',
-        description: 'National referral center receiving patients from health centers, regional hospitals, and private clinics.'
-    },
 ];
 
 export default function ServicesSection() {
@@ -78,7 +60,7 @@ export default function ServicesSection() {
         <section className="section bg-[#F8FAFB] overflow-hidden py-20">
             <div className="container-custom">
                 {/* Header- More compact */}
-                <div className="text-center max-w-4xl mx-auto mb-16 px-4">
+                <div className="text-center max-w-5xl mx-auto mb-16 px-4">
                     <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-blue-900 text-white text-[9px] font-black uppercase tracking-[0.3em] rounded-full mb-6">
                         <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
                         Clinical Departments
@@ -86,6 +68,9 @@ export default function ServicesSection() {
                     <h2 className="text-4xl md:text-5xl font-black text-blue-950 tracking-tighter leading-tight mb-6">
                         Specialized Mental <span className="text-blue-900 italic font-medium">Healthcare</span>
                     </h2>
+                    <p className="text-blue-900/60 text-lg md:text-xl max-w-none mx-auto leading-relaxed mb-12">
+                        At Amanuel Mental Specialized Hospital, we provide comprehensive, multidisciplinary care across various specialized clinical departments. Our team of expert psychiatrists and clinical staff are dedicated to delivering evidence-based treatment tailored to each patient's journey toward wellness.
+                    </p>
                 </div>
 
                 {/* Smaller Services Grid */}
@@ -110,20 +95,12 @@ export default function ServicesSection() {
                                     {service.description}
                                 </p>
 
-                                {/* Slimmer Actions */}
-                                <div className="mt-auto w-full space-y-3 pt-6 border-t border-white/5">
-                                    <Link
-                                        href="/appointment"
-                                        className="flex items-center justify-center gap-2 w-full py-3 bg-white text-blue-950 rounded-xl font-black uppercase tracking-wider text-[9px] hover:bg-blue-50 hover:-translate-y-1 transition-all shadow-md hover:shadow-2xl"
-                                    >
-                                        <CalendarIcon className="w-3 h-3" />
-                                        Book
-                                    </Link>
+                                <div className="mt-auto w-full pt-6 border-t border-white/5">
                                     <Link
                                         href={`/services/${service.slug}`}
-                                        className="flex items-center justify-center gap-2 w-full py-3 bg-transparent border border-white/10 text-white/80 rounded-xl font-black uppercase tracking-wider text-[9px] hover:bg-white/5 transition-all"
+                                        className="flex items-center justify-center gap-2 w-full py-4 bg-white text-blue-950 rounded-xl font-black uppercase tracking-wider text-[10px] hover:bg-blue-50 hover:-translate-y-1 transition-all shadow-md hover:shadow-2xl"
                                     >
-                                        Details <ArrowRightIcon className="w-3 h-3" />
+                                        View Clinical Details <ArrowRightIcon className="w-3 h-3" />
                                     </Link>
                                 </div>
                             </div>

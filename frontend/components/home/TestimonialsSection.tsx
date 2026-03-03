@@ -9,7 +9,7 @@ export default function TestimonialsSection() {
 
     const defaults = [
         { id: '1', name: 'Dawit Bekele', role: 'Patient Family Member', content: 'AMSH provided exceptional care for my family member during a crisis. The staff were professional, compassionate, and thorough. We are eternally grateful for their support.', rating: 5 },
-        { id: '2', name: 'Dr. Almaz Tesfaye', role: 'Healthcare Professional', content: 'The CPD programs at AMSH are world-class. I have enhanced my psychiatric skills significantly and apply new knowledge every day in my practice.', rating: 5 },
+        { id: '2', name: 'Dr. Almaz Tesfaye', role: 'Healthcare Professional', content: 'The CPD programs at AMSH are exceptional. I have enhanced my psychiatric skills significantly and apply new knowledge every day in my practice.', rating: 5 },
         { id: '3', name: 'Hana Girma', role: 'Research Collaborator', content: 'Collaborating with AMSH on mental health research has been a deeply rewarding experience. Their commitment to advancing knowledge in psychiatry is truly inspiring.', rating: 5 },
     ];
 

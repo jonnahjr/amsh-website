@@ -102,16 +102,32 @@ export default function ContactPage() {
                                     </div>
                                 </div>
 
-                                {/* Map Placeholder */}
-                                <div className="card overflow-hidden">
-                                    <div className="bg-gradient-to-br from-blue-100 to-blue-200 h-48 flex items-center justify-center">
-                                        <div className="text-center">
-                                            <div className="text-4xl mb-2">🗺️</div>
-                                            <p className="text-blue-800 font-semibold text-sm">Addis Ababa, Ethiopia</p>
-                                            <a href="https://maps.google.com/?q=Amanuel+Mental+Specialized+Hospital+Addis+Ababa"
-                                                target="_blank" rel="noopener noreferrer"
-                                                className="text-blue-600 text-xs underline">View on Google Maps</a>
+                                <div className="card overflow-hidden shadow-xl border-0">
+                                    <div className="relative h-72 w-full">
+                                        <iframe
+                                            src="https://maps.google.com/maps?q=9.028561767590928,38.723235681663624&z=17&output=embed"
+                                            width="100%"
+                                            height="100%"
+                                            style={{ border: 0 }}
+                                            allowFullScreen={true}
+                                            loading="lazy"
+                                            referrerPolicy="no-referrer-when-downgrade"
+                                            className="absolute inset-0 grayscale hover:grayscale-0 transition-all duration-500"
+                                        ></iframe>
+                                    </div>
+                                    <div className="p-5 bg-white border-t border-gray-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                                        <div className="flex items-start gap-3">
+                                            <span className="text-2xl mt-0.5">📍</span>
+                                            <div>
+                                                <p className="text-gray-900 font-bold text-sm leading-tight">Amanuel Mental Hospital, 2PHF+H5M</p>
+                                                <p className="text-gray-500 text-[10px] font-black uppercase tracking-[0.2em]">Addis Ababa, Ethiopia</p>
+                                            </div>
                                         </div>
+                                        <a href="https://www.google.com/maps?q=9.028561767590928,38.723235681663624"
+                                            target="_blank" rel="noopener noreferrer"
+                                            className="px-6 py-3 bg-blue-900 text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-cyan-500 transition-all shadow-lg hover:-translate-y-1">
+                                            View on Google Maps
+                                        </a>
                                     </div>
                                 </div>
                             </div>

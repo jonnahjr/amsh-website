@@ -112,16 +112,6 @@ export const cpdAPI = {
     getRegistrations: (id: string) => api.get(`/cpd/${id}/registrations`),
 };
 
-export const jobsAPI = {
-    getAll: (params?: any) => api.get('/jobs', { params }),
-    getById: (id: string) => api.get(`/jobs/${id}`),
-    create: (data: any) => api.post('/jobs', data),
-    update: (id: string, data: any) => api.put(`/jobs/${id}`, data),
-    delete: (id: string) => api.delete(`/jobs/${id}`),
-    apply: (id: string, data: any) => api.post(`/jobs/${id}/apply`, data),
-    getApplications: (id: string) => api.get(`/jobs/${id}/applications`),
-};
-
 export const appointmentsAPI = {
     getAll: (params?: any) => api.get('/appointments', { params }),
     book: (data: any) => api.post('/appointments', data),

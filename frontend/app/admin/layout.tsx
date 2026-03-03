@@ -47,7 +47,6 @@ const menuItems = [
     {
         group: 'Interactions', items: [
             { label: 'Appointments', icon: CalendarIcon, href: '/admin/appointments' },
-            { label: 'Job Applications', icon: UserGroupIcon, href: '/admin/jobs' },
             { label: 'Research Submissions', icon: LightBulbIcon, href: '/admin/research' },
             { label: 'Contact Messages', icon: ChatBubbleLeftRightIcon, href: '/admin/messages' },
         ]

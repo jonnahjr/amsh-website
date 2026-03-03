@@ -12,9 +12,10 @@ const footerLinks: Record<string, FooterLink[]> = {
         { label: 'About Us', href: '/about' },
         { label: 'Services', href: '/services' },
         { label: 'Departments', href: '/departments' },
+        { label: 'News', href: '/news' },
         { label: 'Research', href: '/research' },
         { label: 'CPD Training', href: '/cpd' },
-        { label: 'Careers', href: '/careers' },
+        { label: 'Clinical Attachment', href: '/clinical-attachment' },
         { label: 'Contact Us', href: '/contact' },
     ],
     'Resources': [
@@ -59,7 +60,7 @@ export default function Footer() {
                             </div>
                         </Link>
                         <p className="text-gray-400 text-sm leading-relaxed mb-6 max-w-sm">
-                            Ethiopia's premier public mental health institution established in 1930.
+                            Specialized public mental health institution established in 1930.
                             Providing comprehensive, compassionate psychiatric care for over 90 years.
                         </p>
 
@@ -161,7 +162,7 @@ export default function Footer() {
                     </p>
                     <div className="flex items-center gap-2">
                         <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-                        <span className="text-gray-500 text-sm">AMSH IT Department</span>
+                        <span className="text-gray-500 text-sm">Yonas Bogale | AMSH IT Department</span>
                         <span className="text-gray-600 mx-2">|</span>
                         <Link href="/privacy" className="text-gray-500 text-sm hover:text-gray-300 transition-colors">Privacy Policy</Link>
                         <span className="text-gray-600 mx-2">|</span>

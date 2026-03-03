@@ -49,16 +49,9 @@ export default function AboutPage() {
                     {/* Content */}
                     <div className="container-custom relative z-10 py-24">
                         <div className="max-w-4xl">
-                            {/* Badge */}
-                            <div className="animate-fade-in-up mb-6">
-                                <span className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 backdrop-blur-sm border border-white/10 rounded-full text-blue-200 text-sm font-semibold uppercase tracking-widest">
-                                    ✦ Ethiopia's Premier Mental Health Hospital
-                                </span>
-                            </div>
-
                             {/* Title */}
                             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-black text-white leading-[1.1] mb-8 animate-fade-in-up tracking-tighter" style={{ animationDelay: '0.1s' }}>
-                                Ethiopia's Premier <br />
+                                Specialized <br />
                                 <span className="text-gray-400 italic font-medium">Mental Health Hospital</span>
                             </h1>
 

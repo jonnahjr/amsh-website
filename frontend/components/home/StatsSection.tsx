@@ -11,7 +11,7 @@ export default function StatsSection() {
     ];
 
     return (
-        <section className="relative z-20 overflow-hidden py-16 bg-white">
+        <section className="relative z-20 overflow-hidden py-0 bg-white -mt-12 sm:-mt-16">
             <div className="relative group overflow-hidden">
                 {/* Shadow markers to indicate more content */}
                 <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-gray-50 via-gray-50/80 to-transparent z-10 pointer-events-none"></div>
@@ -24,7 +24,7 @@ export default function StatsSection() {
                         {stats.map((stat, i) => (
                             <div
                                 key={`stat-1-${i}`}
-                                className="flex items-center gap-4 bg-white border border-gray-100 rounded-2xl p-4 min-w-[260px] shadow-sm hover:shadow-md transition-all duration-300"
+                                className="flex items-center gap-4 bg-amber-50 border border-amber-200 rounded-2xl p-4 min-w-[260px] shadow-md hover:shadow-lg hover:bg-amber-100 transition-all duration-300"
                             >
                                 <div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center text-xl shrink-0">
                                     {stat.icon}
@@ -46,7 +46,7 @@ export default function StatsSection() {
                         {stats.map((stat, i) => (
                             <div
                                 key={`stat-2-${i}`}
-                                className="flex items-center gap-4 bg-white border border-gray-100 rounded-2xl p-4 min-w-[260px] shadow-sm hover:shadow-md transition-all duration-300"
+                                className="flex items-center gap-4 bg-amber-50 border border-amber-200 rounded-2xl p-4 min-w-[260px] shadow-md hover:shadow-lg hover:bg-amber-100 transition-all duration-300"
                             >
                                 <div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center text-xl shrink-0">
                                     {stat.icon}

@@ -43,7 +43,7 @@ export default function EmergencyServicePage() {
                             {/* Badge */}
                             <div className="animate-fade-in-up mb-6">
                                 <span className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 backdrop-blur-sm border border-white/10 rounded-full text-blue-200 text-sm font-semibold uppercase tracking-widest">
-                                    ✦ Critical Care & Urgent Support
+                                    Critical Care & Urgent Support
                                 </span>
                             </div>
 

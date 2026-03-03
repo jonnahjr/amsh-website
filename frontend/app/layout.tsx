@@ -9,7 +9,7 @@ const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-jakart
 export const metadata: Metadata = {
   title: {
     template: "%s | Amanuel Mental Specialized Hospital",
-    default: "Amanuel Mental Specialized Hospital - Ethiopia's Premier Mental Health Institution",
+    default: "Amanuel Mental Specialized Hospital - Specialized Psychiatric Institution",
   },
   description: "Amanuel Mental Specialized Hospital (AMSH) provides comprehensive mental health care in Ethiopia. Services include psychiatry, child psychiatry, addiction treatment, emergency care, and CPD training.",
   keywords: ["mental health", "psychiatry", "Ethiopia", "hospital", "AMSH", "Addis Ababa", "mental health care"],
@@ -22,13 +22,13 @@ export const metadata: Metadata = {
     url: "https://www.amsh.gov.et",
     siteName: "Amanuel Mental Specialized Hospital",
     title: "Amanuel Mental Specialized Hospital",
-    description: "Ethiopia's premier public mental health institution providing comprehensive psychiatric care since 1930.",
+    description: "Specialized public mental health institution providing comprehensive psychiatric care since 1930.",
     images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: "AMSH Hospital" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Amanuel Mental Specialized Hospital",
-    description: "Ethiopia's premier mental health institution since 1930.",
+    description: "Specialized mental health institution since 1930.",
     images: ["/og-image.jpg"],
   },
   robots: { index: true, follow: true },
