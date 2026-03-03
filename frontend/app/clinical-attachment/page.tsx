@@ -257,7 +257,33 @@ export default function ClinicalAttachmentPage() {
                                     </div>
                                     <div className="space-y-4">
                                         <label className="block text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Clinical Department</label>
-                                        <input required name="departmentName" value={formData.departmentName} onChange={handleInputChange} type="text" placeholder="e.g. Psychiatry, Nursing" className="w-full px-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-blue-900 transition-all font-bold text-sm" />
+                                        <select
+                                            required
+                                            name="departmentName"
+                                            value={formData.departmentName}
+                                            onChange={handleInputChange}
+                                            className="w-full px-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-blue-900 transition-all font-bold text-sm appearance-none cursor-pointer"
+                                        >
+                                            <option value="" disabled>Select Department</option>
+                                            {[
+                                                "Adult Psychiatry",
+                                                "Child & Adolescent Psychiatry",
+                                                "Addiction Treatment Unit",
+                                                "Emergency Psychiatry",
+                                                "Clinical Psychology",
+                                                "Neurology / EEG",
+                                                "Clinical Mental Health",
+                                                "Rehabilitation Services",
+                                                "Telepsychiatry Services",
+                                                "Pharmacy Services",
+                                                "Laboratory Services",
+                                                "Training & Education",
+                                                "Research Services",
+                                                "Community Mental Health"
+                                            ].map((dept) => (
+                                                <option key={dept} value={dept}>{dept}</option>
+                                            ))}
+                                        </select>
                                     </div>
                                     <div className="space-y-4">
                                         <label className="block text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Profession Type</label>
