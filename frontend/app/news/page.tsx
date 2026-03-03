@@ -114,6 +114,47 @@ export default function NewsPage() {
                     </div>
                 </div>
 
+                {/* ADVANCED GAZETTE FEATURES */}
+                <div className="bg-[#F9F7F2]">
+                    {/* 1. BREAKING NEWS TICKER */}
+                    <div className="bg-blue-900 text-white overflow-hidden py-2 border-y border-white/10 group">
+                        <div className="container-custom flex items-center">
+                            <span className="flex items-center gap-2 px-3 py-1 bg-red-600 rounded text-[9px] font-black uppercase tracking-widest mr-6 shrink-0 shadow-lg">
+                                <span className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
+                                Breaking
+                            </span>
+                            <div className="flex animate-[scroll_40s_linear_infinite] whitespace-nowrap gap-12 text-[10px] font-bold uppercase tracking-widest opacity-80 group-hover:[animation-play-state:paused] cursor-default">
+                                {posts.slice(0, 3).map((post, i) => (
+                                    <span key={i} className="hover:text-cyan-300 transition-colors">✦ {post.title}</span>
+                                ))}
+                                {/* Duplicate for loop */}
+                                {posts.slice(0, 3).map((post, i) => (
+                                    <span key={`dup-${i}`} className="hover:text-cyan-300 transition-colors">✦ {post.title}</span>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* 2. THE MASTHEAD */}
+                    <div className="container-custom pt-12 pb-8 text-center border-b-2 border-gray-200">
+                        <div className="flex flex-col items-center">
+                            <div className="flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.4em] text-gray-400 mb-6">
+                                <span>Vol. LXXXIX</span>
+                                <span className="w-1 h-1 bg-gray-300 rounded-full" />
+                                <span>No. 248</span>
+                                <span className="w-1 h-1 bg-gray-300 rounded-full" />
+                                <span>{new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
+                            </div>
+                            <h2 className="text-6xl md:text-9xl font-black text-gray-900 tracking-tighter mb-4 font-serif italic">
+                                AMSH <span className="text-blue-900 not-italic">Gazette</span>
+                            </h2>
+                            <p className="text-[10px] font-black uppercase tracking-[0.5em] text-blue-900/40">
+                                The Official Institutional Publication of Amanuel Mental Specialized Hospital
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
                 {/* Newspaper Content */}
                 <section className="py-16 bg-[#F9F7F2]"> {/* Warm newsprint background */}
                     <div className="container-custom">
@@ -139,7 +180,7 @@ export default function NewsPage() {
                                     {filteredPosts[0] && (
                                         <article className="group mb-16 border-b-4 border-double border-gray-200 pb-16">
                                             <Link href={`/news/${filteredPosts[0].slug}`} className="block">
-                                                <div className="relative aspect-[21/9] overflow-hidden rounded-[2rem] mb-8 shadow-2xl transition-all duration-700 group-hover:shadow-blue-900/10">
+                                                <div className="relative aspect-[21/9] overflow-hidden rounded-[2rem] mb-12 shadow-2xl transition-all duration-700 group-hover:shadow-blue-900/10">
                                                     <img
                                                         src={filteredPosts[0].featuredImage || 'https://images.unsplash.com/photo-1519494140681-891f9302e48e?auto=format&fit=crop&q=80&w=1200'}
                                                         alt={filteredPosts[0].title}
@@ -147,23 +188,26 @@ export default function NewsPage() {
                                                     />
                                                     <div className="absolute top-8 left-8">
                                                         <span className="px-6 py-2 bg-blue-900 text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-full shadow-xl">
-                                                            Featured Headliner
+                                                            Institutional Lead
                                                         </span>
                                                     </div>
                                                 </div>
                                                 <div className="max-w-4xl">
-                                                    <div className="flex items-center gap-6 text-gray-400 text-[10px] font-black uppercase tracking-[0.2em] mb-6">
+                                                    <div className="flex items-center gap-6 text-gray-400 text-[10px] font-black uppercase tracking-[0.2em] mb-8">
                                                         <span className="flex items-center gap-2"><CalendarIcon className="w-4 h-4 text-blue-900" /> {new Date(filteredPosts[0].publishedAt).toLocaleDateString()}</span>
                                                         <span className="flex items-center gap-2 text-blue-900 bg-blue-50 px-3 py-1 rounded-lg">Hospital Journal</span>
                                                     </div>
-                                                    <h2 className="text-4xl md:text-6xl font-black text-gray-900 mb-6 group-hover:text-blue-900 transition-colors leading-[1.1] tracking-tighter">
+                                                    <h2 className="text-5xl md:text-7xl font-black text-gray-900 mb-8 group-hover:text-blue-900 transition-colors leading-[1.05] tracking-tighter">
                                                         {filteredPosts[0].title}
                                                     </h2>
-                                                    <p className="text-xl text-gray-600 leading-relaxed mb-8 line-clamp-3 italic font-serif">
-                                                        "{filteredPosts[0].excerpt}"
-                                                    </p>
+                                                    <div className="relative">
+                                                        {/* DROP CAP Effect */}
+                                                        <p className="text-2xl text-gray-600 leading-relaxed mb-10 font-serif italic first-letter:text-7xl first-letter:font-black first-letter:text-blue-900 first-letter:mr-3 first-letter:float-left first-letter:leading-[0.8]">
+                                                            {filteredPosts[0].excerpt}
+                                                        </p>
+                                                    </div>
                                                     <div className="flex items-center gap-2 text-blue-900 font-black text-xs uppercase tracking-[0.2em] group-hover:gap-4 transition-all border-b-2 border-blue-900/10 pb-2 w-max">
-                                                        Full Report <ArrowRightIcon className="w-4 h-4" />
+                                                        Continue to Article <ArrowRightIcon className="w-4 h-4" />
                                                     </div>
                                                 </div>
                                             </Link>
@@ -189,11 +233,11 @@ export default function NewsPage() {
                                                     <h3 className="text-2xl font-black text-gray-900 leading-tight mb-4 group-hover:text-blue-900 transition-colors tracking-tight">
                                                         {post.title}
                                                     </h3>
-                                                    <p className="text-gray-500 text-sm leading-relaxed mb-6 line-clamp-2">
+                                                    <p className="text-gray-500 text-sm leading-relaxed mb-6 line-clamp-2 font-serif">
                                                         {post.excerpt}
                                                     </p>
                                                     <div className="text-blue-900 font-black text-[10px] uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-all">
-                                                        Details ➔
+                                                        Read Full Report ➔
                                                     </div>
                                                 </Link>
                                             </article>
