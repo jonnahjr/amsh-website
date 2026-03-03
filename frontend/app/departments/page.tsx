@@ -188,7 +188,6 @@ const departments = [
 ];
 
 export default function DepartmentsPage() {
-    const [searchQuery, setSearchQuery] = React.useState('');
     const [activeCategory, setActiveCategory] = React.useState('all');
     const [mousePosition, setMousePosition] = React.useState({ x: 0, y: 0 });
     const heroRef = React.useRef<HTMLElement>(null);
@@ -203,10 +202,7 @@ export default function DepartmentsPage() {
     };
 
     const filteredDepartments = departments.filter(dept => {
-        const matchesSearch = dept.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            dept.desc.toLowerCase().includes(searchQuery.toLowerCase());
-        const matchesCategory = activeCategory === 'all' || dept.category === activeCategory;
-        return matchesSearch && matchesCategory;
+        return activeCategory === 'all' || dept.category === activeCategory;
     });
 
     return (
@@ -267,22 +263,6 @@ export default function DepartmentsPage() {
                                 AMSH sets the gold standard for clinical psychiatric care in East Africa through innovation, expertise, and compassionate dedication.
                             </p>
 
-                            {/* Advanced Search Bar - Premium Glass */}
-                            <div className="relative max-w-2xl animate-fade-in-up group" style={{ animationDelay: '0.2s' }}>
-                                <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-1000 group-hover:duration-200"></div>
-                                <div className="relative">
-                                    <div className="absolute inset-y-0 left-0 pl-6 flex items-center pointer-events-none">
-                                        <Search className="h-6 w-6 text-cyan-400" />
-                                    </div>
-                                    <input
-                                        type="text"
-                                        placeholder="Find a specialist or medical center..."
-                                        className="block w-full pl-16 pr-8 py-6 bg-blue-900/40 border border-white/10 rounded-2xl text-white placeholder-blue-300/40 backdrop-blur-3xl focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all text-xl"
-                                        value={searchQuery}
-                                        onChange={(e) => setSearchQuery(e.target.value)}
-                                    />
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </section>
@@ -381,9 +361,9 @@ export default function DepartmentsPage() {
 
                         {filteredDepartments.length === 0 && (
                             <div className="text-center py-20">
-                                <p className="text-gray-400 text-xl font-medium">No departments found matching your search.</p>
+                                <p className="text-gray-400 text-xl font-medium">No departments found matching your selection.</p>
                                 <button
-                                    onClick={() => { setSearchQuery(''); setActiveCategory('all'); }}
+                                    onClick={() => setActiveCategory('all')}
                                     className="mt-6 text-blue-600 font-bold hover:underline"
                                 >
                                     Reset all filters
