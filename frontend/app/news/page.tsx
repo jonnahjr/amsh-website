@@ -114,21 +114,15 @@ export default function NewsPage() {
                     </div>
                 </div>
 
-                {/* Content */}
-                <section className="section">
+                {/* Newspaper Content */}
+                <section className="py-16 bg-[#F9F7F2]"> {/* Warm newsprint background */}
                     <div className="container-custom">
                         {loading ? (
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                                {[1, 2, 3].map(i => (
-                                    <div key={i} className="bg-white rounded-[32px] overflow-hidden shadow-sm animate-pulse h-[450px]">
-                                        <div className="h-64 bg-gray-200" />
-                                        <div className="p-8 space-y-4">
-                                            <div className="h-4 bg-gray-200 w-1/4 rounded" />
-                                            <div className="h-8 bg-gray-200 w-3/4 rounded" />
-                                            <div className="h-20 bg-gray-200 w-full rounded" />
-                                        </div>
-                                    </div>
-                                ))}
+                            <div className="animate-pulse space-y-8">
+                                <div className="h-[500px] bg-gray-200 rounded-3xl" />
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                                    {[1, 2, 3].map(i => <div key={i} className="h-64 bg-gray-200 rounded-2xl" />)}
+                                </div>
                             </div>
                         ) : filteredPosts.length === 0 ? (
                             <div className="text-center py-20 bg-white rounded-[40px] shadow-sm border border-gray-100">
@@ -138,42 +132,114 @@ export default function NewsPage() {
                                 <button onClick={() => setSearch('')} className="mt-6 text-blue-900 font-bold hover:underline">Clear all filters</button>
                             </div>
                         ) : (
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                                {filteredPosts.map((post) => (
-                                    <Link
-                                        key={post.id}
-                                        href={`/news/${post.slug}`}
-                                        className="group bg-white rounded-[32px] overflow-hidden shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 border border-gray-100 flex flex-col"
-                                    >
-                                        <div className="relative h-64 overflow-hidden">
-                                            <img
-                                                src={post.featuredImage || 'https://images.unsplash.com/photo-1519494140681-891f9302e48e?auto=format&fit=crop&q=80&w=1200'}
-                                                alt={post.title}
-                                                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                                            />
-                                            <div className="absolute top-6 left-6">
-                                                <span className="px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest text-white shadow-lg" style={{ backgroundColor: post.category?.color || '#1B4F8A' }}>
-                                                    {post.category?.name || 'General'}
-                                                </span>
+                            <div className="flex flex-col lg:flex-row gap-12">
+                                {/* MAIN CONTENT AREA */}
+                                <div className="flex-1">
+                                    {/* FEATURED STORY (ABOVE THE FOLD) */}
+                                    {filteredPosts[0] && (
+                                        <article className="group mb-16 border-b-4 border-double border-gray-200 pb-16">
+                                            <Link href={`/news/${filteredPosts[0].slug}`} className="block">
+                                                <div className="relative aspect-[21/9] overflow-hidden rounded-[2rem] mb-8 shadow-2xl transition-all duration-700 group-hover:shadow-blue-900/10">
+                                                    <img
+                                                        src={filteredPosts[0].featuredImage || 'https://images.unsplash.com/photo-1519494140681-891f9302e48e?auto=format&fit=crop&q=80&w=1200'}
+                                                        alt={filteredPosts[0].title}
+                                                        className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                                                    />
+                                                    <div className="absolute top-8 left-8">
+                                                        <span className="px-6 py-2 bg-blue-900 text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-full shadow-xl">
+                                                            Featured Headliner
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div className="max-w-4xl">
+                                                    <div className="flex items-center gap-6 text-gray-400 text-[10px] font-black uppercase tracking-[0.2em] mb-6">
+                                                        <span className="flex items-center gap-2"><CalendarIcon className="w-4 h-4 text-blue-900" /> {new Date(filteredPosts[0].publishedAt).toLocaleDateString()}</span>
+                                                        <span className="flex items-center gap-2 text-blue-900 bg-blue-50 px-3 py-1 rounded-lg">Hospital Journal</span>
+                                                    </div>
+                                                    <h2 className="text-4xl md:text-6xl font-black text-gray-900 mb-6 group-hover:text-blue-900 transition-colors leading-[1.1] tracking-tighter">
+                                                        {filteredPosts[0].title}
+                                                    </h2>
+                                                    <p className="text-xl text-gray-600 leading-relaxed mb-8 line-clamp-3 italic font-serif">
+                                                        "{filteredPosts[0].excerpt}"
+                                                    </p>
+                                                    <div className="flex items-center gap-2 text-blue-900 font-black text-xs uppercase tracking-[0.2em] group-hover:gap-4 transition-all border-b-2 border-blue-900/10 pb-2 w-max">
+                                                        Full Report <ArrowRightIcon className="w-4 h-4" />
+                                                    </div>
+                                                </div>
+                                            </Link>
+                                        </article>
+                                    )}
+
+                                    {/* SECONDARY STORIES GRID */}
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-16">
+                                        {filteredPosts.slice(1).map((post, idx) => (
+                                            <article key={post.id} className={`group ${idx % 2 === 0 ? 'md:border-r md:border-gray-200 md:pr-12' : ''}`}>
+                                                <Link href={`/news/${post.slug}`} className="block">
+                                                    <div className="aspect-video overflow-hidden rounded-2xl mb-6 grayscale hover:grayscale-0 transition-all duration-700">
+                                                        <img
+                                                            src={post.featuredImage}
+                                                            alt={post.title}
+                                                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                                                        />
+                                                    </div>
+                                                    <div className="flex items-center gap-4 text-gray-400 text-[9px] font-black uppercase tracking-[0.2em] mb-4">
+                                                        <span className="px-2 py-0.5 border border-gray-200 rounded text-blue-900">{post.category?.name}</span>
+                                                        <span>{new Date(post.publishedAt).toLocaleDateString()}</span>
+                                                    </div>
+                                                    <h3 className="text-2xl font-black text-gray-900 leading-tight mb-4 group-hover:text-blue-900 transition-colors tracking-tight">
+                                                        {post.title}
+                                                    </h3>
+                                                    <p className="text-gray-500 text-sm leading-relaxed mb-6 line-clamp-2">
+                                                        {post.excerpt}
+                                                    </p>
+                                                    <div className="text-blue-900 font-black text-[10px] uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-all">
+                                                        Details ➔
+                                                    </div>
+                                                </Link>
+                                            </article>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* SIDEBAR - THE DAILY BRIEFING */}
+                                <aside className="lg:w-80 shrink-0">
+                                    <div className="sticky top-32 space-y-8">
+                                        <div className="bg-white border-t-4 border-blue-900 p-8 shadow-xl rounded-b-3xl">
+                                            <h4 className="text-xs font-black uppercase tracking-[0.3em] text-blue-900 mb-6 flex items-center gap-2">
+                                                <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
+                                                Daily Briefing
+                                            </h4>
+                                            <div className="space-y-6">
+                                                {posts.slice(0, 4).map((post, idx) => (
+                                                    <Link key={post.id} href={`/news/${post.slug}`} className="block group border-b border-gray-100 pb-4 last:border-0 last:pb-0">
+                                                        <p className="text-[10px] text-blue-600 font-black uppercase tracking-widest mb-2">Notice {idx + 1}</p>
+                                                        <h5 className="font-bold text-gray-900 group-hover:text-blue-900 transition-colors leading-snug">
+                                                            {post.title}
+                                                        </h5>
+                                                    </Link>
+                                                ))}
+                                            </div>
+                                            <div className="mt-8 pt-8 border-t border-gray-100 text-center">
+                                                <p className="text-[10px] text-gray-400 font-medium mb-4 uppercase tracking-[0.2em]">Established 1930 E.C.</p>
+                                                <button className="w-full py-3 bg-gray-50 text-gray-900 text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-blue-50 transition-colors">
+                                                    Subscribe to Gazette
+                                                </button>
                                             </div>
                                         </div>
-                                        <div className="p-8 flex-1 flex flex-col">
-                                            <div className="flex items-center gap-4 text-gray-400 text-xs font-bold uppercase tracking-widest mb-4">
-                                                <span className="flex items-center gap-1.5"><CalendarIcon className="w-4 h-4" /> {new Date(post.publishedAt).toLocaleDateString()}</span>
-                                                <span className="flex items-center gap-1.5"><UserIcon className="w-4 h-4" /> {post.author.name}</span>
-                                            </div>
-                                            <h3 className="text-xl font-black text-gray-900 group-hover:text-blue-900 transition-colors mb-4 line-clamp-2 leading-tight">
-                                                {post.title}
-                                            </h3>
-                                            <p className="text-gray-500 text-sm mb-6 line-clamp-3 leading-relaxed">
-                                                {post.excerpt}
-                                            </p>
-                                            <div className="mt-auto flex items-center gap-2 text-blue-900 font-black text-xs uppercase tracking-widest group-hover:gap-4 transition-all">
-                                                Read Story <ArrowRightIcon className="w-4 h-4" />
+
+                                        {/* Quick Links / Tags */}
+                                        <div className="p-8 bg-blue-900 rounded-3xl text-white">
+                                            <h4 className="text-[10px] font-black uppercase tracking-[0.2em] mb-6">Publication Desk</h4>
+                                            <div className="space-y-4">
+                                                {['Press Releases', 'Media Kit', 'Clinical Journals', 'Public Archive'].map(tag => (
+                                                    <button key={tag} className="block w-full text-left text-sm font-bold text-blue-200 hover:text-white transition-colors">
+                                                        {tag} ➔
+                                                    </button>
+                                                ))}
                                             </div>
                                         </div>
-                                    </Link>
-                                ))}
+                                    </div>
+                                </aside>
                             </div>
                         )}
                     </div>
