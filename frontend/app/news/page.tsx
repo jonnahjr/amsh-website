@@ -16,33 +16,14 @@ export default function NewsPage() {
     useEffect(() => {
         postsAPI.getAll({ type: 'NEWS', status: 'PUBLISHED' })
             .then(res => setPosts(res.data.posts))
-            .catch(() => {
-                // Fallback mock data
-                setPosts([
-                    {
-                        id: '1',
-                        title: 'AMSH Celebrates 90+ Years of Mental Health Service',
-                        slug: 'amsh-celebrates-90-years',
-                        excerpt: 'Amanuel Mental Specialized Hospital marks over nine decades of dedicated service to Ethiopian mental health patients.',
-                        featuredImage: 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&q=80&w=800',
-                        author: { name: 'Admin' },
-                        publishedAt: new Date().toISOString(),
-                        category: { name: 'News', color: '#1B4F8A' }
-                    },
-                    {
-                        id: '2',
-                        title: 'New Mental Health Awareness Campaign Launched',
-                        slug: 'mental-health-awareness-2024',
-                        excerpt: 'We are launching a nationwide campaign to reduce stigma and promote mental wellness in our community.',
-                        featuredImage: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&q=80&w=800',
-                        author: { name: 'Public Relations' },
-                        publishedAt: new Date().toISOString(),
-                        category: { name: 'Awareness', color: '#00B4D8' }
-                    }
-                ]);
-            })
+            .catch(() => setPosts([]))
             .finally(() => setLoading(false));
     }, []);
+
+    const breakingPosts = posts.filter(post =>
+        post.category?.name?.toLowerCase() === 'breaking' ||
+        post.isBreaking === true
+    );
 
     const filteredPosts = posts.filter(post =>
         post.title.toLowerCase().includes(search.toLowerCase()) ||
@@ -117,23 +98,25 @@ export default function NewsPage() {
                 {/* ADVANCED GAZETTE FEATURES */}
                 <div className="bg-[#F9F7F2]">
                     {/* 1. BREAKING NEWS TICKER */}
-                    <div className="bg-blue-900 text-white overflow-hidden py-2 border-y border-white/10 group">
-                        <div className="container-custom flex items-center">
-                            <span className="flex items-center gap-2 px-3 py-1 bg-red-600 rounded text-[9px] font-black uppercase tracking-widest mr-6 shrink-0 shadow-lg">
-                                <span className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
-                                Breaking
-                            </span>
-                            <div className="flex animate-[scroll_40s_linear_infinite] whitespace-nowrap gap-12 text-[10px] font-bold uppercase tracking-widest opacity-80 group-hover:[animation-play-state:paused] cursor-default">
-                                {posts.slice(0, 3).map((post, i) => (
-                                    <span key={i} className="hover:text-cyan-300 transition-colors">✦ {post.title}</span>
-                                ))}
-                                {/* Duplicate for loop */}
-                                {posts.slice(0, 3).map((post, i) => (
-                                    <span key={`dup-${i}`} className="hover:text-cyan-300 transition-colors">✦ {post.title}</span>
-                                ))}
+                    {breakingPosts.length > 0 && (
+                        <div className="bg-blue-900 text-white overflow-hidden py-2 border-y border-white/10 group">
+                            <div className="container-custom flex items-center">
+                                <span className="flex items-center gap-2 px-3 py-1 bg-red-600 rounded text-[9px] font-black uppercase tracking-widest mr-6 shrink-0 shadow-lg">
+                                    <span className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
+                                    Breaking
+                                </span>
+                                <div className="flex animate-[scroll_40s_linear_infinite] whitespace-nowrap gap-12 text-[10px] font-bold uppercase tracking-widest opacity-80 group-hover:[animation-play-state:paused] cursor-default">
+                                    {breakingPosts.map((post, i) => (
+                                        <span key={i} className="hover:text-cyan-300 transition-colors">✦ {post.title}</span>
+                                    ))}
+                                    {/* Duplicate for loop */}
+                                    {breakingPosts.map((post, i) => (
+                                        <span key={`dup-${i}`} className="hover:text-cyan-300 transition-colors">✦ {post.title}</span>
+                                    ))}
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    )}
 
                     {/* 2. THE MASTHEAD */}
                     <div className="container-custom pt-12 pb-8 text-center border-b-2 border-gray-200">
