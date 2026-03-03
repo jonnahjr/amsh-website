@@ -96,31 +96,30 @@ export default function ClinicalAttachmentPage() {
             {/* Categories Section */}
             <section className="py-24">
                 <div className="container-custom">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                         {/* Government Institutions */}
-                        <div className="bg-white rounded-[40px] p-10 lg:p-16 border border-gray-100 shadow-sm hover:shadow-2xl transition-all duration-500 group">
+                        <div className="bg-white rounded-[40px] p-8 lg:p-10 border border-gray-100 shadow-sm hover:shadow-2xl transition-all duration-500 group flex flex-col">
                             <div className="w-20 h-20 bg-blue-50 rounded-[24px] flex items-center justify-center text-blue-900 mb-8 group-hover:scale-110 transition-transform">
                                 <BuildingLibraryIcon className="w-10 h-10" />
                             </div>
-                            <h2 className="text-3xl font-black text-blue-950 mb-4">Government Institutions</h2>
-                            <p className="text-emerald-600 font-black text-sm uppercase tracking-widest mb-6 flex items-center gap-2">
-                                <CheckBadgeIcon className="w-5 h-5" /> Free Clinical Attachment
+                            <h2 className="text-2xl font-black text-blue-950 mb-4 h-16 flex items-center">Government Institutions</h2>
+                            <p className="text-emerald-600 font-black text-[10px] uppercase tracking-widest mb-6 flex items-center gap-2">
+                                <CheckBadgeIcon className="w-5 h-5" /> Free Program
                             </p>
-                            <p className="text-gray-500 font-medium leading-relaxed mb-10">
+                            <p className="text-gray-500 text-sm font-medium leading-relaxed mb-8 flex-1">
                                 Official partnership for public universities and government-run health colleges.
-                                Requires structured institutional formal request.
                             </p>
 
                             <div className="space-y-4 mb-10">
-                                <h4 className="text-xs font-black text-gray-400 uppercase tracking-widest">Required Documents</h4>
-                                <ul className="space-y-3">
+                                <h4 className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Requirements</h4>
+                                <ul className="space-y-3 font-bold text-gray-700">
                                     {[
-                                        "Official government request letter",
-                                        "Detailed training objectives",
-                                        "Validated list of students",
-                                        "Copy of institutional training permit"
+                                        "Official government letter",
+                                        "Training objectives",
+                                        "Validated student list",
+                                        "Institutional permit"
                                     ].map((doc, i) => (
-                                        <li key={i} className="flex items-center gap-3 text-sm font-bold text-gray-700">
+                                        <li key={i} className="flex items-center gap-3 text-xs">
                                             <div className="w-1.5 h-1.5 rounded-full bg-blue-900" />
                                             {doc}
                                         </li>
@@ -130,36 +129,35 @@ export default function ClinicalAttachmentPage() {
 
                             <button
                                 onClick={() => openApplyModal('GOVERNMENT')}
-                                className="w-full py-5 bg-blue-950 text-white rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-blue-800 transition-all shadow-xl shadow-blue-900/10"
+                                className="w-full py-4 bg-blue-950 text-white rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-blue-800 transition-all shadow-xl shadow-blue-900/10"
                             >
-                                Apply for Government Institution
+                                Apply as Government
                             </button>
                         </div>
 
                         {/* Private Colleges & Universities */}
-                        <div className="bg-white rounded-[40px] p-10 lg:p-16 border border-gray-100 shadow-sm hover:shadow-2xl transition-all duration-500 group">
+                        <div className="bg-white rounded-[40px] p-8 lg:p-10 border border-gray-100 shadow-sm hover:shadow-2xl transition-all duration-500 group flex flex-col">
                             <div className="w-20 h-20 bg-cyan-50 rounded-[24px] flex items-center justify-center text-cyan-600 mb-8 group-hover:scale-110 transition-transform">
                                 <AcademicCapIcon className="w-10 h-10" />
                             </div>
-                            <h2 className="text-3xl font-black text-blue-950 mb-4">Colleges & Universities</h2>
-                            <p className="text-amber-600 font-black text-sm uppercase tracking-widest mb-6 flex items-center gap-2">
-                                <BanknotesIcon className="w-5 h-5" /> Paid Clinical Attachment
+                            <h2 className="text-2xl font-black text-blue-950 mb-4 h-16 flex items-center">Colleges & Universities</h2>
+                            <p className="text-amber-600 font-black text-[10px] uppercase tracking-widest mb-6 flex items-center gap-2">
+                                <BanknotesIcon className="w-5 h-5" /> Paid Program
                             </p>
-                            <p className="text-gray-500 font-medium leading-relaxed mb-10">
+                            <p className="text-gray-500 text-sm font-medium leading-relaxed mb-8 flex-1">
                                 Specialized training access for private higher education institutions.
-                                Subject to availability and standard hospital training fees.
                             </p>
 
                             <div className="space-y-4 mb-10">
-                                <h4 className="text-xs font-black text-gray-400 uppercase tracking-widest">Required Documents</h4>
-                                <ul className="space-y-3">
+                                <h4 className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Requirements</h4>
+                                <ul className="space-y-3 font-bold text-gray-700">
                                     {[
-                                        "Official institutional request letter",
-                                        "Complete student list with IDs",
-                                        "Attachment application form",
-                                        "Official payment confirmation"
+                                        "Official request letter",
+                                        "Complete student list",
+                                        "Application form",
+                                        "Payment confirmation"
                                     ].map((doc, i) => (
-                                        <li key={i} className="flex items-center gap-3 text-sm font-bold text-gray-700">
+                                        <li key={i} className="flex items-center gap-3 text-xs">
                                             <div className="w-1.5 h-1.5 rounded-full bg-cyan-500" />
                                             {doc}
                                         </li>
@@ -169,85 +167,48 @@ export default function ClinicalAttachmentPage() {
 
                             <button
                                 onClick={() => openApplyModal('PRIVATE')}
-                                className="w-full py-5 border-2 border-blue-950 text-blue-950 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-blue-50 transition-all"
+                                className="w-full py-4 border-2 border-blue-950 text-blue-950 rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-blue-50 transition-all"
                             >
-                                Apply for Private College
+                                Apply as Private
                             </button>
                         </div>
-                    </div>
+                        {/* Individual / Self-Sponsored Applicants */}
+                        <div className="bg-white rounded-[40px] p-8 lg:p-10 border border-gray-100 shadow-sm hover:shadow-2xl transition-all duration-500 group flex flex-col">
+                            <div className="w-16 h-16 bg-emerald-50 rounded-2xl flex items-center justify-center text-emerald-600 mb-8 group-hover:scale-110 transition-transform flex-shrink-0">
+                                <UserGroupIcon className="w-8 h-8" />
+                            </div>
+                            <h2 className="text-2xl font-black text-blue-950 mb-4 h-16 flex items-center">Individual / Self-Sponsored</h2>
+                            <p className="text-emerald-600 font-black text-[10px] uppercase tracking-widest mb-6 flex items-center gap-2">
+                                <CheckBadgeIcon className="w-5 h-5" /> Independent Program
+                            </p>
+                            <p className="text-gray-500 text-sm font-medium leading-relaxed mb-8 flex-1">
+                                Direct application for professionals or students seeking
+                                unaffiliated clinical exposure. Perfect for international rotations.
+                            </p>
 
-                    {/* Self-Sponsored Individual Applicants */}
-                    <div className="mt-10">
-                        <div className="bg-white rounded-[40px] p-10 lg:p-16 border border-gray-100 shadow-sm hover:shadow-2xl transition-all duration-500 group overflow-hidden relative">
-                            {/* Decorative background icon */}
-                            <div className="absolute -right-10 -bottom-10 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity">
-                                <UserGroupIcon className="w-64 h-64" />
+                            <div className="space-y-4 mb-10">
+                                <h4 className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Requirements</h4>
+                                <ul className="space-y-3 font-bold text-gray-700">
+                                    {[
+                                        "Current ID / Passport",
+                                        "Professional License",
+                                        "Academic Transcripts",
+                                        "Statement of Intent"
+                                    ].map((doc, i) => (
+                                        <li key={i} className="flex items-center gap-3 text-xs">
+                                            <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                                            {doc}
+                                        </li>
+                                    ))}
+                                </ul>
                             </div>
 
-                            <div className="grid lg:grid-cols-2 gap-16 items-center relative z-10">
-                                <div>
-                                    <div className="w-20 h-20 bg-emerald-50 rounded-[24px] flex items-center justify-center text-emerald-600 mb-8 group-hover:scale-110 transition-transform">
-                                        <UserGroupIcon className="w-10 h-10" />
-                                    </div>
-                                    <h2 className="text-3xl md:text-4xl font-black text-blue-950 mb-4 uppercase tracking-tighter">Individual / Self-Sponsored</h2>
-                                    <p className="text-emerald-600 font-black text-sm uppercase tracking-widest mb-6 flex items-center gap-2">
-                                        <CheckBadgeIcon className="w-5 h-5" /> Independent Career Path
-                                    </p>
-                                    <p className="text-gray-500 font-medium leading-relaxed mb-10 text-lg">
-                                        Direct application for licensed professionals or independent students seeking
-                                        unaffiliated clinical exposure. Perfect for international rotations or credit recovery.
-                                    </p>
-
-                                    <div className="grid sm:grid-cols-2 gap-8 mb-10">
-                                        <div>
-                                            <h4 className="text-xs font-black text-gray-400 uppercase tracking-widest mb-4">Core requirements</h4>
-                                            <ul className="space-y-3">
-                                                {[
-                                                    "Current ID or Passport",
-                                                    "Professional License (if applicable)",
-                                                    "Degree / Transcript copies",
-                                                    "Personal Statement of Intent"
-                                                ].map((doc, i) => (
-                                                    <li key={i} className="flex items-center gap-3 text-sm font-bold text-gray-700">
-                                                        <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                                                        {doc}
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        </div>
-                                        <div>
-                                            <h4 className="text-xs font-black text-gray-400 uppercase tracking-widest mb-4">Financials</h4>
-                                            <div className="p-4 bg-emerald-50 rounded-2xl border border-emerald-100">
-                                                <p className="text-[10px] font-black text-emerald-800 uppercase tracking-widest leading-loose">
-                                                    Individual fees apply per month. Includes supervision and facility access.
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <button
-                                        onClick={() => openApplyModal('SELF_SPONSORED')}
-                                        className="inline-flex items-center gap-4 px-12 py-5 bg-blue-950 text-white rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-blue-800 transition-all shadow-xl shadow-blue-900/10"
-                                    >
-                                        Start Individual Application <ArrowRightIcon className="w-4 h-4 ml-2" />
-                                    </button>
-                                </div>
-
-                                <div className="hidden lg:grid grid-cols-2 gap-4">
-                                    <div className="space-y-4">
-                                        <div className="h-40 bg-gray-50 rounded-3xl" />
-                                        <div className="h-60 bg-blue-50 rounded-3xl flex items-center justify-center">
-                                            <BuildingLibraryIcon className="w-12 h-12 text-blue-200" />
-                                        </div>
-                                    </div>
-                                    <div className="space-y-4 pt-12">
-                                        <div className="h-60 bg-emerald-50 rounded-3xl flex items-center justify-center">
-                                            <CheckBadgeIcon className="w-12 h-12 text-emerald-200" />
-                                        </div>
-                                        <div className="h-40 bg-gray-50 rounded-3xl" />
-                                    </div>
-                                </div>
-                            </div>
+                            <button
+                                onClick={() => openApplyModal('SELF_SPONSORED')}
+                                className="w-full py-4 bg-emerald-600 text-white rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-emerald-700 transition-all shadow-xl shadow-emerald-900/10"
+                            >
+                                Apply for Self-Sponsor
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -393,7 +354,8 @@ export default function ClinicalAttachmentPage() {
                         </div>
                     </div>
                 </div>
-            )}
+            )
+            }
 
             {/* Disclaimer Section */}
             <section className="pb-24">
@@ -412,6 +374,6 @@ export default function ClinicalAttachmentPage() {
 
             <Footer />
             <ChatbotButton />
-        </div>
+        </div >
     );
 }
