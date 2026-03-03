@@ -38,14 +38,29 @@ export default function ContactPage() {
             <Navbar />
             <main>
                 {/* Hero */}
-                <section className="bg-gradient-to-br from-blue-950 to-blue-800 py-20 text-white">
-                    <div className="container-custom text-center">
-                        <span className="inline-flex items-center gap-2 px-4 py-1.5 bg-white/10 border border-white/20 text-cyan-300 rounded-full text-sm font-semibold mb-6">
+                <section className="relative bg-blue-950 py-24 overflow-hidden">
+                    {/* Background Pattern */}
+                    <div className="absolute inset-0 opacity-10">
+                        <div className="absolute inset-0" style={{
+                            backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)',
+                            backgroundSize: '48px 48px',
+                        }} />
+                    </div>
+
+                    {/* Decorative Blue Orbs */}
+                    <div className="absolute top-1/2 -translate-y-1/2 -right-24 w-96 h-96 bg-blue-600/10 rounded-full blur-[100px] animate-float pointer-events-none" />
+                    <div className="absolute -bottom-24 -left-24 w-80 h-80 bg-blue-400/5 rounded-full blur-[80px] animate-float pointer-events-none" style={{ animationDelay: '1.5s' }} />
+
+                    <div className="container-custom relative z-10 text-center">
+                        <span className="inline-flex items-center gap-2 px-6 py-2 bg-white/5 backdrop-blur-md border border-white/10 text-cyan-400 rounded-full text-xs font-black uppercase tracking-[0.2em] mb-8 animate-fade-in-up">
                             📬 Contact Us
                         </span>
-                        <h1 className="text-4xl md:text-5xl font-black mb-4">Get In Touch With AMSH</h1>
-                        <p className="text-blue-200 text-lg max-w-2xl mx-auto">
-                            We're here to help. Reach out for appointments, information, or any queries about our services.
+                        <h1 className="text-4xl sm:text-5xl md:text-7xl font-black text-white leading-tight mb-6 animate-fade-in-up tracking-tighter" style={{ animationDelay: '0.1s' }}>
+                            <span className="text-gray-400 italic font-medium">Get In Touch</span><br />
+                            With AMSH
+                        </h1>
+                        <p className="text-blue-100/70 text-lg md:text-xl max-w-3xl mx-auto mb-8 animate-fade-in-up font-medium" style={{ animationDelay: '0.2s' }}>
+                            We're here to help. Reach out for appointments, information, or any queries about our specialized mental health services.
                         </p>
                     </div>
                 </section>
