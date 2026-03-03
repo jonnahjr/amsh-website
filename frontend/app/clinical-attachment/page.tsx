@@ -216,9 +216,8 @@ export default function ClinicalAttachmentPage() {
 
             {/* Apply Modal */}
             {isApplyModalOpen && (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-                    <div className="absolute inset-0 bg-blue-950/40 backdrop-blur-sm" onClick={() => setIsApplyModalOpen(false)} />
-                    <div className="relative bg-white w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-[40px] shadow-2xl animate-scale-in">
+                <div className="fixed inset-0 z-[100] bg-white overflow-y-auto animate-in fade-in slide-in-from-bottom-4 duration-500">
+                    <div className="relative min-h-screen">
                         <button
                             onClick={() => setIsApplyModalOpen(false)}
                             className="absolute top-8 right-8 p-2 text-gray-400 hover:text-red-500 transition-colors"
@@ -226,7 +225,7 @@ export default function ClinicalAttachmentPage() {
                             <XMarkIcon className="w-8 h-8" />
                         </button>
 
-                        <div className="p-12 lg:p-16">
+                        <div className="max-w-5xl mx-auto p-12 lg:p-16">
                             <div className="mb-12">
                                 <span className="text-blue-600 text-[10px] font-black uppercase tracking-[0.2em] mb-4 block">Attachment Portal</span>
                                 <h2 className="text-4xl font-black text-blue-950 mb-2">
