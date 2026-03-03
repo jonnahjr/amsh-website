@@ -125,34 +125,66 @@ export default function AboutPage() {
                             {/* Mission */}
                             <div className="card p-10 border-t-8 border-blue-900">
                                 <div className="text-5xl mb-6">🎯</div>
-                                <h3 className="text-2xl font-black text-gray-900 mb-6 uppercase tracking-tight">ተልዕኳችን</h3>
+                                <h3 className="text-2xl font-black text-gray-900 mb-1 uppercase tracking-tight">Our Mission</h3>
+                                <p className="text-sm text-blue-400 font-bold mb-6">ተልዕኳችን</p>
                                 <div className="space-y-6 text-gray-600 leading-relaxed">
-                                    <p className="font-bold text-lg text-blue-900">
-                                        በአማኑኤል የአእምሮ ስፔሻላይዝድ ሆስፒታል፣ ተልዕኳችን ሁሉን አቀፍ፣ ተደራሽ እና በሽተኛ-ተኮር የአእምሮ ጤና አገልግሎቶችን በሩህሩህ እንክብካቤ፣ በክሊኒካዊ ብቃት እና በማስረጃ ላይ በተመሠረተ ሕክምና ማቅረብ ነው።
-                                    </p>
-                                    <p>
-                                        ሁሉን አቀፍ የሥነ አዕምሮ አገልግሎቶችን በመከላከል፣ ምርመራ፣ ሕክምና እና ማገገሚያ ዘርፎች ለግለሰቦች፣ ቤተሰቦች እና ማህበረሰቦች ሥነ-አዕምሮ ጤና እና ደህንነት ለማሻሻል ቁርጠኞች ነን። አካሄዳችን ዘመናዊ ሕክምናን፣ ሥነ-ምግባርን እና ለእያንዳንዱ ሰው ክብር ማለትን ያቀናጃል።
-                                    </p>
-                                    <p className="text-sm border-t border-gray-100 pt-6">
-                                        ከክሊኒካዊ እንክብካቤ ባሻገር፣ በምርምር፣ ሙያዊ ሥልጠና እና ቀጣይ ፈጠራ የአእምሮ ጤና እውቀትን ለማሳደግ፣ ሀገራዊ እና ዓለም አቀፋዊ የአእምሮ ጤና አገልግሎቶች ልማት አስተዋፅዖ ለማድረግ ጥረት እናደርጋለን።
-                                    </p>
+                                    <div>
+                                        <p className="font-bold text-lg text-blue-900 mb-2">
+                                            At Amanuel Mental Specialized Hospital, our mission is to deliver comprehensive, accessible, and patient-centered mental health services through compassionate care, clinical excellence, and evidence-based treatment.
+                                        </p>
+                                        <p className="text-sm text-gray-400 italic">
+                                            በአማኑኤል የአእምሮ ስፔሻላይዝድ ሆስፒታል፣ ተልዕኳችን ሁሉን አቀፍ፣ ተደራሽ እና በሽተኛ-ተኮር የአእምሮ ጤና አገልግሎቶችን በሩህሩህ እንክብካቤ፣ በክሊኒካዊ ብቃት እና በማስረጃ ላይ በተመሠረተ ሕክምና ማቅረብ ነው።
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <p className="mb-2">
+                                            We are committed to improving the mental health and well-being of individuals, families, and communities by providing high-quality psychiatric services across prevention, diagnosis, treatment, and rehabilitation.
+                                        </p>
+                                        <p className="text-sm text-gray-400 italic">
+                                            ሁሉን አቀፍ የሥነ አዕምሮ አገልግሎቶችን በመከላከል፣ ምርመራ፣ ሕክምና እና ማገገሚያ ዘርፎች ለግለሰቦች፣ ቤተሰቦች እና ማህበረሰቦች ሥነ-አዕምሮ ጤና እና ደህንነት ለማሻሻል ቁርጠኞች ነን።
+                                        </p>
+                                    </div>
+                                    <div className="border-t border-gray-100 pt-6">
+                                        <p className="text-sm mb-2">
+                                            In addition to clinical care, we strive to advance mental health knowledge through research, professional training, and continuous innovation, contributing to the development of mental health services both nationally and internationally.
+                                        </p>
+                                        <p className="text-sm text-gray-400 italic">
+                                            ከክሊኒካዊ እንክብካቤ ባሻገር፣ በምርምር፣ ሙያዊ ሥልጠና እና ቀጣይ ፈጠራ የአእምሮ ጤና እውቀትን ለማሳደግ ጥረት እናደርጋለን።
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
 
                             {/* Vision */}
                             <div className="card p-10 border-t-8 border-cyan-500">
                                 <div className="text-5xl mb-6">🔭</div>
-                                <h3 className="text-2xl font-black text-gray-900 mb-6 uppercase tracking-tight">ራዕያችን</h3>
+                                <h3 className="text-2xl font-black text-gray-900 mb-1 uppercase tracking-tight">Our Vision</h3>
+                                <p className="text-sm text-cyan-500 font-bold mb-6">ራዕያችን</p>
                                 <div className="space-y-6 text-gray-600 leading-relaxed">
-                                    <p className="font-bold text-lg text-cyan-700">
-                                        ራዕያችን በአፍሪካ ውስጥ ግንባር ቀደም የአእምሮ ጤና እንክብካቤ፣ ምርምር እና ሙያዊ ትምህርት ማዕከል ለመሆን ነው።
-                                    </p>
-                                    <p>
-                                        ዓለም አቀፍ ዕውቅና ያለን በፈጠራ፣ ክሊኒካዊ ጥራት እና በአእምሮ ጤና አገልግሎቶች አመራር ለመሆን ምኞት አለን፤ በሥነ-አዕምሮ ሕክምና፣ ዲጂታል የአእምሮ ጤና፣ ቴሌሳይካትሪ እና ማህበረሰብ ተኮር እንክብካቤ ደረጃዎችን ለማዘጋጀት።
-                                    </p>
-                                    <p className="text-sm border-t border-gray-100 pt-6">
-                                        የአእምሮ ጤና እንክብካቤ ተደራሽ፣ መድልዎ-ያለሽ እና በጠቅላላ የጤና አጠባበቅ ስርዓት ውስጥ ሁሉን አቀፍ ሆኖ ለእያንዳንዱ ሰው ጤናማ፣ ምርታማ እና ፍሬያማ ህይወት የሚኖርበትን ወደፊት እናወጣለን።
-                                    </p>
+                                    <div>
+                                        <p className="font-bold text-lg text-cyan-700 mb-2">
+                                            Our vision is to become the leading center of excellence in mental health care, research, and professional education in Africa.
+                                        </p>
+                                        <p className="text-sm text-gray-400 italic">
+                                            ራዕያችን በአፍሪካ ውስጥ ግንባር ቀደም የአእምሮ ጤና እንክብካቤ፣ ምርምር እና ሙያዊ ትምህርት ማዕከል ለመሆን ነው።
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <p className="mb-2">
+                                            We aspire to be globally recognized for our innovation, clinical quality, and leadership in mental health services, setting standards in psychiatric treatment, digital mental health, telepsychiatry, and community-based care.
+                                        </p>
+                                        <p className="text-sm text-gray-400 italic">
+                                            ዓለም አቀፍ ዕውቅና ያለን በፈጠራ፣ ክሊኒካዊ ጥራት እና በአእምሮ ጤና አገልግሎቶች አመራር ለመሆን ምኞት አለን።
+                                        </p>
+                                    </div>
+                                    <div className="border-t border-gray-100 pt-6">
+                                        <p className="text-sm mb-2">
+                                            We envision a future where mental health care is accessible, stigma-free, and integrated into the overall healthcare system, ensuring every individual has the opportunity to live a healthy, productive, and fulfilling life.
+                                        </p>
+                                        <p className="text-sm text-gray-400 italic">
+                                            የአእምሮ ጤና እንክብካቤ ተደራሽ፣ መድልዎ-ያለሽ እና ሁሉን አቀፍ ሆኖ ለእያንዳንዱ ሰው ጤናማ፣ ምርታማ እና ፍሬያማ ህይወት የሚኖርበትን ወደፊት እናወጣለን።
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
