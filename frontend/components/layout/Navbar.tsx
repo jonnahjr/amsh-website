@@ -133,9 +133,13 @@ export default function Navbar() {
                 <div className="container-custom">
                     <div className="flex items-center justify-between h-24">
 
-                        {/* LOGO */}
-                        <Link href="/" className="flex items-center gap-3 flex-shrink-0 group">
-                            <div className="relative w-[76px] h-[76px] overflow-hidden transition-all duration-500 group-hover:scale-110 flex items-center justify-center p-0 rounded-full shadow-2xl border-2 border-cyan-400/30 group-hover:border-cyan-400/60 ring-4 ring-white shadow-cyan-400/20">
+                        {/* LOGO - DYNAMIC FLOATING EFFECT */}
+                        <Link href="/" className="flex items-center gap-3 flex-shrink-0 group relative z-[60]">
+                            <div className={`relative overflow-hidden transition-all duration-700 ease-in-out flex items-center justify-center p-0 rounded-full shadow-2xl border-4 ring-4 ring-white
+                                ${scrolled
+                                    ? 'w-16 h-16 border-cyan-400/30 shadow-cyan-400/10'
+                                    : 'w-32 h-32 -mb-16 border-cyan-400/60 shadow-cyan-400/40 scale-110 translate-y-2'}`}
+                            >
                                 <video
                                     src="/images/PixVerse_V5.6_Image_Text_360P_Create_a_premium.mp4"
                                     autoPlay
@@ -144,10 +148,13 @@ export default function Navbar() {
                                     playsInline
                                     className="w-full h-full object-cover p-0"
                                 />
+                                {!scrolled && (
+                                    <div className="absolute inset-0 bg-gradient-to-t from-blue-900/40 to-transparent pointer-events-none" />
+                                )}
                             </div>
-                            <div>
-                                <div className="font-black text-blue-900 text-lg leading-tight uppercase tracking-tight">AMSH</div>
-                                <div className="text-[10px] sm:text-xs text-gray-500 font-bold leading-tight">Amanuel Mental Specialized Hospital</div>
+                            <div className={`transition-all duration-500 ${scrolled ? 'opacity-100 translate-x-0' : 'opacity-100 translate-x-2'}`}>
+                                <div className={`font-black text-blue-900 leading-tight uppercase tracking-tight transition-all duration-500 ${scrolled ? 'text-lg' : 'text-xl'}`}>AMSH</div>
+                                <div className={`text-gray-500 font-bold leading-tight transition-all duration-500 ${scrolled ? 'text-[10px] sm:text-xs' : 'text-xs sm:text-sm'}`}>Amanuel Mental Specialized Hospital</div>
                             </div>
                         </Link>
 
