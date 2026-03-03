@@ -149,9 +149,9 @@ export default function Navbar() {
                             </div>
                             {/* Text beside the logo */}
                             <div className="flex flex-col">
-                                <div className={`font-black text-blue-900 leading-none uppercase tracking-tight transition-all duration-500 ${scrolled ? 'text-lg' : 'text-xl'}`}>AMSH</div>
-                                <div className={`text-gray-600 font-extrabold leading-tight transition-all duration-500 ${scrolled ? 'text-[10px]' : 'text-xs'}`}>አማኑኤል የአእምሮ ስፔሻላይዝድ ሆስፒታል</div>
-                                <div className={`text-gray-400 font-bold leading-tight transition-all duration-500 ${scrolled ? 'text-[8px]' : 'text-[10px]'}`}>Amanuel Mental Specialized Hospital</div>
+                                <div className={`font-black text-blue-900 leading-none uppercase tracking-tight transition-all duration-500 ${scrolled ? 'text-2xl' : 'text-3xl'}`}>AMSH</div>
+                                <div className={`text-gray-600 font-extrabold leading-tight transition-all duration-500 ${scrolled ? 'text-sm' : 'text-base'}`}>አማኑኤል የአእምሮ ስፔሻላይዝድ ሆስፒታል</div>
+                                <div className={`text-gray-400 font-bold leading-tight transition-all duration-500 ${scrolled ? 'text-xs' : 'text-sm'}`}>Amanuel Mental Specialized Hospital</div>
                             </div>
                         </Link>
 
