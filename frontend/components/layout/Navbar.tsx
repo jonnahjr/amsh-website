@@ -135,11 +135,14 @@ export default function Navbar() {
 
                         {/* LOGO */}
                         <Link href="/" className="flex items-center gap-3 flex-shrink-0 group">
-                            <div className="relative w-14 h-14 overflow-hidden transition-transform group-hover:scale-105 flex items-center justify-center p-0">
-                                <img
-                                    src="/images/logo.png"
-                                    alt="AMSH Logo"
-                                    className="w-full h-full object-contain p-0"
+                            <div className="relative w-20 h-20 overflow-hidden transition-all duration-500 group-hover:scale-110 flex items-center justify-center p-0 rounded-full shadow-2xl border-2 border-cyan-400/30 group-hover:border-cyan-400/60 ring-4 ring-white shadow-cyan-400/20">
+                                <video
+                                    src="/images/PixVerse_V5.6_Image_Text_360P_Create_a_premium.mp4"
+                                    autoPlay
+                                    loop
+                                    muted
+                                    playsInline
+                                    className="w-full h-full object-cover p-0"
                                 />
                             </div>
                             <div>

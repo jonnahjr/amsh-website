@@ -43,11 +43,14 @@ export default function Footer() {
                     {/* Brand */}
                     <div className="lg:col-span-2">
                         <Link href="/" className="flex items-center gap-4 mb-6 group">
-                            <div className="relative w-16 h-16 flex items-center justify-center p-0 transition-transform group-hover:scale-105">
-                                <img
-                                    src="/images/logo.png"
-                                    alt="AMSH Logo"
-                                    className="w-full h-full object-contain p-0"
+                            <div className="relative w-28 h-28 flex items-center justify-center p-0 transition-all duration-500 group-hover:scale-110 overflow-hidden rounded-full border-4 border-blue-600/30 shadow-2xl shadow-blue-500/20 group-hover:border-cyan-400/40">
+                                <video
+                                    src="/images/PixVerse_V5.6_Image_Text_360P_Create_a_premium.mp4"
+                                    autoPlay
+                                    loop
+                                    muted
+                                    playsInline
+                                    className="w-full h-full object-cover p-0"
                                 />
                             </div>
                             <div>
