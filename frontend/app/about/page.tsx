@@ -88,28 +88,63 @@ export default function AboutPage() {
                                 Welcome to <span className="text-blue-900 italic">Amanuel Mental</span><br />
                                 Specialized Hospital
                             </h2>
-                            <div className="space-y-6 text-gray-600 text-lg leading-relaxed text-center">
-                                <p className="font-bold text-xl text-gray-900 leading-snug">
-                                    Amanuel Mental Specialized Hospital stands as Ethiopia’s foremost and oldest specialized institution dedicated exclusively to mental health care. With a proud legacy spanning decades, the hospital has become the cornerstone of psychiatric services in the nation, providing comprehensive, compassionate, and evidence-based care to individuals from all regions of the country.
-                                </p>
-                                <p>
-                                    Since its establishment, the hospital has played a central role in transforming mental health care in Ethiopia. It has grown from a modest facility into a national center of excellence, delivering specialized psychiatric treatment, advancing clinical research, and training generations of mental health professionals who serve across the healthcare system.
-                                </p>
-                                <p>
-                                    Our hospital is dedicated to addressing the full spectrum of mental health conditions, including common and severe psychiatric disorders, substance use disorders, and psychological conditions affecting children, adolescents, adults, and the elderly. We provide integrated services that include prevention, early diagnosis, treatment, rehabilitation, and long-term follow-up care, ensuring continuity and quality in every stage of recovery.
-                                </p>
-                                <p>
-                                    At Amanuel Mental Specialized Hospital, patient care is guided by compassion, professionalism, and respect for human dignity. We understand that mental health challenges affect not only individuals but also families and communities. Therefore, our approach focuses on holistic care that supports emotional, psychological, social, and functional recovery.
-                                </p>
-                                <p>
-                                    Beyond clinical services, the hospital serves as a national training and academic center. It provides practical education and clinical training for psychiatrists, medical doctors, mental health nurses, psychologists, and other health professionals. Through these efforts, the hospital contributes significantly to strengthening Ethiopia’s mental health workforce and healthcare capacity.
-                                </p>
-                                <p>
-                                    The hospital is also actively engaged in research and innovation, working to improve treatment methods, enhance service delivery, and support evidence-based mental health policies. By integrating modern medical technologies, digital health systems, and telepsychiatry services, we are expanding access to mental health care, especially for underserved and remote communities.
-                                </p>
-                                <p>
-                                    Our commitment extends beyond the hospital walls. We work closely with government institutions, partners, and communities to promote mental health awareness, reduce stigma, and improve access to quality mental health services nationwide.
-                                </p>
+                            <div className="space-y-8 text-gray-600 text-lg leading-relaxed text-center">
+                                <div>
+                                    <p className="font-bold text-xl text-gray-900 leading-snug mb-2">
+                                        Amanuel Mental Specialized Hospital stands as Ethiopia's foremost and oldest specialized institution dedicated exclusively to mental health care. With a proud legacy spanning decades, the hospital has become the cornerstone of psychiatric services in the nation, providing comprehensive, compassionate, and evidence-based care to individuals from all regions of the country.
+                                    </p>
+                                    <p className="text-sm text-gray-400 italic">
+                                        አማኑኤል የአእምሮ ስፔሻላይዝድ ሆስፒታል ለአእምሮ ጤና እንክብካቤ ብቻ ሙሉ ለሙሉ የተሰጠ የኢትዮጵያ ቀዳሚ እና ጥንቱ ስፔሻላይዝድ ተቋም ነው። ለዘመናት በዘለቀ ኩሩ ታሪክ ሆስፒታሉ  የሀገሪቱ የሥነ-አዕምሮ አገልግሎቶች ዋነኛ ምሰሶ ሆኗል፤ ከሀገሪቱ ሁሉም ክልሎች ለሚመጡ ሰዎች ሁሉን አቀፍ፣ ሩህሩህ እና በማስረጃ ላይ የተመሠረተ እንክብካቤ ያቀርባል።
+                                    </p>
+                                </div>
+                                <div>
+                                    <p className="mb-2">
+                                        Since its establishment, the hospital has played a central role in transforming mental health care in Ethiopia. It has grown from a modest facility into a national center of excellence, delivering specialized psychiatric treatment, advancing clinical research, and training generations of mental health professionals who serve across the healthcare system.
+                                    </p>
+                                    <p className="text-sm text-gray-400 italic">
+                                        ከተመሠረተበት ጊዜ አንስቶ ሆስፒታሉ በኢትዮጵያ የአእምሮ ጤና እንክብካቤን በመቀየር ማዕከላዊ ሚና ተጫውቷል። ከትንሽ ተቋም ወደ ሀገራዊ የምርጥነት ማዕከልነት አድጓል፤ ስፔሻላይዝድ የሥነ-አዕምሮ ሕክምና ሲያቀርብ፣ ክሊኒካዊ ምርምርን ሲያሳድግ እና በጤና ስርዓቱ ውስጥ የሚያገለግሉ ትውልዶችን የአዕምሮ ጤና ሙያተኞች ሲያሠለጥን ቆይቷል።
+                                    </p>
+                                </div>
+                                <div>
+                                    <p className="mb-2">
+                                        Our hospital is dedicated to addressing the full spectrum of mental health conditions, including common and severe psychiatric disorders, substance use disorders, and psychological conditions affecting children, adolescents, adults, and the elderly. We provide integrated services that include prevention, early diagnosis, treatment, rehabilitation, and long-term follow-up care, ensuring continuity and quality in every stage of recovery.
+                                    </p>
+                                    <p className="text-sm text-gray-400 italic">
+                                        ሆስፒታላችን የተለመዱ እና ከባድ የሥነ-አዕምሮ ችግሮችን፣ የሱስ ችግሮችን እና ህፃናትን፣ ወጣቶችን፣ አዋቂዎችን እና ሽማግሌዎችን የሚጎዱ ሥነ-ልቦናዊ ሁኔታዎችን ጨምሮ ሙሉ ስፔክትረምን ለመፍታት ተሰጥቷል። መከላከልን፣ ቀደምት ምርመራን፣ ሕክምናን፣ ማገገምን እና የረዥም ጊዜ ክትትልን ጨምሮ የተቀናጁ አገልግሎቶችን እናቀርባለን።
+                                    </p>
+                                </div>
+                                <div>
+                                    <p className="mb-2">
+                                        At Amanuel Mental Specialized Hospital, patient care is guided by compassion, professionalism, and respect for human dignity. We understand that mental health challenges affect not only individuals but also families and communities. Therefore, our approach focuses on holistic care that supports emotional, psychological, social, and functional recovery.
+                                    </p>
+                                    <p className="text-sm text-gray-400 italic">
+                                        በአማኑኤል የአእምሮ ስፔሻላይዝድ ሆስፒታል፣ የታካሚ እንክብካቤ በርህሩህነት፣ ሙያዊነት እና ለሰው ክብር ባለ አክብሮት ይመራል። የአዕምሮ ጤና ችግሮች ለግለሰቦች ብቻ ሳይሆን ለቤተሰቦችም እና ለማህበረሰቦችም ተፅዕኖ እንደሚያሳድሩ እንረዳለን። ስለሆነም አካሄዳችን ስሜታዊ፣ ሥነ-ልቦናዊ፣ ማህበራዊ እና ተግባራዊ ማገገምን የሚደግፍ ሁሉን አቀፍ እንክብካቤ ላይ ያተኩራል።
+                                    </p>
+                                </div>
+                                <div>
+                                    <p className="mb-2">
+                                        Beyond clinical services, the hospital serves as a national training and academic center. It provides practical education and clinical training for psychiatrists, medical doctors, mental health nurses, psychologists, and other health professionals. Through these efforts, the hospital contributes significantly to strengthening Ethiopia's mental health workforce and healthcare capacity.
+                                    </p>
+                                    <p className="text-sm text-gray-400 italic">
+                                        ከክሊኒካዊ አገልግሎቶች ባሻገር ሆስፒታሉ ሀገራዊ ሥልጠና እና አካዳሚያዊ ማዕከል ሆኖ ያገለግላል። ለሥነ-አዕምሮ ሐኪሞች፣ ሕክምና ዶክተሮች፣ የአዕምሮ ጤና ነርሶች፣ ሥነ-ልቦናዊ ባለሙያዎች እና ሌሎች የጤና ሙያተኞች ተግባራዊ ትምህርት እና ክሊኒካዊ ሥልጠና ይሰጣል። በዚህ ጥረቶች ሆስፒታሉ የኢትዮጵያን የአዕምሮ ጤና የሰው ሀይል ለማጠናከር ከፍተኛ አስተዋፅዖ ያደርጋል።
+                                    </p>
+                                </div>
+                                <div>
+                                    <p className="mb-2">
+                                        The hospital is also actively engaged in research and innovation, working to improve treatment methods, enhance service delivery, and support evidence-based mental health policies. By integrating modern medical technologies, digital health systems, and telepsychiatry services, we are expanding access to mental health care, especially for underserved and remote communities.
+                                    </p>
+                                    <p className="text-sm text-gray-400 italic">
+                                        ሆስፒታሉ በምርምር እና ፈጠራ ላይ ንቁ ተሳትፎ ያደርጋል፤ የሕክምና ዘዴዎችን ለማሻሻል፣ አገልግሎት አቅርቦትን ለማሳደግ እና በማስረጃ ላይ የተመሠረቱ የአዕምሮ ጤና ፖሊሲዎችን ለመደገፍ ይሰራል። ዘመናዊ የሕክምና ቴክኖሎጂዎችን፣ ዲጂታል የጤና ስርዓቶችን እና የቴሌሳይካትሪ አገልግሎቶችን በማዋሃድ፣ ወደ አእምሮ ጤና እንክብካቤ ተደራሽነትን ለሩቅ ማህበረሰቦች እያሰፋን ነን።
+                                    </p>
+                                </div>
+                                <div>
+                                    <p className="mb-2">
+                                        Our commitment extends beyond the hospital walls. We work closely with government institutions, partners, and communities to promote mental health awareness, reduce stigma, and improve access to quality mental health services nationwide.
+                                    </p>
+                                    <p className="text-sm text-gray-400 italic">
+                                        ቁርጠኝነታችን ከሆስፒታሉ ቅጥር ጊቢ ባሻገር ይዘልቃል። የአዕምሮ ጤና ግንዛቤን ለማሳደግ፣ የማህበራዊ መድልዎን ለመቀነስ እና ሀገር አቀፍ የጥራት የአዕምሮ ጤና አገልግሎቶች ተደራሽነትን ለማሻሻል ከመንግሥት ተቋማት፣ አጋሮች እና ማህበረሰቦች ጋር ጠበቅ ብለን እንሰራለን።
+                                    </p>
+                                </div>
                                 <p className="font-black text-blue-900 pt-10 border-t border-gray-100 text-3xl tracking-tighter">
                                     Today, Amanuel Mental Specialized Hospital continues to lead with a clear purpose: to restore hope, improve lives, and build a healthier future through excellence in mental health care, education, and research.
                                 </p>
