@@ -131,11 +131,11 @@ export default function Navbar() {
                 : 'bg-white/90 backdrop-blur-md py-4'
                 }`}>
                 <div className="container-custom">
-                    <div className="flex items-center justify-between h-20">
+                    <div className="flex items-center justify-between h-24">
 
                         {/* LOGO */}
                         <Link href="/" className="flex items-center gap-3 flex-shrink-0 group">
-                            <div className="relative w-20 h-20 overflow-hidden transition-all duration-500 group-hover:scale-110 flex items-center justify-center p-0 rounded-full shadow-2xl border-2 border-cyan-400/30 group-hover:border-cyan-400/60 ring-4 ring-white shadow-cyan-400/20">
+                            <div className="relative w-[76px] h-[76px] overflow-hidden transition-all duration-500 group-hover:scale-110 flex items-center justify-center p-0 rounded-full shadow-2xl border-2 border-cyan-400/30 group-hover:border-cyan-400/60 ring-4 ring-white shadow-cyan-400/20">
                                 <video
                                     src="/images/PixVerse_V5.6_Image_Text_360P_Create_a_premium.mp4"
                                     autoPlay
