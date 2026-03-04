@@ -106,39 +106,50 @@ async function main() {
 
     // Sample News Posts
     const newsPost = await prisma.post.upsert({
-        where: { slug: 'amsh-celebrates-90-years' },
+        where: { slug: 'hospital-board-strategic-visit-2018' },
         update: {},
         create: {
-            title: 'AMSH Celebrates 90+ Years of Mental Health Service',
-            slug: 'amsh-celebrates-90-years',
-            excerpt: 'Amanuel Mental Specialized Hospital marks over nine decades of dedicated service to Ethiopian mental health patients.',
-            content: `<p>Amanuel Mental Specialized Hospital (AMSH) proudly celebrates over 90 years of providing comprehensive mental health services to the people of Ethiopia. Established in 1930, AMSH has grown from a small facility to become Ethiopia's premier public mental health institution.</p>
-      <p>Throughout its history, AMSH has treated hundreds of thousands of patients, trained thousands of health professionals, and contributed significantly to mental health research in Africa.</p>
-      <p>The hospital continues to expand its services, including the recent establishment of the Child & Adolescent Psychiatry Unit and the modern Addiction Treatment Center.</p>`,
+            title: 'Board of Directors Conducts Comprehensive Supervision Visit',
+            slug: 'hospital-board-strategic-visit-2018',
+            excerpt: 'On February 17, 2018 E.C., the Board of Directors conducted a strategic review of service delivery, patient care standards, and digital health implementation across all hospital wards.',
+            content: `<p>The Board of Directors of Emmanuel Mental Specialized Hospital (EMSH) recently concluded a high-level strategic supervision visit aimed at assessing the hospital's performance and service quality. The visit, which took place on February 17, 2018 E.C., included a detailed review of clinical operations, patient care standards, and the implementation of modern healthcare technologies.</p>
+      <p>During the session, board members toured several specialized departments, including the acute care psychiatric unit and the rehabilitation center. They engaged with department heads to discuss challenges and opportunities for further enhancing mental health service delivery in Ethiopia.</p>
+      <p>The board expressed satisfaction with the hospital's progress in digital health transformation and emphasized the importance of maintaining EMSH's position as a regional center of excellence.</p>
+      <h3>Key Supervision Areas:</h3>
+      <ul>
+        <li><strong>Inpatient Bed Capacity:</strong> Reviewed the expansion of the new acute care ward.</li>
+        <li><strong>Research Integration:</strong> Evaluated the progress of the neuropsychiatry research department.</li>
+        <li><strong>Community Outreach:</strong> Assessed the performance of regional mental health support programs.</li>
+      </ul>`,
             type: 'NEWS',
             status: 'PUBLISHED',
             authorId: admin.id,
-            tags: JSON.stringify(['anniversary', 'milestone', 'mental-health']),
+            tags: JSON.stringify(['institutional', 'governance', 'board']),
             publishedAt: new Date(),
         },
     });
 
     await prisma.post.upsert({
-        where: { slug: 'mental-health-awareness-week-2024' },
+        where: { slug: 'community-health-worker-training-program' },
         update: {},
         create: {
-            title: 'Mental Health Awareness Week 2024 - AMSH Events',
-            slug: 'mental-health-awareness-week-2024',
-            excerpt: 'Join AMSH for a week of mental health awareness activities, free screenings, and community outreach.',
-            content: `<p>AMSH is proud to announce our Mental Health Awareness Week activities. This year's theme focuses on "Mental Health is a Human Right," aligning with global mental health advocacy efforts.</p>
-      <p>Activities include free mental health screenings, public lectures, and community outreach programs.</p>`,
-            type: 'EVENT',
+            title: 'EMSH Trains 134 Community Health Workers in Mental Health Crisis Response',
+            slug: 'community-health-worker-training-program',
+            excerpt: 'A three-day intensive training program equipped community health workers from 10 Addis Ababa sub-cities with crisis detection, referral, and anti-stigma skills.',
+            content: `<p>Emmanuel Mental Specialized Hospital recently completed a landmark training initiative that equipped over 120 community health workers (CHWs) from Addis Ababa sub-cities with the knowledge and skills to identify and respond to mental health crises at the community level.</p>
+      <p>The three-day intensive program, conducted in both Amharic and English, covered critical topics including early symptom recognition, suicide risk assessment, anti-stigma communication, and clear referral pathways to EMSH's outpatient department.</p>
+      <h3>Training Program Highlights:</h3>
+      <ul>
+        <li><strong>134 participants</strong> from 10 sub-cities trained</li>
+        <li>Modules on schizophrenia, bipolar disorder, and substance use</li>
+        <li>Practical crisis de-escalation role-play exercises</li>
+        <li>Certification awarded to all successful graduates</li>
+      </ul>`,
+            type: 'NEWS',
             status: 'PUBLISHED',
             authorId: admin.id,
-            tags: JSON.stringify(['awareness', 'event', 'community']),
-            publishedAt: new Date(),
-            eventDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-            eventLocation: 'AMSH Main Campus, Addis Ababa',
+            tags: JSON.stringify(['training', 'community', 'health-workers']),
+            publishedAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000), // 5 days ago
         },
     });
 
