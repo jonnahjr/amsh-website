@@ -92,8 +92,8 @@ export default function NewsDetailPage() {
         };
 
         // Check mock posts first
-        const slugKey = typeof slug === 'string' ? slug : slug?.[0];
-        if (mockPosts[slugKey]) {
+        const slugKey = typeof slug === 'string' ? slug : Array.isArray(slug) ? slug[0] : '';
+        if (slugKey && mockPosts[slugKey]) {
             setPost(mockPosts[slugKey]);
             setLoading(false);
             return;

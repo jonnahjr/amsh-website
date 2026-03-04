@@ -15,31 +15,38 @@ export default function NewsSection() {
             .finally(() => setLoading(false));
     }, []);
 
-    const samplePosts = [
+    // The 3 newest articles — always updated here
+    const mockPosts = [
         {
-            id: '1', slug: 'emsh-celebrates-90-years',
-            title: 'EMSH Celebrates 90+ Years of Mental Health Service',
-            excerpt: 'Emmanuel Mental Specialized Hospital marks over nine decades of dedicated service to Ethiopian mental health patients.',
-            type: 'NEWS', publishedAt: new Date().toISOString(),
-            category: { name: 'News', color: '#1B4F8A' },
+            id: 'fb-1', slug: 'hospital-board-strategic-visit-2018',
+            title: 'Board of Directors Conducts Comprehensive Supervision Visit',
+            excerpt: 'On February 17, 2018 E.C., the Board of Directors conducted a strategic review of service delivery, patient care standards, and digital health implementation across all wards.',
+            type: 'NEWS', publishedAt: '2026-02-24T10:00:00Z',
+            category: { name: 'Institutional', color: '#1B4F8A' },
+            isBreaking: true,
         },
         {
-            id: '2', slug: 'mental-health-awareness-2024',
-            title: 'Mental Health Awareness Week 2024 Events at EMSH',
-            excerpt: 'Join us for a week of mental health awareness activities, free screenings, and community outreach programs.',
-            type: 'EVENT', publishedAt: new Date().toISOString(),
-            category: { name: 'Events', color: '#B8860B' },
+            id: 'fb-2', slug: 'neuropsychiatry-research-unit-launch',
+            title: 'New Neuropsychiatry Research Unit Opens — A First in Ethiopia',
+            excerpt: 'EMSH inaugurates a state-of-the-art Neuropsychiatry Research Unit with EEG facilities and a clinical trials center, advancing brain science across Africa.',
+            type: 'NEWS', publishedAt: '2026-01-15T11:00:00Z',
+            category: { name: 'Research', color: '#2E8B57' },
+            isBreaking: true,
         },
         {
-            id: '3', slug: 'new-cpd-training-programs',
-            title: 'New CPD Training Programs Available for Health Professionals',
-            excerpt: 'EMSH launches new continuing professional development courses in psychiatry, psychology, and mental health nursing.',
-            type: 'ANNOUNCEMENT', publishedAt: new Date().toISOString(),
-            category: { name: 'Announcements', color: '#2E8B57' },
+            id: 'fb-3', slug: 'community-health-worker-training-program',
+            title: 'EMSH Trains 134 Community Health Workers in Mental Health Crisis Response',
+            excerpt: 'A three-day intensive training program equipped community health workers from 10 Addis Ababa sub-cities with crisis detection, referral, and anti-stigma skills.',
+            type: 'ANNOUNCEMENT', publishedAt: '2026-02-12T07:30:00Z',
+            category: { name: 'Training', color: '#B8860B' },
         },
     ];
 
-    const displayPosts = posts.length > 0 ? posts : samplePosts;
+    // Merge real API posts with our latest mock posts; sort by newest first; take top 3
+    const allPosts = [...posts, ...mockPosts].sort(
+        (a, b) => new Date(b.publishedAt || b.createdAt).getTime() - new Date(a.publishedAt || a.createdAt).getTime()
+    );
+    const displayPosts = allPosts.slice(0, 3);
     const typeColors: Record<string, string> = {
         NEWS: 'bg-blue-100 text-blue-800',
         EVENT: 'bg-yellow-100 text-yellow-800',
