@@ -266,20 +266,28 @@ export default function ClinicalAttachmentPage() {
                                         >
                                             <option value="" disabled>Select Department</option>
                                             {[
+                                                "Addiction Treatment Unit",
                                                 "Adult Psychiatry",
                                                 "Child & Adolescent Psychiatry",
-                                                "Addiction Treatment Unit",
-                                                "Emergency Psychiatry",
-                                                "Clinical Psychology",
-                                                "Neurology / EEG",
                                                 "Clinical Mental Health",
-                                                "Rehabilitation Services",
-                                                "Telepsychiatry Services",
-                                                "Pharmacy Services",
+                                                "Clinical Psychology",
+                                                "Community Mental Health",
+                                                "Emergency Nursing",
+                                                "Emergency Psychiatry",
+                                                "General Medical Service",
+                                                "General Nursing Service",
+                                                "Internal Medicine",
                                                 "Laboratory Services",
-                                                "Training & Education",
+                                                "Neurology / EEG",
+                                                "Obstetrics & Gynecology",
+                                                "Pediatrics & Child Health",
+                                                "Pharmacy Services",
+                                                "Psychiatric Nursing",
+                                                "Rehabilitation Services",
                                                 "Research Services",
-                                                "Community Mental Health"
+                                                "Surgical Nursing",
+                                                "Surgical Service",
+                                                "Training & Education"
                                             ].map((dept) => (
                                                 <option key={dept} value={dept}>{dept}</option>
                                             ))}
@@ -287,7 +295,34 @@ export default function ClinicalAttachmentPage() {
                                     </div>
                                     <div className="space-y-4">
                                         <label className="block text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Profession Type</label>
-                                        <input required name="profession" value={formData.profession} onChange={handleInputChange} type="text" placeholder="e.g. Clinical Nurse, Psychiatrist" className="w-full px-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-blue-900 transition-all font-bold text-sm" />
+                                        <select
+                                            required
+                                            name="profession"
+                                            value={formData.profession}
+                                            onChange={handleInputChange}
+                                            className="w-full px-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-blue-900 transition-all font-bold text-sm appearance-none cursor-pointer"
+                                        >
+                                            <option value="" disabled>Select Profession</option>
+                                            {[
+                                                "General Practitioner",
+                                                "Health Officer Student",
+                                                "Medical Intern",
+                                                "Medical Student (Clinical)",
+                                                "Medical Student (Pre-Clinical)",
+                                                "Nursing Student (BSc)",
+                                                "Nursing Student (Diploma)",
+                                                "Occupational Therapy Student",
+                                                "Pharmacy Student",
+                                                "Psychiatry Resident",
+                                                "Psychology Intern",
+                                                "Resident Doctor",
+                                                "Social Work Intern",
+                                                "Specialized Clinician",
+                                                "Other Healthcare Professional"
+                                            ].map((prof) => (
+                                                <option key={prof} value={prof}>{prof}</option>
+                                            ))}
+                                        </select>
                                     </div>
                                     <div className="space-y-4">
                                         <label className="block text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Number of Students</label>
