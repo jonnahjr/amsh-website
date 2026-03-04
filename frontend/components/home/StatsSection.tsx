@@ -4,10 +4,15 @@ export default function StatsSection() {
     const stats = [
         { value: '90+', label: 'Years of Service', icon: '🏆', description: 'Since 1930 E.C.' },
         { value: '300+', label: 'Hospital Beds', icon: '🛏️', description: 'Inpatient capacity' },
-        { value: '50+', label: 'Expert Doctors', icon: '👨‍⚕️', description: 'Psychiatrists' },
-        { value: '10,000+', label: 'Annual Patients', icon: '💙', description: 'Lives touched' },
-        { value: '24/7', label: 'Emergency Care', icon: '🚨', description: 'Always open' },
-        { value: '100+', label: 'Research Papers', icon: '📄', description: 'Published works' },
+        { value: '1500+', label: 'Clinical Staff', icon: '🩺', description: 'Total healthcare professionals' },
+        { value: '30+', label: 'Psychiatrists', icon: '🧠', description: 'Expert specialist doctors' },
+        { value: '40+', label: 'General Practitioners', icon: '👨‍⚕️', description: 'Expert GPs' },
+        { value: '250+', label: 'Psychiatric Nurses', icon: '👩‍⚕️', description: 'Dedicated care staff' },
+        { value: '10+', label: 'Internal Specialists', icon: '🏥', description: 'Internal Medicine Experts' },
+        { value: '5+', label: 'Neurologists', icon: '⚡', description: 'Brain & Nervous System' },
+        { value: '10,000+', label: 'Annual Patients', icon: '💙', description: 'Lives touched annually' },
+        { value: '24/7', label: 'Emergency Care', icon: '🚨', description: 'Always available' },
+        { value: '500+', label: 'Ongoing Research', icon: '📄', description: 'Published works' },
     ];
 
     return (

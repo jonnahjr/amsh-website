@@ -18,16 +18,80 @@ export default function NewsDetailPage() {
         postsAPI.getBySlug(slug as string).then(res => {
             setPost(res.data.post);
         }).catch(() => {
-            // Mock for demo
-            setPost({
-                title: 'EMSH Launching New Mental Health Awareness Campaign',
-                content: '<p>Emmanuel Mental Specialized Hospital is proud to announce its latest initiative aimed at raising mental health awareness across Ethiopia. This campaign, titled "Mind Our Future", will focus on youth mental health and destigmatizing psychiatric treatment.</p><p>Over the next six months, EMSH teams will visit schools, universities, and community centers to provide education and resources.</p><h3>Key Objectives:</h3><ul><li>Increase mental health literacy</li><li>Reduce stigma associated with seeking care</li><li>Provide early intervention resources for youth</li></ul>',
-                publishedAt: new Date().toISOString(),
-                type: 'NEWS',
-                author: { name: 'Dr. Zelalem G.' },
-                category: { name: 'Community Outreach' },
-                featuredImage: 'https://images.unsplash.com/photo-1576091160550-2173bdb999ef?w=1200'
-            });
+            // Updated Mock cases based on Facebook content
+            if (slug === 'hospital-board-strategic-visit-2018') {
+                setPost({
+                    title: 'Strategic Institutional Update: Board of Directors Conducts Supervision Visit',
+                    content: `
+                        <p>The Board of Directors of Emmanuel Mental Specialized Hospital (EMSH) recently concluded a high-level strategic supervision visit aimed at assessing the hospital's performance and service quality. The visit, which took place on February 17, 2018 E.C., included a detailed review of clinical operations, patient care standards, and the implementation of modern healthcare technologies.</p>
+                        <p>During the session, board members toured several specialized departments, including the acute care psychiatric unit and the rehabilitation center. They engaged with department heads to discuss challenges and opportunities for further enhancing mental health service delivery in Ethiopia.</p>
+                        <p>The board expressed satisfaction with the hospital's progress in digital health transformation and emphasized the importance of maintaining EMSH's position as a regional center of excellence.</p>
+                         <h3>Key Supervision Areas:</h3>
+                        <ul>
+                            <li><strong>Inpatient Bed Capacity:</strong> Reviewed the expansion of the new acute care ward.</li>
+                            <li><strong>Research Integration:</strong> Evaluated the progress of the neuropsychiatry research department.</li>
+                            <li><strong>Community Outreach:</strong> Assessed the performance of regional mental health support programs.</li>
+                        </ul>
+                    `,
+                    publishedAt: '2026-02-24T10:00:00Z',
+                    type: 'NEWS',
+                    author: { name: 'Hospital PR Desk' },
+                    category: { name: 'Institutional' },
+                    featuredImage: 'https://images.unsplash.com/photo-1576091160550-2173dad99961?auto=format&fit=crop&q=80&w=1200'
+                });
+            } else if (slug === 'understanding-social-media-addiction-impact') {
+                setPost({
+                    title: 'Addressing the Digital Age: Understanding Social Media Addiction in Modern Ethiopia',
+                    content: `
+                        <p>Social media addiction is an increasing concern affecting millions, particularly young adults and adolescents. At Emmanuel Mental Specialized Hospital, we are seeing a growing number of cases related to behavioral addictions linked to digital consumption.</p>
+                        <p>This "Dopamine-driven" addiction occurs when the brain repeatedly seeks the instant gratification provided by social media interactions such as likes, comments, and shares. Symptoms often include excessive screen time, anxiety when offline, and a withdrawal from real-world relationships and responsibilities.</p>
+                        <h3>Psychological Symptoms:</h3>
+                        <ul>
+                            <li>Excessive preoccupation with online platforms.</li>
+                            <li>Anxiety, restlessness, or irritability when access is restricted.</li>
+                            <li>Decline in academic or professional performance due to screen time.</li>
+                            <li>Sleep disturbances caused by late-night scrolling.</li>
+                        </ul>
+                        <h3>Key Strategies for Recovery:</h3>
+                        <ul>
+                            <li><strong>Set Time Limits:</strong> Dedicate specific windows for social media use.</li>
+                            <li><strong>Notification Management:</strong> Disable non-essential alerts to reduce compulsive checking.</li>
+                            <li><strong>Digital-Free Zones:</strong> Designate meal times and bedroom hours as "phone-free."</li>
+                        </ul>
+                        <p>Prioritizing mental health in the digital age is essential for long-term psychological well-being. Our outpatient clinic is available for those seeking professional guidance on managing behavioral addictions.</p>
+                    `,
+                    publishedAt: '2026-02-23T09:00:00Z',
+                    type: 'NEWS',
+                    author: { name: 'Clinical Psychology Dept' },
+                    category: { name: 'Clinical' },
+                    featuredImage: 'https://images.unsplash.com/photo-1516110833967-0b5716ca1387?auto=format&fit=crop&q=80&w=1200'
+                });
+            } else if (slug === 'emsh-legacy-90-years') {
+                setPost({
+                    title: 'A Century of Care: EMSH’s Continuing Legacy in Mental Health Pioneerism',
+                    content: `
+                        <p>Emmanuel Mental Specialized Hospital (EMSH) stands as Ethiopia's foremost and oldest specialized institution dedicated exclusively to mental health care. Established in 1930 E.C., the hospital has served as a cornerstone of psychiatric services for over nine decades.</p>
+                        <p>Our comprehensive services include specialized psychiatry, clinical psychology, world-class rehabilitation, and community-based outreach. As we move forward, we remain committed to our founding motto: "ለአእምሮ ጤና እንተጋለን!" (Working together for mental health).</p>
+                        <p>Over the years, EMSH has transitioned from a modest facility into a national center of excellence, delivering specialized psychiatric treatment, advancing clinical research, and training generations of mental health professionals who serve across the healthcare system.</p>
+                    `,
+                    publishedAt: '2026-02-20T14:30:00Z',
+                    type: 'NEWS',
+                    author: { name: 'Institutional Archive' },
+                    category: { name: 'Announcements' },
+                    featuredImage: 'https://images.unsplash.com/photo-1519494140681-891f9302e48e?auto=format&fit=crop&q=80&w=1200'
+                });
+            } else {
+                // Default fallback
+                setPost({
+                    title: 'EMSH Mental Health Update',
+                    content: '<p>Emmanuel Mental Specialized Hospital is committed to delivering the highest standard of psychiatric care in Ethiopia. Stay connected for the latest updates from our clinical and research teams.</p>',
+                    publishedAt: new Date().toISOString(),
+                    type: 'NEWS',
+                    author: { name: 'EMSH Media Desk' },
+                    category: { name: 'Announcements' },
+                    featuredImage: 'https://images.unsplash.com/photo-1519494140681-891f9302e48e?auto=format&fit=crop&q=80&w=1200'
+                });
+            }
         }).finally(() => setLoading(false));
     }, [slug]);
 
