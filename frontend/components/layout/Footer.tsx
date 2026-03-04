@@ -55,12 +55,13 @@ export default function Footer() {
                                 />
                             </div>
                             <div>
-                                <div className="font-black text-white text-2xl tracking-tighter uppercase">AMSH</div>
-                                <div className="text-xs text-blue-400 font-bold uppercase tracking-widest leading-tight">Amanuel Mental Specialized Hospital</div>
+                                <div className="font-black text-white text-2xl tracking-tighter uppercase">EMSH</div>
+                                <div className="text-xs text-blue-400 font-bold uppercase tracking-widest leading-tight">Emmanuel Mental Specialized Hospital</div>
+                                <div className="motto-premium-lg mt-2">ለአዕምሮ ጤና እንተጋለን!</div>
                             </div>
                         </Link>
                         <p className="text-gray-400 text-sm leading-relaxed mb-6 max-w-sm">
-                            Specialized public mental health institution established in 1930.
+                            Specialized public mental health institution established in 1930 E.C.
                             Providing comprehensive, compassionate psychiatric care for over 90 years.
                         </p>
 
@@ -86,8 +87,8 @@ export default function Footer() {
                                 <span className="text-blue-400">✉️</span>
                                 <div>
                                     <p className="text-white text-sm font-semibold">Email</p>
-                                    <a href="mailto:info@amsh.gov.et" className="text-gray-400 text-sm hover:text-blue-400 transition-colors">
-                                        info@amsh.gov.et
+                                    <a href="mailto:info@emsh.gov.et" className="text-gray-400 text-sm hover:text-blue-400 transition-colors">
+                                        info@emsh.gov.et
                                     </a>
                                 </div>
                             </div>
@@ -103,7 +104,7 @@ export default function Footer() {
 
                         {/* Social Links */}
                         <div className="flex items-center gap-3 mt-6">
-                            <a href="https://facebook.com/amsh.gov.et" target="_blank" rel="noopener noreferrer"
+                            <a href="https://facebook.com/emsh.gov.et" target="_blank" rel="noopener noreferrer"
                                 className="w-9 h-9 rounded-lg bg-gray-700 hover:bg-blue-600 flex items-center justify-center transition-colors text-sm">
                                 f
                             </a>
@@ -158,11 +159,11 @@ export default function Footer() {
             <div className="border-t border-gray-800">
                 <div className="container-custom py-6 flex flex-col md:flex-row items-center justify-between gap-4">
                     <p className="text-gray-500 text-sm">
-                        © {new Date().getFullYear()} Amanuel Mental Specialized Hospital. All Rights Reserved.
+                        © {new Date().getFullYear()} Emmanuel Mental Specialized Hospital. All Rights Reserved.
                     </p>
                     <div className="flex items-center gap-2">
                         <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-                        <span className="text-gray-500 text-sm">Yonas Bogale | AMSH IT Department</span>
+                        <span className="text-gray-500 text-sm">Yonas Bogale | EMSH IT Department</span>
                         <span className="text-gray-600 mx-2">|</span>
                         <Link href="/privacy" className="text-gray-500 text-sm hover:text-gray-300 transition-colors">Privacy Policy</Link>
                         <span className="text-gray-600 mx-2">|</span>

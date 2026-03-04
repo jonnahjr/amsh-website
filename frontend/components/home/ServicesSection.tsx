@@ -68,8 +68,10 @@ export default function ServicesSection() {
                     <h2 className="text-4xl md:text-5xl font-black text-blue-950 tracking-tighter leading-tight mb-6">
                         Specialized Mental <span className="text-blue-900 italic font-medium">Healthcare</span>
                     </h2>
+
                     <p className="text-blue-900/60 text-lg md:text-xl max-w-none mx-auto leading-relaxed mb-12">
-                        At Amanuel Mental Specialized Hospital, we provide comprehensive, multidisciplinary care across various specialized clinical departments. Our team of expert psychiatrists and clinical staff are dedicated to delivering evidence-based treatment tailored to each patient's journey toward wellness.
+
+                        At Emmanuel Mental Specialized Hospital, we provide comprehensive, multidisciplinary care across various specialized clinical departments. Our team of expert psychiatrists and clinical staff are dedicated to delivering evidence-based treatment tailored to each patient's journey toward wellness.
                     </p>
                 </div>
 

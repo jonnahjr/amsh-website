@@ -9,7 +9,7 @@ interface Message {
     timestamp: Date;
 }
 
-const WELCOME_MSG = "👋 Hello! I'm the AMSH Hospital AI Assistant. I can help you with information about our services, departments, appointments, CPD programs, research, and more. How can I assist you today?";
+const WELCOME_MSG = "👋 Hello! I'm the EMSH Hospital AI Assistant. I can help you with information about our services, departments, appointments, CPD programs, research, and more. How can I assist you today?";
 
 export default function ChatbotButton() {
     const [isOpen, setIsOpen] = useState(false);
@@ -79,7 +79,7 @@ export default function ChatbotButton() {
                     <div className="bg-gradient-to-r from-blue-900 to-blue-700 p-4 flex items-center gap-3">
                         <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center text-xl">🤖</div>
                         <div className="flex-1">
-                            <div className="font-bold text-white text-sm">AMSH AI Assistant</div>
+                            <div className="font-bold text-white text-sm">EMSH AI Assistant</div>
                             <div className="flex items-center gap-1.5">
                                 <span className="w-2 h-2 rounded-full bg-green-400" />
                                 <span className="text-blue-200 text-xs">Online • Powered by AI</span>

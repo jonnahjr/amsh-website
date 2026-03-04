@@ -13,7 +13,7 @@ export default function PrivacyPage() {
                     <div className="prose prose-lg max-w-none text-gray-600 space-y-6">
                         <p><strong>Last Updated: May 2024</strong></p>
                         <p>
-                            Amanuel Mental Specialized Hospital (AMSH) is committed to protecting your privacy and ensuring the security of your personal and medical information. This Privacy Policy describes how we collect, use, and protect your data when you use our website and services.
+                            Emmanuel Mental Specialized Hospital (EMSH) is committed to protecting your privacy and ensuring the security of your personal and medical information. This Privacy Policy describes how we collect, use, and protect your data when you use our website and services.
                         </p>
                         <h2 className="text-2xl font-bold text-gray-900 mt-8">1. Information We Collect</h2>
                         <p>

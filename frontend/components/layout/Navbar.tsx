@@ -8,7 +8,6 @@ import {
     XMarkIcon,
     PhoneIcon,
     ChevronDownIcon,
-    MagnifyingGlassIcon,
 } from '@heroicons/react/24/outline';
 
 const navLinks = [
@@ -27,21 +26,14 @@ const navLinks = [
         href: '/services',
         children: [
             { label: 'All Services', href: '/services' },
-            { label: 'Clinical Mental Health Services', href: '/services/clinical-mental-health' },
-            { label: 'Psychological Services', href: '/services/psychological-services' },
-            { label: 'Addiction & Substance Abuse', href: '/services/addiction-substance-abuse' },
-            { label: 'Child & Adolescent Mental Health', href: '/services/child-adolescent' },
-            { label: 'Rehabilitation Services', href: '/services/rehabilitation' },
-            { label: 'Telepsychiatry Services', href: '/services/telepsychiatry' },
-            { label: 'Pharmacy Services', href: '/services/pharmacy' },
-            { label: 'Laboratory Services', href: '/services/laboratory' },
-            { label: 'Training & Education', href: '/services/training-education' },
-            { label: 'Research Services', href: '/services/research' },
-            { label: 'Community Mental Health', href: '/services/community-mental-health' },
-            { label: 'Forensic Psychiatry Services', href: '/services/forensic-psychiatry' },
-            { label: 'Referral Services', href: '/services/referral-services' },
-            { label: 'Counseling Services', href: '/services/counseling-services' },
-            { label: 'Promotion & Prevention', href: '/services/promotion-prevention' },
+            { label: 'Psychiatry Services', href: '/services/psychiatry-services' },
+            { label: 'Emergency Services (24/7)', href: '/services/emergency-services' },
+            { label: 'Internal Medicine', href: '/services/internal-medicine' },
+            { label: 'Neurology Services', href: '/services/neurology-services' },
+            { label: 'Laboratory & Radiology', href: '/services/laboratory-services' },
+            { label: 'Pharmacy Services', href: '/services/outpatient-pharmacy' },
+            { label: 'Clinical Psychology', href: '/services/clinical-psychology' },
+            { label: 'MCH & Family Planning', href: '/services/mch-services' },
         ],
     },
     {
@@ -49,21 +41,13 @@ const navLinks = [
         href: '/departments',
         children: [
             { label: 'All Departments', href: '/departments' },
-            { label: 'Clinical Mental Health', href: '/departments/clinical-mental-health' },
-            { label: 'Psychological Services', href: '/departments/psychological-services' },
-            { label: 'Addiction & Substance Abuse', href: '/departments/addiction-substance-abuse' },
-            { label: 'Child & Adolescent', href: '/departments/child-adolescent' },
-            { label: 'Rehabilitation Services', href: '/departments/rehabilitation' },
-            { label: 'Telepsychiatry Services', href: '/departments/telepsychiatry' },
-            { label: 'Pharmacy Services', href: '/departments/pharmacy' },
-            { label: 'Laboratory Services', href: '/departments/laboratory' },
-            { label: 'Training & Education', href: '/departments/training-education' },
-            { label: 'Research Services', href: '/departments/research' },
-            { label: 'Community Mental Health', href: '/departments/community-mental-health' },
+            { label: 'Adult Psychiatry', href: '/departments/adult-psychiatry' },
+            { label: 'Child & Adolescent', href: '/departments/child-psychiatry' },
+            { label: 'Emergency Psychiatry', href: '/departments/emergency' },
+            { label: 'Addiction Treatment', href: '/departments/addiction-treatment' },
+            { label: 'Clinical Psychology', href: '/departments/psychology' },
             { label: 'Forensic Psychiatry', href: '/departments/forensic-psychiatry' },
-            { label: 'Referral Services', href: '/departments/referral-services' },
-            { label: 'Counseling Services', href: '/departments/counseling-services' },
-            { label: 'Promotion & Prevention', href: '/departments/promotion-prevention' },
+            { label: 'Rehabilitation Services', href: '/departments/rehabilitation' },
         ],
     },
     { label: 'Research', href: '/research' },
@@ -93,6 +77,8 @@ export default function Navbar() {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
+
+
     useEffect(() => { setIsOpen(false); }, [pathname]);
 
     const isActive = (href: string) => pathname === href || pathname.startsWith(href + '/');
@@ -108,8 +94,8 @@ export default function Navbar() {
                             <span>+251-111-868-53-85</span>
                         </a>
                         <span className="text-blue-300">|</span>
-                        <a href="mailto:info@amsh.gov.et" className="hover:text-cyan-300 transition-colors">
-                            info@amsh.gov.et
+                        <a href="mailto:info@emsh.gov.et" className="hover:text-cyan-300 transition-colors">
+                            info@emsh.gov.et
                         </a>
                         <span className="text-blue-300">|</span>
                         <span className="text-blue-200">Mon - Fri: 2:30 AM - 10:00 AM</span>
@@ -149,11 +135,16 @@ export default function Navbar() {
                             </div>
                             {/* Text beside the logo */}
                             <div className="flex flex-col">
-                                <div className={`font-black text-blue-900 leading-none uppercase tracking-tight transition-all duration-500 ${scrolled ? 'text-2xl' : 'text-3xl'}`}>AMSH</div>
+                                <div className={`font-black text-blue-900 leading-none uppercase tracking-tight transition-all duration-500 ${scrolled ? 'text-2xl' : 'text-3xl'}`}>EMSH</div>
                                 <div className={`text-gray-600 font-extrabold leading-tight transition-all duration-500 ${scrolled ? 'text-sm' : 'text-base'}`}>አማኑኤል የአእምሮ ስፔሻላይዝድ ሆስፒታል</div>
-                                <div className={`text-gray-400 font-bold leading-tight transition-all duration-500 ${scrolled ? 'text-xs' : 'text-sm'}`}>Amanuel Mental Specialized Hospital</div>
+                                <div className={`text-gray-400 font-bold leading-tight transition-all duration-500 ${scrolled ? 'text-xs' : 'text-sm'}`}>Emmanuel Mental Specialized Hospital</div>
+                                <div className="motto-premium text-[11px] mt-1 animate-pulse-slow">ለአዕምሮ ጤና እንተጋለን!</div>
                             </div>
                         </Link>
+
+
+
+                        <div className="flex-1" />
 
                         {/* DESKTOP NAVIGATION */}
                         <nav className="hidden lg:flex items-center gap-1">
@@ -197,13 +188,6 @@ export default function Navbar() {
                                 </div>
                             ))}
                         </nav>
-
-                        {/* DESKTOP ACTIONS */}
-                        <div className="hidden lg:flex items-center gap-3">
-                            <button className="p-2 rounded-lg text-gray-500 hover:text-blue-900 hover:bg-blue-50 transition-colors">
-                                <MagnifyingGlassIcon className="w-5 h-5" />
-                            </button>
-                        </div>
 
                         {/* MOBILE MENU BUTTON */}
                         <button

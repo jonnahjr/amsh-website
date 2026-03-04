@@ -5,18 +5,21 @@ import Footer from '@/components/layout/Footer';
 import ChatbotButton from '@/components/chatbot/ChatbotButton';
 import EmergencyBanner from '@/components/ui/EmergencyBanner';
 import Link from 'next/link';
-import {
-    PhoneIcon,
-    CalendarIcon,
-    ArrowRightIcon,
-    CheckCircleIcon,
-    BeakerIcon,
-    UserGroupIcon,
-    AcademicCapIcon,
-    ShieldCheckIcon,
-    ClockIcon,
-    HeartIcon
-} from '@heroicons/react/24/outline';
+import { PhoneIcon, ArrowRightIcon, CheckCircleIcon, BuildingOffice2Icon } from '@heroicons/react/24/outline';
+
+const units = [
+    { id: '01', name: 'Clinical Consultation', badge: 'Daily', color: 'bg-blue-950', accent: 'text-cyan-400', badgeColor: 'bg-cyan-400/10 text-cyan-400', desc: 'Expert outpatient psychiatric evaluations and follow-up care for a wide range of mental health conditions, provided by a multidisciplinary team of consultants and residents.' },
+    { id: '02', name: 'Specialized Clinics', badge: 'Specialist', color: 'bg-indigo-950', accent: 'text-violet-400', badgeColor: 'bg-violet-400/10 text-violet-400', desc: 'Dedicated focus clinics for Child & Adolescent, Geriatric, Addiction, and Forensic psychiatry, ensuring patients receive care tailored to their life stage and clinical needs.' },
+    { id: '03', name: 'Wait-Time Management', badge: 'Efficient', color: 'bg-emerald-950', accent: 'text-emerald-400', badgeColor: 'bg-emerald-400/10 text-emerald-400', desc: 'A streamlined triaging and scheduling system designed to minimize wait times and ensure every patient is seen by the appropriate clinical team as efficiently as possible.' },
+    { id: '04', name: 'Outpatient Pharmacy Link', badge: 'Integrated', color: 'bg-teal-950', accent: 'text-teal-400', badgeColor: 'bg-teal-400/10 text-teal-400', desc: 'Seamless integration with our specialized on-site pharmacy, allowing patients to fill psychiatric prescriptions immediately following their clinical consultation.' },
+];
+
+const stats = [
+    { value: 'Daily', label: 'Walk-in Clinics', icon: '🏥' },
+    { value: 'Expert', label: 'Multidisciplinary', icon: '👨‍⚕️' },
+    { value: 'Streamlined', label: 'Patient Flow', icon: '🔄' },
+    { value: 'WHO', label: 'Care Standards', icon: '🌍' },
+];
 
 export default function OutpatientServicesPage() {
     return (
@@ -25,188 +28,141 @@ export default function OutpatientServicesPage() {
             <Navbar />
             <main className="bg-white">
                 {/* Hero Section */}
-                <section className="relative min-h-[70vh] bg-blue-950 flex items-center overflow-hidden">
-                    {/* Background Pattern */}
+                <section className="relative min-h-[90vh] bg-blue-950 flex items-center overflow-hidden">
                     <div className="absolute inset-0 opacity-10">
-                        <div className="absolute inset-0" style={{
-                            backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)',
-                            backgroundSize: '48px 48px',
-                        }} />
+                        <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)', backgroundSize: '48px 48px' }} />
                     </div>
-
-                    {/* Decorative Orbs */}
                     <div className="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[120px] animate-float pointer-events-none" />
-                    <div className="absolute bottom-1/4 left-1/4 w-[400px] h-[400px] bg-cyan-400/5 rounded-full blur-[100px] animate-float pointer-events-none" style={{ animationDelay: '1.5s' }} />
-
-                    {/* Content */}
-                    <div className="container-custom relative z-10 py-24 text-center">
-                        <div className="max-w-4xl mx-auto">
-                            {/* Badge */}
+                    <div className="absolute bottom-1/4 left-1/4 w-[400px] h-[400px] bg-blue-400/5 rounded-full blur-[100px] animate-float pointer-events-none" style={{ animationDelay: '1.5s' }} />
+                    <div className="container-custom relative z-10 py-24 -translate-y-10">
+                        <div className="max-w-4xl">
                             <div className="animate-fade-in-up mb-6">
                                 <span className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 backdrop-blur-sm border border-white/10 rounded-full text-blue-200 text-sm font-semibold uppercase tracking-widest">
-                                    ✦ Comprehensive Psychiatry & Wellness
+                                    🏥 Clinical Services
                                 </span>
                             </div>
-
-                            {/* Title */}
-                            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white leading-[1.1] mb-8 animate-fade-in-up tracking-tighter" style={{ animationDelay: '0.1s' }}>
-                                Outpatient <br />
-                                <span className="text-gray-400 italic font-medium">Services (OPD)</span>
+                            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-black text-white leading-[1.1] mb-8 animate-fade-in-up tracking-tighter" style={{ animationDelay: '0.1s' }}>
+                                Outpatient <br /><span className="text-gray-400 italic font-medium">Services</span>
                             </h1>
-
-                            {/* Subtitle */}
-                            <p className="text-lg md:text-2xl text-blue-100/60 max-w-2xl mx-auto mb-12 leading-relaxed animate-fade-in-up font-medium" style={{ animationDelay: '0.2s' }}>
-                                Providing expert psychiatric evaluation, specialized clinics, and ongoing medication management for over 400 patients daily with compassion and precision.
+                            <p className="text-lg md:text-2xl text-blue-100/80 max-w-3xl mb-12 leading-relaxed animate-fade-in-up font-medium" style={{ animationDelay: '0.2s' }}>
+                                Comprehensive psychiatric consultations and specialized follow-up care for Ethiopia's diverse mental health needs — delivered by national experts.
                             </p>
-
-                            {/* CTAs */}
-                            <div className="flex flex-col sm:flex-row items-center justify-center gap-6 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
-                                <Link href="/contact" className="px-10 py-5 bg-white text-blue-950 rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-blue-50 transition-all shadow-2xl hover:-translate-y-1">
-                                    📞 Contact Hospital
-                                </Link>
-                                <a href="tel:+2511118685385" className="inline-flex items-center gap-2 text-white border-2 border-white/20 px-10 py-5 rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-white/10 transition-all duration-300">
-                                    <PhoneIcon className="w-5 h-5" /> Contact Clinic
+                            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
+                                <a href="tel:+2511118685385" className="px-10 py-5 bg-white text-blue-950 rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-blue-50 transition-all shadow-2xl hover:-translate-y-1 flex items-center gap-2">
+                                    <PhoneIcon className="w-5 h-5" /> Inquire About Visits
                                 </a>
+                                <Link href="/contact" className="inline-flex items-center gap-2 text-white border-2 border-white/20 px-10 py-5 rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-white/10 transition-all duration-300">
+                                    Contact Hospital
+                                </Link>
+                            </div>
+                            <div className="mt-12 flex items-center gap-4 animate-fade-in-up" style={{ animationDelay: '0.5s' }}>
+                                <div className="w-3 h-3 rounded-full bg-blue-400 animate-pulse shadow-[0_0_15px_rgba(96,165,250,0.5)]" />
+                                <span className="text-blue-200 text-sm font-black uppercase tracking-widest">Consultations · Specialist Clinics · Clinical Triage · Pharmacy Link</span>
                             </div>
                         </div>
                     </div>
                 </section>
 
-                {/* Introduction Section */}
-                <section className="py-32 relative overflow-hidden">
-                    <div className="container-custom relative z-10">
-                        <div className="max-w-7xl mx-auto">
-                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
-                                <div>
-                                    <h2 className="text-[10px] font-black uppercase tracking-[0.4em] text-blue-900 mb-6 flex items-center gap-4">
-                                        <span className="w-12 h-[1px] bg-blue-900"></span> Clinical Continuity
-                                    </h2>
-                                    <h3 className="text-4xl md:text-5xl font-black text-gray-900 leading-tight mb-8">
-                                        Expert Guidance for <br />
-                                        <span className="text-blue-900">Mental Wellness.</span>
-                                    </h3>
-                                    <div className="prose prose-lg text-gray-600 leading-relaxed font-medium space-y-6">
-                                        <p>
-                                            Outpatient services at Amanuel Mental Specialized Hospital represent the heartbeat of our clinical care, serving as the primary point of access for mental health support in Ethiopia. We cater to thousands of individuals annually, offering specialized diagnostic assessments and long-term treatment plans.
-                                        </p>
-                                        <p>
-                                            Our highly skilled multidisciplinary teams work across specialized clinics to manage a wide range of psychiatric conditions, ensuring that high-quality care is accessible without the need for hospital admission, thereby promoting productivity and integration within the community.
-                                        </p>
-                                    </div>
-                                </div>
-                                <div className="grid grid-cols-1 gap-8">
-                                    <div className="bg-blue-50 p-10 rounded-[40px] border border-blue-100 shadow-sm relative group overflow-hidden">
-                                        <div className="absolute top-0 right-0 w-32 h-32 bg-blue-600/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 group-hover:scale-150 transition-transform duration-700" />
-                                        <h4 className="text-xl font-black text-blue-950 mb-4 flex items-center gap-3">
-                                            <UserGroupIcon className="w-7 h-7 text-blue-900" /> High Volume Excellence
-                                        </h4>
-                                        <p className="text-gray-500 text-sm leading-relaxed">
-                                            Managing over 400 patient visits daily, our OPD is geared for efficiency without compromising on the depth of psychiatric evaluation and the compassion every patient deserves.
-                                        </p>
-                                    </div>
-                                    <div className="bg-gray-900 p-10 rounded-[40px] text-white shadow-2xl relative group overflow-hidden">
-                                        <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-400/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 group-hover:scale-150 transition-transform duration-700" />
-                                        <h4 className="text-xl font-black mb-4 flex items-center gap-3">
-                                            <BeakerIcon className="w-7 h-7 text-cyan-400" /> Specialized Clinics
-                                        </h4>
-                                        <p className="text-blue-100/60 text-sm leading-relaxed">
-                                            From mood disorders to specialized geriatric and pediatric outpatient care, we offer dedicated clinic days led by senior consultants and specialists in various fields of psychiatry.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                {/* Statistics/Features */}
-                <section className="py-24 bg-blue-50">
+                {/* Stats Bar */}
+                <section className="bg-white border-b border-gray-100">
                     <div className="container-custom">
-                        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-                            {[
-                                { label: 'Daily Patients', value: '400+', icon: <UserGroupIcon className="w-6 h-6" /> },
-                                { label: 'Specialized Clinics', value: '12+', icon: <ShieldCheckIcon className="w-6 h-6" /> },
-                                { label: 'Clinic Days', value: 'Mon-Fri', icon: <ClockIcon className="w-6 h-6" /> },
-                                { label: 'Service Quality', value: 'National Lead', icon: <HeartIcon className="w-6 h-6" /> },
-                            ].map((stat, i) => (
-                                <div key={i} className="bg-white p-8 rounded-3xl border border-blue-100 text-center shadow-sm">
-                                    <div className="text-blue-900 flex justify-center mb-4">{stat.icon}</div>
-                                    <div className="text-3xl font-black text-gray-900 mb-1">{stat.value}</div>
-                                    <div className="text-[10px] font-black uppercase tracking-widest text-gray-400">{stat.label}</div>
+                        <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-y lg:divide-y-0 divide-gray-100">
+                            {stats.map((s) => (
+                                <div key={s.label} className="px-8 py-10 text-center group hover:bg-blue-950 transition-colors duration-300">
+                                    <div className="text-3xl mb-2">{s.icon}</div>
+                                    <div className="text-3xl md:text-4xl font-black text-blue-950 group-hover:text-white transition-colors mb-1">{s.value}</div>
+                                    <div className="text-xs font-black uppercase tracking-widest text-gray-400 group-hover:text-blue-200 transition-colors">{s.label}</div>
                                 </div>
                             ))}
                         </div>
                     </div>
                 </section>
 
-                {/* Vision & Mission Sections */}
-                <section className="py-32 overflow-hidden">
+                {/* About Section */}
+                <section className="py-28 bg-white">
                     <div className="container-custom">
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-start">
-                            {/* Vision */}
-                            <div className="relative">
-                                <span className="text-blue-500 font-black text-9xl absolute -top-16 -left-8 opacity-[0.03] select-none pointer-events-none">VISION</span>
-                                <div className="relative z-10">
-                                    <div className="w-20 h-20 bg-blue-900 rounded-[28px] flex items-center justify-center text-white mb-8 shadow-2xl">
-                                        <HeartIcon className="w-10 h-10" />
-                                    </div>
-                                    <h2 className="text-4xl font-black text-gray-900 mb-8 tracking-tighter uppercase leading-tight">Our <span className="text-blue-900">Vision</span></h2>
-                                    <p className="text-xl text-gray-600 leading-relaxed font-medium">
-                                        To be the national benchmark for outpatient psychiatric care, recognized for accessibility, clinical excellence, and the seamless integration of mental wellness into daily life.
-                                    </p>
+                        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+                            <div>
+                                <span className="text-[10px] font-black uppercase tracking-[0.4em] text-blue-900 mb-6 flex items-center gap-3">
+                                    <span className="w-10 h-px bg-blue-900 inline-block" /> About This Service
+                                </span>
+                                <h2 className="text-4xl md:text-5xl font-black text-gray-900 leading-tight mb-8 tracking-tighter shadow-xs">Ethiopia's Leading <br /><span className="text-blue-900">Psychiatric Outpatient Center</span></h2>
+                                <div className="space-y-5 text-gray-600 leading-relaxed font-medium">
+                                    <p>The Outpatient Department (OPD) is where most patients first encounter EMSH's expert care. We operate one of the highest-volume psychiatric outpatient centers in the region, serving thousands of patients annually from every corner of Ethiopia.</p>
+                                    <p>Our multidisciplinary team includes senior psychiatrists, residents, psychiatric nurses, and clinical psychologists. We utilize standardized clinical protocols to ensure that every outpatient receives a thorough evaluation, an evidence-based treatment plan, and consistent follow-up care that promotes long-term recovery and community reintegration.</p>
+                                </div>
+                                <div className="mt-10 grid grid-cols-2 gap-4">
+                                    {['Clinical Consultation', 'Psychiatric Evaluation', 'Medication Management', 'Therapeutic Counseling', 'Referral Coordination', 'Patient Education'].map(item => (
+                                        <div key={item} className="flex items-start gap-3 p-4 bg-blue-50 rounded-2xl">
+                                            <CheckCircleIcon className="w-5 h-5 text-blue-900 flex-shrink-0 mt-0.5" />
+                                            <div className="text-sm font-bold text-blue-950">{item}</div>
+                                        </div>
+                                    ))}
                                 </div>
                             </div>
-
-                            {/* Mission */}
                             <div className="relative">
-                                <span className="text-cyan-500 font-black text-9xl absolute -top-16 -left-8 opacity-[0.03] select-none pointer-events-none">MISSION</span>
-                                <div className="relative z-10">
-                                    <div className="w-20 h-20 bg-cyan-500 rounded-[28px] flex items-center justify-center text-white mb-8 shadow-2xl">
-                                        <AcademicCapIcon className="w-10 h-10" />
+                                <div className="w-full h-[520px] bg-gradient-to-br from-blue-950 to-blue-900 rounded-[3rem] overflow-hidden flex flex-col items-center justify-center gap-4 border border-blue-800/30 shadow-2xl">
+                                    <div className="w-20 h-20 rounded-full bg-white/5 flex items-center justify-center border border-white/10">
+                                        <BuildingOffice2Icon className="w-10 h-10 text-blue-300" />
                                     </div>
-                                    <h2 className="text-4xl font-black text-gray-900 mb-8 tracking-tighter uppercase leading-tight">Our <span className="text-blue-900">Mission</span></h2>
-                                    <ul className="space-y-6">
-                                        {[
-                                            'Providing patient-centered outpatient care through diagnostic excellence and evidence-based treatments.',
-                                            'Ensuring accessibility by managing high patient volumes with optimized clinical workflows.',
-                                            'Providing continuous professional follow-up to support long-term recovery and community integration.'
-                                        ].map((text, i) => (
-                                            <li key={i} className="flex gap-4 items-start text-gray-600 font-medium">
-                                                <div className="w-6 h-6 rounded-full bg-cyan-100 flex items-center justify-center text-cyan-600 flex-shrink-0 mt-1">
-                                                    <CheckCircleIcon className="w-4 h-4" />
-                                                </div>
-                                                <p className="leading-relaxed">{text}</p>
-                                            </li>
-                                        ))}
-                                    </ul>
+                                    <div className="text-center px-8">
+                                        <p className="text-white font-black text-lg mb-2">Outpatient Clinic</p>
+                                        <p className="text-blue-300/60 text-sm">Photo — EMSH OPD Consultation Area</p>
+                                    </div>
+                                    <span className="mt-2 px-4 py-1.5 bg-white/5 border border-white/10 rounded-full text-xs text-blue-300 uppercase font-bold tracking-widest">Image Placeholder</span>
+                                </div>
+                                <div className="absolute -bottom-6 -right-6 bg-blue-900 text-white rounded-3xl px-6 py-4 shadow-2xl">
+                                    <div className="text-2xl font-black">OPD</div>
+                                    <div className="text-xs font-black uppercase tracking-widest opacity-80">Consultations</div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </section>
 
-                {/* Goal Section */}
-                <section className="py-24 bg-gray-50">
+                {/* Units Section */}
+                <section className="py-28 bg-gray-50">
                     <div className="container-custom">
-                        <div className="max-w-4xl mx-auto bg-white rounded-[50px] p-16 shadow-xl border border-blue-50 relative overflow-hidden text-center group">
-                            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-600/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2" />
-                            <div className="relative z-10">
-                                <h2 className="text-[10px] font-black uppercase tracking-[0.4em] text-blue-900 mb-6">Strategic Goal</h2>
-                                <h3 className="text-4xl font-black text-gray-900 mb-8 leading-tight">Goal of Outpatient Services</h3>
-                                <div className="text-2xl font-black text-blue-950 mb-10 leading-relaxed italic">
-                                    "To ensure consistent, high-quality mental health support that prevents relapse and empowers patients to lead productive lives."
+                        <div className="text-center mb-20">
+                            <span className="section-badge mb-4">🏥 Our Units</span>
+                            <h2 className="text-4xl md:text-6xl font-black text-gray-900 tracking-tighter mb-6">Outpatient Delivery</h2>
+                            <p className="text-gray-500 max-w-2xl mx-auto text-lg leading-relaxed">Integrated outpatient units delivering specialized clinical care and consultation.</p>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            {units.map((u) => (
+                                <div key={u.id} className={`group relative ${u.color} rounded-[2.5rem] overflow-hidden flex flex-col border border-white/5 hover:shadow-2xl transition-all duration-500 hover:-translate-y-2`}>
+                                    <div className="relative h-44 flex items-center justify-center bg-white/5 border-b border-white/5">
+                                        <div className="flex flex-col items-center gap-3">
+                                            <div className="w-14 h-14 rounded-2xl bg-white/10 flex items-center justify-center border border-white/10 group-hover:scale-110 transition-transform duration-500"><BuildingOffice2Icon className={`w-7 h-7 ${u.accent}`} /></div>
+                                            <span className="text-white/30 text-xs font-bold uppercase tracking-widest">Unit Photo</span>
+                                        </div>
+                                        <div className="absolute top-4 left-4 w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center"><span className={`text-sm font-black ${u.accent}`}>{u.id}</span></div>
+                                        <div className={`absolute top-4 right-4 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${u.badgeColor}`}>{u.badge}</div>
+                                    </div>
+                                    <div className="p-8 flex-1 flex flex-col">
+                                        <h3 className="text-xl font-black text-white mb-4 leading-tight">{u.name}</h3>
+                                        <p className="text-blue-100/60 text-sm leading-relaxed flex-1">{u.desc}</p>
+                                    </div>
                                 </div>
-                                <p className="text-gray-500 max-w-2xl mx-auto text-lg leading-relaxed mb-12">
-                                    By providing timely diagnostic interventions and expert medication management, we strive to reduce the burden of mental illness in families across Ethiopia.
-                                </p>
-                                <div className="flex flex-col sm:flex-row justify-center gap-4">
-                                    <Link href="/contact" className="px-10 py-5 bg-blue-900 text-white rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-gray-900 transition-all shadow-xl hover:-translate-y-1">
-                                        Contact Us
-                                    </Link>
-                                    <Link href="/services" className="px-10 py-5 bg-gray-100 text-gray-600 rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-gray-200 transition-all">
-                                        All Services
-                                    </Link>
-                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+
+                {/* Final CTA */}
+                <section className="py-20 bg-blue-950 relative overflow-hidden">
+                    <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)', backgroundSize: '48px 48px' }} />
+                    <div className="container-custom relative z-10 text-center">
+                        <div className="max-w-3xl mx-auto">
+                            <h2 className="text-3xl md:text-5xl font-black text-white mb-6 tracking-tighter shadow-sm">Outpatient Visit Information</h2>
+                            <p className="text-blue-200/60 text-lg mb-10 leading-relaxed">Outpatient services are available Monday–Friday. New patients should bring a referral letter if available, though walk-ins are triaged accordingly.</p>
+                            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                                <a href="tel:+2511118685385" className="inline-flex items-center gap-3 px-10 py-5 bg-white text-blue-950 rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-blue-50 transition-all shadow-2xl hover:-translate-y-1">
+                                    <PhoneIcon className="w-5 h-5" /> Call Now
+                                </a>
+                                <Link href="/services" className="inline-flex items-center gap-3 px-10 py-5 border-2 border-white/20 text-white rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-white/10 transition-all">
+                                    All Services <ArrowRightIcon className="w-5 h-5" />
+                                </Link>
                             </div>
                         </div>
                     </div>

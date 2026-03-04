@@ -18,7 +18,7 @@ import {
     ShieldCheckIcon,
     DocumentTextIcon,
     InformationCircleIcon,
-    MagnifyingGlassIcon,
+
 } from '@heroicons/react/24/outline';
 
 const PUBLISHED_RESEARCH = [
@@ -49,6 +49,7 @@ const PUBLISHED_RESEARCH = [
 ];
 
 export default function ResearchPage() {
+
     const [formData, setFormData] = useState({
         fullName: '',
         institution: '',
@@ -57,6 +58,8 @@ export default function ResearchPage() {
         abstract: '',
         declaration: false,
     });
+
+    const filteredResearch = PUBLISHED_RESEARCH;
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const target = e.target as HTMLInputElement;
@@ -100,7 +103,7 @@ export default function ResearchPage() {
                             Knowledge Excellence
                         </h1>
                         <p className="text-xl text-blue-100/70 max-w-2xl mx-auto font-medium leading-relaxed mb-10 animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
-                            AMSH is a leading center for neuropsychiatric research, conducting high-impact
+                            EMSH is a leading center for neuropsychiatric research, conducting high-impact
                             studies that shape mental health policy and clinical practice across Ethiopia.
                         </p>
                     </div>
@@ -115,14 +118,11 @@ export default function ResearchPage() {
                             <span className="text-blue-600 text-xs font-black uppercase tracking-[0.2em] mb-3 block">Research Database</span>
                             <h2 className="text-4xl font-black text-blue-950 tracking-tight">Published Research</h2>
                         </div>
-                        <div className="relative w-full md:w-80">
-                            <MagnifyingGlassIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                            <input type="text" placeholder="Search by author or topic..." className="w-full pl-12 pr-6 py-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-blue-900 transition-all font-bold text-sm shadow-sm" />
-                        </div>
+
                     </div>
 
                     <div className="space-y-6">
-                        {PUBLISHED_RESEARCH.map((paper) => (
+                        {filteredResearch.map((paper) => (
                             <div key={paper.id} className="bg-white rounded-[32px] border border-gray-100 shadow-sm p-8 flex flex-col md:flex-row items-center gap-8 group hover:shadow-xl transition-all duration-500">
                                 <div className="w-16 h-16 bg-blue-50 rounded-2xl flex flex-col items-center justify-center text-blue-900 flex-shrink-0 group-hover:scale-110 transition-transform">
                                     <span className="text-lg font-black">{paper.year}</span>
@@ -164,7 +164,7 @@ export default function ResearchPage() {
                             <h2 className="text-4xl font-black text-blue-950 mb-8 tracking-tight">Submit Your Research</h2>
                             <p className="text-gray-500 font-medium leading-relaxed mb-8">
                                 We welcome submissions from independent researchers, academic institutions, and medical professionals.
-                                AMSH provides a platform for disseminating high-quality neuropsychiatric findings to the broader clinical community.
+                                EMSH provides a platform for disseminating high-quality neuropsychiatric findings to the broader clinical community.
                             </p>
 
                             <div className="space-y-6">

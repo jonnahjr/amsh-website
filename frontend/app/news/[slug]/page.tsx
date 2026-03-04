@@ -20,8 +20,8 @@ export default function NewsDetailPage() {
         }).catch(() => {
             // Mock for demo
             setPost({
-                title: 'AMSH Launching New Mental Health Awareness Campaign',
-                content: '<p>Amanuel Mental Specialized Hospital is proud to announce its latest initiative aimed at raising mental health awareness across Ethiopia. This campaign, titled "Mind Our Future", will focus on youth mental health and destigmatizing psychiatric treatment.</p><p>Over the next six months, AMSH teams will visit schools, universities, and community centers to provide education and resources.</p><h3>Key Objectives:</h3><ul><li>Increase mental health literacy</li><li>Reduce stigma associated with seeking care</li><li>Provide early intervention resources for youth</li></ul>',
+                title: 'EMSH Launching New Mental Health Awareness Campaign',
+                content: '<p>Emmanuel Mental Specialized Hospital is proud to announce its latest initiative aimed at raising mental health awareness across Ethiopia. This campaign, titled "Mind Our Future", will focus on youth mental health and destigmatizing psychiatric treatment.</p><p>Over the next six months, EMSH teams will visit schools, universities, and community centers to provide education and resources.</p><h3>Key Objectives:</h3><ul><li>Increase mental health literacy</li><li>Reduce stigma associated with seeking care</li><li>Provide early intervention resources for youth</li></ul>',
                 publishedAt: new Date().toISOString(),
                 type: 'NEWS',
                 author: { name: 'Dr. Zelalem G.' },
@@ -83,7 +83,7 @@ export default function NewsDetailPage() {
                 {/* Article Body */}
                 <div className="container-custom max-w-3xl pb-24">
                     <article
-                        className="prose-amsh prose-lg"
+                        className="prose-emsh prose-lg"
                         dangerouslySetInnerHTML={{ __html: post.content }}
                     />
 

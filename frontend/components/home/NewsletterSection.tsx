@@ -42,18 +42,18 @@ export default function NewsletterSection() {
                         ✉️ Newsletter
                     </span>
                     <h2 className="text-3xl md:text-4xl font-black text-blue-950 mb-4">
-                        Stay Updated with AMSH
+                        Stay Updated with EMSH
                     </h2>
                     <p className="text-blue-900/70 text-lg mb-10">
                         Subscribe to our newsletter to receive the latest news, research updates,
-                        CPD announcements, and health information from AMSH.
+                        CPD announcements, and health information from EMSH.
                     </p>
 
                     {success ? (
                         <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-2xl p-6 shadow-sm">
                             <div className="text-4xl mb-3">✅</div>
                             <h3 className="font-bold text-xl mb-2">Successfully Subscribed!</h3>
-                            <p className="text-emerald-700">Thank you for subscribing to the AMSH newsletter. You'll receive our latest updates soon.</p>
+                            <p className="text-emerald-700">Thank you for subscribing to the EMSH newsletter. You'll receive our latest updates soon.</p>
                         </div>
                     ) : (
                         <form onSubmit={handleSubmit} className="flex flex-col gap-4">

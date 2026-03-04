@@ -38,10 +38,10 @@ export default function AdminLoginPage() {
                     <div className="bg-gradient-to-br from-blue-900/40 to-blue-800/20 p-8 text-center text-white border-b border-white/5">
                         <Link href="/" className="inline-flex items-center gap-4 mb-6 group">
                             <div className="w-16 h-16 rounded-2xl bg-white/10 backdrop-blur-xl p-1 flex items-center justify-center shadow-2xl group-hover:scale-105 transition-transform border border-white/20">
-                                <img src="/images/logo.png" alt="AMSH Logo" className="w-full h-full object-contain brightness-110" />
+                                <img src="/images/logo.png" alt="EMSH Logo" className="w-full h-full object-contain brightness-110" />
                             </div>
                             <div className="text-left">
-                                <div className="font-black text-2xl leading-tight text-white tracking-tight">AMSH</div>
+                                <div className="font-black text-2xl leading-tight text-white tracking-tight">EMSH</div>
                                 <div className="text-[10px] text-blue-300 uppercase tracking-widest font-black opacity-80">Admin Portal</div>
                             </div>
                         </Link>
@@ -67,7 +67,7 @@ export default function AdminLoginPage() {
                                         onChange={(e) => setEmail(e.target.value)}
                                         required
                                         className="w-full pl-14 pr-6 py-4 glass-input text-white placeholder-white/20"
-                                        placeholder="staff@amsh.gov.et"
+                                        placeholder="staff@EMSH.gov.et"
                                     />
                                 </div>
                             </div>

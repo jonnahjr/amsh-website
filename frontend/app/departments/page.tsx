@@ -20,24 +20,16 @@ import {
     AlertCircle,
     Microscope,
     Zap,
-    Hospital,
     RefreshCcw,
-    Laptop,
     Pill,
-    Library,
-    BarChart3,
-    Users2,
     Scale,
     Stethoscope,
     MessageSquare,
-    ShieldCheck,
-    Search
 } from 'lucide-react';
 
 const categories = [
     { id: 'clinical', label: 'Clinical Services', icon: Stethoscope },
     { id: 'diagnostic', label: 'Diagnostic & Support', icon: Microscope },
-    { id: 'academic', label: 'Academic & Research', icon: Library },
 ];
 
 const departments = [
@@ -92,7 +84,7 @@ const departments = [
     {
         name: 'Clinical Mental Health',
         slug: 'clinical-mental-health',
-        icon: Hospital,
+        icon: Brain,
         category: 'clinical',
         color: 'from-cyan-600 to-cyan-900',
         desc: 'Primary psychiatric consultations and long-term outpatient management for stable recovery.'
@@ -108,7 +100,7 @@ const departments = [
     {
         name: 'Telepsychiatry Services',
         slug: 'telepsychiatry',
-        icon: Laptop,
+        icon: Stethoscope,
         category: 'clinical',
         color: 'from-indigo-600 to-indigo-900',
         desc: 'Globally accessible remote psychiatric consultations leveraging modern digital health technology.'
@@ -130,44 +122,12 @@ const departments = [
         desc: 'Advanced clinical laboratory screenings specifically tailored for psychiatric patient needs.'
     },
     {
-        name: 'Training & Education',
-        slug: 'training-education',
-        icon: Library,
-        category: 'academic',
-        color: 'from-sky-600 to-sky-900',
-        desc: 'National center of excellence for training the next generation of mental health professionals.'
-    },
-    {
-        name: 'Research Services',
-        slug: 'research',
-        icon: BarChart3,
-        category: 'academic',
-        color: 'from-amber-600 to-amber-900',
-        desc: 'Pioneering clinical research to advance mental health protocols on an international scale.'
-    },
-    {
-        name: 'Community Mental Health',
-        slug: 'community-mental-health',
-        icon: Users2,
-        category: 'academic',
-        color: 'from-orange-600 to-orange-900',
-        desc: 'National outreach programs dedicated to mental health awareness and de-stigmatization.'
-    },
-    {
         name: 'Forensic Psychiatry',
         slug: 'forensic-psychiatry',
         icon: Scale,
         category: 'clinical',
         color: 'from-slate-600 to-slate-900',
         desc: 'Expert legal psychiatric evaluations and specialized care for the forensic population.'
-    },
-    {
-        name: 'Referral Services',
-        slug: 'referral-services',
-        icon: Hospital,
-        category: 'diagnostic',
-        color: 'from-lime-600 to-lime-900',
-        desc: 'Centralized coordination for mental health referrals across regional and national health networks.'
     },
     {
         name: 'Counseling Services',
@@ -177,18 +137,11 @@ const departments = [
         color: 'from-rose-400 to-rose-600',
         desc: 'Specialized therapeutic support for trauma, depression, and anxiety disorders.'
     },
-    {
-        name: 'Promotion & Prevention',
-        slug: 'promotion-prevention',
-        icon: ShieldCheck,
-        category: 'academic',
-        color: 'from-cyan-400 to-cyan-600',
-        desc: 'Strategic public health initiatives focused on preventive mental health care.'
-    },
 ];
 
 export default function DepartmentsPage() {
     const [activeCategory, setActiveCategory] = React.useState('all');
+
     const [mousePosition, setMousePosition] = React.useState({ x: 0, y: 0 });
     const heroRef = React.useRef<HTMLElement>(null);
 
@@ -248,19 +201,18 @@ export default function DepartmentsPage() {
                     <div className="container-custom relative z-10 py-24">
                         <div className="max-w-4xl">
                             {/* Breadcrumbs */}
-                            <div className="flex items-center gap-2 text-blue-300/40 mb-10 text-[10px] font-black uppercase tracking-[0.4em] animate-fade-in">
-                                <Link href="/" className="hover:text-cyan-400 transition-colors">Digital Portal</Link>
-                                <ChevronRightIcon className="w-3 h-3" />
-                                <span className="text-white">Clinical Centers</span>
-                            </div>
+
 
                             <h1 className="text-6xl md:text-8xl font-black text-white leading-[0.95] mb-8 animate-fade-in-up tracking-tighter">
                                 Excellence in <br />
                                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-400 to-indigo-400">Psychiatry</span>
                             </h1>
 
+
+
+
                             <p className="text-xl md:text-2xl text-blue-100/60 max-w-2xl mb-14 leading-relaxed animate-fade-in-up font-medium" style={{ animationDelay: '0.1s' }}>
-                                AMSH sets the gold standard for clinical psychiatric care in East Africa through innovation, expertise, and compassionate dedication.
+                                EMSH sets the gold standard for clinical psychiatric care in East Africa through innovation, expertise, and compassionate dedication.
                             </p>
 
                         </div>
@@ -270,33 +222,38 @@ export default function DepartmentsPage() {
                 {/* Filter & Grid Section */}
                 <section className="py-24 bg-[#FFF9F0] relative" id="departments-grid">
                     <div className="container-custom">
-                        {/* Category Tabs - Floating Style */}
-                        <div className="flex flex-wrap items-center justify-center gap-4 mb-20">
-                            <button
-                                onClick={() => setActiveCategory('all')}
-                                className={`px-10 py-4 font-black uppercase tracking-[0.2em] transition-all duration-500 rounded-2xl text-[11px] ${activeCategory === 'all'
-                                    ? 'bg-blue-900 text-white shadow-[0_20px_40px_rgba(30,58,138,0.2)] translate-y-[-4px]'
-                                    : 'bg-white text-gray-400 hover:text-blue-950 shadow-sm border border-gray-100'
-                                    }`}
-                            >
-                                All Departments
-                            </button>
-                            {categories.map((cat) => {
-                                const Icon = cat.icon;
-                                return (
-                                    <button
-                                        key={cat.id}
-                                        onClick={() => setActiveCategory(cat.id)}
-                                        className={`flex items-center gap-3 px-10 py-4 font-black uppercase tracking-[0.2em] transition-all duration-500 rounded-2xl text-[11px] ${activeCategory === cat.id
-                                            ? 'bg-blue-900 text-white shadow-[0_20px_40px_rgba(30,58,138,0.2)] translate-y-[-4px]'
-                                            : 'bg-white text-gray-400 hover:text-blue-950 shadow-sm border border-gray-100'
-                                            }`}
-                                    >
-                                        <Icon className="w-4 h-4" />
-                                        {cat.label}
-                                    </button>
-                                );
-                            })}
+                        {/* Search & Categories Header */}
+                        <div className="flex flex-col md:flex-row items-center justify-between gap-8 mb-20">
+                            {/* Category Tabs - Floating Style */}
+                            <div className="flex flex-wrap items-center gap-4 flex-1">
+                                <button
+                                    onClick={() => setActiveCategory('all')}
+                                    className={`px-10 py-4 font-black uppercase tracking-[0.2em] transition-all duration-500 rounded-2xl text-[11px] ${activeCategory === 'all'
+                                        ? 'bg-blue-900 text-white shadow-[0_20px_40px_rgba(30,58,138,0.2)] translate-y-[-4px]'
+                                        : 'bg-white text-gray-400 hover:text-blue-950 shadow-sm border border-gray-100'
+                                        }`}
+                                >
+                                    All Departments
+                                </button>
+                                {categories.map((cat) => {
+                                    const Icon = cat.icon;
+                                    return (
+                                        <button
+                                            key={cat.id}
+                                            onClick={() => setActiveCategory(cat.id)}
+                                            className={`flex items-center gap-3 px-10 py-4 font-black uppercase tracking-[0.2em] transition-all duration-500 rounded-2xl text-[11px] ${activeCategory === cat.id
+                                                ? 'bg-blue-900 text-white shadow-[0_20px_40px_rgba(30,58,138,0.2)] translate-y-[-4px]'
+                                                : 'bg-white text-gray-400 hover:text-blue-950 shadow-sm border border-gray-100'
+                                                }`}
+                                        >
+                                            <Icon className="w-4 h-4" />
+                                            {cat.label}
+                                        </button>
+                                    );
+                                })}
+                            </div>
+
+
                         </div>
 
                         {/* Advanced Grid with 3D Interaction */}
@@ -322,15 +279,7 @@ export default function DepartmentsPage() {
                                                 <span className="text-[8px] font-black uppercase tracking-[0.2em] text-white/20 bg-white/5 px-2.5 py-1 rounded-full group-hover:bg-white/10 group-hover:text-cyan-400 transition-all duration-500">
                                                     {categories.find(c => c.id === dept.category)?.label}
                                                 </span>
-                                                {dept.category === 'clinical' && (
-                                                    <div className="flex items-center gap-1.5">
-                                                        <span className="status-pulse h-1 w-1">
-                                                            <span className="status-pulse-inner"></span>
-                                                            <span className="status-pulse-dot h-1 w-1"></span>
-                                                        </span>
-                                                        <span className="text-[8px] font-black uppercase tracking-widest text-cyan-400">Live</span>
-                                                    </div>
-                                                )}
+
                                             </div>
 
                                             <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${dept.color} flex items-center justify-center text-white mb-4 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-xl`}>
@@ -346,9 +295,19 @@ export default function DepartmentsPage() {
                                             </p>
 
                                             <div className="pt-4 border-t border-white/5 flex items-center justify-between">
-                                                <span className="text-[8px] font-black uppercase tracking-[0.3em] text-cyan-400/30 group-hover:text-cyan-400 group-hover:translate-x-1 transition-all duration-500">
-                                                    Explore
-                                                </span>
+                                                <div className="flex items-center gap-3">
+                                                    <span className="text-[8px] font-black uppercase tracking-[0.3em] text-cyan-400/30 group-hover:text-cyan-400 group-hover:translate-x-1 transition-all duration-500">
+                                                        Explore
+                                                    </span>
+                                                    <span className="w-1 h-1 rounded-full bg-white/10" />
+                                                    <Link
+                                                        href="/contact"
+                                                        onClick={(e) => e.stopPropagation()}
+                                                        className="text-[8px] font-black uppercase tracking-[0.3em] text-white/20 hover:text-white transition-colors"
+                                                    >
+                                                        Contact
+                                                    </Link>
+                                                </div>
                                                 <div className={`w-8 h-8 rounded-full border border-white/10 flex items-center justify-center bg-white/5 text-cyan-400 group-hover:bg-cyan-500 group-hover:text-white group-hover:border-cyan-500 group-hover:scale-110 transition-all duration-500 shadow-sm`}>
                                                     <ArrowRightIcon className="w-3.5 h-3.5" />
                                                 </div>
@@ -359,17 +318,7 @@ export default function DepartmentsPage() {
                             })}
                         </div>
 
-                        {filteredDepartments.length === 0 && (
-                            <div className="text-center py-20">
-                                <p className="text-gray-400 text-xl font-medium">No departments found matching your selection.</p>
-                                <button
-                                    onClick={() => setActiveCategory('all')}
-                                    className="mt-6 text-blue-600 font-bold hover:underline"
-                                >
-                                    Reset all filters
-                                </button>
-                            </div>
-                        )}
+
                     </div>
                 </section>
 
@@ -402,7 +351,7 @@ export default function DepartmentsPage() {
                                 </div>
                                 <div className="grid grid-cols-2 gap-8">
                                     {[
-                                        { label: 'Founded', value: '1930', desc: 'Clinical Pioneer' },
+                                        { label: 'Founded', value: '1930 E.C.', desc: 'Clinical Pioneer' },
                                         { label: 'Partners', value: '12+', desc: 'Global Entities' },
                                         { label: 'Research', value: '450+', desc: 'Publications' },
                                         { label: 'Specialists', value: '150+', desc: 'Expert Staff' }

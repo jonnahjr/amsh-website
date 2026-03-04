@@ -13,7 +13,7 @@ export default function TermsPage() {
                     <div className="prose prose-lg max-w-none text-gray-600 space-y-6">
                         <p><strong>Effectivity Date: May 2024</strong></p>
                         <p>
-                            By accessing or using the Amanuel Mental Specialized Hospital (AMSH) website, you agree to be bound by these Terms and Conditions.
+                            By accessing or using the Emmanuel Mental Specialized Hospital (EMSH) website, you agree to be bound by these Terms and Conditions.
                         </p>
                         <h2 className="text-2xl font-bold text-gray-900 mt-8">1. Not a Substitute for Medical Advice</h2>
                         <p>

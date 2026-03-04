@@ -34,14 +34,14 @@ export default function AdminSettingsPage() {
         }).catch(() => {
             // Demo defaults
             setSettings({
-                site_name: 'Amanuel Mental Specialized Hospital',
+                site_name: 'Emmanuel Mental Specialized Hospital',
                 site_description: 'Ethiopia\'s Premier Mental Health Institution',
-                contact_email: 'info@amsh.gov.et',
+                contact_email: 'info@emsh.gov.et',
                 contact_phone: '+251-111-868-53-85',
                 emergency_phone: '991',
                 address: 'Addis Ababa, Ethiopia',
-                twitter_url: 'https://twitter.com/amsh_ethiopia',
-                facebook_url: 'https://facebook.com/amsh.ethiopia',
+                twitter_url: 'https://twitter.com/emsh_ethiopia',
+                facebook_url: 'https://facebook.com/emsh.ethiopia',
             });
         }).finally(() => setLoading(false));
     }, []);
@@ -89,8 +89,8 @@ export default function AdminSettingsPage() {
                             key={tab.id}
                             onClick={() => setActiveTab(tab.id)}
                             className={`w-full flex items-center gap-3 px-4 py-3 rounded-2xl transition-all ${activeTab === tab.id
-                                    ? 'bg-blue-900 text-white shadow-lg shadow-blue-900/20'
-                                    : 'text-gray-500 hover:bg-gray-100'
+                                ? 'bg-blue-900 text-white shadow-lg shadow-blue-900/20'
+                                : 'text-gray-500 hover:bg-gray-100'
                                 }`}
                         >
                             <tab.icon className="w-5 h-5 flex-shrink-0" />

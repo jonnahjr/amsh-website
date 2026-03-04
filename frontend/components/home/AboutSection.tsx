@@ -31,9 +31,11 @@ export default function AboutSection() {
                     </div>
 
                     <h2 className="text-5xl md:text-7xl lg:text-[6rem] font-black text-blue-950 tracking-tighter leading-[0.85] mb-12 text-center">
-                        Welcome to <span className="text-blue-900">Amanuel Mental</span> <br />
+                        Welcome to <span className="text-blue-900">Emmanuel Mental</span> <br />
                         <span className="text-gray-300 italic tracking-[-0.05em]">Specialized Hospital</span>
                     </h2>
+
+
                 </div>
 
                 {/* Content Hub - Wide "Side to Side" Layout */}
@@ -48,7 +50,7 @@ export default function AboutSection() {
                                 </div>
                                 <div className="space-y-6">
                                     <p className="font-bold text-gray-800 leading-relaxed text-center">
-                                        Amanuel Mental Specialized Hospital stands as Ethiopia’s foremost and oldest specialized institution dedicated exclusively to mental health care. With a proud legacy spanning decades, the hospital has become the cornerstone of psychiatric services in the nation, providing comprehensive, compassionate, and evidence-based care.
+                                        Emmanuel Mental Specialized Hospital stands as Ethiopia’s foremost and oldest specialized institution dedicated exclusively to mental health care. With a proud legacy spanning decades, the hospital has become the cornerstone of psychiatric services in the nation, providing comprehensive, compassionate, and evidence-based care.
                                     </p>
                                     <p className="text-gray-600 leading-relaxed text-sm text-center">
                                         Since its establishment, the hospital has played a central role in transforming mental health care in Ethiopia. It has grown from a modest facility into a national center of excellence, delivering specialized psychiatric treatment and advancing clinical research.

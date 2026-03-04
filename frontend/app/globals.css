@@ -335,7 +335,7 @@
   }
 
   /* Prose content */
-  .prose-amsh {
+  .prose-emsh {
     @apply prose prose-lg max-w-none prose-headings:font-bold prose-headings:text-gray-900 prose-p:text-gray-600 prose-a:text-blue-900 prose-a:no-underline hover:prose-a:underline prose-img:rounded-xl;
   }
 
@@ -406,7 +406,7 @@
 
   /* Glassmorphism Refinement */
   .glass-premium {
-    @apply bg-white/10 backdrop-blur-2xl border border-white/20 shadow-[0_8px_32px_0_rgba(31, 38, 135, 0.2)];
+    @apply bg-white/10 backdrop-blur-2xl border border-white/20 shadow-[0_8px_32px_0_rgba(31,38,135,0.2)];
   }
 
   /* Status Pulse */
@@ -420,5 +420,33 @@
 
   .status-pulse-dot {
     @apply relative inline-flex rounded-full h-2 w-2 bg-cyan-500;
+  }
+
+  /* Premium Motto Typography */
+  .motto-premium {
+    @apply font-black tracking-[0.2em] text-transparent bg-clip-text bg-gradient-to-r from-blue-700 via-blue-600 to-cyan-500;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.05));
+    line-height: normal;
+  }
+
+  .motto-premium-lg {
+    @apply text-lg md:text-2xl font-black tracking-[0.3em] text-transparent bg-clip-text bg-gradient-to-r from-blue-800 via-blue-600 to-cyan-500;
+    filter: drop-shadow(0 4px 8px rgba(37, 99, 235, 0.1));
+  }
+
+  @keyframes pulse-slow {
+
+    0%,
+    100% {
+      opacity: 1;
+    }
+
+    50% {
+      opacity: 0.8;
+    }
+  }
+
+  .animate-pulse-slow {
+    animation: pulse-slow 4s ease-in-out infinite;
   }
 }

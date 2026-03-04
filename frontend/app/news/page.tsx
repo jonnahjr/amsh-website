@@ -6,12 +6,12 @@ import Footer from '@/components/layout/Footer';
 import EmergencyBanner from '@/components/ui/EmergencyBanner';
 import { postsAPI } from '@/lib/api';
 import Link from 'next/link';
-import { CalendarIcon, UserIcon, ArrowRightIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
+import { CalendarIcon, UserIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
 
 export default function NewsPage() {
     const [posts, setPosts] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
-    const [search, setSearch] = useState('');
+
 
     useEffect(() => {
         postsAPI.getAll({ type: 'NEWS', status: 'PUBLISHED' })
@@ -25,10 +25,7 @@ export default function NewsPage() {
         post.isBreaking === true
     );
 
-    const filteredPosts = posts.filter(post =>
-        post.title.toLowerCase().includes(search.toLowerCase()) ||
-        post.excerpt?.toLowerCase().includes(search.toLowerCase())
-    );
+    const filteredPosts = posts;
 
     return (
         <>
@@ -66,6 +63,7 @@ export default function NewsPage() {
                                 <span className="text-gray-400 italic font-medium">& Announcements</span>
                             </h1>
 
+
                             {/* Subtitle */}
                             <p className="text-lg md:text-2xl text-blue-100/60 max-w-2xl mx-auto leading-relaxed animate-fade-in-up font-medium" style={{ animationDelay: '0.2s' }}>
                                 Follow our journey in transforming mental health care in Ethiopia through research, community outreach, and clinical excellence.
@@ -74,26 +72,7 @@ export default function NewsPage() {
                     </div>
                 </section>
 
-                {/* Search & Filter */}
-                <div className="container-custom -mt-8">
-                    <div className="bg-white p-4 rounded-2xl shadow-xl flex flex-col md:flex-row gap-4 items-center border border-blue-50">
-                        <div className="relative flex-1 w-full">
-                            <MagnifyingGlassIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                            <input
-                                type="text"
-                                placeholder="Search articles..."
-                                className="w-full pl-12 pr-4 py-3 bg-gray-50 border-none rounded-xl focus:ring-2 focus:ring-blue-900 transition-all"
-                                value={search}
-                                onChange={(e) => setSearch(e.target.value)}
-                            />
-                        </div>
-                        <div className="flex gap-2">
-                            <span className="px-4 py-2 bg-blue-50 text-blue-900 rounded-lg text-sm font-bold border border-blue-100 uppercase tracking-wider whitespace-nowrap">
-                                {filteredPosts.length} Articles
-                            </span>
-                        </div>
-                    </div>
-                </div>
+
 
                 {/* ADVANCED GAZETTE FEATURES */}
                 <div className="bg-[#F9F7F2]">
@@ -129,10 +108,10 @@ export default function NewsPage() {
                                 <span>{new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
                             </div>
                             <h2 className="text-6xl md:text-9xl font-black text-gray-900 tracking-tighter mb-4 font-serif italic">
-                                AMSH <span className="text-blue-900 not-italic">Gazette</span>
+                                EMSH <span className="text-blue-900 not-italic">Gazette</span>
                             </h2>
                             <p className="text-[10px] font-black uppercase tracking-[0.5em] text-blue-900/40">
-                                The Official Institutional Publication of Amanuel Mental Specialized Hospital
+                                The Official Institutional Publication of Emmanuel Mental Specialized Hospital
                             </p>
                         </div>
                     </div>
@@ -147,13 +126,6 @@ export default function NewsPage() {
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                                     {[1, 2, 3].map(i => <div key={i} className="h-64 bg-gray-200 rounded-2xl" />)}
                                 </div>
-                            </div>
-                        ) : filteredPosts.length === 0 ? (
-                            <div className="text-center py-20 bg-white rounded-[40px] shadow-sm border border-gray-100">
-                                <div className="text-6xl mb-6">🗞️</div>
-                                <h2 className="text-2xl font-bold text-gray-900">No articles found</h2>
-                                <p className="text-gray-500 mt-2">Try adjusting your search criteria or check back later.</p>
-                                <button onClick={() => setSearch('')} className="mt-6 text-blue-900 font-bold hover:underline">Clear all filters</button>
                             </div>
                         ) : (
                             <div className="flex flex-col lg:flex-row gap-12">
@@ -269,6 +241,7 @@ export default function NewsPage() {
                                 </aside>
                             </div>
                         )}
+
                     </div>
                 </section>
             </main >

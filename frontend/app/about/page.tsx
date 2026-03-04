@@ -5,8 +5,8 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-    title: 'About Us | Amanuel Mental Specialized Hospital',
-    description: 'Learn about AMSH – Ethiopia\'s only public specialized mental health hospital, established in 1930. Our history, mission, vision, leadership and organizational structure.',
+    title: 'About Us | Emmanuel Mental Specialized Hospital',
+    description: 'Learn about EMSH – Ethiopia\'s only public specialized mental health hospital, established in 1930 E.C. Our history, mission, vision, leadership and organizational structure.',
 };
 
 const leadership = [
@@ -57,7 +57,7 @@ export default function AboutPage() {
 
                             {/* Subtitle */}
                             <p className="text-lg md:text-2xl text-blue-100/80 max-w-3xl mb-12 leading-relaxed animate-fade-in-up font-medium" style={{ animationDelay: '0.2s' }}>
-                                Serving Ethiopia since 1930 as the only public specialized mental health hospital, AMSH has touched millions of lives with compassionate, expert psychiatric care.
+                                Serving Ethiopia since 1930 E.C. as the only public specialized mental health hospital, EMSH has touched millions of lives with compassionate, expert psychiatric care.
                             </p>
 
                             {/* CTAs */}
@@ -83,11 +83,12 @@ export default function AboutPage() {
                 <section className="section bg-white">
                     <div className="container-custom">
                         <div className="max-w-7xl mx-auto text-center">
-                            <span className="section-badge text-blue-600">👋 Welcome to AMSH</span>
-                            <h2 className="text-3xl md:text-5xl font-black text-gray-900 mt-4 mb-10 leading-tight text-center">
-                                Welcome to <span className="text-blue-900 italic">Amanuel Mental</span><br />
+                            <span className="section-badge text-blue-600">👋 Welcome to EMSH</span>
+                            <h2 className="text-3xl md:text-5xl font-black text-gray-900 mt-4 mb-4 leading-tight text-center">
+                                Welcome to <span className="text-blue-900 italic">Emmanuel Mental</span><br />
                                 Specialized Hospital
                             </h2>
+
                             {/* English Section */}
                             <div className="text-gray-600 text-base leading-relaxed mb-12">
                                 <div className="flex items-center gap-2 mb-6">
@@ -95,7 +96,7 @@ export default function AboutPage() {
                                     <span className="flex-1 h-px bg-blue-100" />
                                 </div>
                                 <p className="font-bold text-xl text-gray-900 leading-snug pb-5 mb-5 border-b border-gray-100">
-                                    Amanuel Mental Specialized Hospital stands as Ethiopia's foremost and oldest specialized institution dedicated exclusively to mental health care. With a proud legacy spanning decades, the hospital has become the cornerstone of psychiatric services in the nation, providing comprehensive, compassionate, and evidence-based care to individuals from all regions of the country.
+                                    Emmanuel Mental Specialized Hospital stands as Ethiopia's foremost and oldest specialized institution dedicated exclusively to mental health care. With a proud legacy spanning decades, the hospital has become the cornerstone of psychiatric services in the nation, providing comprehensive, compassionate, and evidence-based care to individuals from all regions of the country.
                                 </p>
                                 <p className="pb-5 mb-5 border-b border-gray-100">
                                     Since its establishment, the hospital has played a central role in transforming mental health care in Ethiopia. It has grown from a modest facility into a national center of excellence, delivering specialized psychiatric treatment, advancing clinical research, and training generations of mental health professionals who serve across the healthcare system.
@@ -104,7 +105,7 @@ export default function AboutPage() {
                                     Our hospital is dedicated to addressing the full spectrum of mental health conditions, including common and severe psychiatric disorders, substance use disorders, and psychological conditions affecting children, adolescents, adults, and the elderly. We provide integrated services that include prevention, early diagnosis, treatment, rehabilitation, and long-term follow-up care, ensuring continuity and quality in every stage of recovery.
                                 </p>
                                 <p className="pb-5 mb-5 border-b border-gray-100">
-                                    At Amanuel Mental Specialized Hospital, patient care is guided by compassion, professionalism, and respect for human dignity. We understand that mental health challenges affect not only individuals but also families and communities. Therefore, our approach focuses on holistic care that supports emotional, psychological, social, and functional recovery.
+                                    At Emmanuel Mental Specialized Hospital, patient care is guided by compassion, professionalism, and respect for human dignity. We understand that mental health challenges affect not only individuals but also families and communities. Therefore, our approach focuses on holistic care that supports emotional, psychological, social, and functional recovery.
                                 </p>
                                 <p className="pb-5 mb-5 border-b border-gray-100">
                                     Beyond clinical services, the hospital serves as a national training and academic center. It provides practical education and clinical training for psychiatrists, medical doctors, mental health nurses, psychologists, and other health professionals. Through these efforts, the hospital contributes significantly to strengthening Ethiopia's mental health workforce and healthcare capacity.
@@ -148,7 +149,7 @@ export default function AboutPage() {
 
                             {/* Closing statement - full width */}
                             <p className="font-black text-blue-900 pt-10 mt-4 border-t border-gray-100 text-3xl tracking-tighter text-center">
-                                Today, Amanuel Mental Specialized Hospital continues to lead with a clear purpose: to restore hope, improve lives, and build a healthier future through excellence in mental health care, education, and research.
+                                Today, Emmanuel Mental Specialized Hospital continues to lead with a clear purpose: to restore hope, improve lives, and build a healthier future through excellence in mental health care, education, and research.
                             </p>
                         </div>
                     </div>
@@ -166,7 +167,7 @@ export default function AboutPage() {
                                 <div className="space-y-6 text-gray-600 leading-relaxed">
                                     <div>
                                         <p className="font-bold text-lg text-blue-900 mb-2">
-                                            At Amanuel Mental Specialized Hospital, our mission is to deliver comprehensive, accessible, and patient-centered mental health services through compassionate care, clinical excellence, and evidence-based treatment.
+                                            At Emmanuel Mental Specialized Hospital, our mission is to deliver comprehensive, accessible, and patient-centered mental health services through compassionate care, clinical excellence, and evidence-based treatment.
                                         </p>
                                         <p className="text-sm text-gray-400 italic">
                                             በአማኑኤል የአእምሮ ስፔሻላይዝድ ሆስፒታል፣ ተልዕኳችን ሁሉን አቀፍ፣ ተደራሽ እና በሽተኛ-ተኮር የአእምሮ ጤና አገልግሎቶችን በሩህሩህ እንክብካቤ፣ በክሊኒካዊ ብቃት እና በማስረጃ ላይ በተመሠረተ ሕክምና ማቅረብ ነው።
@@ -324,7 +325,7 @@ export default function AboutPage() {
                                 </p>
                                 <div className="flex items-center gap-4">
                                     <div className="w-12 h-0.5 bg-blue-900"></div>
-                                    <span className="text-xs font-black uppercase tracking-[0.3em] text-blue-900">The AMSH Pledge</span>
+                                    <span className="text-xs font-black uppercase tracking-[0.3em] text-blue-900">The EMSH Pledge</span>
                                 </div>
                             </div>
                         </div>
@@ -371,7 +372,7 @@ export default function AboutPage() {
                         <div className="text-center mb-14">
                             <span className="section-badge">👥 Leadership</span>
                             <h2 className="section-title">Hospital Leadership Team</h2>
-                            <p className="section-subtitle">Experienced professionals guiding AMSH toward excellence in mental health care.</p>
+                            <p className="section-subtitle">Experienced professionals guiding EMSH toward excellence in mental health care.</p>
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                             {leadership.map((person) => (

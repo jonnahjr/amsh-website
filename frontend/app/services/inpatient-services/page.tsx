@@ -5,17 +5,21 @@ import Footer from '@/components/layout/Footer';
 import ChatbotButton from '@/components/chatbot/ChatbotButton';
 import EmergencyBanner from '@/components/ui/EmergencyBanner';
 import Link from 'next/link';
-import {
-    PhoneIcon,
-    CalendarIcon,
-    ArrowRightIcon,
-    CheckCircleIcon,
-    HomeIcon,
-    UserGroupIcon,
-    ShieldCheckIcon,
-    SparklesIcon,
-    MapPinIcon
-} from '@heroicons/react/24/outline';
+import { PhoneIcon, ArrowRightIcon, CheckCircleIcon, BuildingOffice2Icon } from '@heroicons/react/24/outline';
+
+const units = [
+    { id: '01', name: 'General Inpatient Wards', badge: 'Recovery', color: 'bg-blue-950', accent: 'text-cyan-400', badgeColor: 'bg-cyan-400/10 text-cyan-400', desc: 'Modern and secure wards designed for stable patients requiring long-term psychiatric care and rehabilitation, where patients engage in a structured therapeutic community environment that promotes recovery and community reintegration skills.' },
+    { id: '02', name: 'Intensive Psychiatric Care Unit (IPCU)', badge: 'Acute Care', color: 'bg-indigo-950', accent: 'text-violet-400', badgeColor: 'bg-violet-400/10 text-violet-400', desc: 'A high-observation ward for patients in acute psychiatric crisis who require a more secure environment and closer clinical monitoring for their safety and the safety of others, supported by intensive nurse-to-patient ratios.' },
+    { id: '03', name: 'Comprehensive Nursing Care', badge: 'Nursing', color: 'bg-emerald-950', accent: 'text-emerald-400', badgeColor: 'bg-emerald-400/10 text-emerald-400', desc: 'Expert 24/7 psychiatric nursing care focused on medication administration, patient monitoring, behavioral intervention, and compassionate support as patients navigate the acute phases of their recovery journey.' },
+    { id: '04', name: 'Multidisciplinary Inpatient Rounds', badge: 'Clinical Team', color: 'bg-teal-950', accent: 'text-teal-400', badgeColor: 'bg-teal-400/10 text-teal-400', desc: 'Daily team reviews including psychiatrists, residents, clinical psychologists, social workers, and occupational therapists to ensure every hospitalized patient has a holistic and continuously updated treatment plan.' },
+];
+
+const stats = [
+    { value: '500+', label: 'Bed Capacity', icon: '🛏️' },
+    { value: '24/7', label: 'Nursing Care', icon: '👩‍⚕️' },
+    { value: 'Safe', label: 'Recovery Environment', icon: '🛡️' },
+    { value: 'Team', label: 'Multidisciplinary', icon: '🫂' },
+];
 
 export default function InpatientServicesPage() {
     return (
@@ -24,191 +28,141 @@ export default function InpatientServicesPage() {
             <Navbar />
             <main className="bg-white">
                 {/* Hero Section */}
-                <section className="relative min-h-[70vh] bg-blue-950 flex items-center overflow-hidden">
-                    {/* Background Pattern */}
+                <section className="relative min-h-[90vh] bg-blue-950 flex items-center overflow-hidden">
                     <div className="absolute inset-0 opacity-10">
-                        <div className="absolute inset-0" style={{
-                            backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)',
-                            backgroundSize: '48px 48px',
-                        }} />
+                        <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)', backgroundSize: '48px 48px' }} />
                     </div>
-
-                    {/* Decorative Orbs */}
                     <div className="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[120px] animate-float pointer-events-none" />
-                    <div className="absolute bottom-1/4 left-1/4 w-[400px] h-[400px] bg-indigo-400/5 rounded-full blur-[100px] animate-float pointer-events-none" style={{ animationDelay: '1.5s' }} />
-
-                    {/* Content */}
-                    <div className="container-custom relative z-10 py-24 text-center">
-                        <div className="max-w-4xl mx-auto">
-                            {/* Badge */}
+                    <div className="absolute bottom-1/4 left-1/4 w-[400px] h-[400px] bg-blue-400/5 rounded-full blur-[100px] animate-float pointer-events-none" style={{ animationDelay: '1.5s' }} />
+                    <div className="container-custom relative z-10 py-24 -translate-y-10">
+                        <div className="max-w-4xl">
                             <div className="animate-fade-in-up mb-6">
                                 <span className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 backdrop-blur-sm border border-white/10 rounded-full text-blue-200 text-sm font-semibold uppercase tracking-widest">
-                                    Intensive Care & Recovery
+                                    🏥 Clinical Services
                                 </span>
                             </div>
-
-                            {/* Title */}
-                            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white leading-[1.1] mb-8 animate-fade-in-up tracking-tighter" style={{ animationDelay: '0.1s' }}>
-                                Inpatient <br />
-                                <span className="text-gray-400 italic font-medium">Services</span>
+                            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-black text-white leading-[1.1] mb-8 animate-fade-in-up tracking-tighter" style={{ animationDelay: '0.1s' }}>
+                                Inpatient <br /><span className="text-gray-400 italic font-medium">Services</span>
                             </h1>
-
-                            {/* Subtitle */}
-                            <p className="text-lg md:text-2xl text-blue-100/60 max-w-2xl mx-auto mb-12 leading-relaxed animate-fade-in-up font-medium" style={{ animationDelay: '0.2s' }}>
-                                A safe, therapeutic, and 24/7 monitored clinical environment dedicated to the stabilization and rehabilitation of acute psychiatric conditions.
+                            <p className="text-lg md:text-2xl text-blue-100/80 max-w-3xl mb-12 leading-relaxed animate-fade-in-up font-medium" style={{ animationDelay: '0.2s' }}>
+                                Compassionate 24/7 intensive psychiatric care and therapeutic recovery within Ethiopia's premier inpatient mental health suites.
                             </p>
-
-                            {/* CTAs */}
-                            <div className="flex flex-col sm:flex-row items-center justify-center gap-6 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
-                                <Link href="/contact" className="px-10 py-5 bg-white text-blue-950 rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-blue-50 transition-all shadow-2xl hover:-translate-y-1">
-                                    🏥 Admission Inquiry
-                                </Link>
-                                <a href="tel:+2511118685385" className="inline-flex items-center gap-2 text-white border-2 border-white/20 px-10 py-5 rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-white/10 transition-all duration-300">
-                                    <PhoneIcon className="w-5 h-5" /> Visit Guidelines
+                            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
+                                <a href="tel:+2511118685385" className="px-10 py-5 bg-white text-blue-950 rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-blue-50 transition-all shadow-2xl hover:-translate-y-1 flex items-center gap-2">
+                                    <PhoneIcon className="w-5 h-5" /> Visit Inquiries
                                 </a>
+                                <Link href="/contact" className="inline-flex items-center gap-2 text-white border-2 border-white/20 px-10 py-5 rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-white/10 transition-all duration-300">
+                                    Contact Hospital
+                                </Link>
+                            </div>
+                            <div className="mt-12 flex items-center gap-4 animate-fade-in-up" style={{ animationDelay: '0.5s' }}>
+                                <div className="w-3 h-3 rounded-full bg-blue-400 animate-pulse shadow-[0_0_15px_rgba(96,165,250,0.5)]" />
+                                <span className="text-blue-200 text-sm font-black uppercase tracking-widest">Psychiatric Wards · Intensive Care · 24/7 Nursing · Team Care</span>
                             </div>
                         </div>
                     </div>
                 </section>
 
-                {/* Introduction Section */}
-                <section className="py-32 relative overflow-hidden">
-                    <div className="container-custom relative z-10">
-                        <div className="max-w-7xl mx-auto">
-                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
-                                <div>
-                                    <h2 className="text-[10px] font-black uppercase tracking-[0.4em] text-blue-900 mb-6 flex items-center gap-4">
-                                        <span className="w-12 h-[1px] bg-blue-900"></span> Therapeutic Sanctuary
-                                    </h2>
-                                    <h3 className="text-4xl md:text-5xl font-black text-gray-900 leading-tight mb-8">
-                                        Intensive Care for <br />
-                                        <span className="text-blue-900">Mental Restoration.</span>
-                                    </h3>
-                                    <div className="prose prose-lg text-gray-600 leading-relaxed font-medium space-y-6">
-                                        <p>
-                                            Inpatient services at Amanuel Mental Specialized Hospital provide a secure and compassionate environment for patients requiring 24-hour clinical monitoring. Our wards are designed to facilitate stabilization, intensive pharmacological treatment, and psychosocial rehabilitation.
-                                        </p>
-                                        <p>
-                                            With over 300 beds and specialized wards for various demographic and clinical needs, our inpatient department ensures that individuals in acute crisis receive the highest level of psychiatric expertise and nursing care aimed at achieving safe community reintegration.
-                                        </p>
-                                    </div>
-                                </div>
-                                <div className="grid grid-cols-1 gap-8">
-                                    <div className="bg-blue-50 p-10 rounded-[40px] border border-blue-100 shadow-sm relative group overflow-hidden">
-                                        <div className="absolute top-0 right-0 w-32 h-32 bg-blue-600/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 group-hover:scale-150 transition-transform duration-700" />
-                                        <h4 className="text-xl font-black text-blue-950 mb-4 flex items-center gap-3">
-                                            <ShieldCheckIcon className="w-7 h-7 text-blue-900" /> Secure Environment
-                                        </h4>
-                                        <p className="text-gray-500 text-sm leading-relaxed">
-                                            Our facility provides a safe and highly structured clinical setting essential for treating severe psychiatric disorders that require constant observation and professional intervention.
-                                        </p>
-                                    </div>
-                                    <div className="bg-gray-900 p-10 rounded-[40px] text-white shadow-2xl relative group overflow-hidden">
-                                        <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-400/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 group-hover:scale-150 transition-transform duration-700" />
-                                        <h4 className="text-xl font-black mb-4 flex items-center gap-3">
-                                            <UserGroupIcon className="w-7 h-7 text-indigo-400" /> Multidisciplinary Care
-                                        </h4>
-                                        <p className="text-blue-100/60 text-sm leading-relaxed">
-                                            Each patient receives a comprehensive treatment plan developed and monitored by a team of senior psychiatrists, psychologists, social workers, and specialized psychiatric nurses.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                {/* Ward Highlights */}
-                <section className="py-24 bg-gray-50">
+                {/* Stats Bar */}
+                <section className="bg-white border-b border-gray-100">
                     <div className="container-custom">
-                        <div className="text-center mb-16">
-                            <h2 className="text-3xl font-black text-gray-900">Ward Specializations</h2>
-                            <p className="text-gray-500">Tailored inpatient care for diverse clinical needs.</p>
-                        </div>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                            {[
-                                { title: 'Acute Wards', text: 'Fast-track stabilization for individuals in severe psychiatric crisis.', icon: <SparklesIcon className="w-8 h-8" /> },
-                                { title: 'Rehab Wards', text: 'Psychosocial support aimed at long-term recovery and skill development.', icon: <HomeIcon className="w-8 h-8" /> },
-                                { title: 'Specialized Units', text: 'Dedicated units for women, forensics, and geriatric psychiatric care.', icon: <MapPinIcon className="w-8 h-8" /> },
-                            ].map((ward, i) => (
-                                <div key={i} className="bg-white p-10 rounded-[40px] border border-gray-100 shadow-sm hover:shadow-xl transition-all group">
-                                    <div className="text-blue-900 mb-6 group-hover:scale-110 transition-transform duration-500 origin-left">{ward.icon}</div>
-                                    <h3 className="text-xl font-black text-gray-900 mb-4">{ward.title}</h3>
-                                    <p className="text-gray-500 text-sm leading-relaxed">{ward.text}</p>
+                        <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-y lg:divide-y-0 divide-gray-100">
+                            {stats.map((s) => (
+                                <div key={s.label} className="px-8 py-10 text-center group hover:bg-blue-950 transition-colors duration-300">
+                                    <div className="text-3xl mb-2">{s.icon}</div>
+                                    <div className="text-3xl md:text-4xl font-black text-blue-950 group-hover:text-white transition-colors mb-1">{s.value}</div>
+                                    <div className="text-xs font-black uppercase tracking-widest text-gray-400 group-hover:text-blue-200 transition-colors">{s.label}</div>
                                 </div>
                             ))}
                         </div>
                     </div>
                 </section>
 
-                {/* Vision & Mission Sections */}
-                <section className="py-32 overflow-hidden">
+                {/* About Section */}
+                <section className="py-28 bg-white">
                     <div className="container-custom">
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-start">
-                            {/* Vision */}
-                            <div className="relative">
-                                <span className="text-blue-500 font-black text-9xl absolute -top-16 -left-8 opacity-[0.03] select-none pointer-events-none">VISION</span>
-                                <div className="relative z-10">
-                                    <div className="w-20 h-20 bg-blue-900 rounded-[28px] flex items-center justify-center text-white mb-8 shadow-2xl">
-                                        <ShieldCheckIcon className="w-10 h-10" />
-                                    </div>
-                                    <h2 className="text-4xl font-black text-gray-900 mb-8 tracking-tighter uppercase leading-tight">Our <span className="text-blue-900">Vision</span></h2>
-                                    <p className="text-xl text-gray-600 leading-relaxed font-medium">
-                                        To provide a specialized sanctuary for mental restoration, recognized for safety, therapeutic excellence, and the dignity of every admitted patient.
-                                    </p>
+                        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+                            <div>
+                                <span className="text-[10px] font-black uppercase tracking-[0.4em] text-blue-900 mb-6 flex items-center gap-3">
+                                    <span className="w-10 h-px bg-blue-900 inline-block" /> About This Service
+                                </span>
+                                <h2 className="text-4xl md:text-5xl font-black text-gray-900 leading-tight mb-8 tracking-tighter shadow-xs">Safe, Restorative <br /><span className="text-blue-900">Healing Environments</span></h2>
+                                <div className="space-y-5 text-gray-600 leading-relaxed font-medium">
+                                    <p>EMSH's inpatient services provide 24/7 professional clinical care for patients whose psychiatric conditions require stabilization and intensive treatment away from home. We operate multiple specialized wards, catering to general psychiatry, acute crisis stabilization, and longer-term psychosocial rehabilitation.</p>
+                                    <p>Our goal is to create a therapeutic environment where patients feel safe and supported. Each inpatient unit is staffed by a dedicated team of psychiatric nurses who manage medications and monitor patients constantly, while our multidisciplinary team of consultants, psychologists, and social workers ensures that every aspect of recovery is addressed — from clinical stabilization to social reintegration planning.</p>
+                                </div>
+                                <div className="mt-10 grid grid-cols-2 gap-4">
+                                    {['Psychiatric Stabilization', 'Safety & Security', '24/7 Professional Nursing', 'Therapeutic Community', 'Holistic Clinical Rounds', 'Rehabilitation Bridge'].map(item => (
+                                        <div key={item} className="flex items-start gap-3 p-4 bg-blue-50 rounded-2xl">
+                                            <CheckCircleIcon className="w-5 h-5 text-blue-900 flex-shrink-0 mt-0.5" />
+                                            <div className="text-sm font-bold text-blue-950">{item}</div>
+                                        </div>
+                                    ))}
                                 </div>
                             </div>
-
-                            {/* Mission */}
                             <div className="relative">
-                                <span className="text-indigo-500 font-black text-9xl absolute -top-16 -left-8 opacity-[0.03] select-none pointer-events-none">MISSION</span>
-                                <div className="relative z-10">
-                                    <div className="w-20 h-20 bg-indigo-500 rounded-[28px] flex items-center justify-center text-white mb-8 shadow-2xl">
-                                        <HomeIcon className="w-10 h-10" />
+                                <div className="w-full h-[520px] bg-gradient-to-br from-blue-950 to-blue-900 rounded-[3rem] overflow-hidden flex flex-col items-center justify-center gap-4 border border-blue-800/30 shadow-2xl">
+                                    <div className="w-20 h-20 rounded-full bg-white/5 flex items-center justify-center border border-white/10">
+                                        <BuildingOffice2Icon className="w-10 h-10 text-blue-300" />
                                     </div>
-                                    <h2 className="text-4xl font-black text-gray-900 mb-8 tracking-tighter uppercase leading-tight">Our <span className="text-blue-900">Mission</span></h2>
-                                    <ul className="space-y-6">
-                                        {[
-                                            'Delivering intensive clinical care and physiological stabilization through 24/7 specialized monitoring.',
-                                            'Providing comprehensive psychosocial rehabilitation and skill training within the inpatient environment.',
-                                            'Ensuring safe and supportive transitioning of patients back to their families and communities.'
-                                        ].map((text, i) => (
-                                            <li key={i} className="flex gap-4 items-start text-gray-600 font-medium">
-                                                <div className="w-6 h-6 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 flex-shrink-0 mt-1">
-                                                    <CheckCircleIcon className="w-4 h-4" />
-                                                </div>
-                                                <p className="leading-relaxed">{text}</p>
-                                            </li>
-                                        ))}
-                                    </ul>
+                                    <div className="text-center px-8">
+                                        <p className="text-white font-black text-lg mb-2">Inpatient Ward</p>
+                                        <p className="text-blue-300/60 text-sm">Photo — EMSH Psychiatric Ward Environment</p>
+                                    </div>
+                                    <span className="mt-2 px-4 py-1.5 bg-white/5 border border-white/10 rounded-full text-xs text-blue-300 uppercase font-bold tracking-widest">Image Placeholder</span>
+                                </div>
+                                <div className="absolute -bottom-6 -right-6 bg-blue-900 text-white rounded-3xl px-6 py-4 shadow-2xl">
+                                    <div className="text-2xl font-black">24/7</div>
+                                    <div className="text-xs font-black uppercase tracking-widest opacity-80">Acute Care</div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </section>
 
-                {/* Goal Section */}
-                <section className="py-24 bg-white border-t border-gray-100 overflow-hidden relative">
+                {/* Units Section */}
+                <section className="py-28 bg-gray-50">
                     <div className="container-custom">
-                        <div className="max-w-4xl mx-auto text-center relative z-10 bg-gray-900 p-16 rounded-[60px] shadow-2xl overflow-hidden group">
-                            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2" />
-                            <div className="relative z-10">
-                                <h2 className="text-[10px] font-black uppercase tracking-[0.4em] text-cyan-400 mb-6 font-primary">Patient Outcome</h2>
-                                <h3 className="text-4xl font-black mb-8 leading-tight text-white">Goal of Inpatient Services</h3>
-                                <div className="text-2xl font-black text-blue-200 mb-10 leading-relaxed italic">
-                                    "To achieve clinical stabilization and successful reintegration, ensuring no individual in crisis is left without professional sanctuary."
+                        <div className="text-center mb-20">
+                            <span className="section-badge mb-4">🏥 Recovery Units</span>
+                            <h2 className="text-4xl md:text-6xl font-black text-gray-900 tracking-tighter mb-6">Inpatient Care Delivery</h2>
+                            <p className="text-gray-500 max-w-2xl mx-auto text-lg leading-relaxed">Specialized inpatient units delivering tailored psychiatric treatment and absolute patient safety.</p>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            {units.map((u) => (
+                                <div key={u.id} className={`group relative ${u.color} rounded-[2.5rem] overflow-hidden flex flex-col border border-white/5 hover:shadow-2xl transition-all duration-500 hover:-translate-y-2`}>
+                                    <div className="relative h-44 flex items-center justify-center bg-white/5 border-b border-white/5">
+                                        <div className="flex flex-col items-center gap-3">
+                                            <div className="w-14 h-14 rounded-2xl bg-white/10 flex items-center justify-center border border-white/10 group-hover:scale-110 transition-transform duration-500"><BuildingOffice2Icon className={`w-7 h-7 ${u.accent}`} /></div>
+                                            <span className="text-white/30 text-xs font-bold uppercase tracking-widest">Unit Photo</span>
+                                        </div>
+                                        <div className="absolute top-4 left-4 w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center"><span className={`text-sm font-black ${u.accent}`}>{u.id}</span></div>
+                                        <div className={`absolute top-4 right-4 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${u.badgeColor}`}>{u.badge}</div>
+                                    </div>
+                                    <div className="p-8 flex-1 flex flex-col">
+                                        <h3 className="text-xl font-black text-white mb-4 leading-tight">{u.name}</h3>
+                                        <p className="text-blue-100/60 text-sm leading-relaxed flex-1">{u.desc}</p>
+                                    </div>
                                 </div>
-                                <p className="text-blue-100/40 max-w-2xl mx-auto text-lg leading-relaxed mb-12">
-                                    Through intensive treatment and compassionate care, we aim to minimize the trauma of mental health crises and restore hope for long-term recovery.
-                                </p>
-                                <div className="flex flex-col sm:flex-row justify-center gap-4">
-                                    <Link href="/contact" className="px-10 py-5 bg-white text-blue-950 rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-blue-50 transition-all shadow-xl hover:-translate-y-1">
-                                        Contact Admissions
-                                    </Link>
-                                    <Link href="/services" className="px-10 py-5 bg-transparent border border-white/20 text-white rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-white/10 transition-all">
-                                        Explore Services
-                                    </Link>
-                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+
+                {/* Final CTA */}
+                <section className="py-20 bg-blue-950 relative overflow-hidden">
+                    <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)', backgroundSize: '48px 48px' }} />
+                    <div className="container-custom relative z-10 text-center">
+                        <div className="max-w-3xl mx-auto">
+                            <h2 className="text-3xl md:text-5xl font-black text-white mb-6 tracking-tighter shadow-sm">Inpatient Referral Questions</h2>
+                            <p className="text-blue-200/60 text-lg mb-10 leading-relaxed">Admission to our inpatient wards is managed via the Emergency Department or by direct clinical referral during outpatient consultation.</p>
+                            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                                <a href="tel:+2511118685385" className="inline-flex items-center gap-3 px-10 py-5 bg-white text-blue-950 rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-blue-50 transition-all shadow-2xl hover:-translate-y-1">
+                                    <PhoneIcon className="w-5 h-5" /> Call Now
+                                </a>
+                                <Link href="/services" className="inline-flex items-center gap-3 px-10 py-5 border-2 border-white/20 text-white rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-white/10 transition-all">
+                                    All Services <ArrowRightIcon className="w-5 h-5" />
+                                </Link>
                             </div>
                         </div>
                     </div>
@@ -219,3 +173,4 @@ export default function InpatientServicesPage() {
         </>
     );
 }
+

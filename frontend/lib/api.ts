@@ -11,7 +11,7 @@ const api = axios.create({
 // Request interceptor - add auth token
 api.interceptors.request.use((config) => {
     if (typeof window !== 'undefined') {
-        const token = localStorage.getItem('amsh_token');
+        const token = localStorage.getItem('emsh_token');
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
         }
@@ -27,17 +27,17 @@ api.interceptors.response.use(
         if (error.response?.status === 401 && !originalRequest._retry) {
             originalRequest._retry = true;
             try {
-                const refreshToken = localStorage.getItem('amsh_refresh_token');
+                const refreshToken = localStorage.getItem('emsh_refresh_token');
                 if (refreshToken) {
                     const res = await axios.post(`${API_URL}/auth/refresh`, { refreshToken });
                     const { token } = res.data;
-                    localStorage.setItem('amsh_token', token);
+                    localStorage.setItem('emsh_token', token);
                     originalRequest.headers.Authorization = `Bearer ${token}`;
                     return api(originalRequest);
                 }
             } catch (_) {
-                localStorage.removeItem('amsh_token');
-                localStorage.removeItem('amsh_refresh_token');
+                localStorage.removeItem('emsh_token');
+                localStorage.removeItem('emsh_refresh_token');
                 window.location.href = '/admin/login';
             }
         }

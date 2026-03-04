@@ -25,8 +25,8 @@ export default function AdminUsersPage() {
             setUsers(res.data.users || []);
         } catch {
             setUsers([
-                { id: '1', name: 'Super Admin', email: 'admin@amsh.gov.et', role: 'SUPER_ADMIN', lastLogin: new Date().toISOString() },
-                { id: '2', name: 'Editor One', email: 'editor@amsh.gov.et', role: 'EDITOR', lastLogin: new Date().toISOString() },
+                { id: '1', name: 'Super Admin', email: 'admin@EMSH.gov.et', role: 'SUPER_ADMIN', lastLogin: new Date().toISOString() },
+                { id: '2', name: 'Editor One', email: 'editor@EMSH.gov.et', role: 'EDITOR', lastLogin: new Date().toISOString() },
             ]);
         } finally {
             setLoading(false);
@@ -56,7 +56,7 @@ export default function AdminUsersPage() {
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
                     <h2 className="text-2xl font-black text-gray-900">Admin User Management</h2>
-                    <p className="text-gray-500 text-sm">Create and manage access levels for AMSH backend staff.</p>
+                    <p className="text-gray-500 text-sm">Create and manage access levels for EMSH backend staff.</p>
                 </div>
                 <button onClick={() => setIsModalOpen(true)} className="btn-primary">
                     <UserPlusIcon className="w-5 h-5" />
@@ -124,7 +124,7 @@ export default function AdminUsersPage() {
                             </div>
                             <div>
                                 <label className="block text-xs font-black text-gray-400 uppercase mb-2">Email Address</label>
-                                <input required type="email" className="form-input" placeholder="email@amsh.gov.et" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} />
+                                <input required type="email" className="form-input" placeholder="email@EMSH.gov.et" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} />
                             </div>
                             <div>
                                 <label className="block text-xs font-black text-gray-400 uppercase mb-2">Access Role</label>

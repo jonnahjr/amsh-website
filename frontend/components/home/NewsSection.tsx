@@ -17,15 +17,15 @@ export default function NewsSection() {
 
     const samplePosts = [
         {
-            id: '1', slug: 'amsh-celebrates-90-years',
-            title: 'AMSH Celebrates 90+ Years of Mental Health Service',
-            excerpt: 'Amanuel Mental Specialized Hospital marks over nine decades of dedicated service to Ethiopian mental health patients.',
+            id: '1', slug: 'emsh-celebrates-90-years',
+            title: 'EMSH Celebrates 90+ Years of Mental Health Service',
+            excerpt: 'Emmanuel Mental Specialized Hospital marks over nine decades of dedicated service to Ethiopian mental health patients.',
             type: 'NEWS', publishedAt: new Date().toISOString(),
             category: { name: 'News', color: '#1B4F8A' },
         },
         {
             id: '2', slug: 'mental-health-awareness-2024',
-            title: 'Mental Health Awareness Week 2024 Events at AMSH',
+            title: 'Mental Health Awareness Week 2024 Events at EMSH',
             excerpt: 'Join us for a week of mental health awareness activities, free screenings, and community outreach programs.',
             type: 'EVENT', publishedAt: new Date().toISOString(),
             category: { name: 'Events', color: '#B8860B' },
@@ -33,7 +33,7 @@ export default function NewsSection() {
         {
             id: '3', slug: 'new-cpd-training-programs',
             title: 'New CPD Training Programs Available for Health Professionals',
-            excerpt: 'AMSH launches new continuing professional development courses in psychiatry, psychology, and mental health nursing.',
+            excerpt: 'EMSH launches new continuing professional development courses in psychiatry, psychology, and mental health nursing.',
             type: 'ANNOUNCEMENT', publishedAt: new Date().toISOString(),
             category: { name: 'Announcements', color: '#2E8B57' },
         },

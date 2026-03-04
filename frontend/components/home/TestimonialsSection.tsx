@@ -8,9 +8,9 @@ export default function TestimonialsSection() {
     const [current, setCurrent] = useState(0);
 
     const defaults = [
-        { id: '1', name: 'Dawit Bekele', role: 'Patient Family Member', content: 'AMSH provided exceptional care for my family member during a crisis. The staff were professional, compassionate, and thorough. We are eternally grateful for their support.', rating: 5 },
-        { id: '2', name: 'Dr. Almaz Tesfaye', role: 'Healthcare Professional', content: 'The CPD programs at AMSH are exceptional. I have enhanced my psychiatric skills significantly and apply new knowledge every day in my practice.', rating: 5 },
-        { id: '3', name: 'Hana Girma', role: 'Research Collaborator', content: 'Collaborating with AMSH on mental health research has been a deeply rewarding experience. Their commitment to advancing knowledge in psychiatry is truly inspiring.', rating: 5 },
+        { id: '1', name: 'Dawit Bekele', role: 'Patient Family Member', content: 'EMSH provided exceptional care for my family member during a crisis. The staff were professional, compassionate, and thorough. We are eternally grateful for their support.', rating: 5 },
+        { id: '2', name: 'Dr. Almaz Tesfaye', role: 'Healthcare Professional', content: 'The CPD programs at EMSH are exceptional. I have enhanced my psychiatric skills significantly and apply new knowledge every day in my practice.', rating: 5 },
+        { id: '3', name: 'Hana Girma', role: 'Research Collaborator', content: 'Collaborating with EMSH on mental health research has been a deeply rewarding experience. Their commitment to advancing knowledge in psychiatry is truly inspiring.', rating: 5 },
     ];
 
     useEffect(() => {
@@ -26,7 +26,7 @@ export default function TestimonialsSection() {
             <div className="container-custom">
                 <div className="text-center max-w-xl mx-auto mb-12">
                     <span className="section-badge">💬 Testimonials</span>
-                    <h2 className="section-title">What People Say About AMSH</h2>
+                    <h2 className="section-title">What People Say About EMSH</h2>
                     <p className="section-subtitle">Hear from patients, families, and healthcare professionals who have experienced our care.</p>
                 </div>
 

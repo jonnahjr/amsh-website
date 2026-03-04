@@ -57,8 +57,10 @@ export default function ContactPage() {
                         </span>
                         <h1 className="text-4xl sm:text-5xl md:text-7xl font-black text-white leading-tight mb-6 animate-fade-in-up tracking-tighter" style={{ animationDelay: '0.1s' }}>
                             <span className="text-gray-400 italic font-medium">Get In Touch</span><br />
-                            With AMSH
+                            With EMSH
                         </h1>
+
+
                         <p className="text-blue-100/70 text-lg md:text-xl max-w-3xl mx-auto mb-8 animate-fade-in-up font-medium" style={{ animationDelay: '0.2s' }}>
                             We're here to help. Reach out for appointments, information, or any queries about our specialized mental health services.
                         </p>
@@ -76,9 +78,9 @@ export default function ContactPage() {
                                     {[
                                         { icon: '📞', label: 'Main Line', value: '+251-111-868-53-85', href: 'tel:+2511118685385' },
                                         { icon: '🚨', label: 'Emergency', value: '991 (24/7)', href: 'tel:991', highlight: true },
-                                        { icon: '✉️', label: 'Email', value: 'info@amsh.gov.et', href: 'mailto:info@amsh.gov.et' },
+                                        { icon: '✉️', label: 'Email', value: 'info@emsh.gov.et', href: 'mailto:info@emsh.gov.et' },
                                         { icon: '📍', label: 'Address', value: 'Addis Ababa, Ethiopia' },
-                                        { icon: '🌐', label: 'Website', value: 'www.amsh.gov.et', href: 'https://www.amsh.gov.et' },
+                                        { icon: '🌐', label: 'Website', value: 'www.emsh.gov.et', href: 'https://www.emsh.gov.et' },
                                     ].map((item) => (
                                         <div key={item.label} className={`flex items-start gap-4 mb-5 ${item.highlight ? 'bg-red-600/30 -mx-2 px-2 py-2 rounded-xl' : ''}`}>
                                             <span className="text-2xl flex-shrink-0">{item.icon}</span>
@@ -134,7 +136,7 @@ export default function ContactPage() {
                                         <div className="flex items-start gap-3">
                                             <span className="text-2xl mt-0.5">📍</span>
                                             <div>
-                                                <p className="text-gray-900 font-bold text-sm leading-tight">Amanuel Mental Hospital, 2PHF+H5M</p>
+                                                <p className="text-gray-900 font-bold text-sm leading-tight">Emmanuel Mental Hospital, 2PHF+H5M</p>
                                                 <p className="text-gray-500 text-[10px] font-black uppercase tracking-[0.2em]">Addis Ababa, Ethiopia</p>
                                             </div>
                                         </div>
@@ -157,7 +159,7 @@ export default function ContactPage() {
                                         <div className="text-center py-12">
                                             <div className="text-6xl mb-4">✅</div>
                                             <h3 className="text-2xl font-black text-gray-900 mb-2">Message Sent!</h3>
-                                            <p className="text-gray-500">Thank you for contacting AMSH. We'll respond within 24 hours.</p>
+                                            <p className="text-gray-500">Thank you for contacting EMSH. We'll respond within 24 hours.</p>
                                             <button onClick={() => setSuccess(false)} className="mt-6 btn-primary">Send Another Message</button>
                                         </div>
                                     ) : (

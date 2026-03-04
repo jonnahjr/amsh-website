@@ -10,7 +10,7 @@ import {
     VideoCameraIcon,
     UserGroupIcon,
     CalendarDaysIcon,
-    MagnifyingGlassIcon,
+    EyeIcon,
     ArrowRightIcon,
     ClockIcon,
     CheckBadgeIcon,
@@ -173,7 +173,7 @@ export default function CPDPage() {
                             <h2 className="text-4xl font-black text-blue-950 mb-8 tracking-tight">About Our CPD Program</h2>
                             <div className="space-y-6 text-gray-600 leading-relaxed font-medium">
                                 <p>
-                                    Amanuel Mental Specialized Hospital (AMSH) has been at the forefront of mental health care in Ethiopia for over 80 years.
+                                    Emmanuel Mental Specialized Hospital (EMSH) has been at the forefront of mental health care in Ethiopia for over 80 years.
                                     Our CPD program was established to sustain clinical excellence and ensure that all health professionals meet
                                     the highest global standards of psychiatric care.
                                 </p>
@@ -192,7 +192,7 @@ export default function CPDPage() {
                                 </div>
                                 <div className="p-6 bg-white rounded-2xl border border-gray-100 shadow-sm">
                                     <h4 className="font-black text-blue-900 mb-3 flex items-center gap-2">
-                                        <MagnifyingGlassIcon className="w-5 h-5" /> Vision
+                                        <EyeIcon className="w-5 h-5" /> Vision
                                     </h4>
                                     <p className="text-sm text-gray-500">To be the premier national center of excellence for mental health professional training and accreditation across East Africa.</p>
                                 </div>
@@ -240,10 +240,6 @@ export default function CPDPage() {
                         <div>
                             <span className="text-blue-600 text-xs font-black uppercase tracking-[0.2em] mb-3 block">Course Catalog</span>
                             <h2 className="text-4xl font-black text-blue-950 tracking-tight">Accredited CPD Courses</h2>
-                        </div>
-                        <div className="bg-white px-6 py-3 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4 text-sm font-bold text-gray-500">
-                            <MagnifyingGlassIcon className="w-5 h-5 text-gray-400" />
-                            <span>Filter by Professional Specialty</span>
                         </div>
                     </div>
 

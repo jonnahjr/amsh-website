@@ -55,7 +55,7 @@ const SERVICE_DATA: any = {
         name: 'Addiction & Substance Abuse',
         badge: 'Recovery & Transformation',
         description: 'Specialized detoxification, rehabilitation, and counseling services for individuals overcoming substance use disorders.',
-        introduction: 'AMSH provides a safe and supportive environment for individuals battling addiction. Our comprehensive program includes clinical detoxification, intensive psychotherapy, and social reintegration strategies designed to break the cycle of substance abuse and restore the dignity of our patients.',
+        introduction: 'EMSH provides a safe and supportive environment for individuals battling addiction. Our comprehensive program includes clinical detoxification, intensive psychotherapy, and social reintegration strategies designed to break the cycle of substance abuse and restore the dignity of our patients.',
         vision: 'Creating a drug-free community through compassionate, expert-led addiction recovery and clinical excellence.',
         mission: [
             'Providing scientifically grounded addiction treatment and compassionate clinical support.',
@@ -95,7 +95,7 @@ const SERVICE_DATA: any = {
         name: 'Rehabilitation Services',
         badge: 'Restoring Independence',
         description: 'Comprehensive psychosocial rehabilitation programs aimed at restoring functional abilities and community integration.',
-        introduction: 'Rehabilitation at Amanuel goes beyond clinical treatment. We focus on restoring the social and vocational skills necessary for patients to lead independent lives. Our programs include occupational therapy, industrial therapy, and social skills training within a therapeutic community.',
+        introduction: 'Emmanuel Mental Specialized Hospital provides a safe and supportive environment for individuals battling addiction. Our programs focus on restoring the social and vocational skills necessary for patients to lead independent lives. Our programs include occupational therapy, industrial therapy, and social skills training within a therapeutic community.',
         vision: 'To be the premier center for psychosocial rehabilitation, transforming lives through holistic skill development.',
         mission: [
             'Providing comprehensive rehabilitation services that target social, vocational, and emotional independence.',
@@ -135,7 +135,7 @@ const SERVICE_DATA: any = {
         name: 'Pharmacy Services',
         badge: 'Reliable Medication',
         description: 'Specialized psychiatric and general pharmacy services ensuring the availability of essential mental health medications.',
-        introduction: 'The AMSH Pharmacy is a specialized unit dedicated to providing essential psychiatric medications. We manage a robust supply chain to ensure that life-saving treatments are always accessible to our patients, backed by expert pharmaceutical advice.',
+        introduction: 'The EMSH Pharmacy is a specialized unit dedicated to providing essential psychiatric medications. We manage a robust supply chain to ensure that life-saving treatments are always accessible to our patients, backed by expert pharmaceutical advice.',
         vision: 'To be the national center for psychiatric pharmaceutical excellence and supply reliability.',
         mission: [
             'Ensuring the continuous availability of essential psychiatric and general medications.',
@@ -155,7 +155,7 @@ const SERVICE_DATA: any = {
         name: 'Laboratory Services',
         badge: 'Diagnostic Excellence',
         description: 'State-of-the-art clinical laboratory services providing accurate and timely diagnostic tests.',
-        introduction: 'The AMSH Laboratory provides comprehensive diagnostic services including hematology, clinical chemistry, and specialized psychiatric monitoring. We use advanced automated systems to ensure the highest accuracy for clinical decision-making.',
+        introduction: 'The EMSH Laboratory provides comprehensive diagnostic services including hematology, clinical chemistry, and specialized psychiatric monitoring. We use advanced automated systems to ensure the highest accuracy for clinical decision-making.',
         vision: 'To be the leading psychiatric diagnostic laboratory in the region, recognized for precision and efficiency.',
         mission: [
             'Providing accurate and timely laboratory diagnostic services.',
@@ -175,7 +175,7 @@ const SERVICE_DATA: any = {
         name: 'Research Services',
         badge: 'Advancing Science',
         description: 'Leading psychiatric research initiatives to improve mental health outcomes in Ethiopia and globally.',
-        introduction: 'The Research department at AMSH is a hub for psychiatric innovation. We conduct large-scale epidemiological studies, clinical trials, and psychosocial research to better understand mental health challenges in the Ethiopian context and beyond.',
+        introduction: 'The Research department at EMSH is a hub for psychiatric innovation. We conduct large-scale epidemiological studies, clinical trials, and psychosocial research to better understand mental health challenges in the Ethiopian context and beyond.',
         vision: 'To be a globally recognized center for mental health research excellence and innovation.',
         mission: [
             'Conducting high-impact psychiatric research that informs national policy and clinical practice.',
@@ -215,7 +215,7 @@ const SERVICE_DATA: any = {
         name: 'Forensic Psychiatry Services',
         badge: 'Legal & Clinical Bridge',
         description: 'Specialized psychiatric evaluation and treatment for individuals involved in the legal system.',
-        introduction: 'The Forensic Psychiatry department at AMSH provides expert evaluations for legal cases, including fitness to stand trial and criminal responsibility assessments. We also provide specialized treatment for individuals in our high-security forensic wards, balancing clinical rehabilitation with public safety.',
+        introduction: 'The Forensic Psychiatry department at EMSH provides expert evaluations for legal cases, including fitness to stand trial and criminal responsibility assessments. We also provide specialized treatment for individuals in our high-security forensic wards, balancing clinical rehabilitation with public safety.',
         vision: 'To be the national authority on forensic psychiatric evaluation and ethical clinical management.',
         mission: [
             'Providing impartial and expert psychiatric evaluations for the Ethiopian legal system.',
@@ -235,7 +235,7 @@ const SERVICE_DATA: any = {
         name: 'Training & Education',
         badge: 'Academic Excellence',
         description: 'Comprehensive clinical training, residency programs, and academic development for mental health professionals.',
-        introduction: 'Amanuel Hospital is a hub for psychiatric education in Ethiopia. We provide specialized training for residents, medical students, and mental health professionals, ensuring that the next generation of caregivers is equipped with the highest standards of clinical knowledge.',
+        introduction: 'Emmanuel Mental Specialized Hospital is a hub for psychiatric education in Ethiopia. We provide specialized training for residents, medical students, and mental health professionals, ensuring that the next generation of caregivers is equipped with the highest standards of clinical knowledge.',
         vision: 'To be the center of excellence for psychiatric education and academic innovation in East Africa.',
         mission: [
             'Providing high-quality clinical residency and internship programs.',
@@ -255,7 +255,7 @@ const SERVICE_DATA: any = {
         name: 'Referral Services',
         badge: 'Seamless Transitions',
         description: 'Managing inward and outward patient referrals to ensure continuity of care across the health system.',
-        introduction: 'Our Referral unit coordinates the seamless movement of patients between Amanuel and other healthcare providers. We ensure that clinical information is accurately communicated and that patients transition safely to the appropriate level of care.',
+        introduction: 'Our Referral unit coordinates the seamless movement of patients between Emmanuel and other healthcare providers. We ensure that clinical information is accurately communicated and that patients transition safely to the appropriate level of care.',
         vision: 'To be the national coordinator for psychiatric referral excellence and health system integration.',
         mission: [
             'Streamlining referral processes through digital tracking and clear clinical protocols.',
@@ -275,7 +275,7 @@ const SERVICE_DATA: any = {
         name: 'Counseling Services',
         badge: 'Emotional Support',
         description: 'Professional counseling and psychosocial support for individuals and families.',
-        introduction: 'AMSH provides dedicated counseling services to support individuals facing life transitions, grief, or interpersonal challenges. our counselors provide a safe, confidential space for emotional exploration and the development of healthy coping strategies.',
+        introduction: 'EMSH provides dedicated counseling services to support individuals facing life transitions, grief, or interpersonal challenges. our counselors provide a safe, confidential space for emotional exploration and the development of healthy coping strategies.',
         vision: 'To provide accessible, high-quality counseling services that empower individuals toward emotional resilience.',
         mission: [
             'Providing professional, confidential counseling for individuals and families.',
@@ -295,7 +295,7 @@ const SERVICE_DATA: any = {
         name: 'Promotion & Prevention',
         badge: 'Proactive Wellness',
         description: 'Initiatives aimed at promoting mental health awareness and preventing the onset of psychiatric disorders.',
-        introduction: 'The Promotion and Prevention unit at AMSH is our proactive arm. We conduct public awareness campaigns, school programs, and workplace interventions designed to reduce stigma and promote early-stage mental wellness strategies across the nation.',
+        introduction: 'The Promotion and Prevention unit at EMSH is our proactive arm. We conduct public awareness campaigns, school programs, and workplace interventions designed to reduce stigma and promote early-stage mental wellness strategies across the nation.',
         vision: 'To lead the national movement for mental health awareness and proactive preventive care.',
         mission: [
             'Designing and implementing large-scale mental health promotion campaigns.',
@@ -391,6 +391,8 @@ export default function ServiceDetailPage() {
                             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white leading-[1.1] mb-8 animate-fade-in-up tracking-tighter" style={{ animationDelay: '0.1s' }}>
                                 {service.name.split(' ').map((word: string, i: number) => i === service.name.split(' ').length - 1 ? <span key={i}><br className="md:hidden" /><span className="text-gray-400 italic font-medium ml-2">{word}</span></span> : word + ' ')}
                             </h1>
+
+
 
                             <p className="text-lg md:text-2xl text-blue-100/60 max-w-2xl mx-auto mb-12 leading-relaxed animate-fade-in-up font-medium" style={{ animationDelay: '0.2s' }}>
                                 {service.description}

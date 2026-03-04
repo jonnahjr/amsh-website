@@ -98,11 +98,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 <div className="h-20 flex items-center px-6 border-b border-gray-50">
                     <Link href="/" className="flex items-center gap-3 group">
                         <div className="w-12 h-12 rounded-xl bg-white p-1 flex items-center justify-center shadow-sm border border-gray-100 group-hover:shadow-md transition-all">
-                            <img src="/images/logo.png" alt="AMSH Logo" className="w-full h-full object-contain" />
+                            <img src="/images/logo.png" alt="EMSH Logo" className="w-full h-full object-contain" />
                         </div>
                         {sidebarOpen && (
                             <div>
-                                <div className="font-black text-blue-900 text-sm leading-tight tracking-tight uppercase">AMSH</div>
+                                <div className="font-black text-blue-900 text-sm leading-tight tracking-tight uppercase">EMSH</div>
                                 <div className="text-[10px] text-gray-400 uppercase font-black tracking-widest opacity-70">Admin Panel</div>
                             </div>
                         )}

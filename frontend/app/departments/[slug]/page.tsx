@@ -27,8 +27,8 @@ export default function DepartmentDetailPage() {
             // Mock data for demo
             setDept({
                 name: 'Adult Psychiatry Department',
-                description: 'The core psychiatric service unit for adult patients at AMSH.',
-                content: 'The Adult Psychiatry Department at Amanuel Mental Specialized Hospital is dedicated to the assessment, diagnosis, and treatment of mental health disorders in adults. Our team of expert psychiatrists, psychiatric nurses, and clinical psychologists work together to provide evidence-based care including pharmacological and psychosocial interventions.',
+                description: 'The core psychiatric service unit for adult patients at EMSH.',
+                content: 'The Adult Psychiatry Department at Emmanuel Mental Specialized Hospital is dedicated to the assessment, diagnosis, and treatment of mental health disorders in adults. Our team of expert psychiatrists, psychiatric nurses, and clinical psychologists work together to provide evidence-based care including pharmacological and psychosocial interventions.',
                 head: { name: 'Dr. Zelalem G.', title: 'Head of Department', image: null },
                 services: [
                     { name: 'Acute Care', slug: 'emergency-service' },
@@ -109,7 +109,7 @@ export default function DepartmentDetailPage() {
 
                             {/* Left: About & Services */}
                             <div className="lg:col-span-2 space-y-16">
-                                <div className="prose-amsh max-w-none">
+                                <div className="prose-emsh max-w-none">
                                     <h2 className="text-3xl font-black text-gray-900 mb-6">About the Department</h2>
                                     <p className="text-gray-600 text-lg leading-relaxed">{dept.content}</p>
                                 </div>
@@ -155,7 +155,29 @@ export default function DepartmentDetailPage() {
                                     </button>
                                 </div>
 
-                                <div className="card p-8 bg-gradient-to-br from-blue-900 to-blue-800 text-white border-0">
+                                <div className="card p-8 bg-white border border-gray-100 shadow-xl rounded-[32px]">
+                                    <h3 className="text-xl font-black text-gray-900 mb-6 flex items-center gap-3">
+                                        <span className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center text-blue-900">📞</span>
+                                        Quick Contact
+                                    </h3>
+                                    <div className="space-y-4">
+                                        <div>
+                                            <p className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">Direct Extension</p>
+                                            <p className="text-blue-900 font-black">+251-111-868-53-85 ext 402</p>
+                                        </div>
+                                        <div>
+                                            <p className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">Department Email</p>
+                                            <p className="text-gray-900 font-bold">clinical@emsh.gov.et</p>
+                                        </div>
+                                        <div className="pt-4">
+                                            <Link href="/contact" className="w-full inline-flex items-center justify-center py-4 bg-blue-900 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-blue-800 transition-all shadow-lg hover:-translate-y-1">
+                                                Book Appointment
+                                            </Link>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="card p-8 bg-gradient-to-br from-blue-900 to-blue-800 text-white border-0 rounded-[32px]">
                                     <AcademicCapIcon className="w-12 h-12 mb-4 opacity-50" />
                                     <h4 className="text-xl font-black mb-2">Training & CPD</h4>
                                     <p className="text-blue-200 text-sm mb-6">Learn about professional development opportunities within this department.</p>
