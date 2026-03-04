@@ -137,11 +137,10 @@ export default function NewsPage() {
 
         postsAPI.getAll({ type: 'NEWS', status: 'PUBLISHED' })
             .then(res => {
-                if (res.data.posts && res.data.posts.length > 0) {
-                    setPosts(res.data.posts);
-                } else {
-                    setPosts(mockPosts);
-                }
+                // Merge real backend posts with mock posts; real posts come first
+                const realPosts = res.data?.posts || [];
+                const combined = [...realPosts, ...mockPosts];
+                setPosts(combined);
             })
             .catch(() => setPosts(mockPosts))
             .finally(() => setLoading(false));
