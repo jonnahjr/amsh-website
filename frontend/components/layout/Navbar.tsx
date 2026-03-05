@@ -101,7 +101,7 @@ export default function Navbar() {
                         <span className="text-blue-200">Mon - Fri: 2:30 AM - 10:00 AM</span>
                     </div>
                     <div className="flex items-center gap-4">
-                        <Link href="/admin" className="text-blue-300 hover:text-white transition-colors text-xs">
+                        <Link href="/admin/dashboard" className="text-blue-300 hover:text-white transition-colors text-xs">
                             Admin Portal
                         </Link>
                     </div>
