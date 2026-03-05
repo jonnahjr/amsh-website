@@ -21,6 +21,7 @@ import {
     XMarkIcon,
     ArrowRightIcon,
 } from '@heroicons/react/24/outline';
+import { formsAPI } from '@/lib/api';
 
 export default function ClinicalAttachmentPage() {
     const [category, setCategory] = useState<'GOVERNMENT' | 'PRIVATE' | 'SELF_SPONSORED' | null>(null);
@@ -62,14 +63,21 @@ export default function ClinicalAttachmentPage() {
         }));
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsSubmitting(true);
-        // Simulate API call
-        setTimeout(() => {
-            setIsSubmitting(false);
+        try {
+            await formsAPI.submit('clinical-attachment-form', {
+                ...formData,
+                category,
+            });
             setIsSubmitted(true);
-        }, 2000);
+        } catch (error) {
+            console.error('Submission failed:', error);
+            alert('Failed to submit application. Please try again.');
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     const handleFileUpload = (docId: keyof typeof uploadStatus) => {

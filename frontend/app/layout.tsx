@@ -7,6 +7,7 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-jakarta" });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('http://localhost:3000'),
   title: {
     template: "%s | Emmanuel Mental Specialized Hospital",
     default: "Emmanuel Mental Specialized Hospital - Specialized Psychiatric Institution",
@@ -40,7 +41,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable} ${jakarta.variable}`}>
+    <html lang="en" className={`${inter.variable} ${jakarta.variable}`} data-scroll-behavior="smooth">
       <body className={`${inter.className} antialiased`}>
         <AuthProvider>
           {children}

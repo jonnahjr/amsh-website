@@ -175,14 +175,41 @@ model Department {
   description String
   image       String?
   icon        String?
+  headName    String?
+  headTitle   String?   // e.g. "Director", "Chief Medical Officer"
+  headImage   String?
+  categoryId  String?
+  category    DepartmentCategory? @relation(fields: [categoryId], references: [id])
+  categoryName String?  @default("Clinical Departments") // Fallback/Legacy string field
+  vision      String?
+  mission     String?
+  goal        String?
   order       Int      @default(0)
   isActive    Boolean  @default(true)
+  gallery     String?  // Semicolon separated image URLs
   services    Service[]
   doctors     Doctor[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
   @@map("departments")
+}
+
+model DepartmentCategory {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String?
+  image       String?
+  icon        String?
+  gradient    String?  // e.g. "from-blue-900 to-blue-700"
+  order       Int      @default(0)
+  isActive    Boolean  @default(true)
+  departments Department[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("department_categories")
 }
 
 model Service {
@@ -195,12 +222,35 @@ model Service {
   icon         String?
   departmentId String?
   department   Department? @relation(fields: [departmentId], references: [id])
+  vision       String?
+  mission      String?
+  goal         String?
+  highlights   String?    // JSON string for [{label, value}]
   order        Int        @default(0)
   isActive     Boolean    @default(true)
+  gallery      String?    // Semicolon separated image URLs
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
 
   @@map("services")
+}
+
+model ServiceCategory {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String
+  image       String?
+  icon        String?
+  gradient    String?  // e.g. "from-blue-950 to-blue-800"
+  accentColor String?  // e.g. "bg-blue-900"
+  order       Int      @default(0)
+  isActive    Boolean  @default(true)
+  deptSlugs   String?  // Semicolon separated department slugs (static mapping fallback)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("service_categories")
 }
 
 // ============================================================
@@ -296,6 +346,7 @@ model CPDRegistration {
   phone      String
   profession String
   workplace  String
+  category   String    @default("PERSONAL") // GOVERNMENT, PRIVATE, PERSONAL
   licenseNo  String?
   status     String    @default("PENDING") // PENDING, APPROVED, REJECTED, COMPLETED
   certificate String?  // Certificate URL
@@ -377,6 +428,7 @@ model FormSubmission {
   user      User?    @relation(fields: [userId], references: [id])
   ipAddress String?
   userAgent String?
+  status    String   @default("PENDING")
   createdAt DateTime @default(now())
 
   @@map("form_submissions")

@@ -5,6 +5,7 @@ import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import ChatbotButton from '@/components/chatbot/ChatbotButton';
 import EmergencyBanner from '@/components/ui/EmergencyBanner';
+import { cpdAPI } from '@/lib/api';
 import {
     AcademicCapIcon,
     VideoCameraIcon,
@@ -111,6 +112,7 @@ export default function CPDPage() {
         placeOfWork: '',
         yearsOfExperience: '',
         region: '',
+        category: 'PERSONAL',
         agreement: false,
     });
 
@@ -129,10 +131,49 @@ export default function CPDPage() {
         }));
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        alert('Application submitted successfully! Our team will review your credentials.');
-        setIsApplyModalOpen(false);
+        if (!selectedCourse) return;
+
+        setIsSubmitting(true);
+        try {
+            // Mapping frontend field names to backend expectations if different
+            // Backend expects: firstName, lastName, email, phone, profession, workplace, licenseNo, category
+            const payload = {
+                firstName: formData.fullName.split(' ')[0],
+                lastName: formData.fullName.split(' ').slice(1).join(' ') || ' ',
+                email: formData.email,
+                phone: formData.phoneNumber,
+                profession: formData.professionTitle,
+                workplace: formData.placeOfWork,
+                licenseNo: formData.licenseNumber,
+                category: formData.category,
+            };
+
+            await cpdAPI.register(selectedCourse.id, payload);
+            alert('Application submitted successfully! Our team will review your credentials.');
+            setIsApplyModalOpen(false);
+            // Reset form
+            setFormData({
+                fullName: '',
+                phoneNumber: '',
+                email: '',
+                professionTitle: '',
+                licenseNumber: '',
+                placeOfWork: '',
+                yearsOfExperience: '',
+                region: '',
+                category: 'PERSONAL',
+                agreement: false,
+            });
+        } catch (error) {
+            console.error('Submission error:', error);
+            alert('Failed to submit application. Please check your connection and try again.');
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     return (
@@ -378,6 +419,14 @@ export default function CPDPage() {
                                         <label className="block text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Region</label>
                                         <input required type="text" name="region" value={formData.region} onChange={handleInputChange} placeholder="Current City / Region" className="w-full px-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-blue-900 transition-all font-bold text-sm" />
                                     </div>
+                                    <div className="space-y-4">
+                                        <label className="block text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Registration Type</label>
+                                        <select required name="category" value={formData.category} onChange={handleInputChange} className="w-full px-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-blue-900 transition-all font-bold text-sm">
+                                            <option value="GOVERNMENT">Public Institution (Government)</option>
+                                            <option value="PRIVATE">Private College / Hospital</option>
+                                            <option value="PERSONAL">Independent / Personal</option>
+                                        </select>
+                                    </div>
                                 </div>
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -408,8 +457,12 @@ export default function CPDPage() {
                                     </label>
                                 </div>
 
-                                <button type="submit" className="w-full py-6 bg-blue-950 text-white rounded-[24px] font-black uppercase tracking-[0.2em] text-sm hover:bg-blue-800 transition-all shadow-2xl shadow-blue-900/20 hover:-translate-y-1">
-                                    Submit Application for Review
+                                <button
+                                    type="submit"
+                                    disabled={isSubmitting}
+                                    className="w-full py-6 bg-blue-950 text-white rounded-[24px] font-black uppercase tracking-[0.2em] text-sm hover:bg-blue-800 transition-all shadow-2xl shadow-blue-900/20 hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed"
+                                >
+                                    {isSubmitting ? 'Processing...' : 'Submit Application for Review'}
                                 </button>
                             </form>
                         </div>

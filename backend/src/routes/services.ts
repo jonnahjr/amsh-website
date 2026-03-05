@@ -22,14 +22,33 @@ router.get('/:slug', async (req: Request, res: Response) => {
 
 router.post('/', authenticate, authorize('ADMIN', 'SUPER_ADMIN'), async (req: AuthRequest, res: Response) => {
     try {
-        const service = await prisma.service.create({ data: req.body });
+        const { name, slug, description, content, image, icon, departmentId, vision, mission, goal, highlights, order, isActive, gallery } = req.body;
+        const service = await prisma.service.create({
+            data: {
+                name, slug, description, content, image, icon, departmentId,
+                vision, mission, goal, highlights,
+                order: parseInt(order as any) || 0,
+                isActive: isActive !== false,
+                gallery
+            }
+        });
         res.status(201).json({ service });
     } catch (error) { res.status(500).json({ error: 'Failed to create service.' }); }
 });
 
 router.put('/:id', authenticate, authorize('ADMIN', 'SUPER_ADMIN'), async (req: AuthRequest, res: Response) => {
     try {
-        const service = await prisma.service.update({ where: { id: req.params.id }, data: req.body });
+        const { name, slug, description, content, image, icon, departmentId, vision, mission, goal, highlights, order, isActive, gallery } = req.body;
+        const service = await prisma.service.update({
+            where: { id: req.params.id },
+            data: {
+                name, slug, description, content, image, icon, departmentId,
+                vision, mission, goal, highlights,
+                order: parseInt(order as any) || 0,
+                isActive: isActive !== false,
+                gallery
+            }
+        });
         res.json({ service });
     } catch (error) { res.status(500).json({ error: 'Failed to update service.' }); }
 });

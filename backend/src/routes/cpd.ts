@@ -4,6 +4,35 @@ import { prisma } from '../index';
 
 const router = Router();
 
+// GET all registrations (Global Admin)
+router.get('/registrations/all', authenticate, authorize('ADMIN', 'SUPER_ADMIN', 'CPD_ADMIN'), async (req: AuthRequest, res: Response) => {
+    try {
+        const registrations = await prisma.cPDRegistration.findMany({
+            include: { course: { select: { title: true } } },
+            orderBy: { createdAt: 'desc' },
+        });
+        res.json({ registrations });
+    } catch (error) {
+        console.error('Fetch all cpd regs error:', error);
+        res.status(500).json({ error: 'Failed to fetch registrations.' });
+    }
+});
+
+// PATCH update registration status
+router.patch('/registrations/:id/status', authenticate, authorize('ADMIN', 'SUPER_ADMIN', 'CPD_ADMIN'), async (req: AuthRequest, res: Response) => {
+    try {
+        const { status } = req.body;
+        const registration = await prisma.cPDRegistration.update({
+            where: { id: req.params.id },
+            data: { status },
+        });
+        res.json({ registration });
+    } catch (error) {
+        console.error('Update cpd reg status error:', error);
+        res.status(500).json({ error: 'Failed to update status.' });
+    }
+});
+
 // CPD Courses
 router.get('/', async (req: Request, res: Response) => {
     try {
@@ -52,9 +81,9 @@ router.delete('/:id', authenticate, authorize('ADMIN', 'SUPER_ADMIN'), async (re
 // POST /api/cpd/:id/register
 router.post('/:id/register', async (req: Request, res: Response) => {
     try {
-        const { firstName, lastName, email, phone, profession, workplace, licenseNo } = req.body;
+        const { firstName, lastName, email, phone, profession, workplace, licenseNo, category } = req.body;
         const registration = await prisma.cPDRegistration.create({
-            data: { courseId: req.params.id, firstName, lastName, email, phone, profession, workplace, licenseNo },
+            data: { courseId: req.params.id, firstName, lastName, email, phone, profession, workplace, licenseNo, category },
         });
         res.status(201).json({ message: 'Registration successful.', registration });
     } catch (error) { res.status(500).json({ error: 'Failed to register.' }); }

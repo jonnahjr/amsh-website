@@ -1,5 +1,505 @@
-import Placeholder from '@/components/admin/Placeholder';
+'use client';
+
+import { useState, useEffect } from 'react';
+import { servicesAPI, departmentsAPI, mediaAPI } from '@/lib/api';
+import {
+    PlusIcon,
+    PencilIcon,
+    TrashIcon,
+    PhotoIcon,
+    XMarkIcon,
+    BriefcaseIcon,
+    BuildingLibraryIcon,
+    Bars3Icon,
+} from '@heroicons/react/24/outline';
 
 export default function ServicesAdmin() {
-    return <Placeholder title="Clinical Services" description="Define and manage the medical services provided by the hospital." icon="💉" />;
+    const [services, setServices] = useState<any[]>([]);
+    const [departments, setDepartments] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [editingService, setEditingService] = useState<any>(null);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [filterDept, setFilterDept] = useState('');
+    const [formData, setFormData] = useState({
+        name: '',
+        slug: '',
+        description: '',
+        content: '',
+        image: '',
+        icon: '',
+        departmentId: '',
+        vision: '',
+        mission: '',
+        goal: '',
+        highlights: '', // JSON string for [{label, value}]
+        order: 0,
+        isActive: true,
+        gallery: '',
+    });
+    const [uploading, setUploading] = useState<string | null>(null);
+
+    useEffect(() => {
+        fetchServicesAndDepts();
+    }, []);
+
+    const fetchServicesAndDepts = async () => {
+        setLoading(true);
+        try {
+            const [servRes, deptRes] = await Promise.all([
+                servicesAPI.getAll(),
+                departmentsAPI.getAll()
+            ]);
+            setServices(servRes.data.services || []);
+            setDepartments(deptRes.data.departments || []);
+        } catch (error) {
+            console.error('Fetch error:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleOpenModal = (service: any = null) => {
+        if (service) {
+            setEditingService(service);
+            setFormData({
+                name: service.name,
+                slug: service.slug,
+                description: service.description,
+                content: service.content || '',
+                image: service.image || '',
+                icon: service.icon || '',
+                departmentId: service.departmentId || '',
+                vision: service.vision || '',
+                mission: service.mission || '',
+                goal: service.goal || '',
+                highlights: service.highlights || '',
+                order: service.order || 0,
+                isActive: service.isActive,
+                gallery: service.gallery || '',
+            });
+        } else {
+            setEditingService(null);
+            setFormData({
+                name: '',
+                slug: '',
+                description: '',
+                content: '',
+                image: '',
+                icon: '',
+                departmentId: filterDept || '',
+                vision: '',
+                mission: '',
+                goal: '',
+                highlights: '',
+                order: services.length,
+                isActive: true,
+                gallery: '',
+            });
+        }
+        setIsModalOpen(true);
+    };
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        try {
+            if (editingService) {
+                await servicesAPI.update(editingService.id, formData);
+            } else {
+                await servicesAPI.create(formData);
+            }
+            setIsModalOpen(false);
+            fetchServicesAndDepts();
+        } catch (error) {
+            console.error('Save service error:', error);
+            alert('Failed to save service.');
+        }
+    };
+
+    const handleDelete = async (id: string) => {
+        if (!confirm('Are you sure you want to delete this service?')) return;
+        try {
+            await servicesAPI.delete(id);
+            fetchServicesAndDepts();
+        } catch (error) {
+            console.error('Delete service error:', error);
+            alert('Failed to delete service.');
+        }
+    };
+
+    const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, field: 'image' | 'gallery') => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        setUploading(field);
+        try {
+            const res = await mediaAPI.upload(file, field === 'gallery' ? 'gallery' : 'services');
+            if (field === 'gallery') {
+                const current = formData.gallery ? formData.gallery.split(';') : [];
+                current.push(res.data.media.url);
+                setFormData({ ...formData, gallery: current.join(';') });
+            } else {
+                setFormData({ ...formData, image: res.data.media.url });
+            }
+        } catch (error) {
+            console.error('Upload error:', error);
+            alert('Failed to upload image.');
+        } finally {
+            setUploading(null);
+        }
+    };
+
+    const removeGalleryImage = (url: string) => {
+        const current = formData.gallery.split(';').filter(u => u !== url);
+        setFormData({ ...formData, gallery: current.join(';') });
+    };
+
+    const filtered = services
+        .filter(s => s.name.toLowerCase().includes(searchTerm.toLowerCase()))
+        .filter(s => filterDept ? s.departmentId === filterDept : true);
+
+    return (
+        <div className="space-y-8 animate-fade-in">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h2 className="text-2xl font-black text-gray-900">Clinical Services</h2>
+                    <p className="text-gray-500 text-sm">Manage all {services.length} medical offerings across {departments.length} departments.</p>
+                </div>
+                <button
+                    onClick={() => handleOpenModal()}
+                    className="flex items-center gap-2 px-6 py-3 bg-blue-900 text-white rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-blue-800 transition-all shadow-lg shadow-blue-900/20"
+                >
+                    <PlusIcon className="w-4 h-4" />
+                    <span>Add Service</span>
+                </button>
+            </div>
+
+            {/* Search & Filter */}
+            <div className="flex flex-col md:flex-row gap-4">
+                <div className="relative flex-1 max-w-md">
+                    <input
+                        type="text"
+                        placeholder="Search services..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        className="w-full px-6 py-4 bg-white border border-gray-100 rounded-2xl shadow-sm focus:ring-2 focus:ring-blue-900/10 text-sm font-bold placeholder-gray-300 pl-12"
+                    />
+                    <Bars3Icon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-300" />
+                </div>
+                <select
+                    value={filterDept}
+                    onChange={e => setFilterDept(e.target.value)}
+                    className="px-5 py-4 bg-white border border-gray-100 rounded-2xl shadow-sm focus:ring-2 focus:ring-blue-900/10 text-sm font-bold text-gray-500"
+                >
+                    <option value="">All Departments</option>
+                    {departments.map(d => <option key={d.id} value={d.id}>{d.name}</option>)}
+                </select>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {loading ? (
+                    [...Array(6)].map((_, i) => (
+                        <div key={i} className="bg-white p-8 rounded-[32px] border border-gray-50 animate-pulse h-64" />
+                    ))
+                ) : filtered.length === 0 ? (
+                    <div className="col-span-full bg-white p-20 rounded-[40px] border border-gray-50 text-center">
+                        <BriefcaseIcon className="w-16 h-16 text-gray-100 mx-auto mb-4" />
+                        <p className="text-gray-400 font-bold uppercase tracking-widest text-sm">No services found</p>
+                    </div>
+                ) : (
+                    filtered.map((service) => (
+                        <div key={service.id} className="bg-white rounded-[32px] border border-gray-50 shadow-sm hover:shadow-xl transition-all group overflow-hidden flex flex-col">
+                            <div className="h-44 relative overflow-hidden">
+                                {service.image ? (
+                                    <img src={service.image} alt={service.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" crossOrigin="anonymous" />
+                                ) : (
+                                    <div className="w-full h-full bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center">
+                                        <span className="text-5xl opacity-30">{service.icon || '🏥'}</span>
+                                    </div>
+                                )}
+                                <div className="absolute inset-0 bg-gradient-to-t from-gray-900/60 to-transparent" />
+                                <div className="absolute top-4 left-4 w-10 h-10 rounded-xl bg-white/90 backdrop-blur-md flex items-center justify-center text-xl shadow-lg shadow-black/5">
+                                    {service.icon || '💉'}
+                                </div>
+                                <div className="absolute top-4 right-4">
+                                    <span className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest ${service.isActive ? 'bg-emerald-500/80 text-white' : 'bg-gray-500/80 text-white'} backdrop-blur-md shadow-lg shadow-black/5`}>
+                                        {service.isActive ? 'Active' : 'Draft'}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div className="p-6 flex-1 flex flex-col">
+                                <h3 className="font-black text-gray-900 text-base mb-1 line-clamp-1">{service.name}</h3>
+                                {service.department && (
+                                    <div className="flex items-center gap-1.5 text-[10px] font-black text-blue-900 uppercase tracking-widest mb-3">
+                                        <BuildingLibraryIcon className="w-3 h-3" />
+                                        {service.department.name}
+                                    </div>
+                                )}
+                                <p className="text-gray-400 text-xs line-clamp-2 mb-4 flex-1">{service.description}</p>
+                                {/* Gallery preview */}
+                                {service.gallery && (
+                                    <div className="flex gap-1 mb-4">
+                                        {service.gallery.split(';').slice(0, 3).map((url: string, i: number) => (
+                                            <div key={i} className="w-8 h-8 rounded-lg overflow-hidden">
+                                                <img src={url} className="w-full h-full object-cover" crossOrigin="anonymous" />
+                                            </div>
+                                        ))}
+                                        <span className="text-[9px] font-bold text-gray-300 ml-1 flex items-center">{service.gallery.split(';').length} photos</span>
+                                    </div>
+                                )}
+                                <div className="flex items-center justify-between border-t border-gray-50 pt-4">
+                                    <span className="text-[10px] font-bold text-gray-300 uppercase tracking-widest">Order: {service.order}</span>
+                                    <div className="flex items-center gap-2">
+                                        <button
+                                            onClick={() => handleOpenModal(service)}
+                                            className="p-2.5 bg-gray-50 text-gray-400 hover:bg-blue-50 hover:text-blue-900 rounded-xl transition-all"
+                                        >
+                                            <PencilIcon className="w-4 h-4" />
+                                        </button>
+                                        <button
+                                            onClick={() => handleDelete(service.id)}
+                                            className="p-2.5 bg-gray-50 text-gray-400 hover:bg-red-50 hover:text-red-600 rounded-xl transition-all"
+                                        >
+                                            <TrashIcon className="w-4 h-4" />
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    ))
+                )}
+            </div>
+
+            {/* Modal */}
+            {isModalOpen && (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm animate-fade-in">
+                    <div className="bg-white w-full max-w-2xl rounded-[40px] shadow-2xl overflow-hidden animate-slide-up">
+                        <div className="px-8 py-6 bg-gray-50 border-b border-gray-100 flex items-center justify-between">
+                            <h3 className="text-xl font-black text-gray-900">{editingService ? 'Edit' : 'Add'} Service</h3>
+                            <button onClick={() => setIsModalOpen(false)} className="p-2 hover:bg-white rounded-xl transition-all">
+                                <XMarkIcon className="w-6 h-6 text-gray-400" />
+                            </button>
+                        </div>
+                        <form onSubmit={handleSubmit} className="p-8 space-y-6 max-h-[75vh] overflow-y-auto custom-scrollbar">
+                            {/* Name + Dept */}
+                            <div className="grid grid-cols-2 gap-6">
+                                <div className="space-y-2">
+                                    <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Service Name</label>
+                                    <input
+                                        type="text"
+                                        required
+                                        value={formData.name}
+                                        onChange={(e) => setFormData({ ...formData, name: e.target.value, slug: e.target.value.toLowerCase().replace(/[\s/]+/g, '-').replace(/[^a-z0-9-]/g, '') })}
+                                        className="w-full px-5 py-4 bg-gray-50 border-0 rounded-2xl focus:ring-2 focus:ring-blue-900/10 placeholder-gray-300 text-sm font-bold"
+                                        placeholder="e.g. Addiction Recovery"
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Department</label>
+                                    <select
+                                        value={formData.departmentId}
+                                        onChange={(e) => setFormData({ ...formData, departmentId: e.target.value })}
+                                        className="w-full px-5 py-4 bg-gray-50 border-0 rounded-2xl focus:ring-2 focus:ring-blue-900/10 text-sm font-bold"
+                                    >
+                                        <option value="">Select Department</option>
+                                        {departments.map(d => <option key={d.id} value={d.id}>{d.name}</option>)}
+                                    </select>
+                                </div>
+                            </div>
+
+                            {/* Icon + Slug */}
+                            <div className="grid grid-cols-2 gap-6">
+                                <div className="space-y-2">
+                                    <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Service Icon (Emoji)</label>
+                                    <input
+                                        type="text"
+                                        value={formData.icon}
+                                        onChange={(e) => setFormData({ ...formData, icon: e.target.value })}
+                                        className="w-full px-5 py-4 bg-gray-50 border-0 rounded-2xl focus:ring-2 focus:ring-blue-900/10 text-sm font-bold text-center text-2xl"
+                                        placeholder="💉"
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">URL Slug</label>
+                                    <input
+                                        type="text"
+                                        required
+                                        value={formData.slug}
+                                        onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
+                                        className="w-full px-5 py-4 bg-gray-50 border-0 rounded-2xl focus:ring-2 focus:ring-blue-900/10 text-sm font-bold"
+                                    />
+                                </div>
+                            </div>
+
+                            {/* Description */}
+                            <div className="space-y-2">
+                                <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Short Description</label>
+                                <textarea
+                                    required
+                                    rows={3}
+                                    value={formData.description}
+                                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                                    className="w-full px-5 py-4 bg-gray-50 border-0 rounded-2xl focus:ring-2 focus:ring-blue-900/10 placeholder-gray-300 text-sm font-bold"
+                                    placeholder="Brief summary for list view..."
+                                />
+                            </div>
+
+                            {/* Vision, Mission, Goal Section */}
+                            <div className="space-y-4 pt-4 border-t border-gray-100">
+                                <h4 className="text-xs font-black text-gray-900 uppercase tracking-widest">Strategy & Highlights</h4>
+                                <div className="space-y-4">
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Service Vision</label>
+                                        <textarea
+                                            rows={2}
+                                            value={formData.vision}
+                                            onChange={(e) => setFormData({ ...formData, vision: e.target.value })}
+                                            className="w-full px-5 py-4 bg-gray-50 border-0 rounded-2xl focus:ring-2 focus:ring-blue-900/10 text-sm font-bold"
+                                            placeholder="The service's clinical vision..."
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Mission Points (One per line)</label>
+                                        <textarea
+                                            rows={3}
+                                            value={formData.mission}
+                                            onChange={(e) => setFormData({ ...formData, mission: e.target.value })}
+                                            className="w-full px-5 py-4 bg-gray-50 border-0 rounded-2xl focus:ring-2 focus:ring-blue-900/10 text-sm font-mono"
+                                            placeholder="Point 1&#10;Point 2&#10;Point 3..."
+                                        />
+                                    </div>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        <div className="space-y-2">
+                                            <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Service Goal</label>
+                                            <textarea
+                                                rows={2}
+                                                value={formData.goal}
+                                                onChange={(e) => setFormData({ ...formData, goal: e.target.value })}
+                                                className="w-full px-5 py-4 bg-gray-50 border-0 rounded-2xl focus:ring-2 focus:ring-blue-900/10 text-sm font-bold"
+                                                placeholder="Primary clinical goal..."
+                                            />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Clinical Highlights (JSON)</label>
+                                            <textarea
+                                                rows={2}
+                                                value={formData.highlights}
+                                                onChange={(e) => setFormData({ ...formData, highlights: e.target.value })}
+                                                className="w-full px-5 py-4 bg-gray-50 border-0 rounded-2xl focus:ring-2 focus:ring-blue-900/10 text-sm font-mono"
+                                                placeholder='[{"label": "Setting", "value": "Outpatient"}]'
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Full Content */}
+                            <div className="space-y-2">
+                                <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Full Content (Detail Page)</label>
+                                <textarea
+                                    rows={5}
+                                    value={formData.content}
+                                    onChange={(e) => setFormData({ ...formData, content: e.target.value })}
+                                    className="w-full px-5 py-4 bg-gray-50 border-0 rounded-2xl focus:ring-2 focus:ring-blue-900/10 placeholder-gray-300 text-sm font-mono"
+                                    placeholder="Detailed service information..."
+                                />
+                            </div>
+
+                            {/* Featured Image */}
+                            <div className="space-y-4 pt-4 border-t border-gray-100">
+                                <div className="flex items-center justify-between">
+                                    <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Featured Image</label>
+                                    <div className="relative">
+                                        <input type="file" onChange={(e) => handleImageUpload(e, 'image')} className="absolute inset-0 opacity-0 cursor-pointer" accept="image/*" />
+                                        <span className="text-xs font-black text-blue-900 hover:text-blue-700 transition-colors uppercase tracking-widest flex items-center gap-2">
+                                            {uploading === 'image' ? 'Uploading...' : <><PhotoIcon className="w-4 h-4" /> Change</>}
+                                        </span>
+                                    </div>
+                                </div>
+                                {formData.image ? (
+                                    <div className="relative h-40 rounded-2xl overflow-hidden group">
+                                        <img src={formData.image} className="w-full h-full object-cover" crossOrigin="anonymous" />
+                                        <div className="absolute inset-0 bg-gray-900/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                            <button type="button" onClick={() => setFormData({ ...formData, image: '' })} className="p-3 bg-red-600 text-white rounded-full hover:scale-110 transition-transform">
+                                                <TrashIcon className="w-5 h-5" />
+                                            </button>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div className="relative h-32 rounded-2xl border-2 border-dashed border-gray-100 flex flex-col items-center justify-center text-gray-200">
+                                        <input type="file" onChange={(e) => handleImageUpload(e, 'image')} className="absolute inset-0 opacity-0 cursor-pointer" accept="image/*" />
+                                        <PhotoIcon className="w-10 h-10 opacity-30" />
+                                        <span className="text-[10px] font-bold mt-2">Click to upload featured image</span>
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Gallery */}
+                            <div className="space-y-4 pt-4 border-t border-gray-100">
+                                <div className="flex items-center justify-between">
+                                    <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Service Gallery (2-3 photos)</label>
+                                    <div className="relative">
+                                        <input type="file" onChange={(e) => handleImageUpload(e, 'gallery')} className="absolute inset-0 opacity-0 cursor-pointer" accept="image/*" />
+                                        <span className="text-xs font-black text-blue-900 hover:text-blue-700 transition-colors uppercase tracking-widest flex items-center gap-2">
+                                            {uploading === 'gallery' ? 'Uploading...' : <><PlusIcon className="w-4 h-4" /> Add Photo</>}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div className="grid grid-cols-3 gap-3">
+                                    {formData.gallery && formData.gallery.split(';').map((url, idx) => (
+                                        <div key={idx} className="relative aspect-square rounded-2xl overflow-hidden group">
+                                            <img src={url} className="w-full h-full object-cover" crossOrigin="anonymous" />
+                                            <div className="absolute inset-0 bg-gray-900/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                                <button type="button" onClick={() => removeGalleryImage(url)} className="p-2 bg-red-600 text-white rounded-full hover:scale-110 transition-transform">
+                                                    <TrashIcon className="w-4 h-4" />
+                                                </button>
+                                            </div>
+                                        </div>
+                                    ))}
+                                    <div className="aspect-square rounded-2xl border-2 border-dashed border-gray-100 flex flex-col items-center justify-center text-gray-200 relative cursor-pointer">
+                                        <input type="file" onChange={(e) => handleImageUpload(e, 'gallery')} className="absolute inset-0 opacity-0 cursor-pointer" accept="image/*" />
+                                        <PhotoIcon className="w-7 h-7 opacity-30" />
+                                        <span className="text-[9px] font-bold mt-1 opacity-40">Add</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Order + Active */}
+                            <div className="grid grid-cols-2 gap-6">
+                                <div className="space-y-2">
+                                    <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Display Order</label>
+                                    <input
+                                        type="number"
+                                        value={formData.order}
+                                        onChange={(e) => setFormData({ ...formData, order: parseInt(e.target.value) })}
+                                        className="w-full px-5 py-4 bg-gray-50 border-0 rounded-2xl focus:ring-2 focus:ring-blue-900/10 text-sm font-bold"
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Status</label>
+                                    <select
+                                        value={formData.isActive ? 'true' : 'false'}
+                                        onChange={(e) => setFormData({ ...formData, isActive: e.target.value === 'true' })}
+                                        className="w-full px-5 py-4 bg-gray-50 border-0 rounded-2xl focus:ring-2 focus:ring-blue-900/10 text-sm font-bold"
+                                    >
+                                        <option value="true">Active</option>
+                                        <option value="false">Draft</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div className="flex items-center gap-4 pt-6 border-t border-gray-100">
+                                <button type="button" onClick={() => setIsModalOpen(false)} className="flex-1 px-8 py-4 bg-gray-100 text-gray-500 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-gray-200 transition-all">
+                                    Cancel
+                                </button>
+                                <button type="submit" className="flex-1 px-8 py-4 bg-blue-900 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-blue-800 transition-all shadow-lg shadow-blue-900/20">
+                                    {editingService ? 'Update' : 'Create'} Service
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
+        </div>
+    );
 }

@@ -129,7 +129,9 @@ export default function AdminUsersPage() {
                             <div>
                                 <label className="block text-xs font-black text-gray-400 uppercase mb-2">Access Role</label>
                                 <select className="form-select" value={form.role} onChange={e => setForm({ ...form, role: e.target.value })}>
-                                    <option value="EDITOR">Editor (Content Only)</option>
+                                    <option value="EDITOR">Editor (General Content)</option>
+                                    <option value="NEWS_ADMIN">News Admin (Posts Only)</option>
+                                    <option value="CPD_ADMIN">CPD Admin (Courses Only)</option>
                                     <option value="ADMIN">Admin (Content + Settings)</option>
                                     <option value="SUPER_ADMIN">Super Admin (Full Access)</option>
                                 </select>

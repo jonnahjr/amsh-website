@@ -1,125 +1,94 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { CalendarIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
-
-const services = [
-    {
-        icon: '🚑',
-        name: 'Emergency Service',
-        slug: 'emergency-service',
-        description: '24/7 rapid psychiatric intervention, crisis stabilization, and immediate mental health support.',
-        highlight: true
-    },
-    {
-        icon: '🏥',
-        name: 'Outpatient Services',
-        slug: 'outpatient-services',
-        description: 'Expert psychiatric consultations, specialized clinics, and comprehensive follow-up care for diverse mental health needs.'
-    },
-    {
-        icon: '🛏️',
-        name: 'Inpatient Services',
-        slug: 'inpatient-services',
-        description: 'Compassionate 24/7 intensive psychiatric care and therapeutic recovery within a safe, restorative environment.'
-    },
-    {
-        icon: '⚡',
-        name: 'EEG Services',
-        slug: 'eeg-services',
-        description: 'Advanced neurophysiological diagnostics and brain mapping to support precise clinical assessment and planning.'
-    },
-    {
-        icon: '🧠',
-        name: 'Psychological Services',
-        slug: 'psychological-services',
-        description: 'Psychological assessment and therapies including CBT, family, group, and trauma counseling.'
-    },
-    {
-        icon: '💊',
-        name: 'Addiction & Substance Abuse',
-        slug: 'addiction-substance-abuse',
-        description: 'Detoxification, rehabilitation programs, and counseling for alcohol and drug addiction.'
-    },
-    {
-        icon: '🔄',
-        name: 'Rehabilitation Services',
-        slug: 'rehabilitation',
-        description: 'Occupational therapy, social skills training, and psychosocial rehabilitation programs.'
-    },
-    {
-        icon: '⚕️',
-        name: 'Pharmacy Services',
-        slug: 'pharmacy',
-        description: 'On-site pharmacy providing psychiatric medications, counseling, and prescription management.'
-    },
-];
+import { servicesAPI } from '@/lib/api';
+import { ArrowRightIcon } from '@heroicons/react/24/outline';
 
 export default function ServicesSection() {
+    const [services, setServices] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        servicesAPI.getAll().then(res => {
+            setServices(res.data.services || []);
+        }).catch(err => {
+            console.error('Failed to fetch services:', err);
+        }).finally(() => setLoading(false));
+    }, []);
+
+    // Fallback static data if loading or empty
+    const displayServices = services.length > 0 ? services.slice(0, 4) : [
+        { icon: '🚑', name: 'Emergency Service', slug: 'emergency-service', description: '24/7 rapid psychiatric intervention and crisis stabilization.' },
+        { icon: '🏥', name: 'Outpatient Services', slug: 'outpatient-services', description: 'Expert psychiatric consultations and follow-up care.' },
+        { icon: '🛏️', name: 'Inpatient Services', slug: 'inpatient-services', description: 'Intensive psychiatric care in a safe, restorative environment.' },
+        { icon: '🧠', name: 'Psychological Services', slug: 'psychological-services', description: 'Psychological assessment and evidence-based therapies.' },
+    ];
+
     return (
-        <section className="section bg-[#F8FAFB] overflow-hidden py-20">
+        <section className="section bg-[#F8FAFB] overflow-hidden py-24">
             <div className="container-custom">
-                {/* Header- More compact */}
-                <div className="text-center max-w-5xl mx-auto mb-16 px-4">
-                    <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-blue-900 text-white text-[9px] font-black uppercase tracking-[0.3em] rounded-full mb-6">
+                <div className="text-center max-w-5xl mx-auto mb-20">
+                    <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-blue-900 text-white text-[10px] font-black uppercase tracking-[0.3em] rounded-full mb-8 shadow-lg shadow-blue-900/20">
                         <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
-                        Clinical Departments
+                        Our Medical Expertise
                     </div>
-                    <h2 className="text-4xl md:text-5xl font-black text-blue-950 tracking-tighter leading-tight mb-6">
-                        Specialized Mental <span className="text-blue-900 italic font-medium">Healthcare</span>
+                    <h2 className="text-4xl md:text-6xl font-black text-blue-950 tracking-tighter leading-tight mb-8">
+                        Clinical Solutions for <br />
+                        <span className="text-blue-900 italic font-medium ml-2">Every Patient</span>
                     </h2>
 
-                    <p className="text-blue-900/60 text-lg md:text-xl max-w-none mx-auto leading-relaxed mb-12">
-
-                        At Emmanuel Mental Specialized Hospital, we provide comprehensive, multidisciplinary care across various specialized clinical departments. Our team of expert psychiatrists and clinical staff are dedicated to delivering evidence-based treatment tailored to each patient's journey toward wellness.
+                    <p className="text-blue-900/60 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed font-medium">
+                        Comprehensive, multidisciplinary care delivered by East Africa's leading psychiatric specialists.
                     </p>
                 </div>
 
-                {/* Smaller Services Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                    {services.map((service, i) => (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                    {displayServices.map((service, i) => (
                         <div
                             key={service.slug}
-                            className="group relative bg-blue-950 rounded-[2.5rem] p-7 text-white transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl flex flex-col h-full border border-white/5 overflow-hidden"
+                            className="group relative bg-white rounded-[48px] p-8 text-blue-950 transition-all duration-700 hover:-translate-y-3 hover:shadow-[0_40px_80px_rgba(0,0,0,0.1)] flex flex-col h-full border border-gray-100 overflow-hidden shadow-sm"
                         >
-
-                            <div className="relative z-10 flex flex-col h-full text-center items-center">
-                                {/* Compact Icon Container */}
-                                <div className="w-14 h-14 bg-white/5 backdrop-blur-2xl rounded-2xl flex items-center justify-center text-3xl mb-6 border border-white/10 group-hover:bg-blue-900 transition-all duration-700 shadow-lg">
-                                    <span>{service.icon}</span>
-                                </div>
-
-                                <h3 className="font-black text-lg mb-3 leading-tight uppercase tracking-tight group-hover:text-cyan-400 transition-colors">
-                                    {service.name}
-                                </h3>
-
-                                <p className="text-blue-100/50 text-[13px] leading-relaxed font-medium mb-8 line-clamp-3">
-                                    {service.description}
-                                </p>
-
-                                <div className="mt-auto w-full pt-6 border-t border-white/5">
-                                    <Link
-                                        href={`/services/${service.slug}`}
-                                        className="flex items-center justify-center gap-2 w-full py-4 bg-white text-blue-950 rounded-xl font-black uppercase tracking-wider text-[10px] hover:bg-blue-50 hover:-translate-y-1 transition-all shadow-md hover:shadow-2xl"
-                                    >
-                                        View Clinical Details <ArrowRightIcon className="w-3 h-3" />
-                                    </Link>
+                            {/* Card Header with Image/Icon */}
+                            <div className="relative h-40 w-full mb-8 rounded-[32px] overflow-hidden bg-blue-50">
+                                {service.image ? (
+                                    <img src={service.image} alt={service.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" crossOrigin="anonymous" />
+                                ) : (
+                                    <div className="w-full h-full flex items-center justify-center text-6xl opacity-50">
+                                        {service.icon || '💉'}
+                                    </div>
+                                )}
+                                <div className="absolute top-4 left-4 w-12 h-12 rounded-2xl bg-white/90 backdrop-blur-md flex items-center justify-center text-2xl shadow-lg border border-white/50">
+                                    {service.icon || '💉'}
                                 </div>
                             </div>
 
-                            {/* Faded Background Element - Smaller */}
-                            <div className="absolute -bottom-4 -right-4 text-8xl opacity-[0.03] group-hover:opacity-[0.06] transition-opacity pointer-events-none select-none blur-sm">
-                                {service.icon}
+                            <div className="flex flex-col flex-1">
+                                <h3 className="font-black text-xl mb-4 leading-tight uppercase tracking-tight group-hover:text-blue-900 transition-colors">
+                                    {service.name}
+                                </h3>
+
+                                <p className="text-gray-400 text-sm leading-relaxed font-medium mb-10 flex-1 line-clamp-3">
+                                    {service.description}
+                                </p>
+
+                                <div className="pt-8 border-t border-gray-50 mt-auto">
+                                    <Link
+                                        href={`/services/${service.slug}`}
+                                        className="flex items-center justify-center gap-3 w-full py-5 bg-blue-950 text-white rounded-2xl font-black uppercase tracking-widest text-[9px] hover:bg-blue-900 hover:shadow-xl transition-all shadow-lg active:scale-95"
+                                    >
+                                        Clinical Details <ArrowRightIcon className="w-3 h-3" />
+                                    </Link>
+                                </div>
                             </div>
                         </div>
                     ))}
                 </div>
 
-                {/* Bottom CTA */}
-                <div className="mt-16 text-center">
-                    <Link href="/services" className="inline-flex items-center gap-3 group text-blue-950 font-black uppercase tracking-widest text-[10px] hover:text-blue-700 transition-colors">
-                        View All Services
-                        <div className="w-8 h-8 bg-blue-900 text-white rounded-full flex items-center justify-center text-xs group-hover:translate-x-1 transition-transform">
+                <div className="mt-20 text-center">
+                    <Link href="/services" className="inline-flex items-center gap-4 group text-blue-950 font-black uppercase tracking-[0.3em] text-[11px] hover:text-blue-700 transition-all">
+                        EXPLORE ALL SERVICES
+                        <div className="w-10 h-10 bg-blue-950 text-white rounded-full flex items-center justify-center text-lg group-hover:translate-x-2 group-hover:bg-cyan-500 transition-all shadow-xl">
                             →
                         </div>
                     </Link>

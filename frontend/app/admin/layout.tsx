@@ -21,9 +21,27 @@ import {
     QuestionMarkCircleIcon,
     GlobeAltIcon,
     CircleStackIcon,
+    AcademicCapIcon,
+    BuildingLibraryIcon,
+    ChevronDownIcon,
+    ChevronRightIcon,
 } from '@heroicons/react/24/outline';
 
-const menuItems = [
+interface MenuItem {
+    label: string;
+    href?: string;
+    icon: any;
+    superAdminOnly?: boolean;
+    roles?: string[];
+    children?: { label: string; href: string; icon?: any }[];
+}
+
+interface MenuGroup {
+    group: string;
+    items: MenuItem[];
+}
+
+const menuItems: MenuGroup[] = [
     {
         group: 'Overview', items: [
             { label: 'Dashboard', href: '/admin/dashboard', icon: ChartBarIcon },
@@ -31,32 +49,55 @@ const menuItems = [
     },
     {
         group: 'Content', items: [
-            { label: 'Pages & Builder', href: '/admin/pages', icon: GlobeAltIcon },
-            { label: 'Posts & News', href: '/admin/posts', icon: DocumentTextIcon },
-            { label: 'Media Library', icon: PhotoIcon, href: '/admin/media' },
-            { label: 'Navigation', icon: Square2StackIcon, href: '/admin/navigation' },
+            { label: 'Pages & Builder', href: '/admin/pages', icon: GlobeAltIcon, roles: ['SUPER_ADMIN', 'ADMIN'] },
+            { label: 'Posts & News', href: '/admin/posts', icon: DocumentTextIcon, roles: ['SUPER_ADMIN', 'ADMIN', 'NEWS_ADMIN', 'EDITOR'] },
+            { label: 'Media Library', icon: PhotoIcon, href: '/admin/media', roles: ['SUPER_ADMIN', 'ADMIN', 'NEWS_ADMIN', 'EDITOR'] },
+            { label: 'Navigation', icon: Square2StackIcon, href: '/admin/navigation', roles: ['SUPER_ADMIN', 'ADMIN'] },
         ]
     },
     {
         group: 'Management', items: [
-            { label: 'Departments', icon: CircleStackIcon, href: '/admin/departments' },
-            { label: 'Doctors', icon: UsersIcon, href: '/admin/doctors' },
-            { label: 'Services', icon: BriefcaseIcon, href: '/admin/services' },
+            {
+                label: 'CPD Applications',
+                icon: AcademicCapIcon,
+                roles: ['SUPER_ADMIN', 'ADMIN', 'CPD_ADMIN'],
+                children: [
+                    { label: 'All Applications', href: '/admin/cpd-applications', icon: AcademicCapIcon },
+                    { label: 'Gov. CPD', href: '/admin/cpd-applications/government', icon: BuildingLibraryIcon },
+                    { label: 'Private CPD', href: '/admin/cpd-applications/private', icon: AcademicCapIcon },
+                    { label: 'Independent CPD', href: '/admin/cpd-applications/personal', icon: UserGroupIcon },
+                ]
+            },
+            {
+                label: 'Clinical Attachments',
+                icon: DocumentTextIcon,
+                roles: ['SUPER_ADMIN', 'ADMIN'],
+                children: [
+                    { label: 'Global View', href: '/admin/clinical-attachments', icon: GlobeAltIcon },
+                    { label: 'Gov. Attachments', href: '/admin/clinical-attachments/government', icon: BuildingLibraryIcon },
+                    { label: 'Private Attachments', href: '/admin/clinical-attachments/private', icon: AcademicCapIcon },
+                    { label: 'Independent Attachments', href: '/admin/clinical-attachments/personal', icon: UserGroupIcon },
+                ]
+            },
+            { label: 'Departments', icon: CircleStackIcon, href: '/admin/departments', roles: ['SUPER_ADMIN', 'ADMIN'] },
+            { label: 'Department Categories', icon: BriefcaseIcon, href: '/admin/department-categories', roles: ['SUPER_ADMIN', 'ADMIN'] },
+            { label: 'Service Categories', icon: BriefcaseIcon, href: '/admin/service-categories', roles: ['SUPER_ADMIN', 'ADMIN'] },
+            { label: 'Services', icon: BriefcaseIcon, href: '/admin/services', roles: ['SUPER_ADMIN', 'ADMIN'] },
         ]
     },
     {
         group: 'Interactions', items: [
-            { label: 'Appointments', icon: CalendarIcon, href: '/admin/appointments' },
-            { label: 'Research Submissions', icon: LightBulbIcon, href: '/admin/research' },
-            { label: 'Contact Messages', icon: ChatBubbleLeftRightIcon, href: '/admin/messages' },
+            { label: 'Appointments', icon: CalendarIcon, href: '/admin/appointments', roles: ['SUPER_ADMIN', 'ADMIN'] },
+            { label: 'Research Submissions', icon: LightBulbIcon, href: '/admin/research', roles: ['SUPER_ADMIN', 'ADMIN'] },
+            { label: 'Contact Messages', icon: ChatBubbleLeftRightIcon, href: '/admin/messages', roles: ['SUPER_ADMIN', 'ADMIN'] },
         ]
     },
     {
         group: 'System', items: [
-            { label: 'Site Settings', icon: Cog6ToothIcon, href: '/admin/settings' },
+            { label: 'Site Settings', icon: Cog6ToothIcon, href: '/admin/settings', roles: ['SUPER_ADMIN', 'ADMIN'] },
             { label: 'Admin Users', icon: UsersIcon, href: '/admin/users', superAdminOnly: true },
-            { label: 'Testimonials', icon: MegaphoneIcon, href: '/admin/testimonials' },
-            { label: 'FAQs', icon: QuestionMarkCircleIcon, href: '/admin/faqs' },
+            { label: 'Testimonials', icon: MegaphoneIcon, href: '/admin/testimonials', roles: ['SUPER_ADMIN', 'ADMIN'] },
+            { label: 'FAQs', icon: QuestionMarkCircleIcon, href: '/admin/faqs', roles: ['SUPER_ADMIN', 'ADMIN'] },
         ]
     },
 ];
@@ -88,7 +129,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         );
     }
 
-    const isActive = (href: string) => pathname === href || pathname.startsWith(href + '/');
+    const isActive = (href?: string) => href ? (pathname === href || pathname.startsWith(href + '/')) : false;
 
     return (
         <div className="min-h-screen bg-[#F3F6F9] flex">
@@ -112,7 +153,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 {/* Menu */}
                 <div className="flex-1 overflow-y-auto p-4 space-y-6 custom-scrollbar">
                     {menuItems.map((group) => {
-                        const visibleItems = group.items.filter(item => !item.superAdminOnly || isSuperAdmin);
+                        const visibleItems = group.items.filter(item => {
+                            if (item.superAdminOnly && !isSuperAdmin) return false;
+                            if (item.roles && !item.roles.includes(user.role)) return false;
+                            return true;
+                        });
                         if (visibleItems.length === 0) return null;
 
                         return (
@@ -120,21 +165,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                                 {sidebarOpen && <h3 className="px-4 text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3">{group.group}</h3>}
                                 <div className="space-y-1">
                                     {visibleItems.map((item) => (
-                                        <Link
+                                        <SidebarItem
                                             key={item.label}
-                                            href={item.href}
-                                            className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group ${isActive(item.href)
-                                                ? 'bg-blue-900 text-white shadow-lg shadow-blue-900/20'
-                                                : 'text-gray-500 hover:bg-blue-50 hover:text-blue-900'
-                                                }`}
-                                            title={!sidebarOpen ? item.label : ''}
-                                        >
-                                            <item.icon className={`w-5 h-5 flex-shrink-0 ${isActive(item.href) ? 'text-white' : 'text-gray-400 group-hover:text-blue-900'}`} />
-                                            {sidebarOpen && <span className="font-bold text-sm">{item.label}</span>}
-                                            {sidebarOpen && isActive(item.href) && (
-                                                <div className="ml-auto w-1.5 h-1.5 rounded-full bg-blue-300 animate-pulse" />
-                                            )}
-                                        </Link>
+                                            item={item}
+                                            sidebarOpen={sidebarOpen}
+                                            isActive={isActive}
+                                        />
                                     ))}
                                 </div>
                             </div>
@@ -171,7 +207,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                         </button>
                         <div className="hidden md:block">
                             <h1 className="text-gray-900 font-black text-xl">
-                                {menuItems.flatMap(g => g.items).find(i => isActive(i.href))?.label || 'Admin Dashboard'}
+                                {menuItems.flatMap(g => g.items).find(i => i.href && isActive(i.href))?.label || 'Admin Dashboard'}
                             </h1>
                             <div className="text-[10px] text-gray-400 font-bold uppercase tracking-wider flex items-center gap-2">
                                 CMS <span className="text-gray-200">/</span> {pathname.split('/').slice(2).join(' / ')}
@@ -202,6 +238,73 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     {children}
                 </div>
             </main>
+        </div>
+    );
+}
+
+function SidebarItem({ item, sidebarOpen, isActive }: { item: MenuItem, sidebarOpen: boolean, isActive: (href?: string) => boolean }) {
+    const hasChildren = item.children && item.children.length > 0;
+    const [isOpen, setIsOpen] = useState(false);
+    const isAnyChildActive = hasChildren && item.children?.some(child => isActive(child.href));
+    const active = item.href ? isActive(item.href) : isAnyChildActive;
+
+    useEffect(() => {
+        if (isAnyChildActive) setIsOpen(true);
+    }, [isAnyChildActive]);
+
+    return (
+        <div>
+            {item.href ? (
+                <Link
+                    href={item.href}
+                    className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group ${active
+                        ? 'bg-blue-900 text-white shadow-lg shadow-blue-900/20'
+                        : 'text-gray-500 hover:bg-blue-50 hover:text-blue-900'
+                        }`}
+                    title={!sidebarOpen ? item.label : ''}
+                >
+                    <item.icon className={`w-5 h-5 flex-shrink-0 ${active ? 'text-white' : 'text-gray-400 group-hover:text-blue-900'}`} />
+                    {sidebarOpen && <span className="font-bold text-sm">{item.label}</span>}
+                    {sidebarOpen && active && !hasChildren && (
+                        <div className="ml-auto w-1.5 h-1.5 rounded-full bg-blue-300 animate-pulse" />
+                    )}
+                </Link>
+            ) : (
+                <button
+                    onClick={() => sidebarOpen && setIsOpen(!isOpen)}
+                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group ${active && !isOpen
+                        ? 'bg-blue-900 text-white shadow-lg shadow-blue-900/20'
+                        : 'text-gray-500 hover:bg-blue-50 hover:text-blue-900'
+                        }`}
+                >
+                    <item.icon className={`w-5 h-5 flex-shrink-0 ${active && !isOpen ? 'text-white' : 'text-gray-400 group-hover:text-blue-900'}`} />
+                    {sidebarOpen && <span className="font-bold text-sm">{item.label}</span>}
+                    {sidebarOpen && (
+                        <div className="ml-auto">
+                            {isOpen ? <ChevronDownIcon className="w-4 h-4" /> : <ChevronRightIcon className="w-4 h-4" />}
+                        </div>
+                    )}
+                </button>
+            )}
+
+            {/* Submenu */}
+            {hasChildren && sidebarOpen && isOpen && (
+                <div className="mt-1 ml-4 pl-4 border-l border-gray-100 space-y-1 animate-fade-in">
+                    {item.children?.map((child) => (
+                        <Link
+                            key={child.label}
+                            href={child.href}
+                            className={`flex items-center gap-3 px-4 py-2 rounded-lg text-sm transition-all duration-200 ${isActive(child.href)
+                                ? 'text-blue-900 font-black'
+                                : 'text-gray-500 hover:text-blue-900 hover:bg-blue-50'
+                                }`}
+                        >
+                            {child.icon ? <child.icon className="w-4 h-4" /> : <div className="w-1.5 h-1.5 rounded-full bg-current opacity-40" />}
+                            <span>{child.label}</span>
+                        </Link>
+                    ))}
+                </div>
+            )}
         </div>
     );
 }

@@ -51,10 +51,40 @@ router.post('/:id/submit', async (req: Request, res: Response) => {
     } catch (error) { res.status(500).json({ error: 'Failed to submit form.' }); }
 });
 
-// Admin get submissions
+// Admin get all submissions (global)
+router.get('/all/submissions', authenticate, authorize('ADMIN', 'SUPER_ADMIN'), async (req: AuthRequest, res: Response) => {
+    try {
+        const submissions = await prisma.formSubmission.findMany({
+            include: { form: true },
+            orderBy: { createdAt: 'desc' }
+        });
+        res.json({ submissions });
+    } catch (error) {
+        console.error('Fetch all submissions error:', error);
+        res.status(500).json({ error: 'Failed to fetch global submissions.' });
+    }
+});
+
+// Admin update submission status
+router.patch('/submissions/:id/status', authenticate, authorize('ADMIN', 'SUPER_ADMIN'), async (req: AuthRequest, res: Response) => {
+    try {
+        const { status } = req.body;
+        const submission = await prisma.formSubmission.update({
+            where: { id: req.params.id },
+            // @ts-ignore - status field added via db push but generate is locked on Windows
+            data: { status },
+        });
+        res.json({ submission });
+    } catch (error) {
+        console.error('Update submission status error:', error);
+        res.status(500).json({ error: 'Failed to update status.' });
+    }
+});
+
+// Admin get submissions by form ID
 router.get('/:id/submissions', authenticate, authorize('ADMIN', 'SUPER_ADMIN'), async (req: AuthRequest, res: Response) => {
     try {
-        const submissions = await prisma.formSubmission.findMany({ where: { formId: req.params.id }, orderBy: { createdAt: 'desc' } });
+        const submissions = await prisma.formSubmission.findMany({ where: { formId: req.params.id }, include: { form: true }, orderBy: { createdAt: 'desc' } });
         res.json({ submissions });
     } catch (error) { res.status(500).json({ error: 'Failed to fetch submissions.' }); }
 });

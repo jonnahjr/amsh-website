@@ -1,373 +1,176 @@
 'use client';
 
-import React from 'react';
-
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
-import ChatbotButton from '@/components/chatbot/ChatbotButton';
 import EmergencyBanner from '@/components/ui/EmergencyBanner';
-import Link from 'next/link';
+import ChatbotButton from '@/components/chatbot/ChatbotButton';
+import { departmentsAPI, departmentCategoriesAPI } from '@/lib/api';
 import {
     ChevronRightIcon,
-    HomeIcon,
-    ArrowRightIcon
+    BuildingOfficeIcon,
 } from '@heroicons/react/24/outline';
 
-import {
-    Brain,
-    Baby,
-    Activity,
-    AlertCircle,
-    Microscope,
-    Zap,
-    RefreshCcw,
-    Pill,
-    Scale,
-    Stethoscope,
-    MessageSquare,
-} from 'lucide-react';
-
-const categories = [
-    { id: 'clinical', label: 'Clinical Services', icon: Stethoscope },
-    { id: 'diagnostic', label: 'Diagnostic & Support', icon: Microscope },
-];
-
-const departments = [
-    {
-        name: 'Adult Psychiatry',
-        slug: 'adult-psychiatry',
-        icon: Brain,
-        category: 'clinical',
-        color: 'from-blue-600 to-blue-900',
-        desc: 'Specialized diagnosis and treatment for mental health conditions in adults, utilizing global evidence-based standards.'
-    },
-    {
-        name: 'Child & Adolescent Psychiatry',
-        slug: 'child-psychiatry',
-        icon: Baby,
-        category: 'clinical',
-        color: 'from-purple-600 to-purple-900',
-        desc: 'Comprehensive mental health services for children and adolescents, focusing on early intervention and development.'
-    },
-    {
-        name: 'Addiction Treatment Unit',
-        slug: 'addiction-treatment',
-        icon: Activity,
-        category: 'clinical',
-        color: 'from-teal-600 to-teal-900',
-        desc: 'World-class rehabilitation programs for substance use disorders and behavioral addictions.'
-    },
-    {
-        name: 'Emergency Psychiatry',
-        slug: 'emergency',
-        icon: AlertCircle,
-        category: 'clinical',
-        color: 'from-red-600 to-red-900',
-        desc: '24/7 acute crisis intervention and stabilization services for immediate psychiatric care.'
-    },
-    {
-        name: 'Clinical Psychology',
-        slug: 'psychology',
-        icon: Microscope,
-        category: 'clinical',
-        color: 'from-green-600 to-green-900',
-        desc: 'Advanced psychological assessments and evidence-based psychotherapy provided by expert clinicians.'
-    },
-    {
-        name: 'Neurology / EEG',
-        slug: 'neurology',
-        icon: Zap,
-        category: 'diagnostic',
-        color: 'from-blue-400 to-blue-600',
-        desc: 'Cutting-edge neurological diagnostics and EEG monitoring for comprehensive brain health assessment.'
-    },
-    {
-        name: 'Clinical Mental Health',
-        slug: 'clinical-mental-health',
-        icon: Brain,
-        category: 'clinical',
-        color: 'from-cyan-600 to-cyan-900',
-        desc: 'Primary psychiatric consultations and long-term outpatient management for stable recovery.'
-    },
-    {
-        name: 'Rehabilitation Services',
-        slug: 'rehabilitation',
-        icon: RefreshCcw,
-        category: 'clinical',
-        color: 'from-emerald-600 to-emerald-900',
-        desc: 'Holistic occupational therapy and social skills training for full community reintegration.'
-    },
-    {
-        name: 'Telepsychiatry Services',
-        slug: 'telepsychiatry',
-        icon: Stethoscope,
-        category: 'clinical',
-        color: 'from-indigo-600 to-indigo-900',
-        desc: 'Globally accessible remote psychiatric consultations leveraging modern digital health technology.'
-    },
-    {
-        name: 'Pharmacy Services',
-        slug: 'pharmacy',
-        icon: Pill,
-        category: 'diagnostic',
-        color: 'from-yellow-600 to-yellow-900',
-        desc: 'Specialized psychiatric medication management and clinical pharmacy support services.'
-    },
-    {
-        name: 'Laboratory Services',
-        slug: 'laboratory',
-        icon: Microscope,
-        category: 'diagnostic',
-        color: 'from-rose-600 to-rose-900',
-        desc: 'Advanced clinical laboratory screenings specifically tailored for psychiatric patient needs.'
-    },
-    {
-        name: 'Forensic Psychiatry',
-        slug: 'forensic-psychiatry',
-        icon: Scale,
-        category: 'clinical',
-        color: 'from-slate-600 to-slate-900',
-        desc: 'Expert legal psychiatric evaluations and specialized care for the forensic population.'
-    },
-    {
-        name: 'Counseling Services',
-        slug: 'counseling-services',
-        icon: MessageSquare,
-        category: 'clinical',
-        color: 'from-rose-400 to-rose-600',
-        desc: 'Specialized therapeutic support for trauma, depression, and anxiety disorders.'
-    },
-];
-
 export default function DepartmentsPage() {
-    const [activeCategory, setActiveCategory] = React.useState('all');
+    const [departments, setDepartments] = useState<any[]>([]);
+    const [categories, setCategories] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
 
-    const [mousePosition, setMousePosition] = React.useState({ x: 0, y: 0 });
-    const heroRef = React.useRef<HTMLElement>(null);
+    useEffect(() => {
+        Promise.all([
+            departmentsAPI.getAll(),
+            departmentCategoriesAPI.getAll()
+        ]).then(([deptRes, catRes]) => {
+            setDepartments(deptRes.data.departments || []);
+            setCategories(catRes.data.categories || []);
+        }).catch(console.error).finally(() => setLoading(false));
+    }, []);
 
-    const handleMouseMove = (e: React.MouseEvent) => {
-        if (!heroRef.current) return;
-        const rect = heroRef.current.getBoundingClientRect();
-        setMousePosition({
-            x: e.clientX - rect.left,
-            y: e.clientY - rect.top,
-        });
-    };
+    const grouped = departments.reduce((acc: any, dept: any) => {
+        const cat = dept.categoryName || 'General';
+        if (!acc[cat]) acc[cat] = [];
+        acc[cat].push(dept);
+        return acc;
+    }, {});
 
-    const filteredDepartments = departments.filter(dept => {
-        return activeCategory === 'all' || dept.category === activeCategory;
-    });
+    const totalDepartments = departments.length;
+    const totalServicesAcrossDepts = departments.reduce((total, d) => total + (d.services?.length || 0), 0);
 
     return (
         <>
             <EmergencyBanner />
             <Navbar />
-            <main className="bg-white min-h-screen">
+            <main className="bg-white">
                 {/* Hero */}
-                <section
-                    ref={heroRef}
-                    onMouseMove={handleMouseMove}
-                    className="relative min-h-[75vh] bg-blue-950 flex items-center overflow-hidden animate-mesh"
-                    style={{
-                        backgroundImage: `radial-gradient(circle at 50% 50%, #1e3a8a 0%, #0f172a 100%)`,
-                    }}
-                >
-                    {/* Interactive Mouse Glow */}
-                    <div
-                        className="absolute pointer-events-none opacity-50 blur-[120px] transition-transform duration-300 ease-out"
-                        style={{
-                            width: '600px',
-                            height: '600px',
-                            background: 'radial-gradient(circle, rgba(56,189,248,0.15) 0%, transparent 70%)',
-                            transform: `translate(${mousePosition.x - 300}px, ${mousePosition.y - 300}px)`,
-                            left: 0,
-                            top: 0,
-                        }}
-                    />
-
-                    {/* Advanced Background Pattern */}
-                    <div className="absolute inset-0">
-                        <div className="absolute inset-0 opacity-10" style={{
-                            backgroundImage: `linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)`,
-                            backgroundSize: '80px 80px',
-                        }} />
-                        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent via-blue-950/20 to-blue-950" />
-                    </div>
-
-                    {/* Floating Orbs */}
-                    <div className="absolute top-20 right-[10%] w-72 h-72 bg-blue-500/10 rounded-full blur-[80px] animate-float" />
-                    <div className="absolute bottom-20 left-[5%] w-96 h-96 bg-cyan-400/5 rounded-full blur-[100px] animate-float" style={{ animationDelay: '-2s' }} />
-
-                    <div className="container-custom relative z-10 py-24">
-                        <div className="max-w-4xl">
-                            {/* Breadcrumbs */}
-
-
-                            <h1 className="text-6xl md:text-8xl font-black text-white leading-[0.95] mb-8 animate-fade-in-up tracking-tighter">
-                                Excellence in <br />
-                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-400 to-indigo-400">Psychiatry</span>
-                            </h1>
-
-
-
-
-                            <p className="text-xl md:text-2xl text-blue-100/60 max-w-2xl mb-14 leading-relaxed animate-fade-in-up font-medium" style={{ animationDelay: '0.1s' }}>
-                                EMSH sets the gold standard for clinical psychiatric care in East Africa through innovation, expertise, and compassionate dedication.
-                            </p>
-
+                <section className="relative bg-blue-950 pt-40 pb-24 overflow-hidden">
+                    <div className="absolute inset-0 opacity-[0.06]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)', backgroundSize: '48px 48px' }} />
+                    <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at 70% 30%, #1e3a8a 0%, transparent 55%)' }} />
+                    <div className="container-custom relative z-10">
+                        <div className="inline-flex items-center gap-2 px-5 py-2 bg-cyan-500/20 border border-cyan-400/30 rounded-full text-cyan-300 text-[10px] font-black uppercase tracking-widest mb-8">
+                            <BuildingOfficeIcon className="w-4 h-4" />
+                            Emmanuel Mental Specialized Hospital
                         </div>
+                        <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-white tracking-tighter leading-[0.92] mb-5">
+                            Hospital <br className="hidden md:block" />
+                            <span className="text-cyan-400">Departments</span>
+                        </h1>
+                        <p className="text-blue-100/50 text-xl max-w-xl font-medium leading-relaxed mb-10">
+                            {loading ? '—' : `${totalDepartments}`} specialized departments and {loading ? '—' : `${totalServicesAcrossDepts}+`} clinical services, organized for comprehensive healing.
+                        </p>
                     </div>
                 </section>
 
-                {/* Filter & Grid Section */}
-                <section className="py-24 bg-[#FFF9F0] relative" id="departments-grid">
+                {/* Department Cards */}
+                <section className="py-20 lg:py-28">
                     <div className="container-custom">
-                        {/* Search & Categories Header */}
-                        <div className="flex flex-col md:flex-row items-center justify-between gap-8 mb-20">
-                            {/* Category Tabs - Floating Style */}
-                            <div className="flex flex-wrap items-center gap-4 flex-1">
-                                <button
-                                    onClick={() => setActiveCategory('all')}
-                                    className={`px-10 py-4 font-black uppercase tracking-[0.2em] transition-all duration-500 rounded-2xl text-[11px] ${activeCategory === 'all'
-                                        ? 'bg-blue-900 text-white shadow-[0_20px_40px_rgba(30,58,138,0.2)] translate-y-[-4px]'
-                                        : 'bg-white text-gray-400 hover:text-blue-950 shadow-sm border border-gray-100'
-                                        }`}
-                                >
-                                    All Departments
-                                </button>
-                                {categories.map((cat) => {
-                                    const Icon = cat.icon;
+                        {loading ? (
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                                {[...Array(9)].map((_, i) => <div key={i} className="h-72 bg-gray-100 rounded-[40px] animate-pulse" />)}
+                            </div>
+                        ) : departments.length === 0 ? (
+                            <div className="text-center py-32">
+                                <BuildingOfficeIcon className="w-20 h-20 text-gray-100 mx-auto mb-6" />
+                                <p className="text-gray-400 font-black uppercase tracking-widest text-sm">No departments found</p>
+                            </div>
+                        ) : (
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                                {departments.map((dept: any) => {
+                                    const catData = categories.find(c => c.name === dept.categoryName) || {};
+                                    const gradient = catData.gradient || 'from-blue-900 to-blue-700';
+                                    const cat = dept.categoryName || 'General';
                                     return (
-                                        <button
-                                            key={cat.id}
-                                            onClick={() => setActiveCategory(cat.id)}
-                                            className={`flex items-center gap-3 px-10 py-4 font-black uppercase tracking-[0.2em] transition-all duration-500 rounded-2xl text-[11px] ${activeCategory === cat.id
-                                                ? 'bg-blue-900 text-white shadow-[0_20px_40px_rgba(30,58,138,0.2)] translate-y-[-4px]'
-                                                : 'bg-white text-gray-400 hover:text-blue-950 shadow-sm border border-gray-100'
-                                                }`}
+                                        <Link
+                                            key={dept.id}
+                                            href={`/departments/${dept.slug}`}
+                                            className="group relative rounded-[40px] overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 flex flex-col"
                                         >
-                                            <Icon className="w-4 h-4" />
-                                            {cat.label}
-                                        </button>
+                                            {/* Image / Gradient Header (Picture Holder) */}
+                                            <div className="relative h-60 overflow-hidden bg-blue-900">
+                                                {dept.image ? (
+                                                    <>
+                                                        <img src={dept.image} alt={dept.name} className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" crossOrigin="anonymous" />
+                                                        <div className="absolute inset-0 bg-gradient-to-t from-blue-950 via-transparent to-transparent" />
+                                                    </>
+                                                ) : (
+                                                    <div className={`absolute inset-0 bg-gradient-to-br ${gradient} opacity-40 group-hover:opacity-60 transition-opacity duration-700`}>
+                                                        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)', backgroundSize: '24px 24px' }} />
+                                                        <div className="w-full h-full flex flex-col items-center justify-center">
+                                                            <span className="text-4xl opacity-20 filter grayscale mb-2">{dept.icon || '🏥'}</span>
+                                                            <p className="text-[8px] font-black text-white/20 uppercase tracking-[0.3em]">Department Photo</p>
+                                                        </div>
+                                                    </div>
+                                                )}
+
+                                                {/* Category Label Overlay */}
+                                                <div className="absolute bottom-5 left-5 z-20">
+                                                    <div className="px-3 py-1 bg-white/10 backdrop-blur-md border border-white/20 rounded-lg text-[8px] font-black text-white uppercase tracking-widest">
+                                                        {cat}
+                                                    </div>
+                                                </div>
+
+                                                {/* Services Count Badge */}
+                                                {dept.services?.length > 0 && (
+                                                    <div className="absolute top-5 right-5 z-20 px-3 py-1.5 bg-blue-950/80 backdrop-blur-md border border-white/10 rounded-xl text-[9px] font-black text-cyan-400 uppercase tracking-widest shadow-2xl">
+                                                        {dept.services.length} svc
+                                                    </div>
+                                                )}
+
+                                                {/* Icon Badge - Floating */}
+                                                <div className="absolute top-5 left-5 w-12 h-12 rounded-2xl bg-white/95 backdrop-blur-md flex items-center justify-center text-xl shadow-2xl group-hover:-translate-y-1 transition-transform duration-300 z-20">
+                                                    {dept.icon || '🏥'}
+                                                </div>
+                                            </div>
+
+                                            {/* Content */}
+                                            <div className="bg-blue-950 p-8 flex-1 flex flex-col relative overflow-hidden">
+                                                {/* Subtle decorative element */}
+                                                <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-400 opacity-[0.03] rounded-full -mr-16 -mt-16 blur-2xl" />
+
+                                                <h3 className="font-black text-white text-base mb-3 uppercase tracking-wide leading-tight group-hover:text-cyan-400 transition-colors">{dept.name}</h3>
+                                                <p className="text-sm text-blue-100/40 leading-relaxed line-clamp-2 flex-1 font-medium">{dept.description}</p>
+
+                                                {/* Head preview */}
+                                                {dept.headName && (
+                                                    <div className="flex items-center gap-3 mt-5 py-4 border-t border-white/5">
+                                                        <div className="w-8 h-8 rounded-full bg-white/5 overflow-hidden flex-shrink-0 flex items-center justify-center border border-white/10">
+                                                            {dept.headImage ? (
+                                                                <img src={dept.headImage} className="w-full h-full object-cover" crossOrigin="anonymous" />
+                                                            ) : (
+                                                                <span className="text-sm opacity-30">👤</span>
+                                                            )}
+                                                        </div>
+                                                        <div className="min-w-0">
+                                                            <p className="text-[9px] font-black text-blue-200/30 uppercase tracking-widest">Dept Head</p>
+                                                            <p className="text-xs font-black text-blue-50 truncate">{dept.headName}</p>
+                                                        </div>
+                                                    </div>
+                                                )}
+
+                                                <div className="flex items-center justify-between mt-5 pt-4 border-t border-white/5">
+                                                    <span className="text-[10px] font-black text-white/20 uppercase tracking-widest group-hover:text-cyan-400/50 transition-colors">Learn More</span>
+                                                    <div className="w-10 h-10 rounded-xl bg-blue-900 border border-white/10 flex items-center justify-center group-hover:bg-cyan-500 group-hover:border-cyan-500 transition-all shadow-lg group-hover:shadow-cyan-500/20">
+                                                        <ChevronRightIcon className="w-5 h-5 text-white" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </Link>
                                     );
                                 })}
                             </div>
-
-
-                        </div>
-
-                        {/* Advanced Grid with 3D Interaction */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4 min-h-[400px]">
-                            {filteredDepartments.map((dept, index) => {
-                                const Icon = dept.icon;
-                                return (
-                                    <Link
-                                        key={dept.slug}
-                                        href={`/departments/${dept.slug}`}
-                                        className="group perspective-1000"
-                                        style={{
-                                            animationDelay: `${index * 0.1}s`,
-                                            transitionDelay: `${index * 50}ms`
-                                        }}
-                                    >
-                                        <div className="h-full bg-blue-950 border border-white/5 rounded-[2rem] p-6 transition-all duration-700 ease-out group-hover:rotate-x-2 group-hover:rotate-y-[-2px] group-hover:shadow-[0_30px_60px_rgba(30,58,138,0.3)] flex flex-col relative overflow-hidden group-hover:-translate-y-2">
-                                            {/* Dynamic Color Glow */}
-                                            <div className={`absolute -top-20 -right-20 w-40 h-40 bg-gradient-to-br ${dept.color} opacity-0 group-hover:opacity-20 blur-[50px] transition-opacity duration-700`} />
-
-                                            {/* Category & Status */}
-                                            <div className="flex items-center justify-between mb-4">
-                                                <span className="text-[8px] font-black uppercase tracking-[0.2em] text-white/20 bg-white/5 px-2.5 py-1 rounded-full group-hover:bg-white/10 group-hover:text-cyan-400 transition-all duration-500">
-                                                    {categories.find(c => c.id === dept.category)?.label}
-                                                </span>
-
-                                            </div>
-
-                                            <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${dept.color} flex items-center justify-center text-white mb-4 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-xl`}>
-                                                <Icon className="w-5 h-5" />
-                                            </div>
-
-                                            <h3 className="text-lg font-black text-white mb-3 tracking-tighter leading-none group-hover:text-cyan-400 transition-colors duration-500">
-                                                {dept.name}
-                                            </h3>
-
-                                            <p className="text-blue-100/60 text-[11px] leading-relaxed mb-6 flex-1 font-medium">
-                                                {dept.desc}
-                                            </p>
-
-                                            <div className="pt-4 border-t border-white/5 flex items-center justify-between">
-                                                <div className="flex items-center gap-3">
-                                                    <span className="text-[8px] font-black uppercase tracking-[0.3em] text-cyan-400/30 group-hover:text-cyan-400 group-hover:translate-x-1 transition-all duration-500">
-                                                        Explore
-                                                    </span>
-                                                    <span className="w-1 h-1 rounded-full bg-white/10" />
-                                                    <Link
-                                                        href="/contact"
-                                                        onClick={(e) => e.stopPropagation()}
-                                                        className="text-[8px] font-black uppercase tracking-[0.3em] text-white/20 hover:text-white transition-colors"
-                                                    >
-                                                        Contact
-                                                    </Link>
-                                                </div>
-                                                <div className={`w-8 h-8 rounded-full border border-white/10 flex items-center justify-center bg-white/5 text-cyan-400 group-hover:bg-cyan-500 group-hover:text-white group-hover:border-cyan-500 group-hover:scale-110 transition-all duration-500 shadow-sm`}>
-                                                    <ArrowRightIcon className="w-3.5 h-3.5" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </Link>
-                                );
-                            })}
-                        </div>
-
-
+                        )}
                     </div>
                 </section>
 
-                {/* International Impact CTA - Super Premium */}
-                <section className="py-24 bg-white relative overflow-hidden">
-                    <div className="container-custom">
-                        <div className="bg-blue-950 rounded-[4rem] p-12 md:p-32 relative overflow-hidden shadow-[0_50px_100px_rgba(0,0,0,0.3)]">
-                            {/* Mesh Gradient Background */}
-                            <div className="absolute inset-0 opacity-30 animate-mesh" style={{
-                                background: 'radial-gradient(circle at 0% 0%, #1e40af 0%, transparent 50%), radial-gradient(circle at 100% 100%, #1e3a8a 0%, transparent 50%)',
-                                backgroundSize: '200% 200%'
-                            }} />
-
-                            <div className="relative z-10 grid lg:grid-cols-2 gap-24 items-center">
-                                <div className="animate-fade-in">
-                                    <div className="w-12 h-1 bg-cyan-400 mb-10" />
-                                    <h2 className="text-5xl md:text-7xl font-black text-white mb-10 tracking-tighter leading-[0.9] uppercase">
-                                        Impact on <br />
-                                        <span className="text-cyan-400">Global</span> <br />
-                                        Health
-                                    </h2>
-                                    <p className="text-blue-100/60 text-xl mb-14 leading-relaxed font-medium max-w-lg">
-                                        Leveraging nine decades of psychiatric excellence to lead mental health initiatives across the continent and beyond.
-                                    </p>
-                                    <div className="flex flex-wrap gap-8">
-                                        <Link href="/contact" className="px-12 py-6 bg-cyan-500 text-white rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-cyan-400 transition-all shadow-[0_20px_40px_rgba(6,182,212,0.3)] hover:-translate-y-1">
-                                            Institutional Referral
-                                        </Link>
-                                    </div>
-                                </div>
-                                <div className="grid grid-cols-2 gap-8">
-                                    {[
-                                        { label: 'Founded', value: '1930 E.C.', desc: 'Clinical Pioneer' },
-                                        { label: 'Partners', value: '12+', desc: 'Global Entities' },
-                                        { label: 'Research', value: '450+', desc: 'Publications' },
-                                        { label: 'Specialists', value: '150+', desc: 'Expert Staff' }
-                                    ].map((stat, i) => (
-                                        <div key={i} className="bg-white/5 backdrop-blur-2xl border border-white/10 p-10 rounded-[2.5rem] hover:bg-white/10 transition-colors duration-500">
-                                            <div className="text-4xl font-black text-white mb-2 tracking-tighter">{stat.value}</div>
-                                            <div className="text-cyan-400 text-[10px] font-black uppercase tracking-[0.2em] mb-4">{stat.label}</div>
-                                            <div className="text-blue-100/30 text-[11px] font-bold uppercase tracking-widest">{stat.desc}</div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        </div>
+                {/* CTA */}
+                <section className="py-20 bg-blue-950">
+                    <div className="container-custom text-center">
+                        <h2 className="text-4xl font-black text-white mb-4 tracking-tighter">Can't find what you're looking for?</h2>
+                        <p className="text-blue-100/50 mb-8 font-medium">Our team is ready to help direct you to the right clinical service.</p>
+                        <Link href="/contact" className="inline-block px-12 py-6 bg-cyan-500 hover:bg-cyan-400 text-white rounded-2xl font-black uppercase tracking-widest text-xs transition-all shadow-xl shadow-cyan-500/20">Contact Us</Link>
                     </div>
                 </section>
-            </main>
+            </main >
             <Footer />
             <ChatbotButton />
         </>

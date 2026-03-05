@@ -3,6 +3,219 @@ import bcrypt from 'bcryptjs';
 
 const prisma = new PrismaClient();
 
+const departmentsData = [
+    // CLINICAL DEPARTMENTS
+    { name: 'Department of Psychiatry', slug: 'psychiatry', description: 'Comprehensive outpatient and inpatient psychiatric care for all ages, including specialized addiction and forensic services.', icon: '🧠', category: 'Clinical Departments', order: 1 },
+    { name: 'Department of Internal Medicine', slug: 'internal-medicine', description: 'Expert diagnosis and management of complex adult medical conditions, both acute and chronic.', icon: '🩺', category: 'Clinical Departments', order: 2 },
+    { name: 'Department of Neurology', slug: 'neurology', description: 'Specialized care for disorders of the brain, spinal cord, and peripheral nervous system.', icon: '🔬', category: 'Clinical Departments', order: 3 },
+
+    // DIAGNOSTIC AND SUPPORT
+    { name: 'Radiology Department', slug: 'radiology', description: 'Advanced diagnostic imaging including X-Ray and Ultrasound services for clinical decision support.', icon: '🩻', category: 'Diagnostic & Support', order: 4 },
+    { name: 'Laboratory Department', slug: 'laboratory', description: 'Full-service clinical laboratory providing accurate diagnostic testing for inpatient and outpatient care.', icon: '🧪', category: 'Diagnostic & Support', order: 5 },
+    { name: 'Pharmacy Department', slug: 'pharmacy', description: 'Clinical pharmacy services ensuring safe, effective, and accessible medication management.', icon: '💊', category: 'Diagnostic & Support', order: 6 },
+    { name: 'Biomedical Engineering Department', slug: 'biomedical-engineering', description: 'Maintenance, calibration, and technical management of all medical equipment.', icon: '⚙️', category: 'Diagnostic & Support', order: 7 },
+
+    // EMERGENCY AND CRITICAL CARE
+    { name: 'Emergency Department', slug: 'emergency-dept', description: '24/7 emergency and trauma care with rapid response psychiatric and medical triage.', icon: '🚑', category: 'Emergency & Critical Care', order: 8 },
+    { name: 'Intensive Care Unit (ICU)', slug: 'icu-dept', description: 'Highest-level continuous monitoring and life-support for critically ill patients.', icon: '❤️‍🔥', category: 'Emergency & Critical Care', order: 9 },
+    { name: 'High Dependency Unit (HDU)', slug: 'hdu-dept', description: 'Intermediate-level care for patients requiring more support than general wards but less than ICU.', icon: '🏥', category: 'Emergency & Critical Care', order: 10 },
+
+    // NURSING AND CLINICAL SUPPORT
+    { name: 'Nursing and Midwifery Department', slug: 'nursing-midwifery', description: 'Professional nursing care and midwifery services across all clinical areas.', icon: '👩‍⚕️', category: 'Nursing & Clinical Support', order: 11 },
+    { name: 'Rehabilitation and Psychosocial Services', slug: 'rehabilitation', description: 'Holistic therapeutic services improving patient independence and social functioning.', icon: '🔄', category: 'Nursing & Clinical Support', order: 12 },
+
+    // COMMUNITY AND PUBLIC HEALTH
+    { name: 'Community Health Service Department', slug: 'community-health-dept', description: 'Proactive community-level mental health services and outreach programs.', icon: '🤝', category: 'Community & Public Health', order: 13 },
+    { name: 'Disease Prevention & Health Literacy', slug: 'disease-prevention-dept', description: 'Evidence-based prevention programs and community health education initiatives.', icon: '📋', category: 'Community & Public Health', order: 14 },
+
+    // CLINICAL ADMINISTRATION
+    { name: 'Clinical Service Facilitation Department', slug: 'clinical-facilitation', description: 'Coordinating patient flow, referrals, and administrative clinical processes.', icon: '📁', category: 'Clinical Administration', order: 15 },
+    { name: 'Liaison and Information Department', slug: 'liaison-dept', description: 'Patient liaison, call center, and inter-departmental coordination services.', icon: '📞', category: 'Clinical Administration', order: 16 },
+    { name: 'Health Information System Department', slug: 'health-information', description: 'Managing medical records, data integrity, and hospital information systems.', icon: '💻', category: 'Clinical Administration', order: 17 },
+
+    // TRAINING, RESEARCH AND QUALITY
+    { name: 'CPD, Training & Research Department', slug: 'cpd-training-research', description: 'Continuing professional development, clinical training programs, and academic research.', icon: '🎓', category: 'Training, Research & Quality', order: 18 },
+    { name: 'Quality Improvement & Innovation Department', slug: 'quality-improvement', description: 'Driving clinical excellence through standards, audits, and continuous quality improvement.', icon: '⭐', category: 'Training, Research & Quality', order: 19 },
+];
+
+const servicesData = [
+    // PSYCHIATRY SERVICES
+    { name: 'Psychiatry Outpatient Services', slug: 'psychiatry-outpatient', description: 'Regular psychiatric consultations for non-emergency mental health needs.', icon: '🧠', deptSlug: 'psychiatry', order: 1 },
+    { name: 'Psychiatry Inpatient Services', slug: 'psychiatry-inpatient', description: 'Round-the-clock specialized care for patients requiring hospitalization.', icon: '🛏️', deptSlug: 'psychiatry', order: 2 },
+    { name: 'Child and Adolescent Psychiatry', slug: 'child-adolescent-psychiatry', description: 'Dedicated care for developmental and mental health needs of children and youth.', icon: '👶', deptSlug: 'psychiatry', order: 3 },
+    { name: 'Addiction Treatment Services', slug: 'addiction-treatment', description: 'Comprehensive detox and rehabilitation for substance use disorders.', icon: '🌿', deptSlug: 'psychiatry', order: 4 },
+    { name: 'Geriatric Psychiatry Services', slug: 'geriatric-psychiatry', description: 'Specialized psychiatric care for elderly populations.', icon: '👴', deptSlug: 'psychiatry', order: 5 },
+    { name: 'Forensic Psychiatry Services', slug: 'forensic-psychiatry', description: 'Mental health assessment and treatment related to legal proceedings.', icon: '⚖️', deptSlug: 'psychiatry', order: 6 },
+    { name: 'Clozapine Treatment Service', slug: 'clozapine-treatment', description: 'Monitoring and management for treatment-resistant schizophrenia.', icon: '💊', deptSlug: 'psychiatry', order: 7 },
+    { name: 'Electroconvulsive Therapy (ECT)', slug: 'ect-service', description: 'Safe, advanced procedure for severe mental health conditions.', icon: '⚡', deptSlug: 'psychiatry', order: 8 },
+    { name: 'Clinical Psychology Services', slug: 'clinical-psychology-services', description: 'Individual and group therapy based on evidence-based psychological principles.', icon: '🪑', deptSlug: 'psychiatry', order: 9 },
+    { name: 'Psychosocial Support Services', slug: 'psychosocial-support', description: 'Integrating social support into clinical mental health care.', icon: '🤲', deptSlug: 'psychiatry', order: 10 },
+
+    // INTERNAL MEDICINE SERVICES
+    { name: 'Internal Medicine Outpatient Services', slug: 'internal-medicine-outpatient', description: 'General medical consultations and specialized adult care.', icon: '🩺', deptSlug: 'internal-medicine', order: 1 },
+    { name: 'Internal Medicine Inpatient Services', slug: 'internal-medicine-inpatient', description: 'Internal medicine care for hospitalized patients.', icon: '🛏️', deptSlug: 'internal-medicine', order: 2 },
+    { name: 'Referral Internal Medicine Services', slug: 'referral-medicine', description: 'Specialized second-opinion consults for complex cases.', icon: '📋', deptSlug: 'internal-medicine', order: 3 },
+
+    // NEUROLOGY SERVICES
+    { name: 'Neurology Outpatient Services', slug: 'neurology-outpatient', description: 'Consultations for epilepsy, stroke, and neurological disorders.', icon: '🔬', deptSlug: 'neurology', order: 1 },
+    { name: 'Neurophysiology Services', slug: 'neurophysiology', description: 'Advanced clinical testing of the nervous system.', icon: '⚡', deptSlug: 'neurology', order: 2 },
+    { name: 'EEG Diagnostic Services', slug: 'eeg-diagnostic', description: 'Brain activity monitoring and seizure diagnosis.', icon: '📊', deptSlug: 'neurology', order: 3 },
+
+    // EMERGENCY DEPT SERVICES
+    { name: 'Emergency Triage Services', slug: 'emergency-triage', description: 'Immediate assessment and prioritization of clinical cases.', icon: '🚨', deptSlug: 'emergency-dept', order: 1 },
+    { name: 'Emergency Psychiatric Services', slug: 'emergency-psychiatry', description: 'Rapid intervention for mental health crises.', icon: '🧠', deptSlug: 'emergency-dept', order: 2 },
+    { name: 'Emergency Procedure Services', slug: 'emergency-procedures', description: 'Urgent medical and minor surgical interventions.', icon: '🔧', deptSlug: 'emergency-dept', order: 3 },
+    { name: 'Intensive Care Services', slug: 'icu', description: 'Highest level of medical care for critically ill patients.', icon: '❤️‍🔥', deptSlug: 'icu-dept', order: 1 },
+    { name: 'High Dependency Care', slug: 'hdu', description: 'Intermediate care for patients transitioning out of intensive care.', icon: '🏥', deptSlug: 'hdu-dept', order: 1 },
+
+    // PHARMACY SERVICES
+    { name: 'Outpatient Pharmacy Services', slug: 'outpatient-pharmacy', description: 'Counseling and dispensing for non-hospitalized patients.', icon: '💊', deptSlug: 'pharmacy', order: 1 },
+    { name: 'Inpatient Pharmacy Services', slug: 'inpatient-pharmacy', description: 'Specialized medication management for wards.', icon: '🏥', deptSlug: 'pharmacy', order: 2 },
+    { name: 'ART Pharmacy Services', slug: 'art-pharmacy', description: 'Expert management of antiretroviral therapies.', icon: '🎗️', deptSlug: 'pharmacy', order: 3 },
+    { name: 'Community Pharmacy Services', slug: 'community-pharmacy', description: 'Accessible pharmacy services for the surrounding area.', icon: '🤝', deptSlug: 'pharmacy', order: 4 },
+    { name: 'Drug Compounding Services', slug: 'drug-compounding', description: 'Tailored medication formulations for specific patient needs.', icon: '⚗️', deptSlug: 'pharmacy', order: 5 },
+    { name: 'Drug Supply and Storage Services', slug: 'pharmacy-supply', description: 'Managing the hospital medical supply chain.', icon: '📦', deptSlug: 'pharmacy', order: 6 },
+
+    // LABORATORY SERVICES
+    { name: 'Outpatient Laboratory Services', slug: 'outpatient-lab', description: 'Standard and specialized diagnostic testing.', icon: '🧪', deptSlug: 'laboratory', order: 1 },
+    { name: 'Inpatient Laboratory Services', slug: 'inpatient-lab', description: 'Laboratory support for acute hospital care.', icon: '🔬', deptSlug: 'laboratory', order: 2 },
+    { name: 'Central Laboratory Services', slug: 'central-lab', description: 'Advanced reference laboratory services.', icon: '🏛️', deptSlug: 'laboratory', order: 3 },
+    { name: 'Sample Collection Services', slug: 'sample-collection', description: 'Safe and professional collection of diagnostic samples.', icon: '💉', deptSlug: 'laboratory', order: 4 },
+
+    // RADIOLOGY SERVICES
+    { name: 'X-Ray Diagnostic Services', slug: 'xray-services', description: 'Fixed and mobile radiography services.', icon: '🩻', deptSlug: 'radiology', order: 1 },
+    { name: 'Ultrasound Diagnostic Services', slug: 'ultrasound-services', description: 'Advanced sonography and doppler imaging.', icon: '📡', deptSlug: 'radiology', order: 2 },
+
+    // REHABILITATION SERVICES
+    { name: 'Occupational Therapy', slug: 'occupational-therapy', description: 'Adaptive skills and activity-based recovery.', icon: '🖐️', deptSlug: 'rehabilitation', order: 1 },
+    { name: 'Recreational Therapy', slug: 'recreational-therapy', description: 'Structured restorative activities for well-being.', icon: '🎯', deptSlug: 'rehabilitation', order: 2 },
+    { name: 'Art Therapy', slug: 'art-therapy', description: 'Creative expression as a psychological intervention.', icon: '🎨', deptSlug: 'rehabilitation', order: 3 },
+    { name: 'Speech Therapy', slug: 'speech-therapy', description: 'Assessing and treating communication and swallowing disorders.', icon: '🗣️', deptSlug: 'rehabilitation', order: 4 },
+];
+
+const serviceCategoriesData = [
+    {
+        slug: 'mental-health',
+        name: 'Mental Health Services',
+        icon: '🧠',
+        gradient: 'from-blue-950 to-blue-800',
+        accentColor: 'bg-blue-900',
+        description: 'Comprehensive inpatient, outpatient, and specialized psychiatric care for adults, children, and older adults.',
+        deptSlugs: 'psychiatry',
+        order: 1
+    },
+    {
+        slug: 'internal-medicine',
+        name: 'Internal Medicine Services',
+        icon: '🩺',
+        gradient: 'from-indigo-950 to-indigo-800',
+        accentColor: 'bg-indigo-900',
+        description: 'Expert adult medical care for complex conditions — outpatient, inpatient, and specialist referral services.',
+        deptSlugs: 'internal-medicine',
+        order: 2
+    },
+    {
+        slug: 'neurology',
+        name: 'Neurology Services',
+        icon: '🔬',
+        gradient: 'from-violet-950 to-violet-800',
+        accentColor: 'bg-violet-900',
+        description: 'Advanced diagnosis and treatment of neurological conditions including EEG and neurophysiology testing.',
+        deptSlugs: 'neurology',
+        order: 3
+    },
+    {
+        slug: 'emergency-critical-care',
+        name: 'Emergency & Critical Care Services',
+        icon: '🚑',
+        gradient: 'from-red-950 to-rose-800',
+        accentColor: 'bg-red-900',
+        description: '24/7 emergency triage, psychiatric crisis response, intensive care, and high dependency care.',
+        deptSlugs: 'emergency-dept;icu-dept;hdu-dept',
+        order: 4
+    },
+    {
+        slug: 'pharmacy',
+        name: 'Pharmacy Services',
+        icon: '💊',
+        gradient: 'from-cyan-950 to-teal-800',
+        accentColor: 'bg-cyan-900',
+        description: 'Inpatient, outpatient, ART, community pharmacy plus drug compounding and supply management.',
+        deptSlugs: 'pharmacy',
+        order: 5
+    },
+    {
+        slug: 'laboratory',
+        name: 'Laboratory Services',
+        icon: '🧪',
+        gradient: 'from-teal-950 to-emerald-800',
+        accentColor: 'bg-teal-900',
+        description: 'Full-spectrum clinical diagnostics — outpatient, inpatient, central lab and dedicated sample collection.',
+        deptSlugs: 'laboratory',
+        order: 6
+    },
+    {
+        slug: 'diagnostic-imaging',
+        name: 'Diagnostic Imaging Services',
+        icon: '🩻',
+        gradient: 'from-sky-950 to-cyan-800',
+        accentColor: 'bg-sky-900',
+        description: 'Advanced X-Ray and Ultrasound imaging for accurate, timely clinical diagnosis and intervention.',
+        deptSlugs: 'radiology',
+        order: 7
+    },
+    {
+        slug: 'rehabilitation-therapy',
+        name: 'Rehabilitation & Therapy Services',
+        icon: '🔄',
+        gradient: 'from-emerald-950 to-green-800',
+        accentColor: 'bg-emerald-900',
+        description: 'Occupational, recreational, art, and speech therapy for holistic patient recovery and independence.',
+        deptSlugs: 'rehabilitation',
+        order: 8
+    },
+    {
+        slug: 'community-preventive',
+        name: 'Community & Preventive Services',
+        icon: '🌍',
+        gradient: 'from-green-950 to-lime-800',
+        accentColor: 'bg-green-900',
+        description: 'Community outreach programs, disease prevention, and health education to promote population wellbeing.',
+        deptSlugs: 'community-health-dept;disease-prevention-dept',
+        order: 9
+    },
+    {
+        slug: 'patient-support',
+        name: 'Patient Support Services',
+        icon: '📋',
+        gradient: 'from-slate-900 to-slate-700',
+        accentColor: 'bg-slate-800',
+        description: 'Patient information, medical records, call center and liaison services for seamless care navigation.',
+        deptSlugs: 'liaison-dept;health-information',
+        order: 10
+    },
+    {
+        slug: 'hospital-support',
+        name: 'Hospital Support Services',
+        icon: '🏗️',
+        gradient: 'from-zinc-900 to-zinc-700',
+        accentColor: 'bg-zinc-800',
+        description: 'Central sterilization, laundry, nutrition, and biomedical equipment maintenance for clinical operations.',
+        deptSlugs: 'biomedical-engineering',
+        order: 11
+    },
+    {
+        slug: 'private-specialized',
+        name: 'Private & Specialized Services',
+        icon: '👑',
+        gradient: 'from-amber-900 to-orange-700',
+        accentColor: 'bg-amber-800',
+        description: 'Premium private wing and one-stop OPD services for a personalized, efficient patient experience.',
+        deptSlugs: 'clinical-facilitation',
+        order: 12
+    },
+];
+
 async function main() {
     console.log('🌱 Seeding database...');
 
@@ -35,18 +248,6 @@ async function main() {
         { key: 'emergency_hours', value: '24/7 Emergency Services', label: 'Emergency Hours', group: 'contact' },
         { key: 'facebook_url', value: 'https://facebook.com/amsh.gov.et', label: 'Facebook URL', group: 'social' },
         { key: 'twitter_url', value: 'https://twitter.com/amsh_hospital', label: 'Twitter URL', group: 'social' },
-        { key: 'youtube_url', value: '', label: 'YouTube URL', group: 'social' },
-        { key: 'hero_title', value: 'Welcome to Amanuel Mental Specialized Hospital', label: 'Hero Title', group: 'homepage' },
-        { key: 'hero_subtitle', value: 'We Are Always Ready to Help You & Your Family', label: 'Hero Subtitle', group: 'homepage' },
-        { key: 'hero_cta_primary', value: 'Book Appointment', label: 'Hero CTA Primary', group: 'homepage' },
-        { key: 'hero_cta_secondary', value: 'Learn More', label: 'Hero CTA Secondary', group: 'homepage' },
-        { key: 'about_history', value: 'The hospital was established by Italian invaders in 1930 E.C. The Hospital has been serving as the only public specialized Mental hospital since 1930 E.C. In addition to providing clinical service, the hospital has been delivering different types of long-term and short-term training for health professionals.', label: 'Hospital History', group: 'about' },
-        { key: 'about_mission', value: 'To provide comprehensive, compassionate, and evidence-based mental health care to all patients, while advancing research and professional development in psychiatry.', label: 'Mission', group: 'about' },
-        { key: 'about_vision', value: 'To be the leading center of excellence in mental health care, research, and education in Africa.', label: 'Vision', group: 'about' },
-        { key: 'hospital_beds', value: '300+', label: 'Hospital Beds', group: 'stats' },
-        { key: 'total_doctors', value: '50+', label: 'Total Doctors', group: 'stats' },
-        { key: 'annual_patients', value: '10,000+', label: 'Annual Patients', group: 'stats' },
-        { key: 'years_experience', value: '90+', label: 'Years of Experience', group: 'stats' },
     ];
 
     for (const setting of settings) {
@@ -63,132 +264,102 @@ async function main() {
         { name: 'Announcements', slug: 'announcements', color: '#1B4F8A' },
         { name: 'News', slug: 'news', color: '#2E8B57' },
         { name: 'Research', slug: 'research', color: '#8B1A4A' },
-        { name: 'Events', slug: 'events', color: '#B8860B' },
-        { name: 'Health Tips', slug: 'health-tips', color: '#4682B4' },
     ];
 
     for (const cat of categories) {
         await prisma.category.upsert({ where: { slug: cat.slug }, update: {}, create: cat });
     }
-    console.log('✅ Categories seeded');
+    console.log('✅ Blog Categories seeded');
 
     // Departments
-    const departments = [
-        { name: 'Adult Psychiatry', slug: 'adult-psychiatry', description: 'Comprehensive psychiatric evaluation and treatment for adults with mental health conditions.', icon: '🧠', order: 1 },
-        { name: 'Child & Adolescent Psychiatry', slug: 'child-psychiatry', description: 'Specialized mental health services for children and adolescents.', icon: '👶', order: 2 },
-        { name: 'Addiction Treatment Unit', slug: 'addiction-treatment', description: 'Evidence-based addiction treatment and rehabilitation services.', icon: '💊', order: 3 },
-        { name: 'Emergency Psychiatry', slug: 'emergency', description: '24/7 emergency psychiatric services for acute mental health crises.', icon: '🚨', order: 4 },
-        { name: 'Clinical Psychology', slug: 'psychology', description: 'Psychological assessment, therapy, and counseling services.', icon: '🔬', order: 5 },
-        { name: 'Neurology', slug: 'neurology', description: 'EEG and neurological diagnostic services.', icon: '⚡', order: 6 },
-    ];
-
-    for (const dept of departments) {
-        await prisma.department.upsert({ where: { slug: dept.slug }, update: {}, create: { ...dept, isActive: true } });
+    console.log('Seeding departments...');
+    for (const d of departmentsData) {
+        await prisma.department.upsert({
+            where: { slug: d.slug },
+            update: {
+                category: d.category,
+                description: d.description,
+                icon: d.icon,
+                order: d.order
+            },
+            create: {
+                name: d.name,
+                slug: d.slug,
+                description: d.description,
+                icon: d.icon,
+                category: d.category,
+                order: d.order,
+                isActive: true
+            }
+        });
     }
-    console.log('✅ Departments seeded');
+    console.log(`✅ Seeded ${departmentsData.length} departments.`);
 
     // Services
-    const services = [
-        { name: 'Emergency Service', slug: 'emergency-service', description: 'AMSH Emergency is available 24/7. Call us at 991 in case of mental health emergencies.', icon: '🚨', order: 1 },
-        { name: 'Outpatient Services', slug: 'outpatient', description: 'Comprehensive outpatient psychiatric evaluation, diagnosis, and treatment.', icon: '🏥', order: 2 },
-        { name: 'Inpatient Services', slug: 'inpatient', description: 'Full residential care for patients requiring intensive psychiatric treatment.', icon: '🛏️', order: 3 },
-        { name: 'Laboratory Service', slug: 'laboratory', description: 'Full diagnostic laboratory services supporting psychiatric care.', icon: '🔬', order: 4 },
-        { name: 'Pharmacy', slug: 'pharmacy', description: 'Well-stocked pharmacy with all psychiatric medications readily available.', icon: '💊', order: 5 },
-        { name: 'EEG Services', slug: 'eeg', description: 'Electroencephalogram (EEG) diagnostic testing for neurological assessment.', icon: '⚡', order: 6 },
-        { name: 'CPD Training', slug: 'cpd-training', description: 'Continuing Professional Development training for healthcare professionals.', icon: '📚', order: 7 },
-        { name: 'Research Unit', slug: 'research', description: 'Active research programs advancing mental health knowledge and treatment.', icon: '🔭', order: 8 },
-    ];
+    console.log('Seeding services...');
+    for (const s of servicesData) {
+        const dept = await prisma.department.findUnique({ where: { slug: s.deptSlug } });
+        if (!dept) continue;
 
-    for (const service of services) {
-        await prisma.service.upsert({ where: { slug: service.slug }, update: {}, create: { ...service, isActive: true } });
+        await prisma.service.upsert({
+            where: { slug: s.slug },
+            update: {
+                departmentId: dept.id,
+                description: s.description,
+                icon: s.icon,
+                order: s.order
+            },
+            create: {
+                name: s.name,
+                slug: s.slug,
+                description: s.description,
+                icon: s.icon,
+                order: s.order,
+                departmentId: dept.id,
+                isActive: true
+            }
+        });
     }
-    console.log('✅ Services seeded');
+    console.log(`✅ Seeded ${servicesData.length} services.`);
 
-    // Sample News Posts
-    const newsPost = await prisma.post.upsert({
-        where: { slug: 'hospital-board-strategic-visit-2018' },
-        update: {},
-        create: {
-            title: 'Board of Directors Conducts Comprehensive Supervision Visit',
-            slug: 'hospital-board-strategic-visit-2018',
-            excerpt: 'On February 17, 2018 E.C., the Board of Directors conducted a strategic review of service delivery, patient care standards, and digital health implementation across all hospital wards.',
-            content: `<p>The Board of Directors of Emmanuel Mental Specialized Hospital (EMSH) recently concluded a high-level strategic supervision visit aimed at assessing the hospital's performance and service quality. The visit, which took place on February 17, 2018 E.C., included a detailed review of clinical operations, patient care standards, and the implementation of modern healthcare technologies.</p>
-      <p>During the session, board members toured several specialized departments, including the acute care psychiatric unit and the rehabilitation center. They engaged with department heads to discuss challenges and opportunities for further enhancing mental health service delivery in Ethiopia.</p>
-      <p>The board expressed satisfaction with the hospital's progress in digital health transformation and emphasized the importance of maintaining EMSH's position as a regional center of excellence.</p>
-      <h3>Key Supervision Areas:</h3>
-      <ul>
-        <li><strong>Inpatient Bed Capacity:</strong> Reviewed the expansion of the new acute care ward.</li>
-        <li><strong>Research Integration:</strong> Evaluated the progress of the neuropsychiatry research department.</li>
-        <li><strong>Community Outreach:</strong> Assessed the performance of regional mental health support programs.</li>
-      </ul>`,
-            type: 'NEWS',
-            status: 'PUBLISHED',
-            authorId: admin.id,
-            tags: JSON.stringify(['institutional', 'governance', 'board']),
-            publishedAt: new Date(),
-        },
-    });
-
-    await prisma.post.upsert({
-        where: { slug: 'community-health-worker-training-program' },
-        update: {},
-        create: {
-            title: 'EMSH Trains 134 Community Health Workers in Mental Health Crisis Response',
-            slug: 'community-health-worker-training-program',
-            excerpt: 'A three-day intensive training program equipped community health workers from 10 Addis Ababa sub-cities with crisis detection, referral, and anti-stigma skills.',
-            content: `<p>Emmanuel Mental Specialized Hospital recently completed a landmark training initiative that equipped over 120 community health workers (CHWs) from Addis Ababa sub-cities with the knowledge and skills to identify and respond to mental health crises at the community level.</p>
-      <p>The three-day intensive program, conducted in both Amharic and English, covered critical topics including early symptom recognition, suicide risk assessment, anti-stigma communication, and clear referral pathways to EMSH's outpatient department.</p>
-      <h3>Training Program Highlights:</h3>
-      <ul>
-        <li><strong>134 participants</strong> from 10 sub-cities trained</li>
-        <li>Modules on schizophrenia, bipolar disorder, and substance use</li>
-        <li>Practical crisis de-escalation role-play exercises</li>
-        <li>Certification awarded to all successful graduates</li>
-      </ul>`,
-            type: 'NEWS',
-            status: 'PUBLISHED',
-            authorId: admin.id,
-            tags: JSON.stringify(['training', 'community', 'health-workers']),
-            publishedAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000), // 5 days ago
-        },
-    });
-
-    console.log('✅ Sample posts seeded');
-
-    // FAQ
-    const faqs = [
-        { question: 'How do I book an appointment?', answer: 'You can book an appointment online through our website, call us at +251-111-868-53-85, or visit us directly at our facility in Addis Ababa.', order: 1 },
-        { question: 'What are your working hours?', answer: 'Our outpatient services operate Monday to Friday from 2:30 AM to 10:00 AM. Emergency services are available 24/7.', order: 2 },
-        { question: 'Is there emergency psychiatric care?', answer: 'Yes, our emergency psychiatric services are available 24 hours a day, 7 days a week. Call 991 for immediate assistance.', order: 3 },
-        { question: 'Do you offer CPD training for health professionals?', answer: 'Yes, AMSH offers various CPD training programs for healthcare professionals. Visit our CPD page to see upcoming courses and register.', order: 4 },
-        { question: 'Can I submit research for review?', answer: 'Yes, researchers can submit their work through our Research page. All submissions are reviewed by our expert panel.', order: 5 },
-        { question: 'Are services free or paid?', answer: 'As a public government hospital, AMSH provides services at subsidized rates. Emergency services are always provided regardless of ability to pay.', order: 6 },
-    ];
-
-    for (const faq of faqs) {
-        await prisma.fAQ.create({ data: { ...faq, isActive: true } }).catch(() => { });
+    // Service Categories
+    console.log('Seeding service categories...');
+    for (const c of serviceCategoriesData) {
+        await prisma.serviceCategory.upsert({
+            where: { slug: c.slug },
+            update: {
+                name: c.name,
+                icon: c.icon,
+                gradient: c.gradient,
+                accentColor: c.accentColor,
+                description: c.description,
+                deptSlugs: c.deptSlugs,
+                order: c.order,
+                isActive: true
+            },
+            create: {
+                name: c.name,
+                slug: c.slug,
+                description: c.description,
+                icon: c.icon,
+                gradient: c.gradient,
+                accentColor: c.accentColor,
+                order: c.order,
+                isActive: true,
+                deptSlugs: c.deptSlugs
+            }
+        });
     }
-    console.log('✅ FAQs seeded');
-
-    const testimonialData = [
-        { name: 'Dawit Bekele', role: 'Patient Family Member', content: 'AMSH provided exceptional care for my family member during a crisis. The staff were professional, compassionate, and thorough. We are eternally grateful.', rating: 5, order: 1, isActive: true },
-        { name: 'Dr. Almaz Tesfaye', role: 'Healthcare Professional', content: 'The CPD programs at AMSH are world-class. I have enhanced my skills significantly and apply new knowledge daily in my practice.', rating: 5, order: 2, isActive: true },
-        { name: 'Hana Girma', role: 'Research Collaborator', content: 'Collaborating with AMSH on mental health research has been a rewarding experience. Their commitment to advancing knowledge is inspiring.', rating: 5, order: 3, isActive: true },
-    ];
-
-    for (const test of testimonialData) {
-        await prisma.testimonial.create({ data: test }).catch(() => { });
-    }
-    console.log('✅ Testimonials seeded');
+    console.log(`✅ Seeded ${serviceCategoriesData.length} service categories.`);
 
     console.log('\n🎉 Database seeded successfully!');
-    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-    console.log('👤 Admin Login:');
-    console.log('   Email: admin@amsh.gov.et');
-    console.log('   Password: Admin@AMSH2024!');
-    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
 }
 
 main()
-    .catch(console.error)
-    .finally(async () => { await prisma.$disconnect(); });
+    .catch((e) => {
+        console.error(e);
+        process.exit(1);
+    })
+    .finally(async () => {
+        await prisma.$disconnect();
+    });

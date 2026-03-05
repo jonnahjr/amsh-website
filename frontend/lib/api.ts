@@ -111,6 +111,17 @@ export const cpdAPI = {
     delete: (id: string) => api.delete(`/cpd/${id}`),
     register: (id: string, data: any) => api.post(`/cpd/${id}/register`, data),
     getRegistrations: (id: string) => api.get(`/cpd/${id}/registrations`),
+    getAllRegistrations: () => api.get('/cpd/registrations/all'),
+    updateRegistrationStatus: (id: string, status: string) => api.patch(`/cpd/registrations/${id}/status`, { status }),
+};
+
+export const formsAPI = {
+    getAll: () => api.get('/forms'),
+    getById: (id: string) => api.get(`/forms/${id}`),
+    submit: (id: string, data: any) => api.post(`/forms/${id}/submit`, data),
+    getAllSubmissions: () => api.get('/forms/all/submissions'),
+    getSubmissions: (id: string) => api.get(`/forms/${id}/submissions`),
+    updateSubmissionStatus: (id: string, status: string) => api.patch(`/forms/submissions/${id}/status`, { status }),
 };
 
 export const appointmentsAPI = {
@@ -181,6 +192,27 @@ export const pagesAPI = {
     delete: (id: string) => api.delete(`/pages/${id}`),
 };
 
+export const navigationAPI = {
+    getAll: () => api.get('/navigation'),
+    update: (items: any[]) => api.put('/navigation', { items }),
+};
+
 export const categoriesAPI = {
     getAll: () => api.get('/categories'),
+};
+
+export const serviceCategoriesAPI = {
+    getAll: () => api.get('/service-categories'),
+    getById: (id: string) => api.get(`/service-categories/${id}`),
+    getBySlug: (slug: string) => api.get(`/service-categories/slug/${slug}`),
+    create: (data: any) => api.post('/service-categories', data),
+    update: (id: string, data: any) => api.put(`/service-categories/${id}`, data),
+    delete: (id: string) => api.delete(`/service-categories/${id}`),
+};
+export const departmentCategoriesAPI = {
+    getAll: () => api.get('/department-categories'),
+    getById: (id: string) => api.get(`/department-categories/${id}`),
+    create: (data: any) => api.post('/department-categories', data),
+    update: (id: string, data: any) => api.put(`/department-categories/${id}`, data),
+    delete: (id: string) => api.delete(`/department-categories/${id}`),
 };

@@ -33,6 +33,8 @@ import navRoutes from './routes/navigation';
 import testimonialsRoutes from './routes/testimonials';
 import faqRoutes from './routes/faq';
 import categoriesRoutes from './routes/categories';
+import serviceCategoriesRoutes from './routes/serviceCategories';
+import departmentCategoriesRoutes from './routes/departmentCategories';
 
 // Error handler
 import { errorHandler } from './middleware/errorHandler';
@@ -47,14 +49,25 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // ============================================================
+// CORS & BASE MIDDLEWARE
+// ============================================================
+app.use(cors({
+    origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+}));
+
+// ============================================================
 // SECURITY MIDDLEWARE
 // ============================================================
 app.use(helmet({
     crossOriginEmbedderPolicy: false,
+    crossOriginResourcePolicy: false,
     contentSecurityPolicy: {
         directives: {
             defaultSrc: ["'self'"],
-            imgSrc: ["'self'", "data:", "https:", "blob:"],
+            imgSrc: ["'self'", "data:", "https:", "blob:", "http://localhost:5000"],
             scriptSrc: ["'self'"],
             styleSrc: ["'self'", "'unsafe-inline'"],
         },
@@ -78,16 +91,6 @@ const authLimiter = rateLimit({
     message: { error: 'Too many authentication attempts, please try again later.' },
 });
 app.use('/api/auth/login', authLimiter);
-
-// ============================================================
-// GENERAL MIDDLEWARE
-// ============================================================
-app.use(cors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:3000',
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-}));
 
 app.use(compression());
 app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
@@ -125,6 +128,8 @@ apiRouter.use('/navigation', navRoutes);
 apiRouter.use('/testimonials', testimonialsRoutes);
 apiRouter.use('/faq', faqRoutes);
 apiRouter.use('/categories', categoriesRoutes);
+apiRouter.use('/service-categories', serviceCategoriesRoutes);
+apiRouter.use('/department-categories', departmentCategoriesRoutes);
 
 app.use('/api', apiRouter);
 
