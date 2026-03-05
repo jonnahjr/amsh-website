@@ -200,18 +200,7 @@ export default function ServicesPage() {
                         </div>
                     </div>
                 </section>
-
-                {/* CTA */}
-                <section className="py-16 bg-gray-50 border-t border-gray-100">
-                    <div className="container-custom text-center">
-                        <h2 className="text-3xl font-black text-gray-900 mb-3 tracking-tighter">Not sure which service you need?</h2>
-                        <p className="text-gray-500 mb-8 font-medium max-w-md mx-auto">Our clinical team can help guide you to the right care pathway.</p>
-                        <Link href="/contact" className="inline-block px-10 py-5 bg-blue-900 hover:bg-blue-800 text-white rounded-2xl font-black uppercase tracking-widest text-xs transition-all shadow-xl shadow-blue-900/20">
-                            Contact Our Team
-                        </Link>
-                    </div>
-                </section>
-            </main >
+            </main>
             <Footer />
             <ChatbotButton />
         </>

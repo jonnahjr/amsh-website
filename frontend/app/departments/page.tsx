@@ -161,15 +161,6 @@ export default function DepartmentsPage() {
                         )}
                     </div>
                 </section>
-
-                {/* CTA */}
-                <section className="py-20 bg-blue-950">
-                    <div className="container-custom text-center">
-                        <h2 className="text-4xl font-black text-white mb-4 tracking-tighter">Can't find what you're looking for?</h2>
-                        <p className="text-blue-100/50 mb-8 font-medium">Our team is ready to help direct you to the right clinical service.</p>
-                        <Link href="/contact" className="inline-block px-12 py-6 bg-cyan-500 hover:bg-cyan-400 text-white rounded-2xl font-black uppercase tracking-widest text-xs transition-all shadow-xl shadow-cyan-500/20">Contact Us</Link>
-                    </div>
-                </section>
             </main >
             <Footer />
             <ChatbotButton />
