@@ -32,6 +32,7 @@ import chatbotRoutes from './routes/chatbot';
 import navRoutes from './routes/navigation';
 import testimonialsRoutes from './routes/testimonials';
 import faqRoutes from './routes/faq';
+import categoriesRoutes from './routes/categories';
 
 // Error handler
 import { errorHandler } from './middleware/errorHandler';
@@ -123,6 +124,7 @@ apiRouter.use('/chatbot', chatbotRoutes);
 apiRouter.use('/navigation', navRoutes);
 apiRouter.use('/testimonials', testimonialsRoutes);
 apiRouter.use('/faq', faqRoutes);
+apiRouter.use('/categories', categoriesRoutes);
 
 app.use('/api', apiRouter);
 

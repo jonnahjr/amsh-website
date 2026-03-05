@@ -15,6 +15,8 @@ router.get('/', async (req: Request, res: Response) => {
         };
         if (type) where.type = type;
         if (category) where.category = { slug: category };
+        if (req.query.id) where.id = req.query.id;
+
         if (search) {
             where.OR = [
                 { title: { contains: search as string, mode: 'insensitive' } },
@@ -67,6 +69,25 @@ router.get('/:slug', async (req: Request, res: Response) => {
 
         res.json({ post });
     } catch (error) {
+        console.error('Fetch post error:', error);
+        res.status(500).json({ error: 'Failed to fetch post.' });
+    }
+});
+
+// GET /api/posts/id/:id - Fetch by ID
+router.get('/id/:id', async (req: Request, res: Response) => {
+    try {
+        const post = await prisma.post.findUnique({
+            where: { id: req.params.id },
+            include: {
+                author: { select: { name: true, avatar: true } },
+                category: true,
+            },
+        });
+        if (!post) return res.status(404).json({ error: 'Post not found.' });
+        res.json({ post });
+    } catch (error) {
+        console.error('Fetch post by ID error:', error);
         res.status(500).json({ error: 'Failed to fetch post.' });
     }
 });
@@ -76,16 +97,17 @@ router.post('/', authenticate, authorize('ADMIN', 'SUPER_ADMIN', 'EDITOR'), asyn
     try {
         const { title, slug, excerpt, content, featuredImage, type, status, categoryId, tags, metaTitle, metaDesc, eventDate, eventLocation } = req.body;
 
+        const validEventDate = eventDate ? new Date(eventDate) : undefined;
         const post = await prisma.post.create({
             data: {
                 title, slug, excerpt, content, featuredImage,
                 type: type || 'BLOG',
                 status: status || 'DRAFT',
                 authorId: req.user!.id,
-                categoryId,
+                categoryId: categoryId || null,
                 tags: Array.isArray(tags) ? JSON.stringify(tags) : (tags || null),
                 metaTitle, metaDesc,
-                eventDate: eventDate ? new Date(eventDate) : undefined,
+                eventDate: (validEventDate && !isNaN(validEventDate.getTime())) ? validEventDate : undefined,
                 eventLocation,
                 publishedAt: status === 'PUBLISHED' ? new Date() : undefined,
             },
@@ -103,14 +125,16 @@ router.put('/:id', authenticate, authorize('ADMIN', 'SUPER_ADMIN', 'EDITOR'), as
     try {
         const { title, slug, excerpt, content, featuredImage, type, status, categoryId, tags, metaTitle, metaDesc, eventDate, eventLocation } = req.body;
 
+        const validEventDate = eventDate ? new Date(eventDate) : undefined;
         const post = await prisma.post.update({
             where: { id: req.params.id },
             data: {
                 title, slug, excerpt, content, featuredImage,
-                type, status, categoryId,
+                type, status,
+                categoryId: categoryId || null,
                 tags: Array.isArray(tags) ? JSON.stringify(tags) : (tags || null),
                 metaTitle, metaDesc,
-                eventDate: eventDate ? new Date(eventDate) : undefined,
+                eventDate: (validEventDate && !isNaN(validEventDate.getTime())) ? validEventDate : undefined,
                 eventLocation,
                 publishedAt: status === 'PUBLISHED' ? new Date() : undefined,
             },

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
-import { postsAPI, mediaAPI } from '@/lib/api';
+import { postsAPI, mediaAPI, categoriesAPI } from '@/lib/api';
 import Link from 'next/link';
 import {
     ArrowLeftIcon,
@@ -24,19 +24,24 @@ export default function PostEditorPage() {
         type: 'BLOG',
         status: 'DRAFT',
         featuredImage: '',
-        categories: [] as string[],
+        categoryId: '',
     });
+    const [categories, setCategories] = useState<any[]>([]);
 
     const [loading, setLoading] = useState(false);
     const [uploading, setUploading] = useState(false);
     const [error, setError] = useState('');
 
     useEffect(() => {
+        // Fetch categories first
+        categoriesAPI.getAll().then(res => {
+            setCategories(res.data.categories);
+        }).catch(err => console.error('Error fetching categories:', err));
+
         if (isEdit) {
             setLoading(true);
-            // Fetch post by ID - need to add getById to API
-            postsAPI.getAll({ id }).then(res => {
-                const post = res.data.posts[0];
+            postsAPI.getById(id as string).then(res => {
+                const post = res.data.post;
                 if (post) setForm({
                     title: post.title,
                     slug: post.slug,
@@ -45,11 +50,14 @@ export default function PostEditorPage() {
                     type: post.type,
                     status: post.status,
                     featuredImage: post.featuredImage || '',
-                    categories: post.categories?.map((c: any) => c.id) || [],
+                    categoryId: post.categoryId || '',
                 });
+            }).catch(err => {
+                console.error('Error fetching post:', err);
+                setError('Failed to load post details');
             }).finally(() => setLoading(false));
         }
-    }, [id]);
+    }, [id, isEdit]);
 
     const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const title = e.target.value;
@@ -242,10 +250,16 @@ export default function PostEditorPage() {
                     <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
                         <h3 className="font-black text-gray-900 text-sm uppercase tracking-widest border-b border-gray-50 pb-4 mb-4">Categories</h3>
                         <div className="space-y-2 max-h-48 overflow-y-auto pr-2 custom-scrollbar">
-                            {['General news', 'Health Tips', 'Research Updates', 'Events', 'Professional Development'].map(cat => (
-                                <label key={cat} className="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-lg cursor-pointer transition-colors">
-                                    <input type="checkbox" className="w-4 h-4 rounded border-gray-300 text-blue-900 focus:ring-blue-900" />
-                                    <span className="text-sm font-medium text-gray-600">{cat}</span>
+                            {categories.map(cat => (
+                                <label key={cat.id} className="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-lg cursor-pointer transition-colors">
+                                    <input
+                                        type="radio"
+                                        name="categoryId"
+                                        checked={form.categoryId === cat.id}
+                                        onChange={() => setForm(prev => ({ ...prev, categoryId: cat.id }))}
+                                        className="w-4 h-4 border-gray-300 text-blue-900 focus:ring-blue-900"
+                                    />
+                                    <span className="text-sm font-medium text-gray-600">{cat.name}</span>
                                 </label>
                             ))}
                         </div>

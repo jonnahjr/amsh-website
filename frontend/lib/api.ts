@@ -58,6 +58,7 @@ export const authAPI = {
 export const postsAPI = {
     getAll: (params?: any) => api.get('/posts', { params }),
     getBySlug: (slug: string) => api.get(`/posts/${slug}`),
+    getById: (id: string) => api.get(`/posts/id/${id}`),
     create: (data: any) => api.post('/posts', data),
     update: (id: string, data: any) => api.put(`/posts/${id}`, data),
     delete: (id: string) => api.delete(`/posts/${id}`),
@@ -178,4 +179,8 @@ export const pagesAPI = {
     create: (data: any) => api.post('/pages', data),
     update: (id: string, data: any) => api.put(`/pages/${id}`, data),
     delete: (id: string) => api.delete(`/pages/${id}`),
+};
+
+export const categoriesAPI = {
+    getAll: () => api.get('/categories'),
 };
