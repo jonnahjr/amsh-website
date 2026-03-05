@@ -104,7 +104,7 @@ export default function Footer() {
 
                         {/* Social Links */}
                         <div className="flex items-center gap-3 mt-6">
-                            <a href="https://facebook.com/emsh.gov.et" target="_blank" rel="noopener noreferrer"
+                            <a href="https://web.facebook.com/p/Amanuel-mental-specialized-hospital-100064026784319/?_rdc=1&_rdr#" target="_blank" rel="noopener noreferrer"
                                 className="w-9 h-9 rounded-lg bg-gray-700 hover:bg-blue-600 flex items-center justify-center transition-colors text-sm">
                                 f
                             </a>
@@ -112,7 +112,7 @@ export default function Footer() {
                                 className="w-9 h-9 rounded-lg bg-gray-700 hover:bg-sky-500 flex items-center justify-center transition-colors text-sm">
                                 𝕏
                             </a>
-                            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer"
+                            <a href="https://www.youtube.com/@st.amanuelmentalspecialize6962" target="_blank" rel="noopener noreferrer"
                                 className="w-9 h-9 rounded-lg bg-gray-700 hover:bg-red-600 flex items-center justify-center transition-colors text-sm">
                                 ▶
                             </a>
