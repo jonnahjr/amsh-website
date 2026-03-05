@@ -83,7 +83,7 @@ router.post('/', authenticate, authorize('ADMIN', 'SUPER_ADMIN', 'EDITOR'), asyn
                 status: status || 'DRAFT',
                 authorId: req.user!.id,
                 categoryId,
-                tags: tags || [],
+                tags: Array.isArray(tags) ? JSON.stringify(tags) : (tags || null),
                 metaTitle, metaDesc,
                 eventDate: eventDate ? new Date(eventDate) : undefined,
                 eventLocation,
@@ -92,6 +92,7 @@ router.post('/', authenticate, authorize('ADMIN', 'SUPER_ADMIN', 'EDITOR'), asyn
         });
         res.status(201).json({ post });
     } catch (error: any) {
+        console.error('Create post error:', error);
         if (error.code === 'P2002') return res.status(409).json({ error: 'Slug already exists.' });
         res.status(500).json({ error: 'Failed to create post.' });
     }
@@ -107,7 +108,7 @@ router.put('/:id', authenticate, authorize('ADMIN', 'SUPER_ADMIN', 'EDITOR'), as
             data: {
                 title, slug, excerpt, content, featuredImage,
                 type, status, categoryId,
-                tags: tags || [],
+                tags: Array.isArray(tags) ? JSON.stringify(tags) : (tags || null),
                 metaTitle, metaDesc,
                 eventDate: eventDate ? new Date(eventDate) : undefined,
                 eventLocation,
@@ -115,7 +116,10 @@ router.put('/:id', authenticate, authorize('ADMIN', 'SUPER_ADMIN', 'EDITOR'), as
             },
         });
         res.json({ post });
-    } catch (error) {
+    } catch (error: any) {
+        console.error('Update post error:', error);
+        if (error.code === 'P2025') return res.status(404).json({ error: 'Post not found.' });
+        if (error.code === 'P2002') return res.status(409).json({ error: 'Slug already exists.' });
         res.status(500).json({ error: 'Failed to update post.' });
     }
 });
@@ -125,7 +129,9 @@ router.delete('/:id', authenticate, authorize('ADMIN', 'SUPER_ADMIN'), async (re
     try {
         await prisma.post.delete({ where: { id: req.params.id } });
         res.json({ message: 'Post deleted.' });
-    } catch (error) {
+    } catch (error: any) {
+        console.error('Delete post error:', error);
+        if (error.code === 'P2025') return res.status(404).json({ error: 'Post not found.' });
         res.status(500).json({ error: 'Failed to delete post.' });
     }
 });
