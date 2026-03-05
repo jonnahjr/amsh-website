@@ -326,7 +326,7 @@ export default function AboutPage() {
                             </div>
 
                             <div className="order-1 lg:order-2">
-                                <span className="section-badge text-blue-600">🌍 Our Eternal Promise</span>
+
                                 <h2 className="text-4xl md:text-5xl font-black text-gray-900 mt-4 mb-8 leading-tight">
                                     A Promise to<br />
                                     <span className="gradient-text">Our Community</span>
