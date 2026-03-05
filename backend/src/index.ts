@@ -95,8 +95,11 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // ============================================================
-// ROUTES
+// STATIC FILES & ROUTES
 // ============================================================
+import path from 'path';
+app.use('/uploads', express.static(path.join(__dirname, '../public/uploads')));
+
 const apiRouter = express.Router();
 
 apiRouter.use('/auth', authRoutes);

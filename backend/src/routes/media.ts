@@ -1,20 +1,30 @@
 import { Router, Request, Response } from 'express';
 import multer from 'multer';
-import { v2 as cloudinary } from 'cloudinary';
 import { authenticate, authorize, AuthRequest } from '../middleware/auth';
 import { prisma } from '../index';
 import path from 'path';
+import fs from 'fs';
 
 const router = Router();
 
-// Configure Cloudinary
-cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET,
+// Ensure uploads directory exists
+const uploadDir = path.join(__dirname, '../../public/uploads');
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
+}
+
+// Configure Multer for local storage
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, uploadDir);
+    },
+    filename: (req, file, cb) => {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+        const ext = path.extname(file.originalname);
+        cb(null, file.fieldname + '-' + uniqueSuffix + ext);
+    }
 });
 
-const storage = multer.memoryStorage();
 const upload = multer({
     storage,
     limits: { fileSize: 10 * 1024 * 1024 }, // 10MB
@@ -57,29 +67,22 @@ router.post('/upload', authenticate, authorize('ADMIN', 'SUPER_ADMIN', 'EDITOR')
         if (!req.file) return res.status(400).json({ error: 'No file provided.' });
 
         const { folder = 'amsh' } = req.body;
-        const fileBuffer = req.file.buffer.toString('base64');
-        const dataUri = `data:${req.file.mimetype};base64,${fileBuffer}`;
 
-        let uploadResult: any;
-        if (req.file.mimetype.startsWith('image/')) {
-            uploadResult = await cloudinary.uploader.upload(dataUri, { folder, resource_type: 'image', quality: 'auto', fetch_format: 'auto' });
-        } else if (req.file.mimetype.startsWith('video/')) {
-            uploadResult = await cloudinary.uploader.upload(dataUri, { folder, resource_type: 'video' });
-        } else {
-            uploadResult = await cloudinary.uploader.upload(dataUri, { folder, resource_type: 'raw' });
-        }
+        // Generate local URL
+        const backendUrl = process.env.BACKEND_URL || `http://localhost:${process.env.PORT || 5000}`;
+        const secureUrl = `${backendUrl}/uploads/${req.file.filename}`;
 
         const media = await prisma.media.create({
             data: {
-                filename: uploadResult.public_id,
+                filename: req.file.filename,
                 originalName: req.file.originalname,
-                url: uploadResult.secure_url,
-                publicId: uploadResult.public_id,
+                url: secureUrl,
+                publicId: req.file.filename,
                 type: getMediaType(req.file.mimetype),
                 mimeType: req.file.mimetype,
                 size: req.file.size,
-                width: uploadResult.width,
-                height: uploadResult.height,
+                width: 0, // Not dynamically extracting dimensions yet for local
+                height: 0,
                 folder,
             },
         });
@@ -97,9 +100,12 @@ router.delete('/:id', authenticate, authorize('ADMIN', 'SUPER_ADMIN'), async (re
         const media = await prisma.media.findUnique({ where: { id: req.params.id } });
         if (!media) return res.status(404).json({ error: 'Media not found.' });
 
-        if (media.publicId) {
-            const resourceType = media.type === 'IMAGE' ? 'image' : media.type === 'VIDEO' ? 'video' : 'raw';
-            await cloudinary.uploader.destroy(media.publicId, { resource_type: resourceType });
+        // Delete from local filesystem
+        if (media.filename) {
+            const filePath = path.join(uploadDir, media.filename);
+            if (fs.existsSync(filePath)) {
+                fs.unlinkSync(filePath);
+            }
         }
 
         await prisma.media.delete({ where: { id: req.params.id } });
