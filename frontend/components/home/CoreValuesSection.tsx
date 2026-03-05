@@ -11,7 +11,7 @@ import {
 
 const values = [
     {
-        icon: '❤️',
+        icon: 'logo',
         iconComp: <HeartIcon className="w-8 h-8" />,
         title: "Compassion",
         description: "We treat every patient with empathy, kindness, and understanding. We recognize the emotional and psychological challenges our patients face and provide care in a supportive and healing environment.",
@@ -84,7 +84,20 @@ export default function CoreValuesSection() {
                                             {val.iconComp}
                                         </div>
                                     </div>
-                                    <span className="text-5xl opacity-10 filter grayscale brightness-200 transition-opacity group-hover:opacity-30">{val.icon}</span>
+                                    {val.icon === 'logo' ? (
+                                        <div className="w-12 h-12 rounded-full overflow-hidden border border-white/10 opacity-30 group-hover:opacity-100 transition-all duration-500 relative shadow-2xl">
+                                            <video
+                                                src="/images/PixVerse_V5.6_Image_Text_360P_Create_a_premium.mp4"
+                                                autoPlay
+                                                loop
+                                                muted
+                                                playsInline
+                                                className="w-full h-full object-cover"
+                                            />
+                                        </div>
+                                    ) : (
+                                        <span className="text-5xl opacity-10 filter grayscale brightness-200 transition-opacity group-hover:opacity-30">{val.icon}</span>
+                                    )}
                                 </div>
 
                                 {/* Content */}

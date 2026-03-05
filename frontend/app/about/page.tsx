@@ -234,7 +234,7 @@ export default function AboutPage() {
                             {[
                                 {
                                     title: 'Compassion',
-                                    icon: '❤️',
+                                    icon: 'logo',
                                     desc: 'We treat every patient with empathy, kindness, and understanding. We recognize the emotional and psychological challenges our patients face and provide care in a supportive and healing environment.'
                                 },
                                 {
@@ -264,8 +264,19 @@ export default function AboutPage() {
                                 }
                             ].map((value) => (
                                 <div key={value.title} className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-md hover:shadow-2xl transition-all duration-500 group">
-                                    <div className="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center text-4xl mb-6 group-hover:scale-110 transition-transform shadow-sm">
-                                        {value.icon}
+                                    <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-2xl shadow-lg border border-gray-100 group-hover:scale-110 group-hover:bg-blue-50 transition-all duration-300 relative overflow-hidden mb-6">
+                                        {value.icon === 'logo' ? (
+                                            <video
+                                                src="/images/PixVerse_V5.6_Image_Text_360P_Create_a_premium.mp4"
+                                                autoPlay
+                                                loop
+                                                muted
+                                                playsInline
+                                                className="w-full h-full object-cover"
+                                            />
+                                        ) : (
+                                            value.icon
+                                        )}
                                     </div>
                                     <h3 className="text-xl font-black text-blue-900 mb-4 uppercase tracking-tight">{value.title}</h3>
                                     <p className="text-gray-500 text-sm leading-relaxed">{value.desc}</p>
@@ -283,7 +294,16 @@ export default function AboutPage() {
                                 <div className="bg-blue-950 p-10 md:p-14 rounded-[3rem] text-white shadow-2xl relative overflow-hidden border border-blue-900/50">
                                     <div className="absolute top-0 right-0 w-80 h-80 bg-blue-900/20 rounded-full -mr-40 -mt-40 blur-3xl"></div>
                                     <div className="relative z-10">
-                                        <div className="text-6xl mb-8">❤️</div>
+                                        <div className="w-20 h-20 mb-8 rounded-full shadow-2xl overflow-hidden border-2 border-white/20 relative">
+                                            <video
+                                                src="/images/PixVerse_V5.6_Image_Text_360P_Create_a_premium.mp4"
+                                                autoPlay
+                                                loop
+                                                muted
+                                                playsInline
+                                                className="w-full h-full object-cover"
+                                            />
+                                        </div>
                                         <h2 className="text-3xl md:text-4xl font-black mb-10 uppercase tracking-tighter">Our Commitment</h2>
                                         <ul className="space-y-5">
                                             {[
