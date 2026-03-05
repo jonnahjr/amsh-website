@@ -60,16 +60,7 @@ export default function AboutPage() {
                                 Serving Ethiopia since 1930 E.C. as the only public specialized mental health hospital, EMSH has touched millions of lives with compassionate, expert psychiatric care.
                             </p>
 
-                            {/* CTAs */}
-                            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
-                                <Link href="/contact" className="px-12 py-5 bg-white text-blue-950 rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-blue-50 transition-all shadow-2xl hover:-translate-y-1">
-                                    📞 Contact Our Hospital
-                                </Link>
-                                <Link href="/services" className="inline-flex items-center gap-2 text-white border-2 border-white/20 px-10 py-5 rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-white/10 transition-all duration-300">
-                                    Our Services
-                                </Link>
-                            </div>
-
+                            {/* CTA buttons removed as requested */}
                             {/* Accent Tag */}
                             <div className="mt-12 flex items-center gap-4 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
                                 <div className="w-3 h-3 rounded-full bg-blue-400 animate-pulse shadow-[0_0_15px_rgba(96,165,250,0.5)]" />
