@@ -49,6 +49,7 @@ export default function PostEditorPage() {
         metaTitle: '',
         metaDescription: '',
         publishedAt: '',
+        isFeatured: false,
     });
     const [categories, setCategories] = useState<any[]>([]);
     const [loading, setLoading] = useState(false);
@@ -81,8 +82,9 @@ export default function PostEditorPage() {
                         categoryId: post.categoryId || '',
                         tags: post.tags || '',
                         metaTitle: post.metaTitle || '',
-                        metaDescription: post.metaDescription || '',
+                        metaDescription: post.metaDesc || '',
                         publishedAt: post.publishedAt ? post.publishedAt.split('T')[0] : '',
+                        isFeatured: post.isFeatured || false,
                     });
                     if (post.gallery) {
                         try { setGallery(JSON.parse(post.gallery)); } catch { setGallery([]); }
@@ -103,7 +105,7 @@ export default function PostEditorPage() {
         setUploading(true);
         try {
             const res = await mediaAPI.upload(file, 'posts');
-            setForm(prev => ({ ...prev, featuredImage: res.data.url }));
+            setForm(prev => ({ ...prev, featuredImage: res.data.media.url }));
         } catch {
             setError('Failed to upload image');
         } finally {
@@ -115,7 +117,7 @@ export default function PostEditorPage() {
         setUploadingGallery(true);
         try {
             const uploads = await Promise.all(
-                Array.from(files).map(f => mediaAPI.upload(f, 'posts').then(r => r.data.url))
+                Array.from(files).map(f => mediaAPI.upload(f, 'posts').then(r => r.data.media.url))
             );
             setGallery(prev => [...prev, ...uploads]);
         } catch {
@@ -213,8 +215,8 @@ export default function PostEditorPage() {
                 <div className="flex items-center gap-3">
                     {/* Status badge */}
                     <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${form.status === 'PUBLISHED' ? 'bg-green-100 text-green-700' :
-                            form.status === 'DRAFT' ? 'bg-amber-100 text-amber-700' :
-                                'bg-gray-100 text-gray-500'
+                        form.status === 'DRAFT' ? 'bg-amber-100 text-amber-700' :
+                            'bg-gray-100 text-gray-500'
                         }`}>
                         {form.status}
                     </span>
@@ -277,8 +279,8 @@ export default function PostEditorPage() {
                                         type="button"
                                         onClick={() => setActiveTab(tab.key as any)}
                                         className={`flex items-center gap-2 px-6 py-4 text-xs font-black uppercase tracking-widest transition-colors ${activeTab === tab.key
-                                                ? 'text-blue-900 border-b-2 border-blue-900 -mb-px'
-                                                : 'text-gray-400 hover:text-gray-700'
+                                            ? 'text-blue-900 border-b-2 border-blue-900 -mb-px'
+                                            : 'text-gray-400 hover:text-gray-700'
                                             }`}
                                     >
                                         <Icon className="w-4 h-4" />
@@ -318,7 +320,72 @@ export default function PostEditorPage() {
                                         rows={22}
                                         className="w-full p-5 bg-gray-50 border border-gray-100 rounded-2xl text-gray-800 focus:bg-white focus:ring-2 focus:ring-blue-900 transition-all font-mono text-sm leading-relaxed resize-none"
                                     />
-                                    <p className="text-xs text-gray-400">{form.content.length} characters · Supports Markdown formatting</p>
+                                    <div className="flex items-center justify-between">
+                                        <p className="text-xs text-gray-400">{form.content.length} characters · Supports Markdown formatting</p>
+                                        <div className="flex items-center gap-4">
+                                            <div className="flex -space-x-2">
+                                                {gallery.slice(0, 3).map((img, i) => (
+                                                    <img key={i} src={img} className="w-6 h-6 rounded-full border-2 border-white object-cover shadow-sm" crossOrigin="anonymous" />
+                                                ))}
+                                                {gallery.length > 3 && (
+                                                    <div className="w-6 h-6 rounded-full border-2 border-white bg-gray-100 flex items-center justify-center text-[8px] font-black text-gray-400 shadow-sm">
+                                                        +{gallery.length - 3}
+                                                    </div>
+                                                )}
+                                            </div>
+                                            <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">{gallery.length} Images in Gallery</p>
+                                        </div>
+                                    </div>
+
+                                    {/* Gallery Section - More prominent */}
+                                    <div className="pt-6 border-t border-gray-50 mt-8">
+                                        <div className="flex items-center justify-between mb-4">
+                                            <h3 className="text-xs font-black text-gray-900 uppercase tracking-widest flex items-center gap-2">
+                                                <PhotoIcon className="w-4 h-4 text-blue-900" />
+                                                Photo Gallery
+                                            </h3>
+                                            <span className="text-[10px] font-medium text-gray-400">Add up to 4-6 supplementary images</span>
+                                        </div>
+
+                                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                                            {gallery.map((url, i) => (
+                                                <div key={i} className="relative group aspect-square rounded-2xl overflow-hidden border border-gray-100 shadow-sm transition-all hover:shadow-md">
+                                                    <img src={url} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" crossOrigin="anonymous" />
+                                                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => setGallery(g => g.filter((_, j) => j !== i))}
+                                                            className="p-2 bg-red-600 text-white rounded-full hover:bg-red-500 transition-colors shadow-lg"
+                                                        >
+                                                            <XMarkIcon className="w-4 h-4" />
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            ))}
+
+                                            {gallery.length < 8 && (
+                                                <label className={`flex flex-col items-center justify-center aspect-square border-2 border-dashed rounded-2xl transition-all cursor-pointer ${uploadingGallery ? 'border-blue-900 bg-blue-50' : 'border-gray-200 hover:border-blue-900 hover:bg-blue-50'}`}>
+                                                    {uploadingGallery ? (
+                                                        <span className="w-6 h-6 border-3 border-blue-900 border-t-transparent rounded-full animate-spin" />
+                                                    ) : (
+                                                        <>
+                                                            <div className="w-10 h-10 bg-gray-50 text-gray-300 rounded-full flex items-center justify-center group-hover:text-blue-900 group-hover:bg-blue-100 transition-colors">
+                                                                <CloudArrowUpIcon className="w-5 h-5" />
+                                                            </div>
+                                                            <span className="text-[9px] font-black text-gray-400 uppercase tracking-widest mt-2 text-center px-2">Add Photos</span>
+                                                        </>
+                                                    )}
+                                                    <input
+                                                        type="file"
+                                                        multiple
+                                                        accept="image/*"
+                                                        className="hidden"
+                                                        onChange={(e) => e.target.files && handleGalleryUpload(e.target.files)}
+                                                    />
+                                                </label>
+                                            )}
+                                        </div>
+                                    </div>
                                 </div>
                             )}
 
@@ -402,42 +469,11 @@ export default function PostEditorPage() {
                                         />
                                     </div>
 
-                                    {/* Gallery upload */}
-                                    <div>
-                                        <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-3">Photo Gallery</label>
-                                        <label className="flex flex-col items-center justify-center h-24 border-2 border-dashed border-gray-200 rounded-2xl hover:border-blue-900 hover:bg-blue-50 transition-all cursor-pointer">
-                                            {uploadingGallery ? (
-                                                <span className="w-6 h-6 border-4 border-blue-900 border-t-transparent rounded-full animate-spin" />
-                                            ) : (
-                                                <>
-                                                    <PhotoIcon className="w-6 h-6 text-gray-300 mb-1" />
-                                                    <span className="text-xs font-bold text-gray-400">Click to add photos</span>
-                                                </>
-                                            )}
-                                            <input
-                                                type="file"
-                                                multiple
-                                                accept="image/*"
-                                                className="hidden"
-                                                onChange={(e) => e.target.files && handleGalleryUpload(e.target.files)}
-                                            />
-                                        </label>
-                                        {gallery.length > 0 && (
-                                            <div className="grid grid-cols-3 gap-2 mt-3">
-                                                {gallery.map((url, i) => (
-                                                    <div key={i} className="relative group aspect-video rounded-xl overflow-hidden">
-                                                        <img src={url} className="w-full h-full object-cover" crossOrigin="anonymous" />
-                                                        <button
-                                                            type="button"
-                                                            onClick={() => setGallery(g => g.filter((_, j) => j !== i))}
-                                                            className="absolute top-1 right-1 p-1 bg-red-600 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
-                                                        >
-                                                            <XMarkIcon className="w-3 h-3" />
-                                                        </button>
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        )}
+                                    <div className="p-4 bg-blue-50 rounded-2xl border border-blue-100">
+                                        <p className="text-[10px] font-black text-blue-900 uppercase tracking-widest mb-1">Editor Tip</p>
+                                        <p className="text-xs text-blue-700 leading-relaxed">
+                                            The photo gallery has been moved to the primary <strong>Content</strong> tab for easier access while writing.
+                                        </p>
                                     </div>
                                 </div>
                             )}
@@ -466,6 +502,23 @@ export default function PostEditorPage() {
                         </div>
 
                         <div>
+                            <label className="block text-xs font-bold text-gray-500 mb-3">Home Page Visibility</label>
+                            <label className="flex items-center justify-between p-3 bg-gray-50 border border-gray-100 rounded-xl cursor-pointer hover:bg-white transition-all">
+                                <span className="text-xs font-black text-gray-900 uppercase tracking-widest">Feature on Home</span>
+                                <div className="relative inline-flex items-center cursor-pointer">
+                                    <input
+                                        type="checkbox"
+                                        checked={form.isFeatured}
+                                        onChange={(e) => setForm(prev => ({ ...prev, isFeatured: e.target.checked }))}
+                                        className="sr-only peer"
+                                    />
+                                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-900"></div>
+                                </div>
+                            </label>
+                            <p className="text-[10px] text-gray-400 mt-2 leading-relaxed">Featured posts will appear in the special news section on the hospital home page.</p>
+                        </div>
+
+                        <div>
                             <label className="block text-xs font-bold text-gray-500 mb-2">Status</label>
                             <div className="grid grid-cols-3 gap-2">
                                 {['DRAFT', 'PUBLISHED', 'ARCHIVED'].map(s => (
@@ -474,10 +527,10 @@ export default function PostEditorPage() {
                                         type="button"
                                         onClick={() => setForm(prev => ({ ...prev, status: s }))}
                                         className={`py-2 rounded-xl text-[10px] font-black uppercase tracking-wider transition-all ${form.status === s
-                                                ? s === 'PUBLISHED' ? 'bg-green-100 text-green-700 border-2 border-green-200'
-                                                    : s === 'DRAFT' ? 'bg-amber-100 text-amber-700 border-2 border-amber-200'
-                                                        : 'bg-gray-200 text-gray-600 border-2 border-gray-300'
-                                                : 'bg-gray-50 text-gray-400 border-2 border-transparent hover:border-gray-200'
+                                            ? s === 'PUBLISHED' ? 'bg-green-100 text-green-700 border-2 border-green-200'
+                                                : s === 'DRAFT' ? 'bg-amber-100 text-amber-700 border-2 border-amber-200'
+                                                    : 'bg-gray-200 text-gray-600 border-2 border-gray-300'
+                                            : 'bg-gray-50 text-gray-400 border-2 border-transparent hover:border-gray-200'
                                             }`}
                                     >
                                         {s === 'PUBLISHED' ? '✅' : s === 'DRAFT' ? '✏️' : '📦'} {s.charAt(0) + s.slice(1).toLowerCase()}
@@ -564,9 +617,9 @@ export default function PostEditorPage() {
                             <input
                                 type="text"
                                 placeholder="https://..."
-                                value={form.featuredImage.startsWith('http') ? form.featuredImage : ''}
+                                value={form.featuredImage?.startsWith('http') ? form.featuredImage : ''}
                                 onChange={(e) => setForm(prev => ({ ...prev, featuredImage: e.target.value }))}
-                                className="w-full px-3 py-2 text-xs bg-gray-50 border border-gray-100 rounded-xl text-gray-700 focus:ring-2 focus:ring-blue-900 focus:bg-white transition-all"
+                                className="w-full px-3 py-2 text-xs bg-gray-50 border border-gray-100 rounded-xl text-gray-700 focus:ring-2 focus:ring-blue-900 focus:bg-white transition-all shadow-inner"
                             />
                         </div>
                     </div>

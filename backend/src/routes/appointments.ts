@@ -5,7 +5,7 @@ import { prisma } from '../index';
 const router = Router();
 
 // GET /api/appointments - Admin
-router.get('/', authenticate, authorize('ADMIN', 'SUPER_ADMIN'), async (req: AuthRequest, res: Response) => {
+router.get('/', authenticate, authorize('ADMIN', 'SUPER_ADMIN', 'CLINICAL_ADMIN'), async (req: AuthRequest, res: Response) => {
     try {
         const { status, date, page = '1', limit = '20' } = req.query;
         const skip = (parseInt(page as string) - 1) * parseInt(limit as string);
@@ -53,7 +53,7 @@ router.post('/', async (req: Request, res: Response) => {
 });
 
 // PATCH /api/appointments/:id/status - Admin update status
-router.patch('/:id/status', authenticate, authorize('ADMIN', 'SUPER_ADMIN'), async (req: AuthRequest, res: Response) => {
+router.patch('/:id/status', authenticate, authorize('ADMIN', 'SUPER_ADMIN', 'CLINICAL_ADMIN'), async (req: AuthRequest, res: Response) => {
     try {
         const { status, notes } = req.body;
         const appointment = await prisma.appointment.update({

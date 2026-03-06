@@ -25,8 +25,8 @@ export default function AdminMediaPage() {
             setMedia(res.data.media || []);
         } catch {
             setMedia([
-                { id: '1', url: 'https://images.unsplash.com/photo-1576091160550-2173bdb999ef?w=400&h=300&fit=crop', filename: 'hospital_front.jpg', type: 'IMAGE', size: 102400 },
-                { id: '2', url: 'https://images.unsplash.com/photo-1586773860418-d3b97978c65c?w=400&h=300&fit=crop', filename: 'doctor_team.jpg', type: 'IMAGE', size: 204800 },
+                { id: '1', url: 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=400&h=300&fit=crop', filename: 'hospital_front.jpg', type: 'IMAGE', size: 102400 },
+                { id: '2', url: 'https://images.unsplash.com/photo-1584432810601-6a783c1e3fa6?w=400&h=300&fit=crop', filename: 'doctor_team.jpg', type: 'IMAGE', size: 204800 },
             ]);
         } finally {
             setLoading(false);

@@ -1,73 +1,156 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { testimonialsAPI } from '@/lib/api';
 
 export default function TestimonialsSection() {
     const [testimonials, setTestimonials] = useState<any[]>([]);
-    const [current, setCurrent] = useState(0);
+    const [loading, setLoading] = useState(true);
+    const [isPaused, setIsPaused] = useState(false);
 
-    const defaults = [
-        { id: '1', name: 'Dawit Bekele', role: 'Patient Family Member', content: 'EMSH provided exceptional care for my family member during a crisis. The staff were professional, compassionate, and thorough. We are eternally grateful for their support.', rating: 5 },
-        { id: '2', name: 'Dr. Almaz Tesfaye', role: 'Healthcare Professional', content: 'The CPD programs at EMSH are exceptional. I have enhanced my psychiatric skills significantly and apply new knowledge every day in my practice.', rating: 5 },
-        { id: '3', name: 'Hana Girma', role: 'Research Collaborator', content: 'Collaborating with EMSH on mental health research has been a deeply rewarding experience. Their commitment to advancing knowledge in psychiatry is truly inspiring.', rating: 5 },
-    ];
+    const scrollRef = useRef<HTMLDivElement>(null);
+    const requestRef = useRef<number | null>(null);
+    const lastTimeRef = useRef<number | null>(null);
 
     useEffect(() => {
         testimonialsAPI.getAll()
-            .then(res => { if (res.data.testimonials?.length) setTestimonials(res.data.testimonials); })
-            .catch(() => { });
+            .then(res => {
+                const data = res.data.testimonials || [];
+                // Triple the items to ensure enough width for a seamless marquee
+                setTestimonials([...data, ...data, ...data]);
+            })
+            .catch(() => { })
+            .finally(() => setLoading(false));
     }, []);
 
-    const items = testimonials.length > 0 ? testimonials : defaults;
+    const animate = (time: number) => {
+        if (lastTimeRef.current !== null && scrollRef.current && !isPaused) {
+            const deltaTime = time - lastTimeRef.current;
+            // Speed control: 0.05 pixels per millisecond
+            const speed = 0.05;
+            scrollRef.current.scrollLeft += speed * deltaTime;
+
+            // Seamless loop logic: if we scrolled past one full set of testimonials, reset
+            const singleSetWidth = scrollRef.current.scrollWidth / 3;
+            if (scrollRef.current.scrollLeft >= singleSetWidth * 2) {
+                scrollRef.current.scrollLeft -= singleSetWidth;
+            }
+        }
+        lastTimeRef.current = time;
+        requestRef.current = requestAnimationFrame(animate);
+    };
+
+    useEffect(() => {
+        requestRef.current = requestAnimationFrame(animate);
+        return () => {
+            if (requestRef.current) cancelAnimationFrame(requestRef.current);
+        };
+    }, [isPaused, testimonials.length]);
+
+    if (!loading && testimonials.length === 0) return null;
 
     return (
-        <section className="section bg-white">
+        <section className="section bg-white overflow-hidden py-24">
             <div className="container-custom">
-                <div className="text-center max-w-xl mx-auto mb-12">
-                    <span className="section-badge">💬 Testimonials</span>
-                    <h2 className="section-title">What People Say About EMSH</h2>
-                    <p className="section-subtitle">Hear from patients, families, and healthcare professionals who have experienced our care.</p>
+                <div className="text-center max-w-2xl mx-auto mb-20">
+                    <span className="text-[10px] font-black uppercase tracking-[0.4em] text-blue-900 mb-4 block animate-fade-in">
+                        ✦ Patient Voices ✦
+                    </span>
+                    <h2 className="text-4xl md:text-5xl font-black text-gray-900 tracking-tighter mb-6 leading-tight">
+                        Real Stories of Recovery
+                    </h2>
+                    <p className="text-gray-500 text-lg font-medium leading-relaxed opacity-80">
+                        Join hundreds of individuals who have transformed their lives through the specialized psychiatric care and supportive community at EMSH.
+                    </p>
                 </div>
+            </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                    {items.slice(0, 3).map((t, i) => (
+            {/* Continuous Slider Container */}
+            <div
+                className="relative cursor-grab active:cursor-grabbing group"
+                onMouseEnter={() => setIsPaused(true)}
+                onMouseLeave={() => setIsPaused(false)}
+            >
+                {/* Gradient Masks for a Premium Look */}
+                <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
+                <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
+
+                <div
+                    ref={scrollRef}
+                    className="flex gap-8 overflow-x-auto no-scrollbar py-8 px-4"
+                    style={{ scrollBehavior: 'auto' }}
+                >
+                    {testimonials.map((t, idx) => (
                         <div
-                            key={t.id}
-                            className={`card p-6 ${i === 1 ? 'bg-gradient-to-br from-blue-900 to-blue-700 text-white border-0' : ''}`}
+                            key={`${t.id}-${idx}`}
+                            className="flex-shrink-0 w-[400px] bg-white rounded-[2.5rem] p-10 border border-gray-100 shadow-[0_15px_50px_-15px_rgba(0,0,0,0.05)] hover:shadow-[0_25px_60px_-15px_rgba(0,0,0,0.1)] transition-all duration-500 flex flex-col group/card relative overflow-hidden"
                         >
-                            <div className="flex items-center gap-1 mb-4">
+                            {/* Decorative Quote Mark */}
+                            <div className="absolute top-6 right-8 text-7xl font-serif text-blue-900/5 group-hover/card:text-blue-900/10 transition-colors">"</div>
+
+                            {/* Star Rating */}
+                            <div className="flex items-center gap-1 mb-8">
                                 {[...Array(5)].map((_, si) => (
-                                    <span key={si} className={`text-lg ${si < t.rating ? 'text-yellow-400' : 'text-gray-200'}`}>★</span>
+                                    <svg
+                                        key={si}
+                                        className={`w-4 h-4 ${si < (t.rating || 5) ? 'text-amber-400 fill-amber-400' : 'text-gray-200'}`}
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                                    </svg>
                                 ))}
                             </div>
-                            <p className={`text-sm leading-relaxed mb-6 italic ${i === 1 ? 'text-blue-100' : 'text-gray-600'}`}>
+
+                            {/* Testimonial Text */}
+                            <p className="text-gray-600 text-lg leading-[1.8] italic mb-10 flex-1 font-serif line-clamp-4 relative z-10">
                                 "{t.content}"
                             </p>
-                            <div className="flex items-center gap-3">
-                                <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm ${i === 1 ? 'bg-white/20 text-white' : 'bg-blue-100 text-blue-900'
-                                    }`}>
-                                    {t.name.charAt(0)}
+
+                            {/* User Info */}
+                            <div className="flex items-center gap-5 pt-8 border-t border-gray-50 mt-auto">
+                                <div className="relative">
+                                    {t.image ? (
+                                        <img
+                                            src={t.image}
+                                            alt={t.name}
+                                            className="w-16 h-16 rounded-[1.5rem] object-cover border-2 border-white shadow-md group-hover/card:scale-105 transition-transform duration-500"
+                                        />
+                                    ) : (
+                                        <div className="w-16 h-16 rounded-[1.5rem] bg-gradient-to-br from-blue-900 to-blue-700 flex items-center justify-center font-black text-white text-xl shadow-lg border-2 border-white">
+                                            {t.name.charAt(0)}
+                                        </div>
+                                    )}
+                                    {/* Success Badge */}
+                                    <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-4 border-white flex items-center justify-center">
+                                        <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="4" d="M5 13l4 4L19 7" />
+                                        </svg>
+                                    </div>
                                 </div>
                                 <div>
-                                    <div className={`font-bold text-sm ${i === 1 ? 'text-white' : 'text-gray-900'}`}>{t.name}</div>
-                                    <div className={`text-xs ${i === 1 ? 'text-blue-200' : 'text-gray-400'}`}>{t.role}</div>
+                                    <div className="font-black text-gray-900 uppercase tracking-tighter text-lg leading-none mb-1 group-hover/card:text-blue-900 transition-colors">
+                                        {t.name}
+                                    </div>
+                                    <div className="text-[10px] font-black text-blue-900/40 uppercase tracking-[0.2em]">
+                                        {t.role}
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     ))}
                 </div>
-
-                {/* Government Trust Bar */}
-                <div className="border-t border-gray-100 pt-10">
-                    <p className="text-center text-gray-400 text-sm mb-6 font-medium">Affiliated with & Recognized by</p>
-                    <div className="flex flex-wrap items-center justify-center gap-8 opacity-60">
-                        {['Ministry of Health Ethiopia', 'WHO', 'Ethiopian Medical Association', 'East Africa Health Network', 'African Psychiatric Association'].map((org) => (
-                            <span key={org} className="text-gray-500 font-semibold text-sm">{org}</span>
-                        ))}
-                    </div>
-                </div>
             </div>
+
+            {/* Responsive Styles Injection */}
+            <style jsx global>{`
+                .no-scrollbar::-webkit-scrollbar {
+                    display: none;
+                }
+                .no-scrollbar {
+                    -ms-overflow-style: none;
+                    scrollbar-width: none;
+                }
+            `}</style>
         </section>
     );
 }

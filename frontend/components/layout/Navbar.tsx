@@ -117,11 +117,11 @@ export default function Navbar() {
                     <div className="flex items-center justify-between h-16">
 
                         {/* LOGO - DYNAMIC FLOATING EFFECT */}
-                        <Link href="/" className="flex items-center gap-3 flex-shrink-0 group relative z-[60] -ml-32">
-                            <div className={`relative overflow-hidden transition-all duration-700 ease-in-out flex items-center justify-center p-0 rounded-full shadow-2xl border-4 ring-4 ring-white -ml-12
+                        <Link href="/" className="flex items-center gap-4 flex-shrink-0 group relative z-[60] -ml-16">
+                            <div className={`relative overflow-hidden transition-all duration-700 ease-in-out flex items-center justify-center p-0 rounded-full border-4 ring-4 ring-white
                                 ${scrolled
-                                    ? 'w-12 h-12 border-cyan-400/30 shadow-cyan-400/10'
-                                    : 'w-32 h-32 -mb-20 border-cyan-400/60 shadow-cyan-400/40 scale-125 translate-y-6'}`}
+                                    ? 'w-12 h-12 border-blue-900/10'
+                                    : 'w-24 h-24 -mb-16 border-blue-900/20 scale-115 translate-y-5'}`}
                             >
                                 <video
                                     src="/images/PixVerse_V5.6_Image_Text_360P_Create_a_premium.mp4"
@@ -135,10 +135,10 @@ export default function Navbar() {
                             </div>
                             {/* Text beside the logo */}
                             <div className="flex flex-col">
-                                <div className={`font-black text-blue-900 leading-none uppercase tracking-tight transition-all duration-500 ${scrolled ? 'text-2xl' : 'text-3xl'}`}>EMSH</div>
-                                <div className={`text-gray-600 font-extrabold leading-tight transition-all duration-500 ${scrolled ? 'text-sm' : 'text-base'}`}>አማኑኤል የአእምሮ ስፔሻላይዝድ ሆስፒታል</div>
-                                <div className={`text-gray-400 font-bold leading-tight transition-all duration-500 ${scrolled ? 'text-xs' : 'text-sm'}`}>Emmanuel Mental Specialized Hospital</div>
-                                <div className="motto-premium text-[11px] mt-1 animate-pulse-slow">ለአዕምሮ ጤና እንተጋለን!</div>
+                                <div className={`font-black text-blue-900 leading-none uppercase tracking-tight transition-all duration-500 ${scrolled ? 'text-xl' : 'text-2xl'}`}>EMSH</div>
+                                <div className={`text-gray-600 font-extrabold leading-tight transition-all duration-500 ${scrolled ? 'text-[11px]' : 'text-xs'}`}>አማኑኤል የአእምሮ ስፔሻላይዝድ ሆስፒታል</div>
+                                <div className={`text-gray-400 font-bold leading-tight transition-all duration-500 ${scrolled ? 'text-[10px]' : 'text-[11px]'}`}>Emmanuel Mental Specialized Hospital</div>
+                                <div className="motto-premium text-[10px] mt-0.5 animate-pulse-slow">ለአዕምሮ ጤና እንተጋለን!</div>
                             </div>
                         </Link>
 

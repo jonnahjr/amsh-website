@@ -6,7 +6,12 @@ const router = Router();
 
 router.get('/', async (req: Request, res: Response) => {
     try {
-        const testimonials = await prisma.testimonial.findMany({ where: { isActive: true }, orderBy: { order: 'asc' } });
+        const showAll = req.query.all === 'true';
+        const where = showAll ? {} : { isActive: true };
+        const testimonials = await prisma.testimonial.findMany({
+            where,
+            orderBy: { order: 'asc' }
+        });
         res.json({ testimonials });
     } catch (error) { res.status(500).json({ error: 'Failed to fetch testimonials.' }); }
 });

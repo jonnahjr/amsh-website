@@ -6,6 +6,7 @@ import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
 import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
+import cron from 'node-cron';
 import { PrismaClient } from '@prisma/client';
 
 dotenv.config();
@@ -35,6 +36,7 @@ import faqRoutes from './routes/faq';
 import categoriesRoutes from './routes/categories';
 import serviceCategoriesRoutes from './routes/serviceCategories';
 import departmentCategoriesRoutes from './routes/departmentCategories';
+import facebookRoutes from './routes/facebook';
 
 // Error handler
 import { errorHandler } from './middleware/errorHandler';
@@ -130,6 +132,7 @@ apiRouter.use('/faq', faqRoutes);
 apiRouter.use('/categories', categoriesRoutes);
 apiRouter.use('/service-categories', serviceCategoriesRoutes);
 apiRouter.use('/department-categories', departmentCategoriesRoutes);
+apiRouter.use('/facebook', facebookRoutes);
 
 app.use('/api', apiRouter);
 
@@ -138,9 +141,26 @@ app.get('/health', (_, res) => {
     res.json({
         status: 'OK',
         service: 'AMSH Hospital API',
-        version: '1.0.0',
+        version: '1.2.0',
         timestamp: new Date().toISOString()
     });
+});
+
+// ============================================================
+// AUTOMATED TASKS (CRON)
+// ============================================================
+// Sync Facebook posts every hour
+cron.schedule('0 * * * *', async () => {
+    console.log('🔄 Running Automated Facebook Sync...');
+    try {
+        const response = await fetch(`${process.env.API_BASE_URL || 'http://localhost:5000'}/api/facebook/sync`, {
+            method: 'POST'
+        });
+        const result = await response.json();
+        console.log('✅ FB Sync completed:', result);
+    } catch (error) {
+        console.error('❌ FB Sync cron failed:', error);
+    }
 });
 
 // ============================================================

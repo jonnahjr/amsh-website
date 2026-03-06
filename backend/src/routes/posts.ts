@@ -7,20 +7,29 @@ const router = Router();
 // GET /api/posts - Public listing
 router.get('/', async (req: Request, res: Response) => {
     try {
-        const { type, category, page = '1', limit = '10', search, status } = req.query;
+        const { type, category, page = '1', limit = '10', search, status, isFeatured } = req.query;
         const skip = (parseInt(page as string) - 1) * parseInt(limit as string);
 
-        const where: any = {
-            status: status || 'PUBLISHED',
-        };
+        const where: any = {};
+
+        // If status is 'ALL' (admin request), show everything; otherwise default to PUBLISHED
+        if (status && status !== 'ALL') {
+            where.status = status;
+        } else if (!status) {
+            where.status = 'PUBLISHED';
+        }
+        // status === 'ALL' → no status filter → returns everything
+
         if (type) where.type = type;
         if (category) where.category = { slug: category };
         if (req.query.id) where.id = req.query.id;
+        if (isFeatured !== undefined) where.isFeatured = isFeatured === 'true';
 
         if (search) {
             where.OR = [
                 { title: { contains: search as string, mode: 'insensitive' } },
                 { excerpt: { contains: search as string, mode: 'insensitive' } },
+                { content: { contains: search as string, mode: 'insensitive' } },
             ];
         }
 
@@ -29,7 +38,7 @@ router.get('/', async (req: Request, res: Response) => {
                 where,
                 skip,
                 take: parseInt(limit as string),
-                orderBy: { publishedAt: 'desc' },
+                orderBy: { createdAt: 'desc' },
                 include: {
                     author: { select: { name: true, avatar: true } },
                     category: true,
@@ -40,6 +49,7 @@ router.get('/', async (req: Request, res: Response) => {
 
         res.json({
             posts,
+            total,
             pagination: {
                 page: parseInt(page as string),
                 limit: parseInt(limit as string),
@@ -93,9 +103,9 @@ router.get('/id/:id', async (req: Request, res: Response) => {
 });
 
 // POST /api/posts - Create post (Admin)
-router.post('/', authenticate, authorize('ADMIN', 'SUPER_ADMIN', 'EDITOR'), async (req: AuthRequest, res: Response) => {
+router.post('/', authenticate, authorize('ADMIN', 'SUPER_ADMIN', 'EDITOR', 'NEWS_ADMIN'), async (req: AuthRequest, res: Response) => {
     try {
-        const { title, slug, excerpt, content, featuredImage, type, status, categoryId, tags, metaTitle, metaDesc, eventDate, eventLocation } = req.body;
+        const { title, slug, excerpt, content, featuredImage, type, status, categoryId, tags, metaTitle, metaDesc, metaDescription, eventDate, eventLocation, isFeatured, gallery } = req.body;
 
         const validEventDate = eventDate ? new Date(eventDate) : undefined;
         const post = await prisma.post.create({
@@ -106,9 +116,12 @@ router.post('/', authenticate, authorize('ADMIN', 'SUPER_ADMIN', 'EDITOR'), asyn
                 authorId: req.user!.id,
                 categoryId: categoryId || null,
                 tags: Array.isArray(tags) ? JSON.stringify(tags) : (tags || null),
-                metaTitle, metaDesc,
+                metaTitle,
+                metaDesc: metaDesc || metaDescription,
                 eventDate: (validEventDate && !isNaN(validEventDate.getTime())) ? validEventDate : undefined,
                 eventLocation,
+                isFeatured: !!isFeatured,
+                gallery: Array.isArray(gallery) ? JSON.stringify(gallery) : gallery,
                 publishedAt: status === 'PUBLISHED' ? new Date() : undefined,
             },
         });
@@ -121,9 +134,9 @@ router.post('/', authenticate, authorize('ADMIN', 'SUPER_ADMIN', 'EDITOR'), asyn
 });
 
 // PUT /api/posts/:id - Update post (Admin)
-router.put('/:id', authenticate, authorize('ADMIN', 'SUPER_ADMIN', 'EDITOR'), async (req: AuthRequest, res: Response) => {
+router.put('/:id', authenticate, authorize('ADMIN', 'SUPER_ADMIN', 'EDITOR', 'NEWS_ADMIN'), async (req: AuthRequest, res: Response) => {
     try {
-        const { title, slug, excerpt, content, featuredImage, type, status, categoryId, tags, metaTitle, metaDesc, eventDate, eventLocation } = req.body;
+        const { title, slug, excerpt, content, featuredImage, type, status, categoryId, tags, metaTitle, metaDesc, metaDescription, eventDate, eventLocation, isFeatured, gallery } = req.body;
 
         const validEventDate = eventDate ? new Date(eventDate) : undefined;
         const post = await prisma.post.update({
@@ -133,9 +146,12 @@ router.put('/:id', authenticate, authorize('ADMIN', 'SUPER_ADMIN', 'EDITOR'), as
                 type, status,
                 categoryId: categoryId || null,
                 tags: Array.isArray(tags) ? JSON.stringify(tags) : (tags || null),
-                metaTitle, metaDesc,
+                metaTitle,
+                metaDesc: metaDesc || metaDescription,
                 eventDate: (validEventDate && !isNaN(validEventDate.getTime())) ? validEventDate : undefined,
                 eventLocation,
+                isFeatured: !!isFeatured,
+                gallery: Array.isArray(gallery) ? JSON.stringify(gallery) : gallery,
                 publishedAt: status === 'PUBLISHED' ? new Date() : undefined,
             },
         });
@@ -149,7 +165,7 @@ router.put('/:id', authenticate, authorize('ADMIN', 'SUPER_ADMIN', 'EDITOR'), as
 });
 
 // DELETE /api/posts/:id - Delete post (Admin)
-router.delete('/:id', authenticate, authorize('ADMIN', 'SUPER_ADMIN'), async (req: AuthRequest, res: Response) => {
+router.delete('/:id', authenticate, authorize('ADMIN', 'SUPER_ADMIN', 'NEWS_ADMIN'), async (req: AuthRequest, res: Response) => {
     try {
         await prisma.post.delete({ where: { id: req.params.id } });
         res.json({ message: 'Post deleted.' });

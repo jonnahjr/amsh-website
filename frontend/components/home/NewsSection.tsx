@@ -9,44 +9,25 @@ export default function NewsSection() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        postsAPI.getAll({ limit: 3, status: 'PUBLISHED' })
-            .then(res => setPosts(res.data.posts || []))
+        // Try fetching featured posts first
+        postsAPI.getAll({ limit: 3, status: 'PUBLISHED', isFeatured: 'true' })
+            .then(res => {
+                if (res.data?.posts?.length > 0) {
+                    setPosts(res.data.posts);
+                } else {
+                    // Fallback to latest posts if no featured items marked
+                    return postsAPI.getAll({ limit: 3, status: 'PUBLISHED' })
+                        .then(resFallback => setPosts(resFallback.data?.posts || []));
+                }
+            })
             .catch(() => { })
             .finally(() => setLoading(false));
     }, []);
 
-    // The 3 newest articles — always updated here
-    const mockPosts = [
-        {
-            id: 'fb-1', slug: 'hospital-board-strategic-visit-2018',
-            title: 'Board of Directors Conducts Comprehensive Supervision Visit',
-            excerpt: 'On February 17, 2018 E.C., the Board of Directors conducted a strategic review of service delivery, patient care standards, and digital health implementation across all wards.',
-            type: 'NEWS', publishedAt: '2026-02-24T10:00:00Z',
-            category: { name: 'Institutional', color: '#1B4F8A' },
-            isBreaking: true,
-        },
-        {
-            id: 'fb-2', slug: 'neuropsychiatry-research-unit-launch',
-            title: 'New Neuropsychiatry Research Unit Opens — A First in Ethiopia',
-            excerpt: 'EMSH inaugurates a state-of-the-art Neuropsychiatry Research Unit with EEG facilities and a clinical trials center, advancing brain science across Africa.',
-            type: 'NEWS', publishedAt: '2026-01-15T11:00:00Z',
-            category: { name: 'Research', color: '#2E8B57' },
-            isBreaking: true,
-        },
-        {
-            id: 'fb-3', slug: 'community-health-worker-training-program',
-            title: 'EMSH Trains 134 Community Health Workers in Mental Health Crisis Response',
-            excerpt: 'A three-day intensive training program equipped community health workers from 10 Addis Ababa sub-cities with crisis detection, referral, and anti-stigma skills.',
-            type: 'ANNOUNCEMENT', publishedAt: '2026-02-12T07:30:00Z',
-            category: { name: 'Training', color: '#B8860B' },
-        },
-    ];
-
-    // Merge real API posts with our latest mock posts; sort by newest first; take top 3
-    const allPosts = [...posts, ...mockPosts].sort(
+    // Sort by newest first; take top 3
+    const displayPosts = [...posts].sort(
         (a, b) => new Date(b.publishedAt || b.createdAt).getTime() - new Date(a.publishedAt || a.createdAt).getTime()
-    );
-    const displayPosts = allPosts.slice(0, 3);
+    ).slice(0, 3);
     const typeColors: Record<string, string> = {
         NEWS: 'bg-blue-100 text-blue-800',
         EVENT: 'bg-yellow-100 text-yellow-800',
@@ -85,37 +66,53 @@ export default function NewsSection() {
                 ) : (
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         {displayPosts.map((post, i) => (
-                            <Link key={post.id} href={`/news/${post.slug}`} className="card group hover:-translate-y-2 hover:shadow-2xl transition-all duration-500">
-                                {/* Image Area */}
-                                <div className={`h-48 flex items-center justify-center text-white relative overflow-hidden ${i === 0 ? 'bg-gradient-to-br from-blue-700 to-blue-900' :
-                                    i === 1 ? 'bg-gradient-to-br from-emerald-700 to-teal-900' :
-                                        'bg-gradient-to-br from-purple-700 to-purple-900'
-                                    }`}>
-                                    <div className="text-6xl opacity-30">
-                                        {post.type === 'NEWS' ? '📰' : post.type === 'EVENT' ? '📅' : '📢'}
-                                    </div>
-                                    <div className="absolute inset-0 flex items-end p-4">
-                                        <span className={`text-xs font-bold px-2.5 py-1 rounded-full ${typeColors[post.type] || typeColors['BLOG']}`}>
-                                            {post.type}
-                                        </span>
-                                    </div>
+                            <Link key={post.id} href={`/news/${post.slug}`} className="card p-0 group hover:-translate-y-2 hover:shadow-2xl transition-all duration-500 overflow-hidden">
+                                {/* Picture Holder */}
+                                <div className="h-52 relative overflow-hidden bg-gray-200">
+                                    {post.featuredImage ? (
+                                        <img
+                                            src={post.featuredImage}
+                                            alt={post.title}
+                                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                            crossOrigin="anonymous"
+                                        />
+                                    ) : (
+                                        <div className={`w-full h-full flex items-center justify-center text-white ${i === 0 ? 'bg-gradient-to-br from-blue-700 to-blue-900' :
+                                            i === 1 ? 'bg-gradient-to-br from-emerald-700 to-teal-900' :
+                                                'bg-gradient-to-br from-purple-700 to-purple-900'
+                                            }`}>
+                                            <div className="text-6xl opacity-30">
+                                                {post.type === 'NEWS' ? '📰' : post.type === 'EVENT' ? '📅' : '📢'}
+                                            </div>
+                                        </div>
+                                    )}
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
                                 </div>
 
-                                {/* Content */}
+                                {/* Content Area */}
                                 <div className="p-6">
-                                    <p className="text-xs text-gray-400 mb-3">
-                                        {new Date(post.publishedAt || post.createdAt).toLocaleDateString('en-US', {
-                                            year: 'numeric', month: 'long', day: 'numeric'
-                                        })}
-                                    </p>
-                                    <h3 className="font-bold text-gray-900 text-lg leading-tight mb-3 group-hover:text-blue-900 transition-colors line-clamp-2">
+                                    <div className="flex items-center gap-3 mb-4">
+                                        <span className={`text-[10px] font-black uppercase tracking-[0.2em] px-2.5 py-1 rounded-md ${typeColors[post.type] || typeColors['BLOG']}`}>
+                                            {post.type === 'NEWS' ? '📰' : post.type === 'EVENT' ? '📅' : '📢'} {post.type}
+                                        </span>
+                                        <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">
+                                            {new Date(post.publishedAt || post.createdAt).toLocaleDateString('en-US', {
+                                                year: 'numeric', month: 'long', day: 'numeric'
+                                            })}
+                                        </span>
+                                    </div>
+
+                                    <h3 className="font-black text-gray-900 text-lg leading-tight mb-3 group-hover:text-blue-900 transition-colors line-clamp-2">
                                         {post.title}
                                     </h3>
-                                    <p className="text-gray-500 text-sm leading-relaxed line-clamp-3">
+
+                                    <p className="text-gray-500 text-sm leading-relaxed line-clamp-3 mb-6 font-medium">
                                         {post.excerpt}
                                     </p>
-                                    <div className="mt-4 text-blue-900 text-sm font-semibold flex items-center gap-1 group-hover:gap-2 transition-all">
-                                        Read More →
+
+                                    <div className="text-blue-950 text-xs font-black uppercase tracking-widest flex items-center gap-2 group-hover:gap-3 transition-all">
+                                        Read More
+                                        <span className="text-lg">→</span>
                                     </div>
                                 </div>
                             </Link>

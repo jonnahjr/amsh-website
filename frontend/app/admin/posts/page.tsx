@@ -38,14 +38,40 @@ export default function AdminPostsPage() {
     const [statusFilter, setStatusFilter] = useState('');
     const [page, setPage] = useState(1);
     const [total, setTotal] = useState(0);
+    const [counts, setCounts] = useState({ published: 0, draft: 0, archived: 0, total: 0, news: 0 });
     const LIMIT = 12;
 
     const fetchPosts = useCallback(async () => {
         setLoading(true);
         try {
-            const res = await postsAPI.getAll({ page, limit: LIMIT, search, type: typeFilter, status: statusFilter });
+            // Pass 'ALL' when no specific status filter so admin sees drafts + archived + published
+            const res = await postsAPI.getAll({
+                page,
+                limit: LIMIT,
+                search: search || undefined,
+                type: typeFilter || undefined,
+                status: statusFilter || 'ALL',
+            });
             setPosts(res.data.posts || []);
-            setTotal(res.data.total || 0);
+            setTotal(res.data.total || res.data.pagination?.total || 0);
+
+            // Fetch counts for stats bar (only on first load or when filters change)
+            if (!search && !typeFilter && !statusFilter) {
+                const [pub, draft, arch, all, news] = await Promise.all([
+                    postsAPI.getAll({ limit: 1, status: 'PUBLISHED' }),
+                    postsAPI.getAll({ limit: 1, status: 'DRAFT' }),
+                    postsAPI.getAll({ limit: 1, status: 'ARCHIVED' }),
+                    postsAPI.getAll({ limit: 1, status: 'ALL' }),
+                    postsAPI.getAll({ limit: 1, type: 'NEWS' }),
+                ]);
+                setCounts({
+                    published: pub.data.total || pub.data.pagination?.total || 0,
+                    draft: draft.data.total || draft.data.pagination?.total || 0,
+                    archived: arch.data.total || arch.data.pagination?.total || 0,
+                    total: all.data.total || all.data.pagination?.total || 0,
+                    news: news.data.total || news.data.pagination?.total || 0,
+                });
+            }
         } catch {
             setPosts([]);
         } finally {
@@ -74,10 +100,10 @@ export default function AdminPostsPage() {
     const totalPages = Math.ceil(total / LIMIT);
 
     const stats = [
-        { label: 'Total Posts', value: total, icon: NewspaperIcon, color: 'text-blue-600 bg-blue-50' },
-        { label: 'Published', value: posts.filter(p => p.status === 'PUBLISHED').length, icon: CheckCircleIcon, color: 'text-green-600 bg-green-50' },
-        { label: 'Drafts', value: posts.filter(p => p.status === 'DRAFT').length, icon: ClockIcon, color: 'text-amber-600 bg-amber-50' },
-        { label: 'Archived', value: posts.filter(p => p.status === 'ARCHIVED').length, icon: ArchiveBoxIcon, color: 'text-gray-500 bg-gray-50' },
+        { label: 'Total Posts', value: counts.total || total, icon: NewspaperIcon, color: 'text-blue-600 bg-blue-50', filterType: 'status', filterValue: '' },
+        { label: 'News Articles', value: counts.news, icon: NewspaperIcon, color: 'text-orange-600 bg-orange-50', filterType: 'type', filterValue: 'NEWS' },
+        { label: 'Published', value: counts.published, icon: CheckCircleIcon, color: 'text-green-600 bg-green-50', filterType: 'status', filterValue: 'PUBLISHED' },
+        { label: 'Drafts', value: counts.draft, icon: ClockIcon, color: 'text-amber-600 bg-amber-50', filterType: 'status', filterValue: 'DRAFT' },
     ];
 
     return (
@@ -98,16 +124,41 @@ export default function AdminPostsPage() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {stats.map(s => {
                     const Icon = s.icon;
+                    const isActive = s.filterType === 'status'
+                        ? (statusFilter === s.filterValue)
+                        : (typeFilter === s.filterValue);
+
                     return (
-                        <div key={s.label} className="bg-white rounded-2xl border border-gray-100 p-5 flex items-center gap-4 shadow-sm">
-                            <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${s.color}`}>
+                        <button
+                            key={s.label}
+                            onClick={() => {
+                                if (s.filterType === 'status') {
+                                    setStatusFilter(s.filterValue);
+                                    if (s.filterValue === '') setTypeFilter(''); // Reset type filter if showing all
+                                } else {
+                                    setTypeFilter(s.filterValue);
+                                    setStatusFilter(''); // Reset status filter if showing specific type
+                                }
+                            }}
+                            className={`flex items-center gap-4 p-5 rounded-2xl border transition-all text-left group ${isActive
+                                ? 'bg-blue-900 border-blue-900 shadow-lg shadow-blue-900/20'
+                                : 'bg-white border-gray-100 shadow-sm hover:border-blue-900/30'
+                                }`}
+                        >
+                            <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${isActive ? 'bg-white/20 text-white' : s.color
+                                }`}>
                                 <Icon className="w-5 h-5" />
                             </div>
                             <div>
-                                <p className="text-2xl font-black text-gray-900">{s.value}</p>
-                                <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">{s.label}</p>
+                                <p className={`text-2xl font-black transition-colors ${isActive ? 'text-white' : 'text-gray-900'}`}>
+                                    {s.value}
+                                </p>
+                                <p className={`text-[10px] font-black uppercase tracking-widest transition-colors ${isActive ? 'text-white/60' : 'text-gray-400'
+                                    }`}>
+                                    {s.label}
+                                </p>
                             </div>
-                        </div>
+                        </button>
                     );
                 })}
             </div>
@@ -200,17 +251,22 @@ export default function AdminPostsPage() {
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
 
                                 {/* Type badge */}
-                                <div className="absolute top-3 left-3">
-                                    <span className={`px-2 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest ${TYPE_COLORS[post.type] || 'bg-gray-100 text-gray-600'} backdrop-blur-sm`}>
+                                <div className="absolute top-3 left-3 flex flex-col gap-2">
+                                    <span className={`px-2 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest ${TYPE_COLORS[post.type] || 'bg-gray-100 text-gray-600'} backdrop-blur-sm self-start`}>
                                         {TYPE_ICONS[post.type]} {post.type}
                                     </span>
+                                    {post.isFeatured && (
+                                        <span className="px-2 py-1 bg-cyan-400 text-white rounded-lg text-[8px] font-black uppercase tracking-widest backdrop-blur-sm self-start shadow-lg">
+                                            ✦ Featured
+                                        </span>
+                                    )}
                                 </div>
 
                                 {/* Status */}
                                 <div className="absolute top-3 right-3">
                                     <div className={`flex items-center gap-1 px-2 py-1 rounded-lg backdrop-blur-sm text-[9px] font-black uppercase ${post.status === 'PUBLISHED' ? 'bg-green-500/90 text-white' :
-                                            post.status === 'DRAFT' ? 'bg-amber-500/90 text-white' :
-                                                'bg-gray-500/90 text-white'
+                                        post.status === 'DRAFT' ? 'bg-amber-500/90 text-white' :
+                                            'bg-gray-500/90 text-white'
                                         }`}>
                                         <div className="w-1.5 h-1.5 rounded-full bg-current" />
                                         {post.status}

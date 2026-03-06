@@ -171,7 +171,7 @@ export const faqAPI = {
 };
 
 export const testimonialsAPI = {
-    getAll: () => api.get('/testimonials'),
+    getAll: (params?: any) => api.get('/testimonials', { params }),
     create: (data: any) => api.post('/testimonials', data),
     update: (id: string, data: any) => api.put(`/testimonials/${id}`, data),
     delete: (id: string) => api.delete(`/testimonials/${id}`),
@@ -215,4 +215,9 @@ export const departmentCategoriesAPI = {
     create: (data: any) => api.post('/department-categories', data),
     update: (id: string, data: any) => api.put(`/department-categories/${id}`, data),
     delete: (id: string) => api.delete(`/department-categories/${id}`),
+};
+
+export const facebookAPI = {
+    getPosts: (params?: any) => api.get('/facebook/posts', { params }),
+    sync: () => api.post('/facebook/sync'),
 };

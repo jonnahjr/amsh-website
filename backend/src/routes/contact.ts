@@ -39,7 +39,7 @@ router.post('/', async (req: Request, res: Response) => {
 });
 
 // GET /api/contact - Admin view messages
-router.get('/', authenticate, authorize('ADMIN', 'SUPER_ADMIN'), async (req: AuthRequest, res: Response) => {
+router.get('/', authenticate, authorize('ADMIN', 'SUPER_ADMIN', 'CONTACT_ADMIN', 'CLINICAL_ADMIN'), async (req: AuthRequest, res: Response) => {
     try {
         const { isRead, page = '1' } = req.query;
         const skip = (parseInt(page as string) - 1) * 20;
@@ -56,7 +56,7 @@ router.get('/', authenticate, authorize('ADMIN', 'SUPER_ADMIN'), async (req: Aut
 });
 
 // PATCH /api/contact/:id/read
-router.patch('/:id/read', authenticate, authorize('ADMIN', 'SUPER_ADMIN'), async (req: AuthRequest, res: Response) => {
+router.patch('/:id/read', authenticate, authorize('ADMIN', 'SUPER_ADMIN', 'CONTACT_ADMIN', 'CLINICAL_ADMIN'), async (req: AuthRequest, res: Response) => {
     try {
         await prisma.contactMessage.update({ where: { id: req.params.id }, data: { isRead: true } });
         res.json({ message: 'Marked as read.' });

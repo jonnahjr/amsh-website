@@ -55,7 +55,7 @@ router.post('/', async (req: Request, res: Response) => {
 });
 
 // PATCH /api/research/:id/status - Admin approve/reject
-router.patch('/:id/status', authenticate, authorize('ADMIN', 'SUPER_ADMIN'), async (req: AuthRequest, res: Response) => {
+router.patch('/:id/status', authenticate, authorize('ADMIN', 'SUPER_ADMIN', 'RESEARCH_ADMIN'), async (req: AuthRequest, res: Response) => {
     try {
         const { status } = req.body;
         const item = await prisma.research.update({
@@ -69,7 +69,7 @@ router.patch('/:id/status', authenticate, authorize('ADMIN', 'SUPER_ADMIN'), asy
 });
 
 // GET /api/research/admin/all - Admin view all
-router.get('/admin/all', authenticate, authorize('ADMIN', 'SUPER_ADMIN'), async (req: AuthRequest, res: Response) => {
+router.get('/admin/all', authenticate, authorize('ADMIN', 'SUPER_ADMIN', 'RESEARCH_ADMIN'), async (req: AuthRequest, res: Response) => {
     try {
         const research = await prisma.research.findMany({ orderBy: { createdAt: 'desc' } });
         res.json({ research });

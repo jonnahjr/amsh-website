@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { testimonialsAPI } from '@/lib/api';
+import { testimonialsAPI, mediaAPI } from '@/lib/api';
 import {
     MegaphoneIcon,
     PlusIcon,
@@ -13,6 +13,7 @@ import {
     XCircleIcon,
     PhotoIcon,
     XMarkIcon,
+    CloudArrowUpIcon,
 } from '@heroicons/react/24/outline';
 
 export default function TestimonialsAdmin() {
@@ -20,6 +21,7 @@ export default function TestimonialsAdmin() {
     const [loading, setLoading] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingItem, setEditingItem] = useState<any>(null);
+    const [uploading, setUploading] = useState(false);
     const [formData, setFormData] = useState({
         name: '',
         role: '',
@@ -30,17 +32,26 @@ export default function TestimonialsAdmin() {
         order: 0
     });
 
+    const handleImageUpload = async (file: File) => {
+        setUploading(true);
+        try {
+            const res = await mediaAPI.upload(file, 'testimonials');
+            setFormData(prev => ({ ...prev, image: res.data.media.url }));
+        } catch {
+            alert('Failed to upload image');
+        } finally {
+            setUploading(false);
+        }
+    };
+
     const fetchTestimonials = async () => {
         setLoading(true);
         try {
-            const res = await testimonialsAPI.getAll();
+            const res = await testimonialsAPI.getAll({ all: true });
             setTestimonials(res.data.testimonials || []);
         } catch (error) {
             console.error('Fetch testimonials error:', error);
-            setTestimonials([
-                { id: '1', name: 'Abebe Bikila', role: 'Patient', content: 'The care I received at EMSH was exceptional. The staff is professional and caring.', rating: 5, isActive: true, order: 1 },
-                { id: '2', name: 'Marta Tadesse', role: 'Family Member', content: 'EMSH has changed our lives. The psychiatric support is top-notch.', rating: 5, isActive: true, order: 2 },
-            ]);
+            setTestimonials([]);
         } finally {
             setLoading(false);
         }
@@ -256,6 +267,45 @@ export default function TestimonialsAdmin() {
                                     onChange={(e) => setFormData({ ...formData, content: e.target.value })}
                                     placeholder="Enter patient testimony..."
                                 />
+                            </div>
+
+                            {/* Profile Image */}
+                            <div className="space-y-4">
+                                <label className="text-[10px] font-black text-blue-900 uppercase tracking-widest ml-1">Profile Photo</label>
+                                <div className="flex items-center gap-6">
+                                    <div className="relative w-24 h-24 group">
+                                        {formData.image ? (
+                                            <>
+                                                <img src={formData.image} className="w-full h-full object-cover rounded-[1.5rem] border-2 border-blue-50" crossOrigin="anonymous" />
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setFormData(prev => ({ ...prev, image: '' }))}
+                                                    className="absolute -top-2 -right-2 p-1.5 bg-red-600 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-lg"
+                                                >
+                                                    <XMarkIcon className="w-3 h-3" />
+                                                </button>
+                                            </>
+                                        ) : (
+                                            <div className="w-full h-full bg-gray-50 border-2 border-dashed border-gray-100 rounded-[1.5rem] flex items-center justify-center text-gray-200">
+                                                <UserCircleIcon className="w-12 h-12 opacity-30" />
+                                            </div>
+                                        )}
+                                    </div>
+                                    <div className="flex-1 space-y-3">
+                                        <label className="inline-flex items-center gap-2 px-6 py-3 bg-white border-2 border-blue-900/10 text-blue-900 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-blue-50 cursor-pointer transition-all">
+                                            {uploading ? (
+                                                <span className="w-4 h-4 border-2 border-blue-900 border-t-transparent rounded-full animate-spin" />
+                                            ) : (
+                                                <CloudArrowUpIcon className="w-4 h-4" />
+                                            )}
+                                            {uploading ? 'Uploading...' : 'Choose Photo'}
+                                            <input type="file" className="hidden" accept="image/*" onChange={(e) => e.target.files?.[0] && handleImageUpload(e.target.files[0])} />
+                                        </label>
+                                        <p className="text-[10px] text-gray-400 font-bold max-w-[200px] leading-relaxed">
+                                            Best size: 200x200px. JPG, PNG or WEBP.
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
 
                             <div className="grid grid-cols-2 gap-6">

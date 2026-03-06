@@ -64,7 +64,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             loading,
             login,
             logout,
-            isAdmin: ['ADMIN', 'SUPER_ADMIN', 'EDITOR'].includes(user?.role || ''),
+            isAdmin: ['ADMIN', 'SUPER_ADMIN', 'EDITOR', 'NEWS_ADMIN', 'CPD_ADMIN', 'RESEARCH_ADMIN', 'CLINICAL_ADMIN', 'CONTACT_ADMIN', 'CONTENT_ADMIN'].includes(user?.role || ''),
             isSuperAdmin: user?.role === 'SUPER_ADMIN',
         }}>
             {children}
