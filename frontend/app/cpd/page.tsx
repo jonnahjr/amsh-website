@@ -24,157 +24,10 @@ import {
     BriefcaseIcon,
     MapPinIcon,
 } from '@heroicons/react/24/outline';
-
-const CPD_COURSES = [
-    {
-        id: '1',
-        title: 'Fundamental Psychiatric Nursing',
-        description: 'Comprehensive training on basic psychiatric nursing care, patient assessment, and evidence-based interventions in mental health settings.',
-        duration: '5 Days',
-        startDate: '2024-05-15',
-        endDate: '2024-05-20',
-        credits: '15 CME Hours',
-        targetProfessionals: 'Nurses, Health Officers',
-        mode: 'Onsite',
-        fee: '2,500 ETB',
-    },
-    {
-        id: '2',
-        title: 'Advanced Psychopharmacology',
-        description: 'In-depth study of neurobiology and the latest pharmacological treatments for complex mental health disorders. Focus on recent drug approvals.',
-        duration: '3 Days',
-        startDate: '2024-06-10',
-        endDate: '2024-06-13',
-        credits: '10 CME Hours',
-        targetProfessionals: 'Psychiatrists, Medical Doctors',
-        mode: 'Hybrid',
-        fee: '3,500 ETB',
-    },
-    {
-        id: '3',
-        title: 'CBT for Anxiety Disorders',
-        description: 'Practical clinical skills for implementing Cognitive Behavioral Therapy techniques specifically tailored for anxiety and stress-related conditions.',
-        duration: '4 Weeks',
-        startDate: '2024-07-01',
-        endDate: '2024-07-28',
-        credits: '20 CME Hours',
-        targetProfessionals: 'Psychologists, Counselors',
-        mode: 'Online',
-        fee: '3,000 ETB',
-    },
-    {
-        id: '4',
-        title: 'mhGAP Training of Trainers',
-        description: 'Master the Mental Health Gap Action Program (mhGAP) to scale up care for mental, neurological, and substance use disorders in primary health care.',
-        duration: '5 Days',
-        startDate: '2024-08-05',
-        endDate: '2024-08-10',
-        credits: '15 CME Hours',
-        targetProfessionals: 'Senior Health Professionals',
-        mode: 'Onsite',
-        fee: 'Free (MOH Sponsored)',
-    },
-    {
-        id: '5',
-        title: 'Child & Adolescent Psychiatry',
-        description: 'A specialized course focusing on developmental disorders, adolescent depression, and early intervention strategies for young patients.',
-        duration: '3 Days',
-        startDate: '2024-09-12',
-        endDate: '2024-09-15',
-        credits: '12 CME Hours',
-        targetProfessionals: 'Psychiatrists, Pediatricians',
-        mode: 'Hybrid',
-        fee: '4,000 ETB',
-    },
-    {
-        id: '6',
-        title: 'Emergency Psychiatry & De-escalation',
-        description: 'Essential de-escalation techniques, risk assessment, and legal protocols for managing acute psychiatric emergencies in clinical settings.',
-        duration: '2 Days',
-        startDate: '2024-10-20',
-        endDate: '2024-10-22',
-        credits: '8 CME Hours',
-        targetProfessionals: 'All Clinical Staff',
-        mode: 'Onsite',
-        fee: '1,500 ETB',
-    },
-];
+import Link from 'next/link';
+import { CPD_COURSES } from './data';
 
 export default function CPDPage() {
-    const [isApplyModalOpen, setIsApplyModalOpen] = useState(false);
-    const [selectedCourse, setSelectedCourse] = useState<any>(null);
-    const [formData, setFormData] = useState({
-        fullName: '',
-        phoneNumber: '',
-        email: '',
-        professionTitle: '',
-        licenseNumber: '',
-        placeOfWork: '',
-        yearsOfExperience: '',
-        region: '',
-        category: 'PERSONAL',
-        agreement: false,
-    });
-
-    const openApplyModal = (course: any) => {
-        setSelectedCourse(course);
-        setIsApplyModalOpen(true);
-    };
-
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-        const target = e.target as HTMLInputElement;
-        const { name, value, type } = target;
-        const checked = target.checked;
-        setFormData(prev => ({
-            ...prev,
-            [name]: type === 'checkbox' ? checked : value
-        }));
-    };
-
-    const [isSubmitting, setIsSubmitting] = useState(false);
-
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        if (!selectedCourse) return;
-
-        setIsSubmitting(true);
-        try {
-            // Mapping frontend field names to backend expectations if different
-            // Backend expects: firstName, lastName, email, phone, profession, workplace, licenseNo, category
-            const payload = {
-                firstName: formData.fullName.split(' ')[0],
-                lastName: formData.fullName.split(' ').slice(1).join(' ') || ' ',
-                email: formData.email,
-                phone: formData.phoneNumber,
-                profession: formData.professionTitle,
-                workplace: formData.placeOfWork,
-                licenseNo: formData.licenseNumber,
-                category: formData.category,
-            };
-
-            await cpdAPI.register(selectedCourse.id, payload);
-            alert('Application submitted successfully! Our team will review your credentials.');
-            setIsApplyModalOpen(false);
-            // Reset form
-            setFormData({
-                fullName: '',
-                phoneNumber: '',
-                email: '',
-                professionTitle: '',
-                licenseNumber: '',
-                placeOfWork: '',
-                yearsOfExperience: '',
-                region: '',
-                category: 'PERSONAL',
-                agreement: false,
-            });
-        } catch (error) {
-            console.error('Submission error:', error);
-            alert('Failed to submit application. Please check your connection and try again.');
-        } finally {
-            setIsSubmitting(false);
-        }
-    };
 
     return (
         <div className="min-h-screen bg-[#FDFCF9]">
@@ -327,12 +180,12 @@ export default function CPDPage() {
                                     <div className="text-gray-900 font-black text-lg">
                                         {course.fee}
                                     </div>
-                                    <button
-                                        onClick={() => openApplyModal(course)}
-                                        className="bg-blue-950 text-white px-8 py-3.5 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-blue-800 transition-colors shadow-xl shadow-blue-900/10"
+                                    <Link
+                                        href={`/cpd/${course.id}/apply`}
+                                        className="bg-blue-950 text-white px-8 py-3.5 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-blue-800 transition-colors shadow-xl shadow-blue-900/10 inline-block"
                                     >
                                         Apply Now
-                                    </button>
+                                    </Link>
                                 </div>
                             </div>
                         ))}
@@ -340,135 +193,7 @@ export default function CPDPage() {
                 </div>
             </section>
 
-            {/* Application Modal */}
-            {isApplyModalOpen && (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-                    <div className="absolute inset-0 bg-blue-950/40 backdrop-blur-sm" onClick={() => setIsApplyModalOpen(false)} />
-                    <div className="relative bg-white w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-[40px] shadow-2xl animate-scale-in">
-                        <button
-                            onClick={() => setIsApplyModalOpen(false)}
-                            className="absolute top-8 right-8 p-2 text-gray-400 hover:text-red-500 transition-colors"
-                        >
-                            <XMarkIcon className="w-8 h-8" />
-                        </button>
 
-                        <div className="p-12 lg:p-16">
-                            <div className="mb-12">
-                                <span className="text-blue-600 text-[10px] font-black uppercase tracking-[0.2em] mb-4 block">Institutional Form</span>
-                                <h2 className="text-4xl font-black text-blue-950 mb-2">CPD Application</h2>
-                                <p className="text-gray-500 font-medium">Applying for: <span className="text-blue-900 font-black">{selectedCourse?.title}</span></p>
-
-                                <div className="mt-6 p-4 bg-amber-50 rounded-2xl border border-amber-100 flex gap-4 items-center">
-                                    <ShieldCheckIcon className="w-6 h-6 text-amber-600 flex-shrink-0" />
-                                    <p className="text-xs font-black text-amber-800 uppercase tracking-widest leading-loose">
-                                        This program is available only for licensed health professionals.
-                                    </p>
-                                </div>
-                            </div>
-
-                            <form onSubmit={handleSubmit} className="space-y-10">
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                    <div className="space-y-4">
-                                        <label className="block text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Full Name</label>
-                                        <div className="relative">
-                                            <UserIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-300" />
-                                            <input required type="text" name="fullName" value={formData.fullName} onChange={handleInputChange} placeholder="As per your license" className="w-full pl-12 pr-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-blue-900 transition-all font-bold text-sm" />
-                                        </div>
-                                    </div>
-                                    <div className="space-y-4">
-                                        <label className="block text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Phone Number</label>
-                                        <div className="relative">
-                                            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300 font-black">+251</span>
-                                            <input required type="tel" name="phoneNumber" value={formData.phoneNumber} onChange={handleInputChange} placeholder="911 000 000" className="w-full pl-16 pr-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-blue-900 transition-all font-bold text-sm" />
-                                        </div>
-                                    </div>
-                                    <div className="space-y-4">
-                                        <label className="block text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Email Address</label>
-                                        <input required type="email" name="email" value={formData.email} onChange={handleInputChange} placeholder="example@health.gov.et" className="w-full px-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-blue-900 transition-all font-bold text-sm" />
-                                    </div>
-                                    <div className="space-y-4">
-                                        <label className="block text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Profession Title</label>
-                                        <select required name="professionTitle" value={formData.professionTitle} onChange={handleInputChange} className="w-full px-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-blue-900 transition-all font-bold text-sm">
-                                            <option value="">Select Profession</option>
-                                            <option>Psychiatrist</option>
-                                            <option>Mental Health Nurse</option>
-                                            <option>Clinical Psychologist</option>
-                                            <option>Health Officer</option>
-                                            <option>Other Licensed Professional</option>
-                                        </select>
-                                    </div>
-                                    <div className="space-y-4">
-                                        <label className="block text-xs font-black text-gray-400 uppercase tracking-widest ml-1">License Number</label>
-                                        <div className="relative">
-                                            <IdentificationIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-300" />
-                                            <input required type="text" name="licenseNumber" value={formData.licenseNumber} onChange={handleInputChange} placeholder="MOH/RN/..." className="w-full pl-12 pr-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-blue-900 transition-all font-bold text-sm" />
-                                        </div>
-                                    </div>
-                                    <div className="space-y-4">
-                                        <label className="block text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Place of Work</label>
-                                        <div className="relative">
-                                            <BuildingOfficeIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-300" />
-                                            <input required type="text" name="placeOfWork" value={formData.placeOfWork} onChange={handleInputChange} placeholder="Hospital / Clinical Name" className="w-full pl-12 pr-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-blue-900 transition-all font-bold text-sm" />
-                                        </div>
-                                    </div>
-                                    <div className="space-y-4">
-                                        <label className="block text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Years of Experience</label>
-                                        <input required type="number" name="yearsOfExperience" value={formData.yearsOfExperience} onChange={handleInputChange} placeholder="Number of years" className="w-full px-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-blue-900 transition-all font-bold text-sm" />
-                                    </div>
-                                    <div className="space-y-4">
-                                        <label className="block text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Region</label>
-                                        <input required type="text" name="region" value={formData.region} onChange={handleInputChange} placeholder="Current City / Region" className="w-full px-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-blue-900 transition-all font-bold text-sm" />
-                                    </div>
-                                    <div className="space-y-4">
-                                        <label className="block text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Registration Type</label>
-                                        <select required name="category" value={formData.category} onChange={handleInputChange} className="w-full px-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-blue-900 transition-all font-bold text-sm">
-                                            <option value="GOVERNMENT">Public Institution (Government)</option>
-                                            <option value="PRIVATE">Private College / Hospital</option>
-                                            <option value="PERSONAL">Independent / Personal</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                    <label className="p-8 bg-blue-50/50 border border-dashed border-blue-200 rounded-[32px] text-center group hover:bg-blue-50 transition-colors cursor-pointer">
-                                        <DocumentArrowUpIcon className="w-12 h-12 text-blue-300 mx-auto mb-4 group-hover:scale-110 transition-transform" />
-                                        <h4 className="text-sm font-black text-blue-950 mb-1">Upload License (PDF)</h4>
-                                        <p className="text-[10px] text-blue-400 font-bold uppercase tracking-widest">Valid certification only</p>
-                                        <input required type="file" className="hidden" />
-                                    </label>
-                                    <label className="p-8 bg-blue-50/50 border border-dashed border-blue-200 rounded-[32px] text-center group hover:bg-blue-50 transition-colors cursor-pointer">
-                                        <IdentificationIcon className="w-12 h-12 text-blue-300 mx-auto mb-4 group-hover:scale-110 transition-transform" />
-                                        <h4 className="text-sm font-black text-blue-950 mb-1">Upload ID</h4>
-                                        <p className="text-[10px] text-blue-400 font-bold uppercase tracking-widest">Kebele / Passport / Hospital ID</p>
-                                        <input required type="file" className="hidden" />
-                                    </label>
-                                </div>
-
-                                <div className="pt-6">
-                                    <label className="flex items-start gap-4 cursor-pointer group">
-                                        <div className="relative flex items-center mt-1">
-                                            <input required type="checkbox" name="agreement" checked={formData.agreement} onChange={handleInputChange} className="w-6 h-6 border-2 border-gray-200 rounded-lg checked:bg-blue-900 transition-all appearance-none cursor-pointer" />
-                                            {formData.agreement && <CheckBadgeIcon className="absolute inset-0 w-6 h-6 text-white p-1 pointer-events-none" />}
-                                        </div>
-                                        <span className="text-sm font-bold text-gray-500 leading-relaxed group-hover:text-gray-700 transition-colors">
-                                            I hereby declare that I am a licensed health professional and that the information provided is accurate.
-                                            I agree to abide by the hospital's CPD standards and academic integrity policies.
-                                        </span>
-                                    </label>
-                                </div>
-
-                                <button
-                                    type="submit"
-                                    disabled={isSubmitting}
-                                    className="w-full py-6 bg-blue-950 text-white rounded-[24px] font-black uppercase tracking-[0.2em] text-sm hover:bg-blue-800 transition-all shadow-2xl shadow-blue-900/20 hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed"
-                                >
-                                    {isSubmitting ? 'Processing...' : 'Submit Application for Review'}
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            )}
 
             <Footer />
             <ChatbotButton />

@@ -42,7 +42,7 @@ export default function AdminSettingsPage() {
                 emergency_phone: '991',
                 address: 'Addis Ababa, Ethiopia',
                 twitter_url: 'https://twitter.com/emsh_ethiopia',
-                facebook_url: 'https://facebook.com/emsh.ethiopia',
+                facebook_url: 'https://web.facebook.com/p/Amanuel-mental-specialized-hospital-100064026784319/?_rdc=1&_rdr#',
             });
         }).finally(() => setLoading(false));
     }, []);

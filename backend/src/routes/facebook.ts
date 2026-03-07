@@ -98,6 +98,10 @@ router.post('/sync', async (req: Request, res: Response) => {
         const pageId = settingsMap['facebook_page_id'];
         const accessToken = settingsMap['facebook_access_token'];
 
+        if (!accessToken || accessToken.length < 10) {
+            return res.status(400).json({ error: 'Please enter your Facebook Access Token in the settings before syncing.' });
+        }
+
         const fbUrl = `https://graph.facebook.com/v18.0/${pageId}/posts?fields=id,message,created_time,full_picture,permalink_url&limit=20&access_token=${accessToken}`;
         const response = await fetch(fbUrl);
         const fbData = await response.json() as any;
@@ -138,6 +142,17 @@ router.post('/sync', async (req: Request, res: Response) => {
         res.json({ success: true, processed: fbPosts.length, imported: createdCount });
     } catch (error: any) {
         console.error('FB Sync Error:', error);
+
+        // If it looks like a Facebook JSON error string, parse it
+        try {
+            const fbError = JSON.parse(error.message);
+            if (fbError && fbError.message) {
+                return res.status(400).json({ error: fbError.message, details: fbError });
+            }
+        } catch {
+            // Not JSON
+        }
+
         res.status(500).json({ error: 'Sync failed', details: error.message });
     }
 });

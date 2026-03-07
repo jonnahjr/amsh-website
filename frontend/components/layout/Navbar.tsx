@@ -1,7 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import { servicesAPI, departmentsAPI } from '@/lib/api';
 import { usePathname } from 'next/navigation';
 import {
     Bars3Icon,
@@ -69,7 +70,54 @@ export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
     const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+    const [links, setLinks] = useState(navLinks);
+    const timeoutRef = useRef<NodeJS.Timeout | null>(null);
     const pathname = usePathname();
+
+    useEffect(() => {
+        Promise.all([
+            servicesAPI.getAll().catch(() => ({ data: [] })),
+            departmentsAPI.getAll().catch(() => ({ data: [] }))
+        ]).then(([servicesRes, departmentsRes]) => {
+            const services = Array.isArray(servicesRes.data) ? servicesRes.data : Array.isArray(servicesRes.data?.services) ? servicesRes.data.services : [];
+            const departments = Array.isArray(departmentsRes.data) ? departmentsRes.data : Array.isArray(departmentsRes.data?.departments) ? departmentsRes.data.departments : [];
+
+            if (services.length > 0 || departments.length > 0) {
+                setLinks(prev => prev.map(link => {
+                    if (link.label === 'Services' && services.length > 0) {
+                        return {
+                            ...link,
+                            children: [
+                                { label: 'All Services', href: '/services' },
+                                ...services.slice(0, 6).map((s: any) => ({ label: s.name, href: `/services/${s.slug}` }))
+                            ]
+                        };
+                    }
+                    if (link.label === 'Departments' && departments.length > 0) {
+                        return {
+                            ...link,
+                            children: [
+                                { label: 'All Departments', href: '/departments' },
+                                ...departments.slice(0, 6).map((d: any) => ({ label: d.name, href: `/departments/${d.slug}` }))
+                            ]
+                        };
+                    }
+                    return link;
+                }));
+            }
+        });
+    }, []);
+
+    const handleMouseEnter = (label: string) => {
+        if (timeoutRef.current) clearTimeout(timeoutRef.current);
+        setActiveDropdown(label);
+    };
+
+    const handleMouseLeave = () => {
+        timeoutRef.current = setTimeout(() => {
+            setActiveDropdown(null);
+        }, 200);
+    };
 
     useEffect(() => {
         const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -148,12 +196,12 @@ export default function Navbar() {
 
                         {/* DESKTOP NAVIGATION */}
                         <nav className="hidden lg:flex items-center gap-1">
-                            {navLinks.map((link) => (
+                            {links.map((link) => (
                                 <div
                                     key={link.href}
                                     className="relative group"
-                                    onMouseEnter={() => link.children && setActiveDropdown(link.label)}
-                                    onMouseLeave={() => setActiveDropdown(null)}
+                                    onMouseEnter={() => link.children && handleMouseEnter(link.label)}
+                                    onMouseLeave={() => link.children && handleMouseLeave()}
                                 >
                                     <Link
                                         href={link.href}
@@ -205,7 +253,7 @@ export default function Navbar() {
                     <div className="lg:hidden border-t border-gray-100 animate-fade-in">
                         <div className="container-custom py-4 space-y-1 max-h-[calc(100vh-80px)] overflow-y-auto">
 
-                            {navLinks.map((link) => (
+                            {links.map((link) => (
                                 <div key={link.href}>
                                     <Link
                                         href={link.href}

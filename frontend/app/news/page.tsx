@@ -7,7 +7,6 @@ import EmergencyBanner from '@/components/ui/EmergencyBanner';
 import { postsAPI } from '@/lib/api';
 import Link from 'next/link';
 import { CalendarIcon, UserIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
-import FacebookFeed from '@/components/news/FacebookFeed';
 
 export default function NewsPage() {
     const [posts, setPosts] = useState<any[]>([]);
@@ -233,10 +232,14 @@ export default function NewsPage() {
                                         <div className="p-8 bg-blue-900 rounded-3xl text-white">
                                             <h4 className="text-[10px] font-black uppercase tracking-[0.2em] mb-6">Publication Desk</h4>
                                             <div className="space-y-4">
-                                                {['Press Releases', 'Media Kit', 'Clinical Journals', 'Public Archive'].map(tag => (
-                                                    <button key={tag} className="block w-full text-left text-sm font-bold text-blue-200 hover:text-white transition-colors">
-                                                        {tag} ➔
-                                                    </button>
+                                                {[
+                                                    { label: 'Press Releases', href: '/press-releases' },
+                                                    { label: 'Media Kit', href: '/media-kit' },
+                                                    { label: 'Public Archive', href: '/public-archive' }
+                                                ].map(link => (
+                                                    <Link key={link.label} href={link.href} className="block w-full text-left text-sm font-bold text-blue-200 hover:text-white transition-colors">
+                                                        {link.label} ➔
+                                                    </Link>
                                                 ))}
                                             </div>
                                         </div>
@@ -245,10 +248,7 @@ export default function NewsPage() {
                             </div>
                         )}
 
-                        {/* FACEBOOK FEED SECTION */}
-                        <div className="mt-32 pt-32 border-t border-gray-200">
-                            <FacebookFeed />
-                        </div>
+
                     </div>
                 </section>
             </main >

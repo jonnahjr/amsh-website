@@ -98,42 +98,21 @@ export default function ServiceCategoryPage() {
                     <div className="absolute inset-0 opacity-[0.07]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)', backgroundSize: '40px 40px' }} />
                     {/* Glow */}
                     <div className="absolute inset-0 opacity-30" style={{ background: 'radial-gradient(ellipse at 20% 20%, rgba(255,255,255,0.12) 0%, transparent 60%)' }} />
-                    {/* Large icon */}
-                    <div className="absolute right-12 top-1/2 -translate-y-1/2 text-[200px] opacity-[0.07] select-none leading-none hidden lg:block">
-                        {category?.icon}
-                    </div>
+
 
                     <div className="container-custom relative z-10 pb-16 pt-40">
-                        {/* Breadcrumb */}
-                        <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-white/40 mb-8 flex-wrap">
-                            <Link href="/" className="hover:text-white/70">Home</Link>
-                            <ChevronRightIcon className="w-3 h-3" />
-                            <Link href="/services" className="hover:text-white/70">Services</Link>
-                            <ChevronRightIcon className="w-3 h-3" />
-                            <span className="text-white/80">{category?.name}</span>
-                        </div>
-
                         <div className="inline-flex items-center gap-2 px-5 py-2 bg-white/10 border border-white/20 rounded-full text-white/70 text-[10px] font-black uppercase tracking-widest mb-6">
                             <BriefcaseIcon className="w-4 h-4" />
                             {subServices.length} Sub-Service{subServices.length !== 1 ? 's' : ''}
                         </div>
 
-                        <div className="text-5xl mb-4">{category?.icon}</div>
+
                         <h1 className="text-4xl md:text-6xl font-black text-white tracking-tighter leading-[0.92] mb-5 max-w-3xl">
                             {category?.name}
                         </h1>
                         <p className="text-white/50 text-lg max-w-2xl font-medium leading-relaxed mb-10">
                             {category?.description}
                         </p>
-
-                        <div className="flex flex-wrap gap-4">
-                            <Link href="/contact" className="px-8 py-4 bg-white text-blue-950 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-blue-50 transition-all shadow-2xl hover:-translate-y-1">
-                                Book an Appointment
-                            </Link>
-                            <a href="tel:+2511118685385" className="inline-flex items-center gap-2 px-8 py-4 border-2 border-white/20 text-white rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-white/10 transition-all">
-                                <PhoneIcon className="w-4 h-4" /> Call Now
-                            </a>
-                        </div>
                     </div>
                 </section>
 
@@ -286,21 +265,7 @@ export default function ServiceCategoryPage() {
                     </div>
                 </section>
 
-                {/* Bottom CTA */}
-                <section className="py-16 bg-blue-950">
-                    <div className="container-custom text-center">
-                        <h2 className="text-3xl font-black text-white mb-3 tracking-tighter">Ready to access this service?</h2>
-                        <p className="text-blue-100/50 mb-8 font-medium">Book an appointment or contact us to be directed to the right care pathway.</p>
-                        <div className="flex flex-wrap justify-center gap-4">
-                            <Link href="/contact" className="px-10 py-5 bg-cyan-500 hover:bg-cyan-400 text-white rounded-2xl font-black uppercase tracking-widest text-xs transition-all shadow-xl shadow-cyan-500/20">
-                                Book Now
-                            </Link>
-                            <Link href="/services" className="px-10 py-5 bg-white/10 border border-white/20 text-white rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-white/20 transition-all">
-                                ← All Services
-                            </Link>
-                        </div>
-                    </div>
-                </section>
+
             </main>
             <Footer />
             <ChatbotButton />

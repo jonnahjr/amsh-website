@@ -80,7 +80,7 @@ export default function FacebookFeed() {
                     </h2>
                 </div>
                 <a
-                    href="https://facebook.com/EMSHospitalOfficial"
+                    href="https://web.facebook.com/p/Amanuel-mental-specialized-hospital-100064026784319/?_rdc=1&_rdr#"
                     target="_blank"
                     className="hidden sm:flex items-center gap-2 text-[10px] font-black text-gray-400 uppercase tracking-widest hover:text-blue-600 transition-colors"
                 >

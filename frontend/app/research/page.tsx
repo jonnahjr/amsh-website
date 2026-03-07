@@ -28,7 +28,7 @@ const PUBLISHED_RESEARCH = [
         authors: 'Zelalem G., et al.',
         year: '2023',
         journal: 'Ethiopian Medical Journal',
-        pdfUrl: '#',
+        pdfUrl: '/documents/sample-research.pdf',
     },
     {
         id: '2',
@@ -36,7 +36,7 @@ const PUBLISHED_RESEARCH = [
         authors: 'Hana W., Bekele A.',
         year: '2024',
         journal: 'Journal of Psychiatry & Neuroscience',
-        pdfUrl: '#',
+        pdfUrl: '/documents/sample-research.pdf',
     },
     {
         id: '3',
@@ -44,7 +44,7 @@ const PUBLISHED_RESEARCH = [
         authors: 'Mulugeta T., Solomon D.',
         year: '2022',
         journal: 'African Journal of Psychiatry',
-        pdfUrl: '#',
+        pdfUrl: '/documents/sample-research.pdf',
     },
 ];
 
@@ -121,34 +121,38 @@ export default function ResearchPage() {
 
                     </div>
 
-                    <div className="space-y-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {filteredResearch.map((paper) => (
-                            <div key={paper.id} className="bg-white rounded-[32px] border border-gray-100 shadow-sm p-8 flex flex-col md:flex-row items-center gap-8 group hover:shadow-xl transition-all duration-500">
-                                <div className="w-16 h-16 bg-blue-50 rounded-2xl flex flex-col items-center justify-center text-blue-900 flex-shrink-0 group-hover:scale-110 transition-transform">
+                            <div key={paper.id} className="bg-white rounded-[32px] border border-gray-100 shadow-sm p-8 flex flex-col items-center gap-6 group hover:shadow-xl transition-all duration-500 text-center">
+                                <div className="w-16 h-16 bg-blue-50 rounded-2xl flex flex-col items-center justify-center text-blue-900 group-hover:scale-110 transition-transform">
                                     <span className="text-lg font-black">{paper.year}</span>
                                     <span className="text-[10px] font-black uppercase opacity-60">Year</span>
                                 </div>
 
-                                <div className="flex-1">
-                                    <h3 className="text-xl font-black text-blue-950 mb-3 leading-tight group-hover:text-blue-700 transition-colors">
+                                <div className="flex-1 flex flex-col items-center">
+                                    <h3 className="text-lg lg:text-xl font-black text-blue-950 mb-3 leading-tight group-hover:text-blue-700 transition-colors">
                                         {paper.title}
                                     </h3>
-                                    <div className="flex flex-wrap gap-6 text-sm font-bold text-gray-400">
-                                        <div className="flex items-center gap-2">
-                                            <UserIcon className="w-4 h-4 text-blue-900" />
+                                    <div className="flex flex-col gap-3 text-sm font-bold text-gray-400 w-full">
+                                        <div className="flex items-center justify-center gap-2">
+                                            <UserIcon className="w-4 h-4 text-blue-900 flex-shrink-0" />
                                             <span>{paper.authors}</span>
                                         </div>
-                                        <div className="flex items-center gap-2">
-                                            <BookOpenIcon className="w-4 h-4 text-blue-900" />
+                                        <div className="flex items-center justify-center gap-2">
+                                            <BookOpenIcon className="w-4 h-4 text-blue-900 flex-shrink-0" />
                                             <span className="italic">{paper.journal}</span>
                                         </div>
                                     </div>
                                 </div>
 
-                                <button className="px-8 py-4 bg-gray-50 text-blue-900 rounded-2xl font-black text-xs uppercase tracking-widest flex items-center gap-3 hover:bg-blue-900 hover:text-white transition-all shadow-sm">
+                                <a
+                                    href={paper.pdfUrl}
+                                    download={`${paper.title.substring(0, 20)}.pdf`}
+                                    className="w-full justify-center px-8 py-4 bg-gray-50 text-blue-900 rounded-2xl font-black text-xs uppercase tracking-widest flex items-center gap-3 hover:bg-blue-900 hover:text-white transition-all shadow-sm mt-auto"
+                                >
                                     <ArrowDownTrayIcon className="w-4 h-4" />
                                     Download PDF
-                                </button>
+                                </a>
                             </div>
                         ))}
                     </div>

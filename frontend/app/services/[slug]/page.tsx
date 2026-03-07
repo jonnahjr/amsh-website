@@ -193,16 +193,11 @@ export default function ServiceDetailPage() {
                             </h1>
                             <div className="flex flex-wrap items-center gap-8">
                                 <div className="px-8 py-4 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 flex items-center gap-4">
-                                    <span className="text-3xl grayscale brightness-200">{service.icon || '🏥'}</span>
                                     <div>
                                         <p className="text-[9px] font-black uppercase tracking-widest text-blue-200">Department</p>
                                         <p className="text-white font-black">{service.department?.name || 'General Clinical'}</p>
                                     </div>
                                 </div>
-                                <a href="#contact" className="px-10 py-5 bg-cyan-400 hover:bg-white text-blue-950 rounded-2xl font-black uppercase tracking-widest text-xs transition-all flex items-center gap-3">
-                                    <PhoneIcon className="w-4 h-4" />
-                                    Access Care
-                                </a>
                             </div>
                         </div>
                     </div>
@@ -358,19 +353,21 @@ export default function ServiceDetailPage() {
                         </div>
 
                         {/* Core Values */}
-                        {[
-                            { icon: ShieldCheckIcon, title: 'Safety First', desc: 'Patient safety is our non-negotiable priority in every procedure and interaction.' },
-                            { icon: StarIcon, title: 'Excellence', desc: 'We uphold the highest clinical standards and continually improve our practice.' },
-                            { icon: UserGroupIcon, title: 'Compassion', desc: 'Every patient is treated with dignity, empathy, and respect.' },
-                        ].map((v, i) => (
-                            <div key={i} className="p-8 bg-blue-50/50 rounded-[40px] text-center border border-blue-100/50 group hover:bg-blue-900 hover:border-blue-900 transition-all duration-500">
-                                <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center mx-auto mb-5 shadow-sm group-hover:scale-110 transition-transform duration-500">
-                                    <v.icon className="w-7 h-7 text-blue-900" />
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            {[
+                                { icon: ShieldCheckIcon, title: 'Safety First', desc: 'Patient safety is our non-negotiable priority in every procedure and interaction.' },
+                                { icon: StarIcon, title: 'Excellence', desc: 'We uphold the highest clinical standards and continually improve our practice.' },
+                                { icon: UserGroupIcon, title: 'Compassion', desc: 'Every patient is treated with dignity, empathy, and respect.' },
+                            ].map((v, i) => (
+                                <div key={i} className="bg-blue-950 rounded-[32px] p-8 shadow-xl shadow-blue-950/10 border border-white/5 group hover:border-cyan-500/30 transition-all duration-500">
+                                    <div className="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-500">
+                                        <v.icon className="w-6 h-6 text-cyan-400" />
+                                    </div>
+                                    <h4 className="font-black text-white mb-2 text-sm uppercase tracking-wide group-hover:text-cyan-400 transition-colors">{v.title}</h4>
+                                    <p className="text-blue-100/40 text-xs leading-relaxed font-medium">{v.desc}</p>
                                 </div>
-                                <h4 className="font-black text-blue-950 mb-3 uppercase tracking-wide text-sm group-hover:text-white">{v.title}</h4>
-                                <p className="text-blue-950/60 text-sm leading-relaxed font-medium group-hover:text-blue-100/60 ">{v.desc}</p>
-                            </div>
-                        ))}
+                            ))}
+                        </div>
                     </div>
 
                     {/* SERVICE VISUALS SECTION */}
@@ -419,24 +416,7 @@ export default function ServiceDetailPage() {
                         </p>
                     </div>
 
-                    {/* Bottom CTA */}
-                    <div className="bg-blue-900 rounded-[48px] p-12 text-center text-white" id="contact">
-                        <h3 className="text-2xl font-black mb-3 tracking-tighter">Ready to access this service?</h3>
-                        <p className="text-blue-200 mb-8 font-medium">Contact us or book an appointment with the relevant department.</p>
-                        <div className="flex flex-wrap justify-center gap-4">
-                            <Link href="/contact" className="px-10 py-5 bg-white text-blue-900 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-blue-50 transition-all">
-                                Contact Us
-                            </Link>
-                            {service.department && (
-                                <Link href={`/departments/${service.department.slug}`} className="px-10 py-5 bg-white/10 border border-white/20 text-white rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-white/20 transition-all">
-                                    View Department
-                                </Link>
-                            )}
-                            <Link href="/services" className="px-10 py-5 bg-white/10 border border-white/20 text-white rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-white/20 transition-all">
-                                ← All Services
-                            </Link>
-                        </div>
-                    </div>
+
                 </div>
             </main>
             <Footer />
