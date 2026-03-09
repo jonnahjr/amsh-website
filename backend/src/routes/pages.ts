@@ -8,7 +8,13 @@ const router = Router();
 router.get('/', async (req: Request, res: Response) => {
     try {
         const { status } = req.query;
-        const where: any = status ? { status } : { status: 'PUBLISHED' };
+        let where: any = {};
+        if (status && status !== 'ALL') {
+            where.status = status;
+        } else if (!status) {
+            where.status = 'PUBLISHED';
+        }
+
         const pages = await prisma.page.findMany({ where, orderBy: { order: 'asc' } });
         res.json({ pages });
     } catch (error) { res.status(500).json({ error: 'Failed to fetch pages.' }); }

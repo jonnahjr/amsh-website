@@ -62,7 +62,7 @@ export default function Footer() {
                         </Link>
                         <p className="text-gray-400 text-sm leading-relaxed mb-6 max-w-sm">
                             Specialized public mental health institution established in 1930 E.C.
-                            Providing comprehensive, compassionate psychiatric care for over 90 years.
+                            Providing comprehensive, compassionate psychiatric care for over 80 years.
                         </p>
 
                         {/* Contact Info */}

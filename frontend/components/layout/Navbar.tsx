@@ -165,11 +165,11 @@ export default function Navbar() {
                     <div className="flex items-center justify-between h-16">
 
                         {/* LOGO - DYNAMIC FLOATING EFFECT */}
-                        <Link href="/" className="flex items-center gap-4 flex-shrink-0 group relative z-[60] -ml-16">
-                            <div className={`relative overflow-hidden transition-all duration-700 ease-in-out flex items-center justify-center p-0 rounded-full border-4 ring-4 ring-white
+                        <Link href="/" className="flex items-center gap-4 flex-shrink-0 group relative z-[60] -ml-16 lg:-ml-24">
+                            <div className={`relative overflow-hidden transition-all duration-700 ease-in-out flex items-center justify-center rounded-full border-[4px] border-white bg-white shadow-[0_10px_30px_rgba(0,0,0,0.1)]
                                 ${scrolled
-                                    ? 'w-12 h-12 border-blue-900/10'
-                                    : 'w-24 h-24 -mb-16 border-blue-900/20 scale-115 translate-y-5'}`}
+                                    ? 'w-14 h-14'
+                                    : 'w-28 h-28 -mb-14 scale-100 translate-y-2'}`}
                             >
                                 <video
                                     src="/images/PixVerse_V5.6_Image_Text_360P_Create_a_premium.mp4"
@@ -177,9 +177,9 @@ export default function Navbar() {
                                     loop
                                     muted
                                     playsInline
-                                    className="w-full h-full object-cover p-0"
+                                    className="w-full h-full object-cover rounded-full"
                                 />
-                                <div className="absolute inset-0 bg-gradient-to-t from-blue-900/40 to-transparent pointer-events-none" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-blue-900/20 to-transparent pointer-events-none" />
                             </div>
                             {/* Text beside the logo */}
                             <div className="flex flex-col">

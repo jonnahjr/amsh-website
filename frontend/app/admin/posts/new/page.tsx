@@ -15,15 +15,18 @@ import {
     Cog6ToothIcon,
     DocumentTextIcon,
     GlobeAltIcon,
+    SparklesIcon,
+    CalendarDaysIcon,
+    ArrowPathIcon,
+    DocumentMagnifyingGlassIcon,
 } from '@heroicons/react/24/outline';
 
-// Simple toolbar button
 const ToolbarBtn = ({ onClick, title, children }: { onClick: () => void; title: string; children: React.ReactNode }) => (
     <button
         type="button"
         onClick={onClick}
         title={title}
-        className="px-2 py-1 text-xs font-bold text-gray-600 hover:text-blue-900 hover:bg-blue-50 rounded transition-colors"
+        className="px-3 py-2 text-[11px] font-black uppercase tracking-widest text-slate-500 hover:text-primary hover:bg-primary/5 rounded-xl transition-all flex items-center justify-center min-w-[32px]"
     >
         {children}
     </button>
@@ -178,99 +181,94 @@ export default function PostEditorPage() {
             } else {
                 await postsAPI.create(payload);
             }
-            setSuccess(statusOverride === 'PUBLISHED' ? 'Post published successfully!' : 'Post saved!');
+            setSuccess(statusOverride === 'PUBLISHED' ? 'Broadcast Live!' : 'Archive Saved.');
             setTimeout(() => router.push('/admin/posts'), 1200);
         } catch (err: any) {
-            setError(err.response?.data?.message || 'Failed to save post');
+            setError(err.response?.data?.message || 'Protocol failure. Data not synchronized.');
         } finally {
             setLoading(false);
         }
     };
 
     if (loading && isEdit) return (
-        <div className="flex items-center justify-center h-96">
-            <div className="w-10 h-10 border-4 border-blue-900 border-t-transparent rounded-full animate-spin" />
+        <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6">
+            <div className="w-16 h-16 border-[5px] border-slate-100 border-t-primary rounded-full animate-spin" />
+            <p className="text-slate-400 font-bold uppercase tracking-[0.2em] text-[10px] animate-pulse">Retrieving Asset Metadata...</p>
         </div>
     );
 
     const tabs = [
-        { key: 'content', label: 'Content', icon: DocumentTextIcon },
-        { key: 'seo', label: 'SEO & Meta', icon: GlobeAltIcon },
-        { key: 'settings', label: 'Settings', icon: Cog6ToothIcon },
+        { key: 'content', label: 'Drafting', icon: DocumentTextIcon },
+        { key: 'seo', label: 'Visibility', icon: GlobeAltIcon },
+        { key: 'settings', label: 'Meta', icon: Cog6ToothIcon },
     ];
 
     return (
-        <div className="max-w-7xl mx-auto space-y-6 animate-fade-in pb-20">
-            {/* Header */}
-            <div className="flex items-center justify-between flex-wrap gap-4">
-                <div className="flex items-center gap-4">
-                    <Link href="/admin/posts" className="p-2 hover:bg-gray-100 rounded-xl transition-colors text-gray-400">
-                        <ArrowLeftIcon className="w-5 h-5" />
+        <div className="space-y-10 animate-in fade-in duration-700 pb-20 max-w-[1400px] mx-auto">
+            {/* Header / Command Bar */}
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8 bg-white p-10 rounded-[2.5rem] border border-slate-200/60 shadow-sm relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-64 h-full bg-gradient-to-l from-primary/5 to-transparent pointer-events-none" />
+                <div className="flex items-center gap-6 relative z-10">
+                    <Link href="/admin/posts" className="p-4 bg-slate-50 hover:bg-white hover:shadow-lg rounded-2xl transition-all text-slate-400 group border border-slate-100">
+                        <ArrowLeftIcon className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
                     </Link>
                     <div>
-                        <h2 className="text-2xl font-black text-gray-900">{isEdit ? 'Edit Post' : 'Create New Post'}</h2>
-                        <p className="text-gray-400 text-sm">{isEdit ? `Editing: ${form.title}` : 'Draft a new article for your audience'}</p>
+                        <div className="flex items-center gap-3 mb-2">
+                            <div className={`px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest ${form.status === 'PUBLISHED' ? 'bg-emerald-50 text-emerald-600 border border-emerald-100' : 'bg-amber-50 text-amber-600 border border-amber-100'}`}>
+                                {form.status}
+                            </div>
+                            <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Broadcast Editor</span>
+                        </div>
+                        <h2 className="text-3xl font-jakarta font-black text-slate-900 tracking-tight leading-none">{isEdit ? 'Modify Publication' : 'Initialize Release'}</h2>
                     </div>
                 </div>
-                <div className="flex items-center gap-3">
-                    {/* Status badge */}
-                    <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${form.status === 'PUBLISHED' ? 'bg-green-100 text-green-700' :
-                        form.status === 'DRAFT' ? 'bg-amber-100 text-amber-700' :
-                            'bg-gray-100 text-gray-500'
-                        }`}>
-                        {form.status}
-                    </span>
-                    {form.slug && (
-                        <Link href={`/news/${form.slug}`} target="_blank" className="p-2 text-gray-400 hover:text-blue-900 hover:bg-blue-50 rounded-xl transition-all">
-                            <EyeIcon className="w-5 h-5" />
-                        </Link>
-                    )}
+
+                <div className="flex items-center gap-4 relative z-10">
                     <button
-                        type="button"
                         onClick={() => handleSubmit('DRAFT')}
                         disabled={loading}
-                        className="px-5 py-2.5 bg-white border border-gray-200 rounded-xl text-sm font-bold text-gray-600 hover:bg-gray-50 transition-colors disabled:opacity-50"
+                        className="px-8 py-4 bg-white border border-slate-200 rounded-2xl text-[11px] font-black uppercase tracking-widest text-slate-600 hover:bg-slate-50 transition-all shadow-sm"
                     >
-                        Save Draft
+                        Save Stage
                     </button>
                     <button
-                        type="button"
                         onClick={() => handleSubmit('PUBLISHED')}
                         disabled={loading}
-                        className="px-5 py-2.5 bg-blue-900 text-white rounded-xl text-sm font-bold hover:bg-blue-800 transition-all shadow-lg shadow-blue-900/20 flex items-center gap-2 disabled:opacity-50"
+                        className="px-10 py-4 bg-primary text-white rounded-2xl text-[11px] font-black uppercase tracking-[0.2em] hover:bg-primary-dark transition-all shadow-[0_15px_30px_rgba(27,79,138,0.2)] hover:-translate-y-1 active:translate-y-0 flex items-center gap-3 group"
                     >
-                        {loading ? <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : <CheckIcon className="w-4 h-4" />}
-                        {form.status === 'PUBLISHED' ? 'Update' : 'Publish'}
+                        {loading ? <ArrowPathIcon className="w-4 h-4 animate-spin" /> : <CheckIcon className="w-5 h-5 group-hover:scale-110 transition-transform" />}
+                        {form.status === 'PUBLISHED' ? 'Update Release' : 'Live Sync'}
                     </button>
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                {/* Left: Main Content */}
-                <div className="lg:col-span-2 space-y-6">
-                    {/* Title */}
-                    <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+                {/* Left: Primary Workspace */}
+                <div className="lg:col-span-8 space-y-8">
+                    {/* Identification Section */}
+                    <div className="bg-white p-10 rounded-[2.5rem] border border-slate-200/60 shadow-sm relative overflow-hidden">
                         <input
                             type="text"
                             value={form.title}
                             onChange={handleTitleChange}
-                            placeholder="Post title..."
-                            className="w-full text-3xl font-black text-gray-900 placeholder-gray-200 border-0 focus:ring-0 pb-2 border-b border-gray-100 focus:border-blue-900 transition-all mb-4"
+                            placeholder="Release Title Header..."
+                            className="w-full text-4xl font-jakarta font-black text-slate-900 placeholder-slate-200 border-0 focus:ring-0 p-0 mb-6 bg-transparent"
                         />
-                        <div className="flex items-center gap-2 text-xs font-bold text-gray-400 bg-gray-50 px-3 py-2 rounded-lg">
-                            <span className="text-gray-300">emsh.gov.et/news/</span>
+                        <div className="flex items-center gap-3 text-[11px] font-bold text-slate-400 bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                            <GlobeAltIcon className="w-4 h-4 text-primary" />
+                            <span className="opacity-50">emsh.gov.et/release/</span>
                             <input
                                 type="text"
                                 value={form.slug}
                                 onChange={(e) => setForm(prev => ({ ...prev, slug: e.target.value }))}
-                                className="bg-transparent border-0 p-0 text-blue-900 focus:ring-0 w-full text-xs"
+                                className="bg-transparent border-0 p-0 text-primary focus:ring-0 w-full text-[11px] font-black uppercase tracking-widest"
                             />
                         </div>
                     </div>
 
-                    {/* Tabs */}
-                    <div className="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
-                        <div className="flex border-b border-gray-100">
+                    {/* Editor Interface */}
+                    <div className="bg-white rounded-[2.5rem] border border-slate-200/60 shadow-sm overflow-hidden flex flex-col min-h-[700px]">
+                        <div className="flex bg-slate-50/50 p-2 border-b border-slate-100">
                             {tabs.map(tab => {
                                 const Icon = tab.icon;
                                 return (
@@ -278,9 +276,9 @@ export default function PostEditorPage() {
                                         key={tab.key}
                                         type="button"
                                         onClick={() => setActiveTab(tab.key as any)}
-                                        className={`flex items-center gap-2 px-6 py-4 text-xs font-black uppercase tracking-widest transition-colors ${activeTab === tab.key
-                                            ? 'text-blue-900 border-b-2 border-blue-900 -mb-px'
-                                            : 'text-gray-400 hover:text-gray-700'
+                                        className={`flex-1 flex items-center justify-center gap-3 py-4 text-[10px] font-black uppercase tracking-[0.2em] transition-all rounded-2xl ${activeTab === tab.key
+                                            ? 'bg-white text-primary shadow-sm border border-slate-200/60'
+                                            : 'text-slate-400 hover:text-slate-600'
                                             }`}
                                     >
                                         <Icon className="w-4 h-4" />
@@ -290,89 +288,150 @@ export default function PostEditorPage() {
                             })}
                         </div>
 
-                        <div className="p-8">
-                            {/* Content Tab */}
+                        <div className="p-10 flex-1 flex flex-col">
                             {activeTab === 'content' && (
-                                <div className="space-y-4">
+                                <div className="space-y-6 flex-1 flex flex-col animate-in fade-in duration-500">
                                     {/* Toolbar */}
-                                    <div className="flex items-center gap-1 flex-wrap border border-gray-100 rounded-xl p-2 bg-gray-50">
-                                        <ToolbarBtn onClick={() => insertFormatting('**')} title="Bold"><strong>B</strong></ToolbarBtn>
-                                        <ToolbarBtn onClick={() => insertFormatting('*')} title="Italic"><em>I</em></ToolbarBtn>
-                                        <ToolbarBtn onClick={() => insertFormatting('~~')} title="Strikethrough"><s>S</s></ToolbarBtn>
-                                        <div className="w-px h-5 bg-gray-200 mx-1" />
-                                        <ToolbarBtn onClick={() => insertFormatting('# ', false)} title="Heading 1">H1</ToolbarBtn>
-                                        <ToolbarBtn onClick={() => insertFormatting('## ', false)} title="Heading 2">H2</ToolbarBtn>
-                                        <ToolbarBtn onClick={() => insertFormatting('### ', false)} title="Heading 3">H3</ToolbarBtn>
-                                        <div className="w-px h-5 bg-gray-200 mx-1" />
-                                        <ToolbarBtn onClick={() => insertFormatting('- ', false)} title="Bullet List">• List</ToolbarBtn>
-                                        <ToolbarBtn onClick={() => insertFormatting('1. ', false)} title="Numbered List">1. List</ToolbarBtn>
-                                        <ToolbarBtn onClick={() => insertFormatting('> ', false)} title="Blockquote">" Quote</ToolbarBtn>
-                                        <div className="w-px h-5 bg-gray-200 mx-1" />
-                                        <ToolbarBtn onClick={() => insertFormatting('link')} title="Insert Link">🔗 Link</ToolbarBtn>
-                                        <ToolbarBtn onClick={() => insertFormatting('img')} title="Insert Image">🖼 Image</ToolbarBtn>
-                                        <ToolbarBtn onClick={() => insertFormatting('`')} title="Code">{`</>`}</ToolbarBtn>
+                                    <div className="flex items-center gap-1 flex-wrap bg-slate-50 p-2 rounded-2xl border border-slate-100">
+                                        <ToolbarBtn onClick={() => insertFormatting('**')} title="Bold">B</ToolbarBtn>
+                                        <ToolbarBtn onClick={() => insertFormatting('*')} title="Italic">I</ToolbarBtn>
+                                        <div className="w-px h-6 bg-slate-200 mx-2" />
+                                        <ToolbarBtn onClick={() => insertFormatting('# ', false)} title="Header 1">H1</ToolbarBtn>
+                                        <ToolbarBtn onClick={() => insertFormatting('## ', false)} title="Header 2">H2</ToolbarBtn>
+                                        <div className="w-px h-6 bg-slate-200 mx-2" />
+                                        <ToolbarBtn onClick={() => insertFormatting('- ', false)} title="List">•</ToolbarBtn>
+                                        <ToolbarBtn onClick={() => insertFormatting('link')} title="Links">🔗</ToolbarBtn>
+                                        <ToolbarBtn onClick={() => insertFormatting('img')} title="Assets">🖼</ToolbarBtn>
                                     </div>
                                     <textarea
                                         ref={contentRef}
                                         value={form.content}
                                         onChange={(e) => setForm(prev => ({ ...prev, content: e.target.value }))}
-                                        placeholder="Start writing your news article here... You can use Markdown formatting."
-                                        rows={22}
-                                        className="w-full p-5 bg-gray-50 border border-gray-100 rounded-2xl text-gray-800 focus:bg-white focus:ring-2 focus:ring-blue-900 transition-all font-mono text-sm leading-relaxed resize-none"
+                                        placeholder="Compose the narrative within this encrypted terminal. Markdown integration supported."
+                                        className="flex-1 w-full p-8 bg-slate-50/30 border border-slate-100 rounded-3xl text-slate-700 focus:bg-white focus:ring-[6px] focus:ring-primary/5 focus:border-primary/20 transition-all font-inter text-[15px] leading-relaxed resize-none outline-none"
                                     />
-                                    <div className="flex items-center justify-between">
-                                        <p className="text-xs text-gray-400">{form.content.length} characters · Supports Markdown formatting</p>
+                                    <div className="flex items-center justify-between px-2">
+                                        <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">{form.content.split(' ').length} WORDS · {form.content.length} SIGNS</p>
                                         <div className="flex items-center gap-4">
-                                            <div className="flex -space-x-2">
-                                                {gallery.slice(0, 3).map((img, i) => (
-                                                    <img key={i} src={img} className="w-6 h-6 rounded-full border-2 border-white object-cover shadow-sm" crossOrigin="anonymous" />
+                                            <div className="flex -space-x-3">
+                                                {gallery.slice(0, 4).map((img, i) => (
+                                                    <img key={i} src={img} className="w-8 h-8 rounded-xl border-2 border-white object-cover shadow-sm ring-1 ring-slate-100" />
                                                 ))}
-                                                {gallery.length > 3 && (
-                                                    <div className="w-6 h-6 rounded-full border-2 border-white bg-gray-100 flex items-center justify-center text-[8px] font-black text-gray-400 shadow-sm">
-                                                        +{gallery.length - 3}
+                                                {gallery.length > 4 && (
+                                                    <div className="w-8 h-8 rounded-xl border-2 border-white bg-slate-100 flex items-center justify-center text-[9px] font-black text-slate-400 shadow-sm ring-1 ring-slate-100">
+                                                        +{gallery.length - 4}
                                                     </div>
                                                 )}
                                             </div>
-                                            <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">{gallery.length} Images in Gallery</p>
+                                            <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Asset Pool</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
+                            {activeTab === 'seo' && (
+                                <div className="space-y-8 animate-in fade-in duration-500">
+                                    <div className="space-y-3">
+                                        <label className="block text-[11px] font-black text-slate-400 uppercase tracking-[0.2em] ml-2">Executive Summary</label>
+                                        <textarea
+                                            value={form.excerpt}
+                                            onChange={(e) => setForm(prev => ({ ...prev, excerpt: e.target.value }))}
+                                            placeholder="A condensed variant of the narrative for index cards..."
+                                            rows={4}
+                                            className="w-full p-6 bg-slate-50 border border-slate-100 rounded-3xl text-slate-700 focus:bg-white focus:ring-[6px] focus:ring-primary/5 focus:border-primary/20 transition-all resize-none outline-none font-medium"
+                                        />
+                                    </div>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                        <div className="space-y-3">
+                                            <label className="block text-[11px] font-black text-slate-400 uppercase tracking-[0.2em] ml-2">Meta Signature</label>
+                                            <input
+                                                type="text"
+                                                value={form.metaTitle}
+                                                onChange={(e) => setForm(prev => ({ ...prev, metaTitle: e.target.value }))}
+                                                placeholder="Global search identifier..."
+                                                className="w-full p-6 bg-slate-50 border border-slate-100 rounded-3xl text-slate-700 focus:bg-white transition-all outline-none font-medium"
+                                            />
+                                        </div>
+                                        <div className="space-y-3">
+                                            <label className="block text-[11px] font-black text-slate-400 uppercase tracking-[0.2em] ml-2">Discovery Tags</label>
+                                            <div className="relative group">
+                                                <TagIcon className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-300 group-focus-within:text-primary transition-colors" />
+                                                <input
+                                                    type="text"
+                                                    value={form.tags}
+                                                    onChange={(e) => setForm(prev => ({ ...prev, tags: e.target.value }))}
+                                                    placeholder="Keywords for crawler indexing..."
+                                                    className="w-full pl-16 pr-6 py-6 bg-slate-50 border border-slate-100 rounded-3xl text-slate-700 focus:bg-white transition-all outline-none font-medium"
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="p-8 bg-slate-900 rounded-[2rem] border border-white/5 relative overflow-hidden group">
+                                        <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:scale-110 transition-transform duration-700">
+                                            <DocumentMagnifyingGlassIcon className="w-32 h-32 text-primary" />
+                                        </div>
+                                        <p className="text-[10px] font-black text-slate-500 uppercase tracking-[0.25em] mb-4">Indexing Preview</p>
+                                        <p className="text-xl font-jakarta font-bold text-white mb-2 truncate">{form.metaTitle || form.title || 'Untitled Release'}</p>
+                                        <p className="text-xs text-primary font-bold mb-4">https://emsh.gov.et/release/{form.slug || '...'}</p>
+                                        <p className="text-sm text-slate-400 leading-relaxed line-clamp-2 max-w-xl">{form.metaDescription || form.excerpt || 'No summary provided for metadata harvesting.'}</p>
+                                    </div>
+                                </div>
+                            )}
+
+                            {activeTab === 'settings' && (
+                                <div className="space-y-10 animate-in fade-in duration-500">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                                        <div className="space-y-4">
+                                            <label className="block text-[11px] font-black text-slate-400 uppercase tracking-[0.2em] ml-2">Deployment Schedule</label>
+                                            <div className="relative group">
+                                                <CalendarDaysIcon className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-300 group-focus-within:text-primary transition-colors" />
+                                                <input
+                                                    type="date"
+                                                    value={form.publishedAt}
+                                                    onChange={(e) => setForm(prev => ({ ...prev, publishedAt: e.target.value }))}
+                                                    className="w-full pl-16 pr-6 py-6 bg-slate-50 border border-slate-100 rounded-3xl text-slate-700 focus:bg-white transition-all outline-none font-black uppercase tracking-widest text-[12px]"
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="p-8 bg-primary/5 rounded-[2.5rem] border border-primary/10 flex flex-col justify-center">
+                                            <h4 className="text-[11px] font-black text-primary uppercase tracking-[0.2em] mb-2 flex items-center gap-2">
+                                                <SparklesIcon className="w-4 h-4" /> Operational Note
+                                            </h4>
+                                            <p className="text-[13px] text-slate-500 leading-relaxed">Gallery assets are now prioritized within the primary drafting workspace for instantaneous visual verification.</p>
                                         </div>
                                     </div>
 
-                                    {/* Gallery Section - More prominent */}
-                                    <div className="pt-6 border-t border-gray-50 mt-8">
-                                        <div className="flex items-center justify-between mb-4">
-                                            <h3 className="text-xs font-black text-gray-900 uppercase tracking-widest flex items-center gap-2">
-                                                <PhotoIcon className="w-4 h-4 text-blue-900" />
-                                                Photo Gallery
+                                    <div className="pt-6 border-t border-slate-100">
+                                        <div className="flex items-center justify-between mb-8">
+                                            <h3 className="text-xs font-black text-slate-900 uppercase tracking-[0.25em] flex items-center gap-3">
+                                                <PhotoIcon className="w-5 h-5 text-primary" /> Integrated Gallery Hub
                                             </h3>
-                                            <span className="text-[10px] font-medium text-gray-400">Add up to 4-6 supplementary images</span>
                                         </div>
 
-                                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                                        <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
                                             {gallery.map((url, i) => (
-                                                <div key={i} className="relative group aspect-square rounded-2xl overflow-hidden border border-gray-100 shadow-sm transition-all hover:shadow-md">
-                                                    <img src={url} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" crossOrigin="anonymous" />
-                                                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                                <div key={i} className="relative group aspect-square rounded-2xl overflow-hidden border border-slate-100 shadow-sm transition-all hover:shadow-xl">
+                                                    <img src={url} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" crossOrigin="anonymous" />
+                                                    <div className="absolute inset-0 bg-slate-900/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                                                         <button
                                                             type="button"
                                                             onClick={() => setGallery(g => g.filter((_, j) => j !== i))}
-                                                            className="p-2 bg-red-600 text-white rounded-full hover:bg-red-500 transition-colors shadow-lg"
+                                                            className="p-3 bg-red-600/90 text-white rounded-xl hover:bg-red-500 transition-colors shadow-lg"
                                                         >
-                                                            <XMarkIcon className="w-4 h-4" />
+                                                            <XMarkIcon className="w-5 h-5" />
                                                         </button>
                                                     </div>
                                                 </div>
                                             ))}
 
-                                            {gallery.length < 8 && (
-                                                <label className={`flex flex-col items-center justify-center aspect-square border-2 border-dashed rounded-2xl transition-all cursor-pointer ${uploadingGallery ? 'border-blue-900 bg-blue-50' : 'border-gray-200 hover:border-blue-900 hover:bg-blue-50'}`}>
+                                            {gallery.length < 10 && (
+                                                <label className={`flex flex-col items-center justify-center aspect-square border-2 border-dashed rounded-3xl transition-all cursor-pointer ${uploadingGallery ? 'border-primary bg-primary/5' : 'border-slate-200 hover:border-primary hover:bg-primary/5'}`}>
                                                     {uploadingGallery ? (
-                                                        <span className="w-6 h-6 border-3 border-blue-900 border-t-transparent rounded-full animate-spin" />
+                                                        <ArrowPathIcon className="w-8 h-8 text-primary animate-spin" />
                                                     ) : (
                                                         <>
-                                                            <div className="w-10 h-10 bg-gray-50 text-gray-300 rounded-full flex items-center justify-center group-hover:text-blue-900 group-hover:bg-blue-100 transition-colors">
-                                                                <CloudArrowUpIcon className="w-5 h-5" />
-                                                            </div>
-                                                            <span className="text-[9px] font-black text-gray-400 uppercase tracking-widest mt-2 text-center px-2">Add Photos</span>
+                                                            <CloudArrowUpIcon className="w-8 h-8 text-slate-200 group-hover:text-primary transition-colors" />
+                                                            <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest mt-4">Add Frame</span>
                                                         </>
                                                     )}
                                                     <input
@@ -388,123 +447,36 @@ export default function PostEditorPage() {
                                     </div>
                                 </div>
                             )}
-
-                            {/* SEO Tab */}
-                            {activeTab === 'seo' && (
-                                <div className="space-y-6">
-                                    <div>
-                                        <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2">Excerpt / Summary</label>
-                                        <textarea
-                                            value={form.excerpt}
-                                            onChange={(e) => setForm(prev => ({ ...prev, excerpt: e.target.value }))}
-                                            placeholder="Brief description shown in news listing cards..."
-                                            rows={3}
-                                            className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl text-gray-800 focus:bg-white focus:ring-2 focus:ring-blue-900 transition-all resize-none"
-                                        />
-                                    </div>
-                                    <div>
-                                        <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2">Meta Title (SEO)</label>
-                                        <input
-                                            type="text"
-                                            value={form.metaTitle}
-                                            onChange={(e) => setForm(prev => ({ ...prev, metaTitle: e.target.value }))}
-                                            placeholder="SEO title (defaults to post title if empty)..."
-                                            className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl text-gray-800 focus:bg-white focus:ring-2 focus:ring-blue-900 transition-all"
-                                        />
-                                        <p className="text-xs text-gray-300 mt-1">{form.metaTitle.length}/60 characters recommended</p>
-                                    </div>
-                                    <div>
-                                        <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2">Meta Description (SEO)</label>
-                                        <textarea
-                                            value={form.metaDescription}
-                                            onChange={(e) => setForm(prev => ({ ...prev, metaDescription: e.target.value }))}
-                                            placeholder="Description for search engines..."
-                                            rows={3}
-                                            className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl text-gray-800 focus:bg-white focus:ring-2 focus:ring-blue-900 transition-all resize-none"
-                                        />
-                                        <p className="text-xs text-gray-300 mt-1">{form.metaDescription.length}/160 characters recommended</p>
-                                    </div>
-                                    {/* SEO Preview */}
-                                    {(form.title || form.excerpt) && (
-                                        <div className="p-4 bg-gray-50 rounded-2xl border border-gray-100">
-                                            <p className="text-[10px] font-black text-gray-300 uppercase tracking-widest mb-3">Search Preview</p>
-                                            <p className="text-blue-700 text-sm font-medium truncate">{form.metaTitle || form.title}</p>
-                                            <p className="text-xs text-green-700 truncate">https://emsh.gov.et/news/{form.slug}</p>
-                                            <p className="text-xs text-gray-500 mt-1 line-clamp-2">{form.metaDescription || form.excerpt}</p>
-                                        </div>
-                                    )}
-                                </div>
-                            )}
-
-                            {/* Settings Tab */}
-                            {activeTab === 'settings' && (
-                                <div className="space-y-6">
-                                    <div>
-                                        <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2">Tags (comma separated)</label>
-                                        <div className="relative">
-                                            <TagIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-300" />
-                                            <input
-                                                type="text"
-                                                value={form.tags}
-                                                onChange={(e) => setForm(prev => ({ ...prev, tags: e.target.value }))}
-                                                placeholder="mental health, psychiatry, wellness..."
-                                                className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl text-gray-800 focus:bg-white focus:ring-2 focus:ring-blue-900 transition-all"
-                                            />
-                                        </div>
-                                        <div className="flex flex-wrap gap-2 mt-2">
-                                            {form.tags.split(',').filter(t => t.trim()).map((tag, i) => (
-                                                <span key={i} className="px-2 py-0.5 bg-blue-50 text-blue-700 text-[10px] font-black uppercase tracking-wider rounded-full">
-                                                    {tag.trim()}
-                                                </span>
-                                            ))}
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2">Scheduled Publish Date</label>
-                                        <input
-                                            type="date"
-                                            value={form.publishedAt}
-                                            onChange={(e) => setForm(prev => ({ ...prev, publishedAt: e.target.value }))}
-                                            className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl text-gray-800 focus:bg-white focus:ring-2 focus:ring-blue-900 transition-all"
-                                        />
-                                    </div>
-
-                                    <div className="p-4 bg-blue-50 rounded-2xl border border-blue-100">
-                                        <p className="text-[10px] font-black text-blue-900 uppercase tracking-widest mb-1">Editor Tip</p>
-                                        <p className="text-xs text-blue-700 leading-relaxed">
-                                            The photo gallery has been moved to the primary <strong>Content</strong> tab for easier access while writing.
-                                        </p>
-                                    </div>
-                                </div>
-                            )}
                         </div>
                     </div>
                 </div>
 
-                {/* Right Sidebar */}
-                <div className="space-y-6">
-                    {/* Publish Settings */}
-                    <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm space-y-5">
-                        <h3 className="font-black text-gray-900 text-xs uppercase tracking-widest border-b border-gray-50 pb-4">Publish Settings</h3>
-
+                {/* Right: Parameter Matrix */}
+                <div className="lg:col-span-4 space-y-8">
+                    {/* Primary Status Card */}
+                    <div className="bg-white p-8 rounded-[2.5rem] border border-slate-200/60 shadow-sm space-y-8">
                         <div>
-                            <label className="block text-xs font-bold text-gray-500 mb-2">Post Type</label>
-                            <select
-                                value={form.type}
-                                onChange={(e) => setForm(prev => ({ ...prev, type: e.target.value }))}
-                                className="w-full bg-gray-50 border-gray-100 rounded-xl text-sm font-bold text-gray-700 px-4 py-2.5"
-                            >
-                                <option value="NEWS">📰 News Article</option>
-                                <option value="BLOG">✍️ Blog Post</option>
-                                <option value="EVENT">📅 Hospital Event</option>
-                                <option value="ANNOUNCEMENT">📢 Announcement</option>
-                            </select>
+                            <h3 className="text-[11px] font-black text-slate-400 uppercase tracking-[0.25em] mb-6 flex items-center gap-2">
+                                <div className="w-1.5 h-1.5 rounded-full bg-primary" /> Configuration State
+                            </h3>
+                            <div className="space-y-3">
+                                <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Release Classification</label>
+                                <select
+                                    value={form.type}
+                                    onChange={(e) => setForm(prev => ({ ...prev, type: e.target.value }))}
+                                    className="w-full bg-slate-50 border-0 rounded-2xl text-[13px] font-bold text-slate-700 px-6 py-4 focus:ring-2 focus:ring-primary/20 transition-all"
+                                >
+                                    <option value="NEWS">📰 News Broadcast</option>
+                                    <option value="BLOG">✍️ Editorial Blog</option>
+                                    <option value="EVENT">📅 Scheduled Event</option>
+                                    <option value="ANNOUNCEMENT">📢 System Announcement</option>
+                                </select>
+                            </div>
                         </div>
 
                         <div>
-                            <label className="block text-xs font-bold text-gray-500 mb-3">Home Page Visibility</label>
-                            <label className="flex items-center justify-between p-3 bg-gray-50 border border-gray-100 rounded-xl cursor-pointer hover:bg-white transition-all">
-                                <span className="text-xs font-black text-gray-900 uppercase tracking-widest">Feature on Home</span>
+                            <label className="flex items-center justify-between p-6 bg-slate-50 border border-slate-100 rounded-3xl cursor-pointer group hover:bg-white hover:shadow-lg transition-all">
+                                <span className="text-[11px] font-black text-slate-900 uppercase tracking-widest">Priority Home Placement</span>
                                 <div className="relative inline-flex items-center cursor-pointer">
                                     <input
                                         type="checkbox"
@@ -512,163 +484,118 @@ export default function PostEditorPage() {
                                         onChange={(e) => setForm(prev => ({ ...prev, isFeatured: e.target.checked }))}
                                         className="sr-only peer"
                                     />
-                                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-900"></div>
+                                    <div className="w-12 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
                                 </div>
                             </label>
-                            <p className="text-[10px] text-gray-400 mt-2 leading-relaxed">Featured posts will appear in the special news section on the hospital home page.</p>
                         </div>
 
-                        <div>
-                            <label className="block text-xs font-bold text-gray-500 mb-2">Status</label>
-                            <div className="grid grid-cols-3 gap-2">
+                        <div className="space-y-3">
+                            <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Operational Status</label>
+                            <div className="grid grid-cols-3 gap-3">
                                 {['DRAFT', 'PUBLISHED', 'ARCHIVED'].map(s => (
                                     <button
                                         key={s}
                                         type="button"
                                         onClick={() => setForm(prev => ({ ...prev, status: s }))}
-                                        className={`py-2 rounded-xl text-[10px] font-black uppercase tracking-wider transition-all ${form.status === s
-                                            ? s === 'PUBLISHED' ? 'bg-green-100 text-green-700 border-2 border-green-200'
-                                                : s === 'DRAFT' ? 'bg-amber-100 text-amber-700 border-2 border-amber-200'
-                                                    : 'bg-gray-200 text-gray-600 border-2 border-gray-300'
-                                            : 'bg-gray-50 text-gray-400 border-2 border-transparent hover:border-gray-200'
+                                        className={`py-3 rounded-xl text-[9px] font-black uppercase tracking-wider transition-all border-2 ${form.status === s
+                                            ? s === 'PUBLISHED' ? 'bg-emerald-50 text-emerald-600 border-emerald-200'
+                                                : s === 'DRAFT' ? 'bg-amber-50 text-amber-600 border-amber-200'
+                                                    : 'bg-slate-50 text-slate-600 border-slate-200'
+                                            : 'bg-transparent text-slate-300 border-transparent hover:border-slate-100 hover:text-slate-400'
                                             }`}
                                     >
-                                        {s === 'PUBLISHED' ? '✅' : s === 'DRAFT' ? '✏️' : '📦'} {s.charAt(0) + s.slice(1).toLowerCase()}
+                                        {s}
                                     </button>
                                 ))}
                             </div>
                         </div>
 
-                        <div>
-                            <label className="block text-xs font-bold text-gray-500 mb-2">Category</label>
-                            <div className="space-y-1 max-h-44 overflow-y-auto">
-                                <label className="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-lg cursor-pointer">
-                                    <input
-                                        type="radio"
-                                        name="cat"
-                                        checked={form.categoryId === ''}
-                                        onChange={() => setForm(prev => ({ ...prev, categoryId: '' }))}
-                                        className="text-blue-900"
-                                    />
-                                    <span className="text-sm font-medium text-gray-400">No Category</span>
+                        <div className="space-y-3">
+                            <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Entity Category</label>
+                            <div className="space-y-2 max-h-48 overflow-y-auto pr-2 no-scrollbar">
+                                <label className="flex items-center gap-3 p-4 hover:bg-slate-50 rounded-2xl cursor-pointer group transition-all">
+                                    <div className={`w-4 h-4 rounded-full border-2 transition-all ${form.categoryId === '' ? 'border-primary bg-primary' : 'border-slate-200 group-hover:border-primary'}`} />
+                                    <input type="radio" className="hidden" name="cat" checked={form.categoryId === ''} onChange={() => setForm(prev => ({ ...prev, categoryId: '' }))} />
+                                    <span className="text-[11px] font-black text-slate-400 uppercase tracking-widest">Uncategorized</span>
                                 </label>
                                 {categories.map(cat => (
-                                    <label key={cat.id} className="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-lg cursor-pointer">
-                                        <input
-                                            type="radio"
-                                            name="cat"
-                                            checked={form.categoryId === cat.id}
-                                            onChange={() => setForm(prev => ({ ...prev, categoryId: cat.id }))}
-                                            className="text-blue-900"
-                                        />
-                                        <span className="text-sm font-medium text-gray-700">{cat.name}</span>
+                                    <label key={cat.id} className="flex items-center gap-3 p-4 hover:bg-slate-50 rounded-2xl cursor-pointer group transition-all">
+                                        <div className={`w-4 h-4 rounded-full border-2 transition-all ${form.categoryId === cat.id ? 'border-primary bg-primary' : 'border-slate-200 group-hover:border-primary'}`} />
+                                        <input type="radio" className="hidden" name="cat" checked={form.categoryId === cat.id} onChange={() => setForm(prev => ({ ...prev, categoryId: cat.id }))} />
+                                        <span className="text-[11px] font-black text-slate-700 uppercase tracking-widest">{cat.name}</span>
                                     </label>
                                 ))}
                             </div>
                         </div>
                     </div>
 
-                    {/* Featured Image */}
-                    <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm space-y-4">
-                        <h3 className="font-black text-gray-900 text-xs uppercase tracking-widest border-b border-gray-50 pb-4">Featured Image</h3>
+                    {/* Asset Master Image */}
+                    <div className="bg-white p-8 rounded-[2.5rem] border border-slate-200/60 shadow-sm space-y-6">
+                        <h3 className="text-[11px] font-black text-slate-400 uppercase tracking-[0.25em] flex items-center gap-2">
+                            Master Release Image
+                        </h3>
 
                         <div
-                            className={`relative group rounded-2xl transition-all ${dragOver ? 'ring-2 ring-blue-900 bg-blue-50' : ''}`}
+                            className={`relative group rounded-[2rem] overflow-hidden transition-all aspect-video ${dragOver ? 'ring-4 ring-primary/20 scale-[0.98]' : ''}`}
                             onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
                             onDragLeave={() => setDragOver(false)}
                             onDrop={handleDrop}
                         >
                             {form.featuredImage ? (
-                                <div className="relative rounded-2xl overflow-hidden aspect-video border border-gray-100">
-                                    <img src={form.featuredImage} alt="Featured" className="w-full h-full object-cover" crossOrigin="anonymous" />
-                                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
-                                        <label className="px-3 py-1.5 bg-white text-gray-900 rounded-lg text-xs font-bold cursor-pointer hover:bg-gray-50">
+                                <>
+                                    <img src={form.featuredImage} alt="Master" className="w-full h-full object-cover" crossOrigin="anonymous" />
+                                    <div className="absolute inset-0 bg-slate-900/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-4">
+                                        <label className="px-8 py-3 bg-white text-slate-900 rounded-xl text-[10px] font-black uppercase tracking-widest cursor-pointer hover:bg-white active:scale-95 transition-all">
                                             Replace
                                             <input type="file" className="hidden" accept="image/*" onChange={(e) => e.target.files?.[0] && handleImageUpload(e.target.files[0])} />
                                         </label>
                                         <button
                                             type="button"
                                             onClick={() => setForm(prev => ({ ...prev, featuredImage: '' }))}
-                                            className="px-3 py-1.5 bg-red-600 text-white rounded-lg text-xs font-bold"
+                                            className="px-8 py-3 bg-red-600 text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-red-500 transition-all"
                                         >
-                                            Remove
+                                            Purge
                                         </button>
                                     </div>
-                                </div>
+                                </>
                             ) : (
-                                <label className="flex flex-col items-center justify-center aspect-video border-2 border-dashed border-gray-200 rounded-2xl hover:border-blue-900 hover:bg-blue-50 transition-all cursor-pointer">
+                                <label className="flex flex-col items-center justify-center h-full border-2 border-dashed border-slate-200 rounded-[2rem] hover:border-primary hover:bg-primary/5 transition-all cursor-pointer group">
                                     {uploading ? (
-                                        <span className="w-8 h-8 border-4 border-blue-900 border-t-transparent rounded-full animate-spin" />
+                                        <ArrowPathIcon className="w-10 h-10 text-primary animate-spin" />
                                     ) : (
                                         <>
-                                            <CloudArrowUpIcon className="w-10 h-10 text-gray-200 mb-2" />
-                                            <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">Click or Drop Image</span>
-                                            <span className="text-[10px] text-gray-300 mt-1">JPG, PNG, WEBP supported</span>
+                                            <CloudArrowUpIcon className="w-12 h-12 text-slate-200 group-hover:text-primary transition-colors" />
+                                            <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-4">Drop Master Media</span>
                                         </>
                                     )}
                                     <input type="file" className="hidden" onChange={(e) => e.target.files?.[0] && handleImageUpload(e.target.files[0])} accept="image/*" />
                                 </label>
                             )}
                         </div>
-
-                        {/* Or paste URL */}
-                        <div>
-                            <label className="block text-[10px] font-black text-gray-300 uppercase tracking-widest mb-1">Or paste image URL</label>
-                            <input
-                                type="text"
-                                placeholder="https://..."
-                                value={form.featuredImage?.startsWith('http') ? form.featuredImage : ''}
-                                onChange={(e) => setForm(prev => ({ ...prev, featuredImage: e.target.value }))}
-                                className="w-full px-3 py-2 text-xs bg-gray-50 border border-gray-100 rounded-xl text-gray-700 focus:ring-2 focus:ring-blue-900 focus:bg-white transition-all shadow-inner"
-                            />
-                        </div>
-                    </div>
-
-                    {/* Quick Actions */}
-                    <div className="bg-blue-950 p-6 rounded-3xl space-y-3">
-                        <h3 className="font-black text-white text-xs uppercase tracking-widest mb-4">Quick Actions</h3>
-                        <button
-                            type="button"
-                            onClick={() => handleSubmit('PUBLISHED')}
-                            disabled={loading || !form.title}
-                            className="w-full py-3 bg-cyan-500 hover:bg-cyan-400 text-white rounded-xl text-xs font-black uppercase tracking-widest transition-all disabled:opacity-40"
-                        >
-                            🚀 Publish Now
-                        </button>
-                        <button
-                            type="button"
-                            onClick={() => handleSubmit('DRAFT')}
-                            disabled={loading}
-                            className="w-full py-3 bg-white/10 hover:bg-white/20 text-white/80 rounded-xl text-xs font-black uppercase tracking-widest transition-all"
-                        >
-                            💾 Save as Draft
-                        </button>
-                        {isEdit && (
-                            <button
-                                type="button"
-                                onClick={() => handleSubmit('ARCHIVED')}
-                                disabled={loading}
-                                className="w-full py-3 bg-white/5 hover:bg-white/10 text-white/40 rounded-xl text-xs font-black uppercase tracking-widest transition-all"
-                            >
-                                📦 Archive Post
-                            </button>
-                        )}
                     </div>
                 </div>
             </div>
 
-            {/* Toast notifications */}
+            {/* Global Communication Feedbacks */}
             {error && (
-                <div className="fixed bottom-8 right-8 bg-red-600 text-white px-6 py-4 rounded-2xl shadow-2xl animate-fade-in-up flex items-center gap-3 z-50">
-                    <span>⚠️</span>
-                    <span className="font-bold text-sm">{error}</span>
-                    <button onClick={() => setError('')} className="ml-2 hover:opacity-70">✕</button>
+                <div className="fixed bottom-10 right-10 bg-slate-900 text-white p-6 rounded-3xl shadow-2xl animate-in slide-in-from-bottom-10 flex items-center gap-4 z-50 border border-white/10">
+                    <div className="w-10 h-10 bg-red-500 rounded-xl flex items-center justify-center">⚠️</div>
+                    <div>
+                        <p className="text-[10px] font-black uppercase tracking-widest text-red-400">System Alert</p>
+                        <p className="text-sm font-bold">{error}</p>
+                    </div>
+                    <button onClick={() => setError('')} className="ml-4 text-slate-500 hover:text-white transition-colors">✕</button>
                 </div>
             )}
             {success && (
-                <div className="fixed bottom-8 right-8 bg-green-600 text-white px-6 py-4 rounded-2xl shadow-2xl animate-fade-in-up flex items-center gap-3 z-50">
-                    <CheckIcon className="w-5 h-5" />
-                    <span className="font-bold text-sm">{success}</span>
+                <div className="fixed bottom-10 right-10 bg-slate-900 text-white p-6 rounded-3xl shadow-2xl animate-in slide-in-from-bottom-10 flex items-center gap-4 z-50 border border-white/10">
+                    <div className="w-10 h-10 bg-emerald-500 rounded-xl flex items-center justify-center">
+                        <CheckIcon className="w-6 h-6" />
+                    </div>
+                    <div>
+                        <p className="text-[10px] font-black uppercase tracking-widest text-emerald-400">Synchronization Success</p>
+                        <p className="text-sm font-bold">{success}</p>
+                    </div>
                 </div>
             )}
         </div>

@@ -23,6 +23,25 @@ router.post('/', authenticate, authorize('ADMIN', 'SUPER_ADMIN'), async (req: Au
     } catch (error) { res.status(500).json({ error: 'Failed to create testimonial.' }); }
 });
 
+// POST /api/testimonials/submit - Public submission
+router.post('/submit', async (req: Request, res: Response) => {
+    try {
+        const { name, role, content, rating, image } = req.body;
+        const t = await prisma.testimonial.create({
+            data: {
+                name,
+                role,
+                content,
+                rating: rating || 5,
+                image: image || '',
+                isActive: false, // Must be approved by admin
+                order: 999
+            }
+        });
+        res.status(201).json({ message: 'Success story submitted for review.', testimonial: t });
+    } catch (error) { res.status(500).json({ error: 'Failed to submit success story.' }); }
+});
+
 router.put('/:id', authenticate, authorize('ADMIN', 'SUPER_ADMIN'), async (req: AuthRequest, res: Response) => {
     try {
         const t = await prisma.testimonial.update({ where: { id: req.params.id }, data: req.body });

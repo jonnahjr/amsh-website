@@ -2,7 +2,7 @@
 
 export default function StatsSection() {
     const stats = [
-        { value: '90+', label: 'Years of Service', icon: '🏆', description: 'Since 1930 E.C.' },
+        { value: '80+', label: 'Years of Service', icon: '🏆', description: 'Since 1930 E.C.' },
         { value: '300+', label: 'Hospital Beds', icon: '🛏️', description: 'Inpatient capacity' },
         { value: '1500+', label: 'Clinical Staff', icon: '🩺', description: 'Total healthcare professionals' },
         { value: '30+', label: 'Psychiatrists', icon: '🧠', description: 'Expert specialist doctors' },

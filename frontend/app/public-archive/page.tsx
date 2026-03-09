@@ -26,7 +26,7 @@ export default function PublicArchivePage() {
                                 Public <span className="text-gray-400 italic font-medium">Archive</span>
                             </h1>
                             <p className="text-lg text-blue-100/60 max-w-2xl mx-auto leading-relaxed font-medium">
-                                Browse historical communications, past health campaigns, and recorded media spanning over 90 years.
+                                Browse historical communications, past health campaigns, and recorded media spanning over 80 years.
                             </p>
                         </div>
                     </div>

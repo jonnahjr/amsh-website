@@ -12,7 +12,7 @@ const heroSlides = [
         subtitle: 'Serving Ethiopia since 1930 E.C. with expert psychiatric care, research, and professional development. Your mental health is our priority.',
         primaryCTA: { label: 'Our Services', href: '/services' },
         bg: 'bg-blue-950',
-        accent: '90+ Years of Dedicated Mental Health Services',
+        accent: '80+ Years of Dedicated Mental Health Services',
     },
     {
         id: 2,
@@ -22,7 +22,7 @@ const heroSlides = [
         primaryCTA: { label: '🏥 View Services', href: '/services' },
         secondaryCTA: { label: 'Our Departments', href: '/departments' },
         bg: 'bg-blue-950',
-        accent: 'Over 90 Years of Excellence in Mental Health',
+        accent: 'Over 80 Years of Excellence in Mental Health',
     },
     {
         id: 3,

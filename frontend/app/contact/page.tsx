@@ -131,7 +131,7 @@ export default function ContactPage() {
                                                     <div className="relative">
                                                         <TagIcon className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-300 z-10 pointer-events-none" />
                                                         <select name="subject" value={form.subject} onChange={handleChange} required className="w-full pl-14 pr-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-blue-900 transition-all font-bold text-sm appearance-none cursor-pointer">
-                                                            <option value="" disabled>Select a subject</option>
+                                                            <option value="" disabled>Subject</option>
                                                             <option>General Inquiry</option>
                                                             <option>Appointment Request</option>
                                                             <option>CPD Training</option>

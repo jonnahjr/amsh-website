@@ -64,7 +64,7 @@ export default function AboutPage() {
                             {/* Accent Tag */}
                             <div className="mt-12 flex items-center gap-4 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
                                 <div className="w-3 h-3 rounded-full bg-blue-400 animate-pulse shadow-[0_0_15px_rgba(96,165,250,0.5)]" />
-                                <span className="text-blue-200 text-sm font-black uppercase tracking-widest">90+ Years of Dedicated Mental Health Services</span>
+                                <span className="text-blue-200 text-sm font-black uppercase tracking-widest">80+ Years of Dedicated Mental Health Services</span>
                             </div>
                         </div>
                     </div>
@@ -349,7 +349,7 @@ export default function AboutPage() {
                         <div className="text-center mb-14">
                             <span className="section-badge">📖 Our History</span>
                             <h2 className="section-title">A Legacy of Mental Health Care</h2>
-                            <p className="section-subtitle">Over 90 years of dedication to mental health in Ethiopia and beyond.</p>
+                            <p className="section-subtitle">Over 80 years of dedication to mental health in Ethiopia and beyond.</p>
                         </div>
                         <div className="relative">
                             {/* Timeline line */}

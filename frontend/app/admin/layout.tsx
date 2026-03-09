@@ -24,7 +24,9 @@ import {
     AcademicCapIcon,
     BuildingLibraryIcon,
     ChevronDownIcon,
-    ChevronRightIcon,
+    Bars3CenterLeftIcon,
+    BellIcon,
+    MagnifyingGlassIcon,
 } from '@heroicons/react/24/outline';
 
 interface MenuItem {
@@ -43,61 +45,58 @@ interface MenuGroup {
 
 const menuItems: MenuGroup[] = [
     {
-        group: 'Overview', items: [
-            { label: 'Dashboard', href: '/admin/dashboard', icon: ChartBarIcon },
+        group: 'Analytics', items: [
+            { label: 'Overview', href: '/admin/dashboard', icon: ChartBarIcon },
         ]
     },
     {
-        group: 'Content', items: [
-            { label: 'Pages & Builder', href: '/admin/pages', icon: GlobeAltIcon, roles: ['SUPER_ADMIN', 'ADMIN'] },
-            { label: 'Posts & News', href: '/admin/posts', icon: DocumentTextIcon, roles: ['SUPER_ADMIN', 'ADMIN', 'NEWS_ADMIN', 'EDITOR'] },
-            { label: 'Media Library', icon: PhotoIcon, href: '/admin/media', roles: ['SUPER_ADMIN', 'ADMIN', 'NEWS_ADMIN', 'EDITOR', 'CPD_ADMIN', 'RESEARCH_ADMIN', 'CONTENT_ADMIN'] },
+        group: 'Digital Assets', items: [
+            { label: 'Site Pages', href: '/admin/pages', icon: GlobeAltIcon, roles: ['SUPER_ADMIN', 'ADMIN'] },
+            { label: 'News & Media', href: '/admin/posts', icon: MegaphoneIcon, roles: ['SUPER_ADMIN', 'ADMIN', 'NEWS_ADMIN', 'EDITOR'] },
+            { label: 'File Manager', icon: PhotoIcon, href: '/admin/media', roles: ['SUPER_ADMIN', 'ADMIN', 'NEWS_ADMIN', 'EDITOR', 'CPD_ADMIN', 'RESEARCH_ADMIN', 'CONTENT_ADMIN'] },
             { label: 'Navigation', icon: Square2StackIcon, href: '/admin/navigation', roles: ['SUPER_ADMIN', 'ADMIN'] },
         ]
     },
     {
-        group: 'Management', items: [
+        group: 'Institutional', items: [
             {
-                label: 'CPD Applications',
+                label: 'Professional CPD',
                 icon: AcademicCapIcon,
                 roles: ['SUPER_ADMIN', 'ADMIN', 'CPD_ADMIN'],
                 children: [
                     { label: 'All Applications', href: '/admin/cpd-applications', icon: AcademicCapIcon },
-                    { label: 'Gov. CPD', href: '/admin/cpd-applications/government', icon: BuildingLibraryIcon },
-                    { label: 'Private CPD', href: '/admin/cpd-applications/private', icon: AcademicCapIcon },
-                    { label: 'Independent CPD', href: '/admin/cpd-applications/personal', icon: UserGroupIcon },
+                    { label: 'Government', href: '/admin/cpd-applications/government', icon: BuildingLibraryIcon },
+                    { label: 'Private Sector', href: '/admin/cpd-applications/private', icon: AcademicCapIcon },
+                    { label: 'Independent', href: '/admin/cpd-applications/personal', icon: UserGroupIcon },
                 ]
             },
             {
-                label: 'Clinical Attachments',
+                label: 'Clinical Intake',
                 icon: DocumentTextIcon,
                 roles: ['SUPER_ADMIN', 'ADMIN', 'CLINICAL_ADMIN'],
                 children: [
                     { label: 'Global View', href: '/admin/clinical-attachments', icon: GlobeAltIcon },
-                    { label: 'Gov. Attachments', href: '/admin/clinical-attachments/government', icon: BuildingLibraryIcon },
-                    { label: 'Private Attachments', href: '/admin/clinical-attachments/private', icon: AcademicCapIcon },
-                    { label: 'Independent Attachments', href: '/admin/clinical-attachments/personal', icon: UserGroupIcon },
+                    { label: 'Government', href: '/admin/clinical-attachments/government', icon: BuildingLibraryIcon },
+                    { label: 'Private Sector', href: '/admin/clinical-attachments/private', icon: AcademicCapIcon },
+                    { label: 'Medical Students', href: '/admin/clinical-attachments/personal', icon: UserGroupIcon },
                 ]
             },
             { label: 'Departments', icon: CircleStackIcon, href: '/admin/departments', roles: ['SUPER_ADMIN', 'ADMIN', 'CONTENT_ADMIN'] },
-            { label: 'Department Categories', icon: BriefcaseIcon, href: '/admin/department-categories', roles: ['SUPER_ADMIN', 'ADMIN', 'CONTENT_ADMIN'] },
-            { label: 'Service Categories', icon: BriefcaseIcon, href: '/admin/service-categories', roles: ['SUPER_ADMIN', 'ADMIN', 'CONTENT_ADMIN'] },
             { label: 'Services', icon: BriefcaseIcon, href: '/admin/services', roles: ['SUPER_ADMIN', 'ADMIN', 'CONTENT_ADMIN'] },
         ]
     },
     {
-        group: 'Interactions', items: [
-            { label: 'Appointments', icon: CalendarIcon, href: '/admin/appointments', roles: ['SUPER_ADMIN', 'ADMIN', 'CLINICAL_ADMIN', 'CONTACT_ADMIN'] },
-            { label: 'Research Submissions', icon: LightBulbIcon, href: '/admin/research', roles: ['SUPER_ADMIN', 'ADMIN', 'RESEARCH_ADMIN'] },
-            { label: 'Contact Messages', icon: ChatBubbleLeftRightIcon, href: '/admin/messages', roles: ['SUPER_ADMIN', 'ADMIN', 'CONTACT_ADMIN', 'CLINICAL_ADMIN'] },
+        group: 'Communication', items: [
+            { label: 'Research Lab', icon: LightBulbIcon, href: '/admin/research', roles: ['SUPER_ADMIN', 'ADMIN', 'RESEARCH_ADMIN'] },
+            { label: 'Newsletter', icon: MegaphoneIcon, href: '/admin/newsletter', roles: ['SUPER_ADMIN', 'ADMIN'] },
+            { label: 'Contact Response Manager', icon: ChatBubbleLeftRightIcon, href: '/admin/messages', roles: ['SUPER_ADMIN', 'ADMIN', 'CONTACT_ADMIN', 'CLINICAL_ADMIN'] },
         ]
     },
     {
-        group: 'System', items: [
-            { label: 'Site Settings', icon: Cog6ToothIcon, href: '/admin/settings', roles: ['SUPER_ADMIN', 'ADMIN'] },
-            { label: 'Admin Users', icon: UsersIcon, href: '/admin/users', superAdminOnly: true },
-            { label: 'Testimonials', icon: MegaphoneIcon, href: '/admin/testimonials', roles: ['SUPER_ADMIN', 'ADMIN', 'CONTENT_ADMIN'] },
-            { label: 'FAQs', icon: QuestionMarkCircleIcon, href: '/admin/faqs', roles: ['SUPER_ADMIN', 'ADMIN', 'CONTENT_ADMIN'] },
+        group: 'Governance', items: [
+            { label: 'Config Engine', icon: Cog6ToothIcon, href: '/admin/settings', roles: ['SUPER_ADMIN', 'ADMIN'] },
+            { label: 'Access Control', icon: UsersIcon, href: '/admin/users', superAdminOnly: true },
+            { label: 'Feedback', icon: ChatBubbleLeftRightIcon, href: '/admin/testimonials', roles: ['SUPER_ADMIN', 'ADMIN', 'CONTENT_ADMIN'] },
         ]
     },
 ];
@@ -120,10 +119,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
     if (loading || !user) {
         return (
-            <div className="min-h-screen bg-[#FDFCF9] flex items-center justify-center">
-                <div className="flex flex-col items-center gap-4">
-                    <div className="w-12 h-12 border-4 border-blue-900 border-t-transparent rounded-full animate-spin" />
-                    <p className="text-gray-500 font-medium">Authenticating...</p>
+            <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+                <div className="flex flex-col items-center gap-6">
+                    <div className="w-16 h-16 border-[5px] border-primary/10 border-t-primary rounded-full animate-spin" />
+                    <div className="text-center">
+                        <p className="text-primary font-bold text-lg">Initializing Console</p>
+                        <p className="text-slate-400 text-sm">Authenticating secure session...</p>
+                    </div>
                 </div>
             </div>
         );
@@ -132,38 +134,34 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     const isActive = (href?: string) => href ? (pathname === href || pathname.startsWith(href + '/')) : false;
 
     return (
-        <div className="min-h-screen bg-[#FDFCF9] flex selection:bg-cyan-600 selection:text-white font-[Outfit,sans-serif]">
-            {/* Sidebar Overlay for Mobile */}
+        <div className="min-h-screen bg-[#F8FAFB] flex font-inter text-slate-700">
+            {/* Sidebar Overlay */}
             {sidebarOpen && (
                 <div
-                    className="fixed inset-0 bg-blue-950/40 backdrop-blur-sm z-40 lg:hidden"
+                    className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-40 lg:hidden"
                     onClick={() => setSidebarOpen(false)}
                 />
             )}
 
-            {/* Sidebar */}
-            <aside className={`fixed inset-y-0 left-0 bg-blue-950 z-50 transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] overflow-hidden flex flex-col shadow-[25px_0_60px_rgba(0,0,0,0.1)] ${sidebarOpen ? 'w-[320px]' : 'w-[100px]'}`}>
-                {/* Brand - Modern Glass Header */}
-                <div className="h-28 flex items-center px-8 border-b border-white/5 relative bg-gradient-to-b from-white/[0.03] to-transparent">
-                    <Link href="/" className="flex items-center gap-5 group">
-                        <div className="w-14 h-14 rounded-full bg-white flex items-center justify-center shadow-2xl shadow-cyan-500/10 border border-white/10 group-hover:scale-110 group-hover:rotate-6 transition-all duration-700 relative overflow-hidden">
-                            <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
-                            <img src="/images/logo.png" alt="EMSH Logo" className="w-full h-full object-cover rounded-full p-1" />
+            {/* Premium Sidebar */}
+            <aside className={`fixed inset-y-0 left-0 bg-primary-dark z-50 transition-all duration-500 ease-in-out flex flex-col shadow-2xl ${sidebarOpen ? 'w-[280px]' : 'w-[88px]'}`}>
+                {/* Branding */}
+                <div className="h-24 flex items-center px-6 border-b border-white/5 shrink-0">
+                    <Link href="/" className="flex items-center gap-4 group">
+                        <div className="w-12 h-12 rounded-xl bg-white flex items-center justify-center shadow-lg transform transition-transform group-hover:scale-110">
+                            <img src="/images/logo.png" alt="Logo" className="w-10 h-10 object-contain" />
                         </div>
                         {sidebarOpen && (
-                            <div className="animate-in fade-in slide-in-from-left-4 duration-700">
-                                <div className="font-black text-white text-xl leading-none tracking-tight uppercase">EMSH</div>
-                                <div className="text-[10px] text-cyan-400/60 uppercase font-black tracking-[0.3em] mt-2 flex items-center gap-2">
-                                    <span className="w-2 h-[1px] bg-cyan-400/30" />
-                                    COMMAND
-                                </div>
+                            <div className="animate-in fade-in slide-in-from-left-2 duration-300">
+                                <span className="block font-jakarta font-black text-white text-xl tracking-tight leading-none">EMSH</span>
+                                <span className="block text-[9px] text-accent font-black tracking-[0.3em] mt-1.5 opacity-80 uppercase text-nowrap">Admin Command</span>
                             </div>
                         )}
                     </Link>
                 </div>
 
-                {/* Menu */}
-                <div className="flex-1 overflow-y-auto px-6 py-10 space-y-12 no-scrollbar scroll-smooth">
+                {/* Navigation Menu */}
+                <nav className="flex-1 overflow-y-auto py-8 px-4 space-y-8 no-scrollbar">
                     {menuItems.map((group) => {
                         const visibleItems = group.items.filter(item => {
                             if (item.superAdminOnly && !isSuperAdmin) return false;
@@ -173,14 +171,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                         if (visibleItems.length === 0) return null;
 
                         return (
-                            <div key={group.group} className="space-y-4">
+                            <div key={group.group}>
                                 {sidebarOpen && (
-                                    <div className="flex items-center gap-3 px-4 mb-2">
-                                        <h3 className="text-[10px] font-black text-white/20 uppercase tracking-[0.4em] whitespace-nowrap">{group.group}</h3>
-                                        <div className="h-[1px] w-full bg-white/5" />
-                                    </div>
+                                    <h3 className="px-4 text-[10px] font-black text-white/20 uppercase tracking-[0.25em] mb-4">{group.group}</h3>
                                 )}
-                                <div className="space-y-1.5">
+                                <div className="space-y-1">
                                     {visibleItems.map((item) => (
                                         <SidebarItem
                                             key={item.label}
@@ -193,90 +188,88 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                             </div>
                         );
                     })}
-                </div>
+                </nav>
 
-                {/* Sidebar Footer - Premium User Info */}
-                <div className="p-6 mt-auto">
-                    <div className="p-5 rounded-3xl bg-white/[0.03] border border-white/5 space-y-4 shadow-inner">
-                        <button
-                            onClick={logout}
-                            className={`flex items-center gap-4 w-full px-4 py-3 rounded-xl text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-all duration-300 group ${!sidebarOpen && 'justify-center'}`}
-                        >
-                            <ArrowLeftOnRectangleIcon className="w-5 h-5 flex-shrink-0 group-hover:scale-110 transition-transform" />
-                            {sidebarOpen && <span className="font-black text-[10px] uppercase tracking-[0.15em]">Log Out</span>}
-                        </button>
-
+                {/* Sidebar User Profile */}
+                <div className="p-4 mt-auto border-t border-white/5">
+                    <div className={`flex items-center gap-4 bg-white/[0.03] p-3 rounded-2xl border border-white/5 ${!sidebarOpen && 'justify-center'}`}>
+                        <div className="relative shrink-0">
+                            <div className="w-10 h-10 rounded-xl bg-accent flex items-center justify-center text-white font-black text-sm">
+                                {user.name.charAt(0)}
+                            </div>
+                            <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-500 border-2 border-primary-dark rounded-full" />
+                        </div>
                         {sidebarOpen && (
-                            <div className="pt-4 border-t border-white/5 flex items-center gap-4">
-                                <div className="relative group/avatar">
-                                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-cyan-500 flex items-center justify-center text-white text-xs font-black shadow-lg group-hover/avatar:rotate-6 transition-transform">
-                                        {user.name.charAt(0)}
-                                    </div>
-                                    <div className="absolute -top-1 -right-1 w-3 h-3 bg-emerald-500 border-2 border-blue-950 rounded-full" />
-                                </div>
-                                <div className="flex-1 min-w-0">
-                                    <p className="text-[11px] font-black text-white truncate uppercase tracking-tight">{user.name}</p>
-                                    <p className="text-[9px] font-bold text-cyan-400 opacity-60 uppercase tracking-widest">{user.role}</p>
-                                </div>
+                            <div className="flex-1 min-w-0 pr-2">
+                                <p className="text-xs font-bold text-white truncate">{user.name}</p>
+                                <p className="text-[10px] text-white/40 font-medium truncate uppercase tracking-widest">{user.role}</p>
                             </div>
                         )}
+                        <button
+                            onClick={logout}
+                            className={`p-2 rounded-lg text-white/40 hover:text-red-400 hover:bg-red-500/10 transition-colors ${!sidebarOpen && 'w-full flex justify-center'}`}
+                            title="Sign Out"
+                        >
+                            <ArrowLeftOnRectangleIcon className="w-5 h-5" />
+                        </button>
                     </div>
                 </div>
             </aside>
 
             {/* Main Content Area */}
-            <main className={`flex-1 transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] ${sidebarOpen ? 'pl-[320px]' : 'pl-[100px]'}`}>
-                {/* Header - Transparent Glass */}
-                <header className="h-28 bg-[#FDFCF9]/80 backdrop-blur-3xl border-b border-gray-200/50 flex items-center justify-between px-12 sticky top-0 z-40">
-                    <div className="flex items-center gap-8">
+            <main className={`flex-1 flex flex-col transition-all duration-500 min-w-0 ${sidebarOpen ? 'pl-[280px]' : 'pl-[88px]'}`}>
+                {/* Modern Fixed Header */}
+                <header className="h-20 bg-white/80 backdrop-blur-md border-b border-slate-200/60 sticky top-0 z-40 px-8 flex items-center justify-between shadow-sm">
+                    <div className="flex items-center gap-6">
                         <button
                             onClick={() => setSidebarOpen(!sidebarOpen)}
-                            className="w-14 h-14 flex items-center justify-center bg-white border border-gray-100 hover:border-cyan-100 hover:shadow-2xl hover:shadow-cyan-500/10 rounded-2xl text-gray-400 hover:text-cyan-600 transition-all duration-500 group"
+                            className="p-2 -ml-2 rounded-xl text-slate-400 hover:text-primary hover:bg-primary/5 transition-all"
                         >
-                            <div className="relative w-6 h-5">
-                                <span className={`absolute h-0.5 bg-current rounded-full transition-all duration-500 ${sidebarOpen ? 'w-6 top-0' : 'w-4 top-0'}`} />
-                                <span className="absolute w-6 h-0.5 bg-current top-[9px] rounded-full transition-all duration-500" />
-                                <span className={`absolute h-0.5 bg-current rounded-full transition-all duration-500 ${sidebarOpen ? 'w-4 bottom-0' : 'w-6 bottom-0'}`} />
-                            </div>
+                            <Bars3CenterLeftIcon className={`w-6 h-6 transition-transform duration-300 ${!sidebarOpen && 'rotate-180'}`} />
                         </button>
+
+                        <div className="h-6 w-px bg-slate-200 hidden md:block" />
+
                         <div className="hidden md:block">
-                            <h1 className="text-blue-950 font-black text-2xl tracking-tighter">
-                                {menuItems.flatMap(g => g.items).find(i => i.href && isActive(i.href))?.label || 'Admin Hub'}
-                            </h1>
-                            <div className="text-[9px] text-gray-400 font-bold uppercase tracking-[0.2em] flex items-center gap-2 mt-1">
-                                <span className="text-cyan-600/40">Core Console</span>
-                                <span className="w-1 h-1 rounded-full bg-gray-200" />
-                                {pathname.split('/').slice(2).join(' / ') || 'Overview'}
+                            <div className="flex items-center gap-2 text-xs text-slate-400 font-medium">
+                                <Link href="/admin/dashboard" className="hover:text-primary">Console</Link>
+                                <span>/</span>
+                                <span className="text-slate-900 font-semibold">{menuItems.flatMap(g => g.items).find(i => i.href && isActive(i.href))?.label || 'Active Session'}</span>
                             </div>
                         </div>
                     </div>
 
-                    <div className="flex items-center gap-10">
-                        <div className="hidden xl:flex items-center gap-5 px-6 py-3 bg-cyan-50/50 border border-cyan-100/30 rounded-2xl">
-                            <div className="relative flex h-2.5 w-2.5">
-                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75" />
-                                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-cyan-600" />
-                            </div>
-                            <span className="text-[11px] font-black text-cyan-900 uppercase tracking-[0.2em]">Console Live</span>
+                    <div className="flex items-center gap-4">
+                        <div className="hidden lg:flex items-center gap-2 px-4 py-2 bg-slate-50 rounded-xl border border-slate-100 group">
+                            <MagnifyingGlassIcon className="w-4 h-4 text-slate-400 group-focus-within:text-primary" />
+                            <input
+                                type="text"
+                                placeholder="Search everything..."
+                                className="bg-transparent border-none focus:ring-0 text-sm placeholder:text-slate-400 w-48 font-medium"
+                            />
                         </div>
 
-                        <div className="flex items-center gap-6 border-l border-gray-200/50 pl-10">
-                            <div className="text-right hidden sm:block">
-                                <div className="text-sm font-black text-blue-950 uppercase tracking-tight leading-none">{user.name}</div>
-                                <div className="text-[10px] font-black text-cyan-600 uppercase tracking-[0.2em] mt-1.5 opacity-80">{user.role}</div>
-                            </div>
-                            <div className="relative group cursor-pointer">
-                                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-600 to-cyan-500 flex items-center justify-center text-white font-black text-xl shadow-2xl shadow-cyan-600/20 ring-4 ring-white transition-transform duration-500 group-hover:scale-105">
-                                    {user.name.charAt(0)}
+                        <div className="flex items-center gap-2">
+                            <button className="p-2.5 rounded-xl text-slate-400 hover:text-primary hover:bg-primary/5 transition-all relative">
+                                <BellIcon className="w-6 h-6" />
+                                <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-accent rounded-full ring-2 ring-white" />
+                            </button>
+                            <div className="h-8 w-px bg-slate-200 mx-2" />
+                            <Link href="/admin/settings" className="flex items-center gap-3 pl-2 group">
+                                <div className="text-right hidden xl:block">
+                                    <p className="text-sm font-bold text-slate-900 leading-none">{user.name}</p>
+                                    <p className="text-[10px] text-slate-400 font-medium uppercase tracking-widest mt-1">Super Admin</p>
                                 </div>
-                                <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-emerald-500 border-4 border-white rounded-full" />
-                            </div>
+                                <div className="w-10 h-10 rounded-xl bg-slate-100 border border-slate-200 flex items-center justify-center overflow-hidden transition-transform group-hover:scale-105">
+                                    <img src={`https://ui-avatars.com/api/?name=${user.name}&background=1B4F8A&color=fff`} alt="Avatar" />
+                                </div>
+                            </Link>
                         </div>
                     </div>
                 </header>
 
-                {/* Page Content Container */}
-                <div className="p-10 max-w-[1700px] mx-auto">
+                {/* Viewport Content */}
+                <div className="p-8 max-w-[1600px] mx-auto w-full animate-in fade-in slide-in-from-bottom-2 duration-500">
                     {children}
                 </div>
             </main>
@@ -294,58 +287,53 @@ function SidebarItem({ item, sidebarOpen, isActive }: { item: MenuItem, sidebarO
         if (isAnyChildActive) setIsOpen(true);
     }, [isAnyChildActive]);
 
+    const activeStyles = "bg-accent text-white shadow-lg shadow-accent/20";
+    const inactiveStyles = "text-white/40 hover:text-white hover:bg-white/5";
+
     return (
-        <div className="relative px-3">
+        <div className="relative">
             {item.href ? (
                 <Link
                     href={item.href}
-                    className={`flex items-center gap-5 px-6 py-4 rounded-2xl transition-all duration-500 group relative overflow-hidden ${active
-                        ? 'bg-gradient-to-r from-blue-600 to-cyan-500 text-white shadow-2xl shadow-cyan-600/30 translate-x-1'
-                        : 'text-white/40 hover:text-white hover:bg-white/[0.04]'
-                        }`}
-                    title={!sidebarOpen ? item.label : ''}
+                    className={`flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all duration-300 group ${active ? activeStyles : inactiveStyles}`}
                 >
-                    <item.icon className={`w-[22px] h-[22px] flex-shrink-0 transition-all duration-500 ${active ? 'text-white scale-110' : 'group-hover:scale-110 group-hover:text-cyan-400'}`} />
-                    {sidebarOpen && <span className="font-black text-[12px] tracking-widest uppercase">{item.label}</span>}
-                    {active && (
-                        <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-white rounded-r-full shadow-[0_0_15px_rgba(255,255,255,0.8)]" />
+                    <item.icon className={`w-5 h-5 shrink-0 transition-transform duration-300 ${active ? 'scale-110' : 'group-hover:scale-110'}`} />
+                    {sidebarOpen && <span className="text-[13px] font-bold tracking-wide">{item.label}</span>}
+                    {!sidebarOpen && active && (
+                        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1.5 h-6 bg-accent rounded-l-full shadow-[0_0_10px_rgb(0,180,216)]" />
                     )}
                 </Link>
             ) : (
-                <button
-                    onClick={() => sidebarOpen && setIsOpen(!isOpen)}
-                    className={`w-full flex items-center gap-5 px-6 py-4 rounded-2xl transition-all duration-500 group relative ${active && !isOpen
-                        ? 'bg-gradient-to-r from-blue-600 to-cyan-500 text-white shadow-2xl shadow-cyan-600/30 translate-x-1'
-                        : 'text-white/40 hover:text-white hover:bg-white/[0.04]'
-                        }`}
-                >
-                    <item.icon className={`w-[22px] h-[22px] flex-shrink-0 transition-all duration-500 ${active && !isOpen ? 'text-white scale-110' : 'group-hover:scale-110 group-hover:text-cyan-400'}`} />
-                    {sidebarOpen && <span className="font-black text-[12px] tracking-widest uppercase">{item.label}</span>}
-                    {sidebarOpen && (
-                        <div className={`ml-auto transition-transform duration-500 ${isOpen ? 'rotate-180 text-cyan-400' : 'text-white/20'}`}>
-                            <ChevronDownIcon className="w-4 h-4" />
+                <>
+                    <button
+                        onClick={() => sidebarOpen && setIsOpen(!isOpen)}
+                        className={`w-full flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all duration-300 group ${active && !isOpen ? activeStyles : inactiveStyles}`}
+                    >
+                        <item.icon className={`w-5 h-5 shrink-0 transition-transform duration-300 ${active && !isOpen ? 'scale-110' : 'group-hover:scale-110'}`} />
+                        {sidebarOpen && <span className="text-[13px] font-bold tracking-wide">{item.label}</span>}
+                        {sidebarOpen && (
+                            <ChevronDownIcon className={`w-3.5 h-3.5 ml-auto transition-transform duration-300 ${isOpen ? 'rotate-180 text-accent' : 'opacity-40'}`} />
+                        )}
+                    </button>
+
+                    {hasChildren && sidebarOpen && isOpen && (
+                        <div className="mt-1 ml-6 pl-5 border-l border-white/10 space-y-1 py-1 animate-in fade-in slide-in-from-top-1">
+                            {item.children?.map((child) => (
+                                <Link
+                                    key={child.label}
+                                    href={child.href}
+                                    className={`flex items-center gap-3 py-2 px-3 rounded-lg text-[12px] font-semibold transition-all duration-300 ${isActive(child.href)
+                                        ? 'text-accent bg-accent/10 whitespace-nowrap'
+                                        : 'text-white/30 hover:text-white hover:bg-white/5'
+                                        }`}
+                                >
+                                    <div className={`w-1.5 h-1.5 rounded-full ${isActive(child.href) ? 'bg-accent shadow-[0_0_8px_rgba(0,180,216,0.6)]' : 'bg-white/10'}`} />
+                                    <span>{child.label}</span>
+                                </Link>
+                            ))}
                         </div>
                     )}
-                </button>
-            )}
-
-            {/* Submenu - Modern Floating Effect */}
-            {hasChildren && sidebarOpen && isOpen && (
-                <div className="mt-4 ml-10 pl-6 border-l border-white/10 space-y-3 animate-in fade-in slide-in-from-top-2 duration-500 py-1">
-                    {item.children?.map((child) => (
-                        <Link
-                            key={child.label}
-                            href={child.href}
-                            className={`flex items-center gap-4 py-2 group/sub text-[11px] font-black uppercase tracking-[0.2em] transition-all duration-500 ${isActive(child.href)
-                                ? 'text-cyan-400 translate-x-1'
-                                : 'text-white/30 hover:text-white/80'
-                                }`}
-                        >
-                            <div className={`w-1.5 h-1.5 rounded-full transition-all duration-500 ${isActive(child.href) ? 'bg-cyan-400 scale-150 shadow-[0_0_8px_rgba(96,165,250,0.8)]' : 'bg-white/10 group-hover/sub:bg-white/40'}`} />
-                            <span>{child.label}</span>
-                        </Link>
-                    ))}
-                </div>
+                </>
             )}
         </div>
     );

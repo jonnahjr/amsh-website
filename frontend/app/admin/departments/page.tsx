@@ -12,6 +12,10 @@ import {
     BuildingOfficeIcon,
     Bars3Icon,
     UserCircleIcon,
+    SparklesIcon,
+    ArrowPathIcon,
+    IdentificationIcon,
+    MagnifyingGlassIcon,
 } from '@heroicons/react/24/outline';
 
 export default function DepartmentsAdmin() {
@@ -40,7 +44,7 @@ export default function DepartmentsAdmin() {
         isActive: true,
         gallery: '',
     });
-    const [uploading, setUploading] = useState<string | null>(null); // 'image' | 'headImage' | 'gallery' | null
+    const [uploading, setUploading] = useState<string | null>(null);
 
     useEffect(() => {
         fetchDepartments();
@@ -170,73 +174,88 @@ export default function DepartmentsAdmin() {
     };
 
     return (
-        <div className="space-y-8 animate-fade-in">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div>
-                    <h2 className="text-2xl font-black text-gray-900">Hospital Departments</h2>
-                    <p className="text-gray-500 text-sm">Manage clinical and administrative units of EMSH.</p>
+        <div className="space-y-12 animate-in fade-in duration-700 pb-20">
+            {/* Header Section */}
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8 bg-white p-10 rounded-[2.5rem] border border-slate-200/60 shadow-sm relative overflow-hidden group">
+                <div className="absolute top-0 right-0 w-64 h-full bg-gradient-to-l from-primary/5 to-transparent pointer-events-none" />
+                <div className="relative z-10">
+                    <div className="flex items-center gap-3 mb-4">
+                        <div className="px-3 py-1 bg-primary/10 text-primary text-[10px] font-black uppercase tracking-widest rounded-lg border border-primary/10">Structural Units</div>
+                        <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Global Directory</span>
+                    </div>
+                    <h2 className="text-4xl font-jakarta font-black text-slate-900 tracking-tight leading-none mb-4">Functional Entities</h2>
+                    <p className="text-slate-500 font-medium max-w-xl leading-relaxed">System-wide management of clinical, administrative, and strategic hospital departments. Organize the structural core of EMSH.</p>
                 </div>
-                <div className="flex items-center gap-2 bg-gray-100 p-1 rounded-2xl">
+
+                <div className="flex items-center gap-4 relative z-10">
+                    <div className="flex items-center gap-2 bg-slate-50 p-2 rounded-2xl border border-slate-100">
+                        <button
+                            onClick={() => setView('grid')}
+                            className={`px-6 py-3 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] transition-all ${view === 'grid' ? 'bg-white text-primary shadow-lg ring-1 ring-slate-200/50' : 'text-slate-400 hover:text-slate-600'}`}
+                        >
+                            Catalog
+                        </button>
+                        <button
+                            onClick={() => setView('heads')}
+                            className={`px-6 py-3 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] transition-all ${view === 'heads' ? 'bg-white text-primary shadow-lg ring-1 ring-slate-200/50' : 'text-slate-400 hover:text-slate-600'}`}
+                        >
+                            Leadership
+                        </button>
+                    </div>
                     <button
-                        onClick={() => setView('grid')}
-                        className={`px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${view === 'grid' ? 'bg-white text-blue-900 shadow-sm' : 'text-gray-400 hover:text-gray-600'}`}
+                        onClick={() => handleOpenModal()}
+                        className="flex items-center gap-3 px-10 py-5 bg-primary text-white rounded-2xl text-[11px] font-bold uppercase tracking-[0.15em] hover:bg-primary-dark transition-all shadow-[0_15px_30px_rgba(27,79,138,0.25)] hover:-translate-y-1 active:translate-y-0"
                     >
-                        Directory
-                    </button>
-                    <button
-                        onClick={() => setView('heads')}
-                        className={`px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${view === 'heads' ? 'bg-white text-blue-900 shadow-sm' : 'text-gray-400 hover:text-gray-600'}`}
-                    >
-                        Heads
+                        <PlusIcon className="w-5 h-5" />
+                        <span>Deploy Entity</span>
                     </button>
                 </div>
-                <button
-                    onClick={() => handleOpenModal()}
-                    className="flex items-center gap-2 px-6 py-3 bg-blue-900 text-white rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-blue-800 transition-all shadow-lg shadow-blue-900/20"
-                >
-                    <PlusIcon className="w-4 h-4" />
-                    <span>Add Department</span>
-                </button>
             </div>
 
             {view === 'heads' && (
-                <div className="bg-white rounded-[40px] border border-gray-100 overflow-hidden animate-fade-in shadow-sm">
-                    <div className="p-8 border-b border-gray-50 bg-gray-50/50">
-                        <h3 className="text-lg font-black text-gray-900 uppercase tracking-tight">Department Heads Directory</h3>
-                        <p className="text-xs text-gray-500 font-bold uppercase tracking-widest mt-1">Listing all clinical and administrative leadership.</p>
+                <div className="bg-white rounded-[3rem] border border-slate-200/60 overflow-hidden animate-in fade-in duration-500 shadow-sm">
+                    <div className="p-10 border-b border-slate-50 flex items-center justify-between">
+                        <div>
+                            <h3 className="text-xl font-jakarta font-black text-slate-900 uppercase tracking-tight">Leadership Matrix</h3>
+                            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-[0.25em] mt-2">Authenticated listing of department heads and clinical directors.</p>
+                        </div>
+                        <div className="w-12 h-12 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-200">
+                            <IdentificationIcon className="w-6 h-6" />
+                        </div>
                     </div>
                     <div className="overflow-x-auto">
                         <table className="w-full text-left border-collapse">
                             <thead>
-                                <tr className="border-b border-gray-50">
-                                    <th className="px-8 py-5 text-[10px] font-black text-gray-400 uppercase tracking-widest">Department</th>
-                                    <th className="px-8 py-5 text-[10px] font-black text-gray-400 uppercase tracking-widest">Head Name</th>
-                                    <th className="px-8 py-5 text-[10px] font-black text-gray-400 uppercase tracking-widest">Title</th>
-                                    <th className="px-8 py-5 text-[10px] font-black text-gray-400 uppercase tracking-widest">Status</th>
+                                <tr className="border-b border-slate-50 bg-slate-50/30">
+                                    <th className="px-10 py-6 text-[11px] font-black text-slate-400 uppercase tracking-[0.2em]">Assignment Department</th>
+                                    <th className="px-10 py-6 text-[11px] font-black text-slate-400 uppercase tracking-[0.2em]">Designated Personnel</th>
+                                    <th className="px-10 py-6 text-[11px] font-black text-slate-400 uppercase tracking-[0.2em]">Operational Title</th>
+                                    <th className="px-10 py-6 text-[11px] font-black text-slate-400 uppercase tracking-[0.2em]">Assignment Status</th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-gray-50">
+                            <tbody className="divide-y divide-slate-50">
                                 {departments.map((dept) => (
-                                    <tr key={dept.id} className="hover:bg-gray-50/50 transition-colors">
-                                        <td className="px-8 py-5">
-                                            <div className="flex items-center gap-3">
-                                                <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center text-sm">{dept.icon || '🏥'}</div>
-                                                <span className="font-bold text-gray-900 text-sm">{dept.name}</span>
+                                    <tr key={dept.id} className="hover:bg-slate-50/50 transition-colors group">
+                                        <td className="px-10 py-6">
+                                            <div className="flex items-center gap-4">
+                                                <div className="w-10 h-10 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center text-xl transition-transform group-hover:scale-110">{dept.icon || '🏥'}</div>
+                                                <span className="font-bold text-slate-900 text-sm group-hover:text-primary transition-colors">{dept.name}</span>
                                             </div>
                                         </td>
-                                        <td className="px-8 py-5">
-                                            <div className="flex items-center gap-3">
-                                                <div className="w-8 h-8 rounded-full overflow-hidden bg-gray-100">
-                                                    {dept.headImage ? <img src={dept.headImage} className="w-full h-full object-cover" /> : <UserCircleIcon className="w-full h-full text-gray-200" />}
+                                        <td className="px-10 py-6">
+                                            <div className="flex items-center gap-4">
+                                                <div className="w-12 h-12 rounded-2xl overflow-hidden bg-slate-100 border-2 border-white shadow-sm ring-1 ring-slate-100">
+                                                    {dept.headImage ? <img src={dept.headImage} className="w-full h-full object-cover" /> : <UserCircleIcon className="w-full h-full text-slate-200" />}
                                                 </div>
-                                                <span className="font-black text-blue-900 text-sm">{dept.headName || '—'}</span>
+                                                <span className="font-black text-slate-900 text-sm">{dept.headName || 'NOT ASSIGNED'}</span>
                                             </div>
                                         </td>
-                                        <td className="px-8 py-5 font-bold text-gray-500 text-xs">{dept.headTitle || '—'}</td>
-                                        <td className="px-8 py-5">
-                                            <span className={`px-2 py-1 rounded-lg text-[8px] font-black uppercase tracking-widest ${dept.isActive ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-100 text-gray-400'}`}>
-                                                {dept.isActive ? 'Active' : 'Inactive'}
-                                            </span>
+                                        <td className="px-10 py-6 font-bold text-slate-400 text-xs tracking-wide">{dept.headTitle || 'PENDING CLASSIFICATION'}</td>
+                                        <td className="px-10 py-6">
+                                            <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-widest ${dept.isActive ? 'bg-emerald-50 text-emerald-600 border border-emerald-100' : 'bg-slate-100 text-slate-400 border border-slate-200'}`}>
+                                                <div className={`w-1.5 h-1.5 rounded-full ${dept.isActive ? 'bg-emerald-500 animate-pulse' : 'bg-slate-300'}`} />
+                                                {dept.isActive ? 'Active Duty' : 'Standby'}
+                                            </div>
                                         </td>
                                     </tr>
                                 ))}
@@ -248,69 +267,96 @@ export default function DepartmentsAdmin() {
 
             {view === 'grid' && (
                 <>
-                    <div className="relative max-w-md">
+                    <div className="relative max-w-xl group">
+                        <MagnifyingGlassIcon className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-300 group-focus-within:text-primary transition-colors" />
                         <input
                             type="text"
-                            placeholder="Search departments..."
+                            placeholder="Scan entities by nomenclature, category, or objective..."
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            className="w-full px-6 py-4 bg-white border border-gray-100 rounded-2xl shadow-sm focus:ring-2 focus:ring-blue-900/10 text-sm font-bold placeholder-gray-300 pl-12"
+                            className="w-full pl-16 pr-8 py-5 bg-white border border-slate-200/60 rounded-3xl shadow-sm focus:ring-[10px] focus:ring-primary/5 focus:border-primary/20 transition-all font-medium text-slate-700 placeholder:text-slate-300 outline-none"
                         />
-                        <Bars3Icon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-300" />
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
                         {loading ? (
-                            [...Array(3)].map((_, i) => (
-                                <div key={i} className="bg-white p-8 rounded-[32px] border border-gray-50 animate-pulse h-64" />
+                            [...Array(6)].map((_, i) => (
+                                <div key={i} className="bg-white p-10 rounded-[3rem] border border-slate-100 animate-pulse h-[450px]" />
                             ))
                         ) : departments.filter(d => d.name.toLowerCase().includes(searchTerm.toLowerCase())).length === 0 ? (
-                            <div className="col-span-full bg-white p-20 rounded-[40px] border border-gray-50 text-center">
-                                <BuildingOfficeIcon className="w-16 h-16 text-gray-100 mx-auto mb-4" />
-                                <p className="text-gray-400 font-bold uppercase tracking-widest text-sm">No departments found</p>
+                            <div className="col-span-full bg-white p-32 rounded-[4rem] border border-slate-200/60 text-center shadow-sm">
+                                <div className="w-24 h-24 bg-slate-50 rounded-[2rem] flex items-center justify-center mx-auto mb-8 text-slate-200">
+                                    <BuildingOfficeIcon className="w-12 h-12" />
+                                </div>
+                                <h3 className="text-2xl font-jakarta font-black text-slate-900 mb-2">Entity Not Found</h3>
+                                <p className="text-slate-400 font-bold uppercase tracking-[0.2em] text-[10px] mb-12">No structural matches found for your current query</p>
+                                <button onClick={() => handleOpenModal()} className="inline-flex items-center gap-3 px-8 py-4 bg-primary text-white rounded-2xl text-[11px] font-black uppercase tracking-widest hover:bg-primary-dark transition-all shadow-xl shadow-primary/20">
+                                    <PlusIcon className="w-5 h-5" /> Deploy New Structural Unit
+                                </button>
                             </div>
                         ) : (
                             departments
                                 .filter(d => d.name.toLowerCase().includes(searchTerm.toLowerCase()))
                                 .map((dept) => (
-                                    <div key={dept.id} className="bg-white rounded-[32px] border border-gray-50 shadow-sm hover:shadow-xl transition-all group overflow-hidden flex flex-col">
-                                        <div className="h-40 relative group-hover:scale-105 transition-transform duration-700">
+                                    <div key={dept.id} className="group bg-white rounded-[3rem] border border-slate-200/60 shadow-sm hover:shadow-2xl hover:border-primary/20 transition-all duration-500 hover:-translate-y-2 flex flex-col overflow-hidden relative">
+                                        {/* Visualization Header */}
+                                        <div className="h-56 relative overflow-hidden flex-shrink-0">
                                             {dept.image ? (
-                                                <img src={dept.image} alt={dept.name} className="w-full h-full object-cover" crossOrigin="anonymous" />
+                                                <img src={dept.image} alt={dept.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 opacity-90 group-hover:opacity-100" crossOrigin="anonymous" />
                                             ) : (
-                                                <div className="w-full h-full bg-blue-50 flex items-center justify-center">
-                                                    <BuildingOfficeIcon className="w-12 h-12 text-blue-200" />
+                                                <div className="w-full h-full bg-slate-900 flex items-center justify-center">
+                                                    <BuildingOfficeIcon className="w-20 h-20 text-white/5" />
                                                 </div>
                                             )}
-                                            <div className="absolute top-4 right-4 flex flex-col items-end gap-2">
-                                                <span className={`px-2 py-0.5 rounded-full text-[8px] font-black uppercase tracking-widest bg-white/20 text-white backdrop-blur-md border border-white/30`}>
-                                                    Order: {dept.order}
+
+                                            {/* Meta Overlays */}
+                                            <div className="absolute top-6 left-6 flex flex-col gap-3">
+                                                <span className="px-3 py-1.5 bg-white/90 backdrop-blur-md rounded-xl text-[9px] font-black text-slate-900 uppercase tracking-widest border border-white/20 shadow-lg">
+                                                    INDEX: {dept.order}
                                                 </span>
-                                                <span className={`px-2 py-0.5 rounded-full text-[8px] font-black uppercase tracking-widest ${dept.isActive ? 'bg-emerald-500/80' : 'bg-gray-500/80'} text-white backdrop-blur-md`}>
-                                                    {dept.isActive ? 'Active' : 'Draft'}
+                                                <span className={`px-3 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-widest backdrop-blur-md shadow-lg border border-white/20 flex items-center gap-2 ${dept.isActive ? 'bg-emerald-500/90 text-white' : 'bg-slate-500/90 text-white'}`}>
+                                                    <div className={`w-1.5 h-1.5 rounded-full bg-current ${dept.isActive && 'animate-pulse'}`} />
+                                                    {dept.isActive ? 'OPERATIONAL' : 'STANDBY'}
                                                 </span>
                                             </div>
-                                            <div className="absolute bottom-4 left-4 right-4">
-                                                <p className="text-[10px] font-black text-cyan-300 uppercase tracking-widest mb-1">{dept.categoryName || dept.category || 'Clinical Departments'}</p>
-                                                <span className="text-white font-black text-lg">{dept.name}</span>
+
+                                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+
+                                            <div className="absolute bottom-6 left-8 right-8">
+                                                <p className="text-[10px] font-black text-accent uppercase tracking-[0.3em] mb-2">{dept.categoryName || dept.category || 'Clinical Departments'}</p>
+                                                <h4 className="text-white font-jakarta font-black text-2xl tracking-tight leading-none group-hover:translate-x-1 transition-transform">{dept.name}</h4>
                                             </div>
                                         </div>
-                                        <div className="p-6 flex-1 flex flex-col">
-                                            <p className="text-gray-400 text-xs line-clamp-2 mb-6 flex-1">{dept.description}</p>
+
+                                        {/* Core Interaction Matrix */}
+                                        <div className="p-10 flex flex-col flex-1">
+                                            <p className="text-slate-500 text-[13px] leading-relaxed mb-8 line-clamp-2 font-medium">{dept.description}</p>
+
                                             {dept.headName && (
-                                                <div className="flex items-center gap-3 mb-6 p-3 bg-gray-50 rounded-2xl">
-                                                    <div className="w-10 h-10 rounded-full overflow-hidden bg-white border border-gray-100 flex-shrink-0">
-                                                        {dept.headImage ? <img src={dept.headImage} alt={dept.headName} className="w-full h-full object-cover" crossOrigin="anonymous" /> : <UserCircleIcon className="w-full h-full text-gray-200" />}
+                                                <div className="flex items-center gap-4 mb-10 p-4 bg-slate-50 rounded-[2rem] border border-slate-100 shadow-inner group/head">
+                                                    <div className="w-12 h-12 rounded-2xl overflow-hidden bg-white border border-slate-200 flex-shrink-0 group-hover/head:scale-110 transition-transform shadow-sm">
+                                                        {dept.headImage ? <img src={dept.headImage} alt={dept.headName} className="w-full h-full object-cover" crossOrigin="anonymous" /> : <UserCircleIcon className="w-full h-full text-slate-100" />}
                                                     </div>
                                                     <div className="min-w-0">
-                                                        <p className="text-[10px] font-black text-blue-900 uppercase tracking-widest truncate">{dept.headName}</p>
-                                                        <p className="text-[9px] text-gray-400 font-bold truncate">{dept.headTitle || 'Head of Department'}</p>
+                                                        <p className="text-[11px] font-black text-slate-900 uppercase tracking-widest truncate">{dept.headName}</p>
+                                                        <p className="text-[10px] text-slate-400 font-bold truncate tracking-tight">{dept.headTitle || 'PRINCIPAL DIRECTOR'}</p>
                                                     </div>
                                                 </div>
                                             )}
-                                            <div className="flex items-center gap-2">
-                                                <button onClick={() => handleOpenModal(dept)} className="flex-1 px-4 py-2 bg-gray-50 text-gray-400 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-blue-950 hover:text-white transition-all">Edit</button>
-                                                <button onClick={() => handleDelete(dept.id)} className="p-2 text-gray-300 hover:text-red-500 transition-colors"><TrashIcon className="w-4 h-4" /></button>
+
+                                            <div className="mt-auto flex items-center gap-3 pt-6 border-t border-slate-50">
+                                                <button
+                                                    onClick={() => handleOpenModal(dept)}
+                                                    className="flex-1 px-6 py-4 bg-slate-100 hover:bg-primary hover:text-white rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all shadow-sm"
+                                                >
+                                                    Modify Spec
+                                                </button>
+                                                <button
+                                                    onClick={() => handleDelete(dept.id)}
+                                                    className="p-4 text-slate-300 hover:text-red-500 hover:bg-red-50 rounded-2xl transition-all"
+                                                >
+                                                    <TrashIcon className="w-5 h-5" />
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -320,30 +366,34 @@ export default function DepartmentsAdmin() {
                 </>
             )}
 
+            {/* Entity Deployment Terminal (Modal) */}
             {isModalOpen && (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm animate-fade-in">
-                    <div className="bg-white w-full max-w-2xl rounded-[40px] shadow-2xl overflow-hidden animate-slide-up">
-                        <div className="px-8 py-6 bg-gray-50 border-b border-gray-100 flex items-center justify-between">
-                            <h3 className="text-xl font-black text-gray-900">{editingDept ? 'Edit' : 'Add'} Department</h3>
-                            <button onClick={() => setIsModalOpen(false)} className="p-2 hover:bg-white rounded-xl transition-all">
-                                <XMarkIcon className="w-6 h-6 text-gray-400" />
+                <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-slate-950/40 backdrop-blur-md animate-in fade-in duration-300">
+                    <div className="bg-white w-full max-w-3xl rounded-[3rem] shadow-[0_50px_100px_rgba(0,0,0,0.25)] overflow-hidden animate-in slide-in-from-bottom-12 duration-500">
+                        <div className="px-10 py-8 bg-slate-50 border-b border-slate-100 flex items-center justify-between">
+                            <div>
+                                <h3 className="text-2xl font-jakarta font-black text-slate-900 tracking-tight">{editingDept ? 'Synchronize Entity' : 'Initialize Structural Hub'}</h3>
+                                <p className="text-[10px] text-slate-400 font-bold uppercase tracking-[0.25em] mt-1">Configure structural and leadership parameters.</p>
+                            </div>
+                            <button onClick={() => setIsModalOpen(false)} className="p-4 hover:bg-white rounded-full transition-all text-slate-400 group border border-transparent hover:border-slate-200">
+                                <XMarkIcon className="w-6 h-6 group-hover:rotate-90 transition-transform" />
                             </button>
                         </div>
-                        <form onSubmit={handleSubmit} className="p-8 space-y-6 max-h-[70vh] overflow-y-auto custom-scrollbar">
-                            <div className="grid grid-cols-2 gap-6">
-                                <div className="space-y-2">
-                                    <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Dept Name</label>
+                        <form onSubmit={handleSubmit} className="p-10 space-y-8 max-h-[75vh] overflow-y-auto no-scrollbar">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                <div className="space-y-3">
+                                    <label className="text-[11px] font-black uppercase tracking-[0.2em] text-slate-400 ml-2">Entity Nomenclature</label>
                                     <input
                                         type="text"
                                         required
                                         value={formData.name}
                                         onChange={(e) => setFormData({ ...formData, name: e.target.value, slug: e.target.value.toLowerCase().replace(/ /g, '-') })}
-                                        className="w-full px-5 py-4 bg-gray-50 border-0 rounded-2xl focus:ring-2 focus:ring-blue-900/10 placeholder-gray-300 text-sm font-bold"
-                                        placeholder="e.g. Psychiatry"
+                                        className="w-full px-6 py-5 bg-slate-50 border-0 rounded-3xl focus:ring-[6px] focus:ring-primary/5 focus:border-primary/20 placeholder-slate-200 text-sm font-bold transition-all outline-none"
+                                        placeholder="Identification e.g. Clinical Neurology"
                                     />
                                 </div>
-                                <div className="space-y-2">
-                                    <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Category</label>
+                                <div className="space-y-3">
+                                    <label className="text-[11px] font-black uppercase tracking-[0.2em] text-slate-400 ml-2">Release Category</label>
                                     <select
                                         value={formData.categoryId || formData.category}
                                         onChange={(e) => {
@@ -354,7 +404,7 @@ export default function DepartmentsAdmin() {
                                                 category: selectedCat?.name || e.target.value
                                             });
                                         }}
-                                        className="w-full px-5 py-4 bg-gray-50 border-0 rounded-2xl focus:ring-2 focus:ring-blue-900/10 text-sm font-bold"
+                                        className="w-full px-6 py-5 bg-slate-50 border-0 rounded-3xl focus:ring-[6px] focus:ring-primary/5 text-sm font-bold transition-all outline-none"
                                     >
                                         {categories.map(cat => (
                                             <option key={cat.id} value={cat.id}>{cat.name}</option>
@@ -363,229 +413,237 @@ export default function DepartmentsAdmin() {
                                 </div>
                             </div>
 
-                            <div className="grid grid-cols-2 gap-6">
-                                <div className="space-y-2">
-                                    <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Dept Icon (Emoji)</label>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                <div className="space-y-3">
+                                    <label className="text-[11px] font-black uppercase tracking-[0.2em] text-slate-400 ml-2">Symbolic Identifier (Emoji)</label>
                                     <input
                                         type="text"
                                         value={formData.icon}
                                         onChange={(e) => setFormData({ ...formData, icon: e.target.value })}
-                                        className="w-full px-5 py-4 bg-gray-50 border-0 rounded-2xl focus:ring-2 focus:ring-blue-900/10 text-sm font-bold"
-                                        placeholder="🏥"
+                                        className="w-full px-6 py-5 bg-slate-50 border-0 rounded-3xl focus:ring-[6px] focus:ring-primary/5 text-sm font-bold transition-all outline-none"
+                                        placeholder="🏥 Icon Signal"
                                     />
                                 </div>
-                                <div className="space-y-2">
-                                    <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">URL Slug</label>
+                                <div className="space-y-3">
+                                    <label className="text-[11px] font-black uppercase tracking-[0.2em] text-slate-400 ml-2">System Asset Slug</label>
                                     <input
                                         type="text"
                                         required
                                         value={formData.slug}
                                         onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
-                                        className="w-full px-5 py-4 bg-gray-50 border-0 rounded-2xl focus:ring-2 focus:ring-blue-900/10 placeholder-gray-300 text-sm font-bold"
+                                        className="w-full px-6 py-5 bg-slate-50 border-0 rounded-3xl focus:ring-[6px] focus:ring-primary/5 text-sm font-bold transition-all outline-none placeholder-slate-200"
+                                        placeholder="internal-slug-path"
                                     />
                                 </div>
                             </div>
 
-                            <div className="space-y-2">
-                                <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Description</label>
+                            <div className="space-y-3">
+                                <label className="text-[11px] font-black uppercase tracking-[0.2em] text-slate-400 ml-2">Operational Descriptor</label>
                                 <textarea
                                     required
                                     rows={3}
                                     value={formData.description}
                                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                                    className="w-full px-5 py-4 bg-gray-50 border-0 rounded-2xl focus:ring-2 focus:ring-blue-900/10 placeholder-gray-300 text-sm font-bold"
-                                    placeholder="Write a brief overview of this department..."
+                                    className="w-full px-6 py-5 bg-slate-50 border-0 rounded-3xl focus:ring-[6px] focus:ring-primary/5 transition-all placeholder-slate-200 text-sm font-bold outline-none resize-none"
+                                    placeholder="Provide comprehensive structural overview..."
                                 />
                             </div>
 
-                            <div className="space-y-4 pt-4 border-t border-gray-100">
-                                <h4 className="text-xs font-black text-gray-900 uppercase tracking-widest">Strategy & Goals</h4>
-                                <div className="space-y-4">
-                                    <div className="space-y-2">
-                                        <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Department Vision</label>
+                            <div className="space-y-6 pt-8 border-t border-slate-100">
+                                <h4 className="text-[10px] font-black text-slate-900 uppercase tracking-[0.25em]">Strategic Objectives</h4>
+                                <div className="space-y-6">
+                                    <div className="space-y-3">
+                                        <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-2">Strategic Vision</label>
                                         <textarea
                                             rows={2}
                                             value={formData.vision}
                                             onChange={(e) => setFormData({ ...formData, vision: e.target.value })}
-                                            className="w-full px-5 py-4 bg-gray-50 border-0 rounded-2xl focus:ring-2 focus:ring-blue-900/10 text-sm font-bold"
-                                            placeholder="The department's long-term vision..."
+                                            className="w-full px-6 py-5 bg-slate-50 border-0 rounded-3xl focus:ring-2 focus:ring-primary/10 text-sm font-bold outline-none resize-none"
+                                            placeholder="Future operational horizon..."
                                         />
                                     </div>
-                                    <div className="space-y-2">
-                                        <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Mission Points (One per line)</label>
-                                        <textarea
-                                            rows={3}
-                                            value={formData.mission}
-                                            onChange={(e) => setFormData({ ...formData, mission: e.target.value })}
-                                            className="w-full px-5 py-4 bg-gray-50 border-0 rounded-2xl focus:ring-2 focus:ring-blue-900/10 text-sm font-mono"
-                                            placeholder="Point 1&#10;Point 2&#10;Point 3..."
-                                        />
-                                    </div>
-                                    <div className="space-y-2">
-                                        <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Key Department Goal</label>
-                                        <textarea
-                                            rows={2}
-                                            value={formData.goal}
-                                            onChange={(e) => setFormData({ ...formData, goal: e.target.value })}
-                                            className="w-full px-5 py-4 bg-gray-50 border-0 rounded-2xl focus:ring-2 focus:ring-blue-900/10 text-sm font-bold"
-                                            placeholder="The main strategic goal for this year..."
-                                        />
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                        <div className="space-y-3">
+                                            <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-2">Tactical Mission (List)</label>
+                                            <textarea
+                                                rows={4}
+                                                value={formData.mission}
+                                                onChange={(e) => setFormData({ ...formData, mission: e.target.value })}
+                                                className="w-full px-6 py-5 bg-slate-900 border-0 rounded-3xl text-sm font-bold text-slate-300 outline-none resize-none"
+                                                placeholder="Vector 1&#10;Vector 2&#10;Vector 3..."
+                                            />
+                                        </div>
+                                        <div className="space-y-3">
+                                            <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-2">Operational Goal</label>
+                                            <textarea
+                                                rows={4}
+                                                value={formData.goal}
+                                                onChange={(e) => setFormData({ ...formData, goal: e.target.value })}
+                                                className="w-full px-6 py-5 bg-primary/5 border border-primary/10 rounded-3xl text-sm font-bold text-primary outline-none resize-none"
+                                                placeholder="Primary objective for current cycle..."
+                                            />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div className="bg-blue-50/50 p-6 rounded-[32px] space-y-4">
-                                <h4 className="text-xs font-black text-blue-900 uppercase tracking-widest">Head of Department</h4>
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div className="space-y-2">
-                                        <label className="text-[9px] font-black uppercase tracking-widest text-gray-400 ml-1">Full Name</label>
+                            <div className="bg-slate-900 p-8 rounded-[3rem] space-y-6 border border-white/5 shadow-2xl">
+                                <h4 className="text-[11px] font-black text-accent uppercase tracking-[0.3em] flex items-center gap-3">
+                                    <IdentificationIcon className="w-5 h-5" /> Leadership Designation
+                                </h4>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div className="space-y-3">
+                                        <label className="text-[9px] font-black uppercase tracking-widest text-slate-500 ml-2">Personnel Identity</label>
                                         <input
                                             type="text"
                                             value={formData.headName}
                                             onChange={(e) => setFormData({ ...formData, headName: e.target.value })}
-                                            className="w-full px-4 py-3 bg-white border-0 rounded-xl focus:ring-2 focus:ring-blue-900/10 text-xs font-bold"
-                                            placeholder="Dr. John Doe"
+                                            className="w-full px-6 py-4 bg-white/5 border border-white/5 rounded-2xl focus:ring-2 focus:ring-accent/20 text-xs font-bold text-white outline-none"
+                                            placeholder="e.g. Director General Name"
                                         />
                                     </div>
-                                    <div className="space-y-2">
-                                        <label className="text-[9px] font-black uppercase tracking-widest text-gray-400 ml-1">Title/Role</label>
+                                    <div className="space-y-3">
+                                        <label className="text-[9px] font-black uppercase tracking-widest text-slate-500 ml-2">Functional Role</label>
                                         <input
                                             type="text"
                                             value={formData.headTitle}
                                             onChange={(e) => setFormData({ ...formData, headTitle: e.target.value })}
-                                            className="w-full px-4 py-3 bg-white border-0 rounded-xl focus:ring-2 focus:ring-blue-900/10 text-xs font-bold"
-                                            placeholder="Chief Psychiatrist"
+                                            className="w-full px-6 py-4 bg-white/5 border border-white/5 rounded-2xl focus:ring-2 focus:ring-accent/20 text-xs font-bold text-white outline-none"
+                                            placeholder="Senior Consultant / Head"
                                         />
                                     </div>
                                 </div>
-                                <div className="space-y-2">
-                                    <label className="text-[9px] font-black uppercase tracking-widest text-gray-400 ml-1">Head Person Photo</label>
-                                    <div className="flex items-center gap-4">
+                                <div className="space-y-3">
+                                    <label className="text-[9px] font-black uppercase tracking-widest text-slate-500 ml-2">Authorized ID Photo</label>
+                                    <div className="flex items-center gap-6">
                                         {formData.headImage && (
-                                            <div className="w-12 h-12 rounded-full overflow-hidden border border-blue-100 flex-shrink-0">
+                                            <div className="w-16 h-16 rounded-2xl overflow-hidden border-2 border-white/10 shadow-xl flex-shrink-0 group relative">
                                                 <img src={formData.headImage} className="w-full h-full object-cover" crossOrigin="anonymous" />
+                                                <div className="absolute inset-0 bg-red-600/80 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity cursor-pointer" onClick={() => setFormData({ ...formData, headImage: '' })}>
+                                                    <XMarkIcon className="w-4 h-4 text-white" />
+                                                </div>
                                             </div>
                                         )}
-                                        <div className="relative flex-1">
+                                        <div className="relative flex-1 group">
                                             <input
                                                 type="file"
                                                 onChange={(e) => handleImageUpload(e, 'headImage')}
-                                                className="absolute inset-0 opacity-0 cursor-pointer"
+                                                className="absolute inset-0 opacity-0 cursor-pointer z-10"
                                                 accept="image/*"
                                             />
-                                            <div className="w-full px-4 py-3 bg-white border border-dashed border-blue-200 rounded-xl text-[10px] font-black text-blue-900 uppercase tracking-widest text-center">
-                                                {uploading === 'headImage' ? 'Uploading...' : 'Upload Head Photo'}
+                                            <div className="w-full px-6 py-4 bg-white/5 border-2 border-dashed border-white/10 rounded-[1.5rem] text-[10px] font-black text-slate-300 uppercase tracking-widest text-center group-hover:bg-white/10 group-hover:border-accent/40 transition-all">
+                                                {uploading === 'headImage' ? 'SYNCHRONIZING ASSET...' : 'UPLOAD PERSonNel PHOTO'}
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div className="grid grid-cols-2 gap-6">
-                                <div className="space-y-2">
-                                    <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Display Order</label>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                <div className="space-y-3">
+                                    <label className="text-[11px] font-black uppercase tracking-[0.2em] text-slate-400 ml-2">Display Sequence</label>
                                     <input
                                         type="number"
                                         value={formData.order}
                                         onChange={(e) => setFormData({ ...formData, order: parseInt(e.target.value) })}
-                                        className="w-full px-5 py-4 bg-gray-50 border-0 rounded-2xl focus:ring-2 focus:ring-blue-900/10 text-sm font-bold"
+                                        className="w-full px-6 py-5 bg-slate-50 border-0 rounded-3xl focus:ring-2 focus:ring-primary/10 text-sm font-bold outline-none"
                                     />
                                 </div>
-                                <div className="space-y-2">
-                                    <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Status</label>
+                                <div className="space-y-3">
+                                    <label className="text-[11px] font-black uppercase tracking-[0.2em] text-slate-400 ml-2">Entity Authorization</label>
                                     <select
                                         value={formData.isActive ? 'true' : 'false'}
                                         onChange={(e) => setFormData({ ...formData, isActive: e.target.value === 'true' })}
-                                        className="w-full px-5 py-4 bg-gray-50 border-0 rounded-2xl focus:ring-2 focus:ring-blue-900/10 text-sm font-bold"
+                                        className="w-full px-6 py-5 bg-slate-50 border-0 rounded-3xl focus:ring-2 focus:ring-primary/10 text-sm font-bold outline-none appearance-none"
                                     >
-                                        <option value="true">Active</option>
-                                        <option value="false">Inactive</option>
+                                        <option value="true">✅ OPERATIONAL</option>
+                                        <option value="false">⚠️ NON-AUTHORIZED / DRAFT</option>
                                     </select>
                                 </div>
                             </div>
 
-                            <div className="space-y-4 pt-4 border-t border-gray-100">
+                            <div className="space-y-6 pt-8 border-t border-slate-100">
                                 <div className="flex items-center justify-between">
-                                    <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Department Gallery (2-3 photos)</label>
-                                    <div className="relative">
+                                    <label className="text-[11px] font-black uppercase tracking-[0.25em] text-slate-900 ml-2">Asset Integration Hub</label>
+                                    <div className="relative group">
                                         <input
                                             type="file"
                                             onChange={(e) => handleImageUpload(e, 'gallery')}
-                                            className="absolute inset-0 opacity-0 cursor-pointer"
+                                            className="absolute inset-0 opacity-0 cursor-pointer z-10"
                                             accept="image/*"
                                         />
-                                        <span className="text-xs font-black text-blue-900 hover:text-blue-700 transition-colors uppercase tracking-widest flex items-center gap-2">
-                                            {uploading === 'gallery' ? 'Uploading...' : <><PlusIcon className="w-4 h-4" /> Add Photo</>}
+                                        <span className="text-[10px] font-black text-primary group-hover:text-primary-dark transition-all uppercase tracking-widest flex items-center gap-2 px-4 py-2 bg-primary/5 rounded-xl border border-primary/10">
+                                            {uploading === 'gallery' ? <ArrowPathIcon className="w-4 h-4 animate-spin" /> : <><PlusIcon className="w-4 h-4" /> SECURE INTEGRAL ASSET</>}
                                         </span>
                                     </div>
                                 </div>
-                                <div className="grid grid-cols-3 gap-4">
+                                <div className="grid grid-cols-3 md:grid-cols-6 gap-4">
                                     {formData.gallery && formData.gallery.split(';').map((url, idx) => (
-                                        <div key={idx} className="relative aspect-square rounded-2xl overflow-hidden group">
-                                            <img src={url} className="w-full h-full object-cover" crossOrigin="anonymous" />
-                                            <div className="absolute inset-0 bg-gray-900/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                                <button
-                                                    type="button"
-                                                    onClick={() => removeGalleryImage(url)}
-                                                    className="p-2 bg-red-600 text-white rounded-full hover:scale-110 transition-transform"
-                                                >
-                                                    <TrashIcon className="w-4 h-4" />
-                                                </button>
+                                        <div key={idx} className="relative aspect-square rounded-[1.5rem] overflow-hidden group shadow-lg">
+                                            <img src={url} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" crossOrigin="anonymous" />
+                                            <div className="absolute inset-0 bg-red-600/80 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center cursor-pointer" onClick={() => removeGalleryImage(url)}>
+                                                <TrashIcon className="w-5 h-5 text-white" />
                                             </div>
                                         </div>
                                     ))}
                                     {(!formData.gallery || formData.gallery.split(';').length < 6) && (
-                                        <div className="aspect-square rounded-2xl border-2 border-dashed border-gray-100 flex items-center justify-center text-gray-300">
-                                            <PhotoIcon className="w-8 h-8 opacity-20" />
+                                        <div className="aspect-square rounded-[1.5rem] border-2 border-dashed border-slate-200 flex flex-col items-center justify-center text-slate-200 gap-2 opacity-50 group-hover:opacity-100 transition-opacity">
+                                            <PhotoIcon className="w-6 h-6" />
+                                            <span className="text-[8px] font-black font-jakarta uppercase tracking-tighter">EMPTY NODE</span>
                                         </div>
                                     )}
                                 </div>
                             </div>
 
-                            <div className="space-y-4 pt-4 border-t border-gray-100">
+                            <div className="space-y-6 pt-8 border-t border-slate-100">
                                 <div className="flex items-center justify-between">
-                                    <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Dept Featured Image</label>
-                                    <div className="relative">
+                                    <label className="text-[11px] font-black uppercase tracking-[0.25em] text-slate-900 ml-2">Master Visibility Asset</label>
+                                    <div className="relative group">
                                         <input
                                             type="file"
                                             onChange={(e) => handleImageUpload(e, 'image')}
-                                            className="absolute inset-0 opacity-0 cursor-pointer"
+                                            className="absolute inset-0 opacity-0 cursor-pointer z-10"
                                             accept="image/*"
                                         />
-                                        <span className="text-xs font-black text-blue-900 hover:text-blue-700 transition-colors uppercase tracking-widest flex items-center gap-2">
-                                            {uploading === 'image' ? 'Uploading...' : <><PhotoIcon className="w-4 h-4" /> Change Image</>}
+                                        <span className="text-[10px] font-black text-primary transition-all uppercase tracking-widest flex items-center gap-2 px-4 py-2 bg-slate-50 border border-slate-100 rounded-xl">
+                                            {uploading === 'image' ? <ArrowPathIcon className="w-4 h-4 animate-spin" /> : <><PhotoIcon className="w-4 h-4" /> OVERWRITE MASTER IMAGE</>}
                                         </span>
                                     </div>
                                 </div>
-                                {formData.image && (
-                                    <div className="relative h-48 rounded-2xl overflow-hidden group">
-                                        <img src={formData.image} className="w-full h-full object-cover" crossOrigin="anonymous" />
-                                        <div className="absolute inset-0 bg-gray-900/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                {formData.image ? (
+                                    <div className="relative h-64 rounded-[2.5rem] overflow-hidden group shadow-2xl ring-4 ring-slate-50">
+                                        <img src={formData.image} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" crossOrigin="anonymous" />
+                                        <div className="absolute inset-0 bg-slate-900/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                                             <button
                                                 type="button"
                                                 onClick={() => setFormData({ ...formData, image: '' })}
-                                                className="p-3 bg-red-600 text-white rounded-full hover:scale-110 transition-transform"
+                                                className="px-10 py-4 bg-red-600/90 text-white rounded-[1.5rem] text-[11px] font-black uppercase tracking-widest hover:bg-red-500 transition-all shadow-2xl"
                                             >
-                                                <TrashIcon className="w-6 h-6" />
+                                                UNLINK MASTER media
                                             </button>
                                         </div>
+                                    </div>
+                                ) : (
+                                    <div className="h-48 rounded-[2.5rem] border-2 border-dashed border-slate-200 flex flex-col items-center justify-center text-slate-200 gap-3">
+                                        <BuildingOfficeIcon className="w-12 h-12" />
+                                        <span className="text-[10px] font-black uppercase tracking-widest">Master Node Inactive</span>
                                     </div>
                                 )}
                             </div>
 
-                            <div className="flex items-center gap-4 pt-6 border-t border-gray-100">
+                            <div className="flex flex-col lg:flex-row items-center gap-4 pt-10 border-t border-slate-100">
                                 <button
                                     type="button"
                                     onClick={() => setIsModalOpen(false)}
-                                    className="flex-1 px-8 py-4 bg-gray-100 text-gray-500 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-gray-200 transition-all"
+                                    className="w-full lg:flex-1 h-20 bg-slate-50 text-slate-400 rounded-[2rem] text-[12px] font-black uppercase tracking-[0.25em] hover:bg-slate-100 transition-all border border-slate-100"
                                 >
-                                    Cancel
+                                    ABORT MISSION
                                 </button>
                                 <button
                                     type="submit"
-                                    className="flex-1 px-8 py-4 bg-blue-900 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-blue-800 transition-all shadow-lg shadow-blue-900/20"
+                                    className="w-full lg:flex-1 h-20 bg-primary text-white rounded-[2rem] text-[12px] font-black uppercase tracking-[0.25em] hover:bg-primary-dark transition-all shadow-[0_20px_40px_rgba(27,79,138,0.3)] hover:-translate-y-1 active:translate-y-0"
                                 >
-                                    {editingDept ? 'Update' : 'Create'} Department
+                                    {editingDept ? 'SYNCHRONIZE UPDATE' : 'DEPLOY ENTITY'}
                                 </button>
                             </div>
                         </form>

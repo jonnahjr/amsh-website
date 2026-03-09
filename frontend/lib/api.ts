@@ -135,11 +135,13 @@ export const contactAPI = {
     send: (data: any) => api.post('/contact', data),
     getAll: (params?: any) => api.get('/contact', { params }),
     markRead: (id: string) => api.patch(`/contact/${id}/read`),
+    delete: (id: string) => api.delete(`/contact/${id}`),
 };
 
 export const newsletterAPI = {
     subscribe: (email: string, name?: string) => api.post('/newsletter/subscribe', { email, name }),
     getSubscribers: () => api.get('/newsletter/subscribers'),
+    broadcast: (data: { subject: string; content: string }) => api.post('/newsletter/broadcast', data),
 };
 
 export const analyticsAPI = {
@@ -173,6 +175,7 @@ export const faqAPI = {
 export const testimonialsAPI = {
     getAll: (params?: any) => api.get('/testimonials', { params }),
     create: (data: any) => api.post('/testimonials', data),
+    submit: (data: any) => api.post('/testimonials/submit', data),
     update: (id: string, data: any) => api.put(`/testimonials/${id}`, data),
     delete: (id: string) => api.delete(`/testimonials/${id}`),
 };
