@@ -55,9 +55,10 @@ export default function NewsletterAdminPage() {
             setSubject('');
             setContent('');
         } catch (error: any) {
-            const errorMsg = error.response?.data?.details
-                ? `${error.response.data.error}: ${error.response.data.details}`
-                : (error.response?.data?.error || 'Failed to broadcast newsletter');
+            const data = error.response?.data;
+            const errorMsg = data?.host
+                ? `${data.error}: ${data.details} (Via ${data.host}:${data.port})`
+                : (data?.error || 'Failed to broadcast newsletter');
             toast.error(errorMsg);
         } finally {
             setBroadcastLoading(false);

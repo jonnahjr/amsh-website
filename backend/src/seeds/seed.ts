@@ -277,7 +277,7 @@ async function main() {
         await prisma.department.upsert({
             where: { slug: d.slug },
             update: {
-                category: d.category,
+                categoryName: d.category,
                 description: d.description,
                 icon: d.icon,
                 order: d.order
@@ -287,7 +287,7 @@ async function main() {
                 slug: d.slug,
                 description: d.description,
                 icon: d.icon,
-                category: d.category,
+                categoryName: d.category,
                 order: d.order,
                 isActive: true
             }

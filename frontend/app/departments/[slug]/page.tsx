@@ -124,21 +124,37 @@ export default function DepartmentDetailPage() {
                     </div>
                 </section>
 
-                {/* Head of Department */}
+                {/* Head of Department — Premium Card */}
                 {dept.headName && (
-                    <div className="bg-gray-50 border-b border-gray-100">
-                        <div className="container-custom py-8 flex items-center gap-6">
-                            <div className="w-16 h-16 rounded-2xl bg-blue-100 overflow-hidden flex-shrink-0 flex items-center justify-center">
-                                {dept.headImage ? (
-                                    <img src={dept.headImage} alt={dept.headName} className="w-full h-full object-cover" crossOrigin="anonymous" />
-                                ) : (
-                                    <span className="text-2xl">👤</span>
-                                )}
-                            </div>
-                            <div>
-                                <p className="text-[10px] font-black uppercase tracking-widest text-blue-900 mb-1">Department Head</p>
-                                <p className="font-black text-gray-900 text-xl">{dept.headName}</p>
-                                <p className="text-sm text-gray-500 font-medium">{dept.headTitle || 'Clinical Lead'}</p>
+                    <div className="bg-white border-b border-gray-100">
+                        <div className="container-custom py-10">
+                            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 bg-gradient-to-r from-blue-50 to-white rounded-3xl p-6 border border-blue-100 shadow-sm">
+                                {/* Photo */}
+                                <div className="w-24 h-24 rounded-2xl overflow-hidden flex-shrink-0 bg-blue-100 border-4 border-white shadow-xl">
+                                    {dept.headImage ? (
+                                        <img src={dept.headImage} alt={dept.headName} className="w-full h-full object-cover" crossOrigin="anonymous" />
+                                    ) : (
+                                        <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-900 to-blue-700">
+                                            <UserGroupIcon className="w-10 h-10 text-white/40" />
+                                        </div>
+                                    )}
+                                </div>
+                                {/* Info */}
+                                <div className="flex-1">
+                                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-600 mb-1">Department Head</p>
+                                    <h2 className="font-black text-gray-900 text-2xl leading-tight">{dept.headName}</h2>
+                                    <p className="text-sm font-bold text-blue-900 mt-1">{dept.headTitle || 'Clinical Director'}</p>
+                                    {dept.headProfession && (
+                                        <p className="text-xs text-gray-500 font-medium mt-1 italic">{dept.headProfession}</p>
+                                    )}
+                                </div>
+                                {/* Decoration */}
+                                <div className="hidden lg:flex flex-col items-end gap-2">
+                                    <div className="px-4 py-2 bg-blue-900 text-white text-[9px] font-black uppercase tracking-widest rounded-xl shadow-lg">
+                                        {dept.name}
+                                    </div>
+                                    <p className="text-[9px] font-black text-gray-300 uppercase tracking-widest">Emmanuel Mental Specialized Hospital</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -176,14 +192,17 @@ export default function DepartmentDetailPage() {
                                     <div className="absolute inset-0 bg-gradient-to-t from-blue-950/60 to-transparent pointer-events-none" />
                                     {dept.headName && (
                                         <div className="absolute bottom-5 left-5 right-5 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-4 flex items-center gap-3">
-                                            <div className="w-10 h-10 rounded-full bg-white/20 overflow-hidden flex-shrink-0 flex items-center justify-center">
+                                            <div className="w-12 h-12 rounded-full bg-white/20 overflow-hidden flex-shrink-0 flex items-center justify-center border-2 border-white/30">
                                                 {dept.headImage
                                                     ? <img src={dept.headImage} className="w-full h-full object-cover" crossOrigin="anonymous" />
-                                                    : <span className="text-lg">👤</span>}
+                                                    : <UserGroupIcon className="w-7 h-7 text-white/60" />}
                                             </div>
                                             <div>
-                                                <p className="text-[9px] font-black uppercase tracking-widest text-white/50">Dept Head</p>
+                                                <p className="text-[9px] font-black uppercase tracking-widest text-white/50">Department Head</p>
                                                 <p className="font-black text-white text-sm">{dept.headName}</p>
+                                                {dept.headProfession && (
+                                                    <p className="text-[10px] text-white/60 font-medium italic">{dept.headProfession}</p>
+                                                )}
                                             </div>
                                         </div>
                                     )}

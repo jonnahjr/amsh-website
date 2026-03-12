@@ -12,14 +12,15 @@ import {
     CloudArrowUpIcon,
     UserGroupIcon,
     CalendarDaysIcon,
-    PhoneIcon,
-    EnvelopeIcon,
     CheckBadgeIcon,
     BeakerIcon,
     InformationCircleIcon,
     BanknotesIcon,
     XMarkIcon,
     ArrowRightIcon,
+    IdentificationIcon,
+    PhoneIcon,
+    EnvelopeIcon,
 } from '@heroicons/react/24/outline';
 import { formsAPI } from '@/lib/api';
 
@@ -141,6 +142,118 @@ export default function ClinicalAttachmentPage() {
                     <p className="text-blue-100/70 text-lg md:text-xl max-w-3xl mx-auto mb-8 animate-fade-in-up font-medium" style={{ animationDelay: '0.2s' }}>
                         Join Ethiopia's premier psychiatric teaching hospital. We offer specialized clinical exposure for government and private institutions as well as self-sponsored professionals.
                     </p>
+                </div>
+            </section>
+
+            {/* Training Hub & Statistics */}
+            <section className="py-24 bg-white border-b border-gray-100">
+                <div className="container-custom">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+                        <div>
+                            <span className="text-blue-600 text-xs font-black uppercase tracking-[0.2em] mb-4 block">National Hub</span>
+                            <h2 className="text-4xl font-black text-blue-950 mb-8 tracking-tight">Coordination of Clinical Practice Training</h2>
+                            <p className="text-lg text-gray-600 leading-relaxed font-medium mb-10">
+                                Amanuel Mental Specialized Hospital serves as a clinical practice training hub for mental health for government universities and private colleges in the fields of health sciences, psychology, and social work.
+                            </p>
+                            
+                            <div className="bg-blue-50/50 rounded-3xl p-8 border border-blue-100 flex items-center gap-6">
+                                <div className="p-4 bg-white rounded-2xl shadow-sm">
+                                    <UserGroupIcon className="w-10 h-10 text-blue-600" />
+                                </div>
+                                <div>
+                                    <div className="text-4xl font-black text-blue-900">2,500+</div>
+                                    <p className="text-sm text-gray-500 font-bold uppercase tracking-widest mt-1">Annual Student Attachments</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            {[
+                                "Psychiatry Residency",
+                                "Postgraduate CMH",
+                                "Medicine",
+                                "Psychiatry Nursing",
+                                "General Nursing",
+                                "Midwifery",
+                                "Clinical Psychology",
+                                "General Psychology",
+                                "Pharmacy",
+                                "Medical Lab Tech"
+                            ].map((prog, i) => (
+                                <div key={i} className="flex items-center gap-3 p-4 bg-gray-50 rounded-xl border border-gray-100">
+                                    <div className="w-2 h-2 rounded-full bg-blue-400" />
+                                    <span className="text-sm font-black text-blue-900">{prog}</span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Specialized Training Program */}
+            <section className="py-24 bg-blue-50/30">
+                <div className="container-custom">
+                    <div className="bg-white rounded-[40px] p-8 md:p-16 border border-blue-100 shadow-xl relative overflow-hidden">
+                        <div className="absolute top-0 right-0 w-96 h-96 bg-blue-600/5 rounded-full -mr-48 -mt-48 blur-3xl" />
+                        
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative z-10">
+                            <div>
+                                <span className="px-4 py-1.5 rounded-full bg-blue-900 text-white text-[10px] font-black uppercase tracking-widest mb-6 inline-block">
+                                    Specialized Certificate
+                                </span>
+                                <h2 className="text-4xl font-black text-blue-950 mb-6 tracking-tight">Self-Sponsor Psychiatry Nursing Training</h2>
+                                <p className="text-gray-600 font-medium leading-relaxed mb-8">
+                                    Amanuel Mental Specialized Hospital offers a premium <span className="text-blue-900 font-bold">one-month intensive</span> Psychiatry Nursing Training Program. This curriculum is specifically designed for health professionals aiming to strengthen their clinical competencies for local or international practice.
+                                </p>
+                                
+                                <div className="space-y-4">
+                                    <h4 className="text-xs font-black text-blue-900 uppercase tracking-widest">Ideal For:</h4>
+                                    {[
+                                        "Nurses seeking professional specialization in mental health",
+                                        "Health professionals planning to practice internationally (USA, Europe, etc.)",
+                                        "Clinicians wanting to strengthen psychiatric nursing core skills"
+                                    ].map((item, i) => (
+                                        <div key={i} className="flex gap-3">
+                                            <CheckBadgeIcon className="w-5 h-5 text-emerald-500 flex-shrink-0" />
+                                            <span className="text-sm font-bold text-gray-700">{item}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                            
+                            <div className="bg-blue-950 rounded-3xl p-8 text-white">
+                                <h3 className="text-xl font-black mb-6">Program Highlights</h3>
+                                <div className="space-y-6">
+                                    <div className="flex items-center gap-4">
+                                        <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center">
+                                            <CalendarDaysIcon className="w-6 h-6 text-cyan-400" />
+                                        </div>
+                                        <div>
+                                            <div className="text-sm font-black">1 Month Duration</div>
+                                            <div className="text-[10px] text-blue-200 uppercase tracking-wider">Condensed Intensive</div>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center gap-4">
+                                        <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center">
+                                            <AcademicCapIcon className="w-6 h-6 text-cyan-400" />
+                                        </div>
+                                        <div>
+                                            <div className="text-sm font-black">Global Standards</div>
+                                            <div className="text-[10px] text-blue-200 uppercase tracking-wider">International Readiness</div>
+                                        </div>
+                                    </div>
+                                    <div className="mt-8">
+                                        <button 
+                                            onClick={() => openApplyModal('SELF_SPONSORED')}
+                                            className="w-full py-4 bg-cyan-500 hover:bg-cyan-400 text-blue-950 rounded-xl font-black uppercase tracking-widest text-xs transition-colors shadow-lg shadow-cyan-500/20"
+                                        >
+                                            Inquire About Program
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </section>
 
@@ -570,6 +683,50 @@ export default function ClinicalAttachmentPage() {
                     </div>
                 </div>
             </section>
+
+            {/* Leadership & Contact Section */}
+            <section className="py-24 bg-white">
+                <div className="container-custom">
+                    <div className="text-center mb-16">
+                        <span className="text-blue-600 text-xs font-black uppercase tracking-[0.2em] mb-3 block">Directorate Leadership</span>
+                        <h2 className="text-4xl font-black text-blue-950 tracking-tight">Contact Clinical Training Desk</h2>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
+                        {[
+                            {
+                                role: "CPD, Clinical Training and Research Director",
+                                name: "Mr. Zegeye Yohannis",
+                                phone: "+251 91 330 7290",
+                                tel: "+251913307290",
+                                icon: <IdentificationIcon className="w-8 h-8" />
+                            },
+                            {
+                                role: "Research & Clinical Training Desk Head",
+                                name: "Mr. Habtamu Derajaw",
+                                phone: "+251 92 386 4833",
+                                tel: "+251923864833",
+                                icon: <AcademicCapIcon className="w-8 h-8" />
+                            },
+                        ].map((person, i) => (
+                            <div key={i} className="bg-gray-50 rounded-3xl p-8 border border-gray-100 group hover:bg-blue-900 hover:text-white transition-all duration-500">
+                                <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-blue-900 mb-6 group-hover:scale-110 transition-transform shadow-sm">
+                                    {person.icon}
+                                </div>
+                                <h4 className="text-xs font-black uppercase tracking-widest opacity-60 mb-2">{person.role}</h4>
+                                <h3 className="text-xl font-black mb-6 leading-tight">{person.name}</h3>
+                                <div className="space-y-3 pt-6 border-t border-gray-200 group-hover:border-white/20">
+                                    <a href={`tel:${person.tel}`} className="flex items-center gap-3 text-sm font-bold hover:underline">
+                                        <PhoneIcon className="w-4 h-4 opacity-40" />
+                                        <span className="opacity-80">{person.phone}</span>
+                                    </a>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
 
             <Footer />
             <ChatbotButton />

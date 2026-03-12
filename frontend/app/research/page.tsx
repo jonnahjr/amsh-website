@@ -18,7 +18,7 @@ import {
     ShieldCheckIcon,
     DocumentTextIcon,
     InformationCircleIcon,
-
+    PhoneIcon,
 } from '@heroicons/react/24/outline';
 
 const PUBLISHED_RESEARCH = [
@@ -106,6 +106,57 @@ export default function ResearchPage() {
                             EMSH is a leading center for neuropsychiatric research, conducting high-impact
                             studies that shape mental health policy and clinical practice across Ethiopia.
                         </p>
+                    </div>
+                </div>
+            </section>
+
+            {/* Research Desk Section */}
+            <section className="py-24 border-b border-gray-100">
+                <div className="container-custom">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+                        <div>
+                            <span className="text-blue-600 text-xs font-black uppercase tracking-[0.2em] mb-4 block">Institutional Support</span>
+                            <h2 className="text-4xl font-black text-blue-950 mb-8 tracking-tight">The Research Desk</h2>
+                            <p className="text-lg text-gray-600 leading-relaxed font-medium mb-8">
+                                The Research Desk at Amanuel Mental Specialized Hospital provides comprehensive support for research activities conducted within the hospital, ensuring scientific excellence and ethical integrity.
+                            </p>
+                            
+                            <ul className="space-y-6">
+                                {[
+                                    { title: "Ethical Approval", desc: "Facilitates ethical approval for undergraduate and postgraduate research, including PhD studies." },
+                                    { title: "Clinical Trials", desc: "Supports ethical approval for clinical trials and related research projects." },
+                                    { title: "Operational Research", desc: "Conducts operational research relevant to mental health services." },
+                                    { title: "Monitoring & Evaluation", desc: "Monitors and evaluates the progress of research conducted at the hospital." }
+                                ].map((item, i) => (
+                                    <li key={i} className="flex gap-4 p-6 bg-white rounded-2xl border border-gray-100 shadow-sm hover:border-blue-200 transition-colors">
+                                        <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 flex-shrink-0">
+                                            <ShieldCheckIcon className="w-6 h-6" />
+                                        </div>
+                                        <div>
+                                            <h4 className="font-black text-gray-900 mb-1">{item.title}</h4>
+                                            <p className="text-sm text-gray-500 font-medium">{item.desc}</p>
+                                        </div>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                        <div className="bg-blue-950 rounded-[40px] p-12 text-white relative overflow-hidden">
+                            <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/10 rounded-full -mr-32 -mt-32 blur-3xl opacity-50" />
+                            <h3 className="text-2xl font-black mb-6 italic">A Hub for Discovery</h3>
+                            <p className="text-blue-100/70 mb-8 leading-relaxed">
+                                We provide a structured environment for researchers to explore the complexities of the human mind while adhering to the highest international standards of medical ethics.
+                            </p>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="p-4 bg-white/5 rounded-xl border border-white/10">
+                                    <div className="text-2xl font-black text-cyan-400">80+</div>
+                                    <div className="text-[10px] font-bold uppercase tracking-widest opacity-60">Active Studies</div>
+                                </div>
+                                <div className="p-4 bg-white/5 rounded-xl border border-white/10">
+                                    <div className="text-2xl font-black text-cyan-400">15+</div>
+                                    <div className="text-[10px] font-bold uppercase tracking-widest opacity-60">Partner Univ.</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -263,8 +314,59 @@ export default function ResearchPage() {
                 </div>
             </section>
 
+            {/* Leadership & Contact Section */}
+            <section className="py-24 bg-gray-50/50">
+                <div className="container-custom">
+                    <div className="text-center mb-16">
+                        <span className="text-blue-600 text-xs font-black uppercase tracking-[0.2em] mb-3 block">Directorate Leadership</span>
+                        <h2 className="text-4xl font-black text-blue-950 tracking-tight">Contact Research Leadership</h2>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        {[
+                            {
+                                role: "CPD, Clinical Training and Research Director",
+                                name: "Mr. Zegeye Yohannis",
+                                phone: "+251 91 330 7290",
+                                tel: "+251913307290",
+                                icon: <UserIcon className="w-8 h-8" />
+                            },
+                            {
+                                role: "Research & Clinical Training Desk Head",
+                                name: "Mr. Habtamu Derajaw",
+                                phone: "+251 92 386 4833",
+                                tel: "+251923864833",
+                                icon: <AcademicCapIcon className="w-8 h-8" />
+                            },
+                            {
+                                role: "Research Officer",
+                                name: "Mr. Mensur Nesru",
+                                phone: "+251 91 325 5584",
+                                tel: "+251913255584",
+                                icon: <DocumentTextIcon className="w-8 h-8" />
+                            }
+                        ].map((person, i) => (
+                            <div key={i} className="bg-white rounded-3xl p-8 border border-gray-100 group hover:bg-blue-900 hover:text-white transition-all duration-500">
+                                <div className="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-900 mb-6 group-hover:scale-110 group-hover:bg-white transition-all shadow-sm">
+                                    {person.icon}
+                                </div>
+                                <h4 className="text-xs font-black uppercase tracking-widest opacity-60 mb-2">{person.role}</h4>
+                                <h3 className="text-xl font-black mb-6 leading-tight">{person.name}</h3>
+                                <div className="space-y-3 pt-6 border-t border-gray-100 group-hover:border-white/20">
+                                    <a href={`tel:${person.tel}`} className="flex items-center gap-3 text-sm font-bold hover:underline">
+                                        <PhoneIcon className="w-4 h-4 opacity-40" />
+                                        <span className="opacity-80">{person.phone}</span>
+                                    </a>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
             <Footer />
             <ChatbotButton />
         </div>
     );
 }
+

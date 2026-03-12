@@ -34,6 +34,7 @@ export default function DepartmentsAdmin() {
         icon: '',
         headName: '',
         headTitle: '',
+        headProfession: '',
         headImage: '',
         category: 'Clinical Departments',
         categoryId: '',
@@ -83,6 +84,7 @@ export default function DepartmentsAdmin() {
                 icon: dept.icon || '',
                 headName: dept.headName || '',
                 headTitle: dept.headTitle || '',
+                headProfession: dept.headProfession || '',
                 headImage: dept.headImage || '',
                 category: dept.categoryName || dept.category || 'Clinical Departments',
                 categoryId: dept.categoryId || '',
@@ -103,6 +105,7 @@ export default function DepartmentsAdmin() {
                 icon: '',
                 headName: '',
                 headTitle: '',
+                headProfession: '',
                 headImage: '',
                 category: categories[0]?.name || 'Clinical Departments',
                 categoryId: categories[0]?.id || '',
@@ -503,13 +506,23 @@ export default function DepartmentsAdmin() {
                                         />
                                     </div>
                                     <div className="space-y-3">
-                                        <label className="text-[9px] font-black uppercase tracking-widest text-slate-500 ml-2">Functional Role</label>
+                                        <label className="text-[9px] font-black uppercase tracking-widest text-slate-500 ml-2">Functional Role / Title</label>
                                         <input
                                             type="text"
                                             value={formData.headTitle}
                                             onChange={(e) => setFormData({ ...formData, headTitle: e.target.value })}
                                             className="w-full px-6 py-4 bg-white/5 border border-white/5 rounded-2xl focus:ring-2 focus:ring-accent/20 text-xs font-bold text-white outline-none"
-                                            placeholder="Senior Consultant / Head"
+                                            placeholder="e.g. Department Director / Head"
+                                        />
+                                    </div>
+                                    <div className="space-y-3">
+                                        <label className="text-[9px] font-black uppercase tracking-widest text-slate-500 ml-2">Profession / Specialization</label>
+                                        <input
+                                            type="text"
+                                            value={formData.headProfession}
+                                            onChange={(e) => setFormData({ ...formData, headProfession: e.target.value })}
+                                            className="w-full px-6 py-4 bg-white/5 border border-white/5 rounded-2xl focus:ring-2 focus:ring-accent/20 text-xs font-bold text-white outline-none"
+                                            placeholder="e.g. MD, PhD, Psychiatrist"
                                         />
                                     </div>
                                 </div>

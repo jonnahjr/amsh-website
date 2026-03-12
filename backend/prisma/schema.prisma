@@ -180,6 +180,7 @@ model Department {
   icon        String?
   headName    String?
   headTitle   String?   // e.g. "Director", "Chief Medical Officer"
+  headProfession String? // e.g. "PhD, Clinical Psychologist"
   headImage   String?
   categoryId  String?
   category    DepartmentCategory? @relation(fields: [categoryId], references: [id])

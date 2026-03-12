@@ -48,17 +48,40 @@ const getMediaType = (mimeType: string): 'IMAGE' | 'VIDEO' | 'DOCUMENT' | 'AUDIO
 // GET /api/media
 router.get('/', authenticate, async (req: AuthRequest, res: Response) => {
     try {
-        const { type, folder, page = '1' } = req.query;
-        const skip = (parseInt(page as string) - 1) * 20;
+        const { type, folder, page = '1', search } = req.query;
+        const pageSize = 50; // Increased page size
+        const skip = (parseInt(page as string) - 1) * pageSize;
+        
         const where: any = {};
         if (type) where.type = type;
         if (folder) where.folder = folder;
+        if (search) {
+            where.OR = [
+                { filename: { contains: search as string } },
+                { originalName: { contains: search as string } }
+            ];
+        }
+
         const [media, total] = await Promise.all([
-            prisma.media.findMany({ where, skip, take: 20, orderBy: { createdAt: 'desc' } }),
+            prisma.media.findMany({ 
+                where, 
+                skip, 
+                take: pageSize, 
+                orderBy: { createdAt: 'desc' } 
+            }),
             prisma.media.count({ where }),
         ]);
-        res.json({ media, total, pages: Math.ceil(total / 20) });
-    } catch (error) { res.status(500).json({ error: 'Failed to fetch media.' }); }
+        
+        res.json({ 
+            media, 
+            total, 
+            pages: Math.ceil(total / pageSize),
+            currentPage: parseInt(page as string)
+        });
+    } catch (error) { 
+        console.error('Media fetch error:', error);
+        res.status(500).json({ error: 'Failed to fetch media assets.' }); 
+    }
 });
 
 // POST /api/media/upload

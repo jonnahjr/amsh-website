@@ -23,6 +23,8 @@ import {
     DocumentArrowUpIcon,
     BriefcaseIcon,
     MapPinIcon,
+    EnvelopeIcon,
+    PhoneIcon,
 } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { CPD_COURSES } from './data';
@@ -64,61 +66,94 @@ export default function CPDPage() {
                 <div className="container-custom">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
                         <div>
-                            <h2 className="text-4xl font-black text-blue-950 mb-8 tracking-tight">About Our CPD Program</h2>
-                            <div className="space-y-6 text-gray-600 leading-relaxed font-medium">
-                                <p>
-                                    Emmanuel Mental Specialized Hospital (EMSH) has been at the forefront of mental health care in Ethiopia for over 80 years.
-                                    Our CPD program was established to sustain clinical excellence and ensure that all health professionals meet
-                                    the highest global standards of psychiatric care.
-                                </p>
-                                <p>
-                                    Positioned as the <strong>National Center of Excellence</strong>, we serve as the primary hub for specialized
-                                    mental health training, providing practitioners with the tools they need to navigate the complexities of modern psychiatry.
-                                </p>
-                            </div>
+                            <h2 className="text-4xl font-black text-blue-950 mb-4 tracking-tight">What is CPD?</h2>
+                            <p className="text-lg text-gray-600 leading-relaxed font-medium mb-8">
+                                Continuous Professional Development (CPD) refers to the on-going process of learning and development that professionals engage in to improve and maintain their Knowledge, Skills, and Attitudes (KSA) throughout their careers.
+                            </p>
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
-                                <div className="p-6 bg-white rounded-2xl border border-gray-100 shadow-sm">
-                                    <h4 className="font-black text-blue-900 mb-3 flex items-center gap-2">
-                                        <ShieldCheckIcon className="w-5 h-5" /> Mission
-                                    </h4>
-                                    <p className="text-sm text-gray-500">To provide high-quality, evidence-based continuing professional development for mental health professionals to improve service delivery and patient outcomes.</p>
+                            <div className="space-y-12">
+                                <div>
+                                    <h3 className="text-2xl font-black text-blue-900 mb-6 flex items-center gap-3">
+                                        <div className="p-2 bg-blue-50 rounded-lg">
+                                            <AcademicCapIcon className="w-6 h-6 text-blue-600" />
+                                        </div>
+                                        Purpose of CPD
+                                    </h3>
+                                    <p className="text-gray-600 font-medium leading-relaxed mb-6">
+                                        Continuing Professional Development (CPD) focuses on developing and improving professional practice. It helps professionals maintain and enhance their skills, knowledge, and competence throughout their careers.
+                                    </p>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        {[
+                                            "Keep skills and knowledge up to date",
+                                            "Prepare for greater responsibilities",
+                                            "Build confidence in roles",
+                                            "Enhance professional creativity",
+                                            "Make better professional decisions",
+                                            "Progress further in careers"
+                                        ].map((item, i) => (
+                                            <div key={i} className="flex items-center gap-3 p-4 bg-white rounded-xl border border-gray-100 shadow-sm">
+                                                <CheckBadgeIcon className="w-5 h-5 text-emerald-500" />
+                                                <span className="text-sm font-bold text-gray-700">{item}</span>
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
-                                <div className="p-6 bg-white rounded-2xl border border-gray-100 shadow-sm">
-                                    <h4 className="font-black text-blue-900 mb-3 flex items-center gap-2">
-                                        <EyeIcon className="w-5 h-5" /> Vision
-                                    </h4>
-                                    <p className="text-sm text-gray-500">To be the premier national center of excellence for mental health professional training and accreditation across East Africa.</p>
+
+                                <div>
+                                    <h3 className="text-2xl font-black text-blue-900 mb-6 flex items-center gap-3">
+                                        <div className="p-2 bg-cyan-50 rounded-lg">
+                                            <ShieldCheckIcon className="w-6 h-6 text-cyan-600" />
+                                        </div>
+                                        Benefits of CPD
+                                    </h3>
+                                    <ul className="grid grid-cols-1 gap-4">
+                                        {[
+                                            { title: "Maintaining Knowledge", desc: "Ensures professionals remain competent in their field." },
+                                            { title: "Changing Trends", desc: "Helps professionals stay informed about developments." },
+                                            { title: "Workplace Effectiveness", desc: "Enhances efficiency and capability in performance." },
+                                            { title: "Professional Engagement", desc: "Encourages continuous learning and motivation." },
+                                            { title: "Access to Experts", desc: "Opportunities to learn from specialists and leaders." },
+                                            { title: "Industry Standards", desc: "Ensures professionals meet required standards." }
+                                        ].map((benefit, i) => (
+                                            <li key={i} className="flex gap-4">
+                                                <div className="w-1.5 h-1.5 rounded-full bg-cyan-500 mt-2 flex-shrink-0" />
+                                                <div>
+                                                    <h4 className="font-black text-gray-900 leading-none mb-1">{benefit.title}</h4>
+                                                    <p className="text-sm text-gray-500 font-medium">{benefit.desc}</p>
+                                                </div>
+                                            </li>
+                                        ))}
+                                    </ul>
                                 </div>
                             </div>
                         </div>
 
-                        <div className="bg-blue-50/50 rounded-[40px] p-10 lg:p-16 border border-blue-100">
-                            <h3 className="text-2xl font-black text-blue-950 mb-8 italic">Program Objectives</h3>
-                            <ul className="space-y-6">
-                                {[
-                                    "Enhancing clinical skills and updated theoretical knowledge.",
-                                    "Ensuring compliance with national accreditation standards set by the MOH.",
-                                    "Promoting research-driven practice in psychiatric interventions.",
-                                    "Fostering a network of highly skilled mental health champions."
-                                ].map((obj, i) => (
-                                    <li key={i} className="flex gap-4">
-                                        <div className="w-6 h-6 rounded-full bg-blue-900 text-white flex-shrink-0 flex items-center justify-center text-xs font-bold">
-                                            {i + 1}
+                        <div className="relative">
+                            <div className="bg-blue-950 rounded-[40px] p-10 lg:p-16 text-white overflow-hidden shadow-2xl">
+                                <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full -mr-32 -mt-32 blur-3xl" />
+                                <h3 className="text-3xl font-black mb-8 italic relative z-10">Directorate Message</h3>
+                                <p className="text-blue-100/80 leading-relaxed font-medium mb-10 relative z-10">
+                                    "Our Directorate is committed to transforming mental health care in Ethiopia by building a workforce that is not only highly skilled but also deeply compassionate and ethically grounded."
+                                </p>
+                                
+                                <div className="space-y-6 relative z-10">
+                                    <div className="flex items-center gap-4 p-6 bg-white/5 rounded-2xl border border-white/10 backdrop-blur-sm">
+                                        <div className="p-3 bg-blue-500/20 rounded-xl">
+                                            <BuildingOfficeIcon className="w-6 h-6 text-blue-400" />
                                         </div>
-                                        <p className="font-bold text-gray-700">{obj}</p>
-                                    </li>
-                                ))}
-                            </ul>
-
-                            <div className="mt-12 pt-8 border-t border-blue-100/50">
-                                <div className="flex items-center gap-4">
-                                    <div className="p-3 bg-white rounded-xl shadow-inner">
-                                        <CheckBadgeIcon className="w-8 h-8 text-cyan-500" />
+                                        <div>
+                                            <h4 className="font-black text-sm">National Center of Excellence</h4>
+                                            <p className="text-xs text-blue-200/60 uppercase tracking-widest mt-1">Accredited Provider</p>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <h4 className="font-black text-gray-900 text-sm">Accreditation Standards</h4>
-                                        <p className="text-xs text-gray-500 font-bold uppercase tracking-wider">MOH Accredited Provider</p>
+                                    <div className="flex items-center gap-4 p-6 bg-cyan-500/5 rounded-2xl border border-cyan-500/10 backdrop-blur-sm">
+                                        <div className="p-3 bg-cyan-500/20 rounded-xl">
+                                            <ShieldCheckIcon className="w-6 h-6 text-cyan-400" />
+                                        </div>
+                                        <div>
+                                            <h4 className="font-black text-sm">MOH Certification</h4>
+                                            <p className="text-xs text-blue-200/60 uppercase tracking-widest mt-1">Quality Assurance</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -169,6 +204,11 @@ export default function CPDPage() {
                                     <div className="flex items-center gap-3 text-xs font-bold text-gray-400">
                                         <CheckBadgeIcon className="w-4 h-4 text-blue-900" />
                                         <span className="text-blue-900 uppercase tracking-tighter">{course.credits}</span>
+                                        {course.status && (
+                                            <span className={`ml-auto px-2 py-0.5 rounded text-[10px] ${course.status === 'Approved' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}`}>
+                                                {course.status}
+                                            </span>
+                                        )}
                                     </div>
                                     <div className="flex items-center gap-3 text-xs font-bold text-gray-400">
                                         <UserGroupIcon className="w-4 h-4 text-blue-900" />
@@ -193,7 +233,55 @@ export default function CPDPage() {
                 </div>
             </section>
 
+            {/* Leadership & Contact Section */}
+            <section className="py-24 bg-white">
+                <div className="container-custom">
+                    <div className="text-center mb-16">
+                        <span className="text-blue-600 text-xs font-black uppercase tracking-[0.2em] mb-3 block">Directorate Leadership</span>
+                        <h2 className="text-4xl font-black text-blue-950 tracking-tight">Contact Our CPD Team</h2>
+                    </div>
 
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        {[
+                            {
+                                role: "CPD, Clinical Training and Research Director",
+                                name: "Mr. Zegeye Yohannis",
+                                phone: "+251 91 330 7290",
+                                tel: "+251913307290",
+                                icon: <UserIcon className="w-8 h-8" />
+                            },
+                            {
+                                role: "CPD Desk Head",
+                                name: "Mrs. Azmera Hadush",
+                                phone: "+251 91 216 0130",
+                                tel: "+251912160130",
+                                icon: <AcademicCapIcon className="w-8 h-8" />
+                            },
+                            {
+                                role: "CPD Officer",
+                                name: "Mrs. Zebiba Nassir",
+                                phone: "+251 93 208 2657",
+                                tel: "+251932082657",
+                                icon: <UserGroupIcon className="w-8 h-8" />
+                            },
+                        ].map((person, i) => (
+                            <div key={i} className="bg-gray-50 rounded-3xl p-8 border border-gray-100 group hover:bg-blue-900 hover:text-white transition-all duration-500">
+                                <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-blue-900 mb-6 group-hover:scale-110 transition-transform shadow-sm">
+                                    {person.icon}
+                                </div>
+                                <h4 className="text-xs font-black uppercase tracking-widest opacity-60 mb-2">{person.role}</h4>
+                                <h3 className="text-xl font-black mb-6 leading-tight">{person.name}</h3>
+                                <div className="space-y-3 pt-6 border-t border-gray-200 group-hover:border-white/20">
+                                    <a href={`tel:${person.tel}`} className="flex items-center gap-3 text-sm font-bold hover:underline">
+                                        <PhoneIcon className="w-4 h-4 opacity-40" />
+                                        <span className="opacity-80">{person.phone}</span>
+                                    </a>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
 
             <Footer />
             <ChatbotButton />

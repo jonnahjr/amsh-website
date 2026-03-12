@@ -1,9 +1,10 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import Link from 'next/link';
+import Link from 'next/navigation';
 import { servicesAPI, departmentsAPI } from '@/lib/api';
 import { usePathname } from 'next/navigation';
+import { useSettings } from '@/lib/settings-context';
 import {
     Bars3Icon,
     XMarkIcon,
@@ -67,12 +68,21 @@ const navLinks = [
 ];
 
 export default function Navbar() {
+    const { getSetting } = useSettings();
     const [isOpen, setIsOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
     const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
     const [links, setLinks] = useState(navLinks);
     const timeoutRef = useRef<NodeJS.Timeout | null>(null);
     const pathname = usePathname();
+
+    // Dynanmic Identity Parameter
+    const siteNameLong = getSetting('site_name', 'Emmanuel Mental Specialized Hospital');
+    const siteNameShort = 'EMSH';
+    const sitePhone = getSetting('contact_phone', '+251-111-868-53-85');
+    const siteEmail = getSetting('contact_email', 'info@emsh.gov.et');
+    const siteHours = getSetting('working_hours', 'Mon - Fri: 2:30 AM - 10:00 AM');
+    const siteLogo = getSetting('site_logo', '');
 
     useEffect(() => {
         Promise.all([
@@ -125,8 +135,6 @@ export default function Navbar() {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-
-
     useEffect(() => { setIsOpen(false); }, [pathname]);
 
     const isActive = (href: string) => pathname === href || pathname.startsWith(href + '/');
@@ -137,21 +145,21 @@ export default function Navbar() {
             <div className="bg-blue-900 text-white text-sm py-2 hidden md:block">
                 <div className="container-custom flex items-center justify-between">
                     <div className="flex items-center gap-6">
-                        <a href="tel:+2511118685385" className="flex items-center gap-1.5 hover:text-cyan-300 transition-colors">
+                        <a href={`tel:${sitePhone.replace(/\s/g, '')}`} className="flex items-center gap-1.5 hover:text-cyan-300 transition-colors">
                             <PhoneIcon className="w-3.5 h-3.5" />
-                            <span>+251-111-868-53-85</span>
+                            <span>{sitePhone}</span>
                         </a>
                         <span className="text-blue-300">|</span>
-                        <a href="mailto:info@emsh.gov.et" className="hover:text-cyan-300 transition-colors">
-                            info@emsh.gov.et
+                        <a href={`mailto:${siteEmail}`} className="hover:text-cyan-300 transition-colors">
+                            {siteEmail}
                         </a>
                         <span className="text-blue-300">|</span>
-                        <span className="text-blue-200">Mon - Fri: 2:30 AM - 10:00 AM</span>
+                        <span className="text-blue-200">{siteHours}</span>
                     </div>
                     <div className="flex items-center gap-4">
-                        <Link href="/admin/dashboard" className="text-blue-300 hover:text-white transition-colors text-xs">
+                        <a href="/admin/dashboard" className="text-blue-300 hover:text-white transition-colors text-xs">
                             Admin Portal
-                        </Link>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -165,32 +173,38 @@ export default function Navbar() {
                     <div className="flex items-center justify-between h-16">
 
                         {/* LOGO - DYNAMIC FLOATING EFFECT */}
-                        <Link href="/" className="flex items-center gap-4 flex-shrink-0 group relative z-[60] -ml-16 lg:-ml-24">
+                        <a href="/" className="flex items-center gap-4 flex-shrink-0 group relative z-[60] -ml-16 lg:-ml-24">
                             <div className={`relative overflow-hidden transition-all duration-700 ease-in-out flex items-center justify-center rounded-full border-[4px] border-white bg-white shadow-[0_10px_30px_rgba(0,0,0,0.1)]
                                 ${scrolled
                                     ? 'w-14 h-14'
                                     : 'w-28 h-28 -mb-14 scale-100 translate-y-2'}`}
                             >
-                                <video
-                                    src="/images/PixVerse_V5.6_Image_Text_360P_Create_a_premium.mp4"
-                                    autoPlay
-                                    loop
-                                    muted
-                                    playsInline
-                                    className="w-full h-full object-cover rounded-full"
-                                />
+                                {siteLogo ? (
+                                    <img
+                                        src={siteLogo}
+                                        alt="Institutional Logo"
+                                        className="w-full h-full object-contain p-2"
+                                    />
+                                ) : (
+                                    <video
+                                        src="/images/PixVerse_V5.6_Image_Text_360P_Create_a_premium.mp4"
+                                        autoPlay
+                                        loop
+                                        muted
+                                        playsInline
+                                        className="w-full h-full object-cover rounded-full"
+                                    />
+                                )}
                                 <div className="absolute inset-0 bg-gradient-to-t from-blue-900/20 to-transparent pointer-events-none" />
                             </div>
                             {/* Text beside the logo */}
                             <div className="flex flex-col">
-                                <div className={`font-black text-blue-900 leading-none uppercase tracking-tight transition-all duration-500 ${scrolled ? 'text-xl' : 'text-2xl'}`}>EMSH</div>
+                                <div className={`font-black text-blue-900 leading-none uppercase tracking-tight transition-all duration-500 ${scrolled ? 'text-xl' : 'text-2xl'}`}>{siteNameShort}</div>
                                 <div className={`text-gray-600 font-extrabold leading-tight transition-all duration-500 ${scrolled ? 'text-[11px]' : 'text-xs'}`}>አማኑኤል የአእምሮ ስፔሻላይዝድ ሆስፒታል</div>
-                                <div className={`text-gray-400 font-bold leading-tight transition-all duration-500 ${scrolled ? 'text-[10px]' : 'text-[11px]'}`}>Emmanuel Mental Specialized Hospital</div>
-                                <div className="motto-premium text-[10px] mt-0.5 animate-pulse-slow">ለአዕምሮ ጤና እንተጋለን!</div>
+                                <div className={`text-gray-400 font-bold leading-tight transition-all duration-500 ${scrolled ? 'text-[10px]' : 'text-[11px]'}`}>{siteNameLong}</div>
+                                <div className="text-black font-black text-[11px] mt-0.5 animate-pulse-slow tracking-wider uppercase">ለአዕምሮ ጤና እንተጋለን!</div>
                             </div>
-                        </Link>
-
-
+                        </a>
 
                         <div className="flex-1" />
 
@@ -203,7 +217,7 @@ export default function Navbar() {
                                     onMouseEnter={() => link.children && handleMouseEnter(link.label)}
                                     onMouseLeave={() => link.children && handleMouseLeave()}
                                 >
-                                    <Link
+                                    <a
                                         href={link.href}
                                         className={`flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-semibold transition-all duration-200 ${isActive(link.href) && link.href !== '/'
                                             ? 'text-blue-900 bg-blue-50'
@@ -216,20 +230,20 @@ export default function Navbar() {
                                         {link.children && (
                                             <ChevronDownIcon className={`w-3.5 h-3.5 transition-transform duration-200 ${activeDropdown === link.label ? 'rotate-180' : ''}`} />
                                         )}
-                                    </Link>
+                                    </a>
 
                                     {/* DROPDOWN */}
                                     {link.children && activeDropdown === link.label && (
                                         <div className="absolute top-full left-0 mt-1 w-56 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden py-2 animate-fade-in z-50">
                                             {link.children.map((child) => (
-                                                <Link
+                                                <a
                                                     key={child.href}
                                                     href={child.href}
                                                     className="flex items-center gap-2 px-4 py-2.5 text-sm text-gray-700 hover:text-blue-900 hover:bg-blue-50 transition-colors"
                                                 >
                                                     <span className="w-1.5 h-1.5 rounded-full bg-blue-900/40" />
                                                     {child.label}
-                                                </Link>
+                                                </a>
                                             ))}
                                         </div>
                                     )}
@@ -255,24 +269,24 @@ export default function Navbar() {
 
                             {links.map((link) => (
                                 <div key={link.href}>
-                                    <Link
+                                    <a
                                         href={link.href}
                                         className={`flex items-center justify-between px-4 py-3 rounded-xl text-sm font-semibold transition-colors ${isActive(link.href) ? 'bg-blue-900 text-white' : 'text-gray-700 hover:bg-blue-50 hover:text-blue-900'
                                             }`}
                                     >
                                         {link.label}
-                                    </Link>
+                                    </a>
                                     {link.children && (
                                         <div className="ml-4 mt-1 space-y-1">
                                             {link.children.map((child) => (
-                                                <Link
+                                                <a
                                                     key={child.href}
                                                     href={child.href}
                                                     className="flex items-center gap-2 px-4 py-2 text-sm text-gray-600 hover:text-blue-900 rounded-lg hover:bg-blue-50 transition-colors"
                                                 >
                                                     <span className="w-1.5 h-1.5 rounded-full bg-gray-400" />
                                                     {child.label}
-                                                </Link>
+                                                </a>
                                             ))}
                                         </div>
                                     )}

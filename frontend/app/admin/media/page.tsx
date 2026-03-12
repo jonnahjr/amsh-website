@@ -30,12 +30,9 @@ export default function AdminMediaPage() {
         try {
             const res = await mediaAPI.getAll({ search });
             setMedia(res.data.media || []);
-        } catch {
-            setMedia([
-                { id: '1', url: 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=800&h=600&fit=crop', filename: 'AMSH_Front_Entrance.jpg', type: 'IMAGE', size: 1024000, createdAt: new Date().toISOString() },
-                { id: '2', url: 'https://images.unsplash.com/photo-1584432810601-6a783c1e3fa6?w=800&h=600&fit=crop', filename: 'Clinical_Staff_Q1.jpg', type: 'IMAGE', size: 2048000, createdAt: new Date().toISOString() },
-                { id: '3', url: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=800&h=600&fit=crop', filename: 'Research_Lab_Interior.jpg', type: 'IMAGE', size: 1536000, createdAt: new Date().toISOString() },
-            ]);
+        } catch (error) {
+            console.error('Core synchronisation failed:', error);
+            setMedia([]); // Don't show confusing dummy data
         } finally {
             setLoading(false);
         }
@@ -104,11 +101,59 @@ export default function AdminMediaPage() {
                     <p className="text-slate-500 font-medium max-w-2xl leading-relaxed text-lg">Managing global media assets, institutional photography, and clinical documentation for cross-platform synchronization.</p>
                 </div>
 
-                <label className="w-full lg:w-auto flex items-center justify-center gap-4 px-12 py-6 bg-primary text-white rounded-[2rem] text-[11px] font-black uppercase tracking-[0.2em] hover:bg-primary-dark transition-all shadow-[0_20px_40px_rgba(27,79,138,0.25)] hover:-translate-y-1 active:translate-y-0 cursor-pointer relative z-10">
-                    {uploading ? <ArrowPathIcon className="w-5 h-5 animate-spin" /> : <CloudArrowUpIcon className="w-5 h-5" />}
-                    <span>{uploading ? 'SYNCHRONIZING...' : 'INGEST NEW ASSETS'}</span>
-                    <input type="file" className="hidden" onChange={handleUpload} multiple />
-                </label>
+                <div className="flex flex-col gap-4 w-full lg:w-auto min-w-[320px]">
+                    <div 
+                        onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
+                        onDrop={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            const files = e.dataTransfer.files;
+                            if (files.length > 0) {
+                                const event = { 
+                                    target: { files } 
+                                } as unknown as React.ChangeEvent<HTMLInputElement>;
+                                handleUpload(event);
+                            }
+                        }}
+                        className={`relative group/drop cursor-pointer border-2 border-dashed rounded-[2rem] p-8 transition-all duration-300 flex flex-col items-center justify-center gap-3 ${uploading ? 'bg-primary/5 border-primary/30 pointer-events-none' : 'bg-slate-50 border-slate-200 hover:border-primary/50 hover:bg-primary/[0.02]'}`}
+                    >
+                        <input 
+                            type="file" 
+                            id="manual-upload"
+                            className="hidden" 
+                            onChange={handleUpload} 
+                            multiple 
+                            disabled={uploading}
+                        />
+                        <label htmlFor="manual-upload" className="absolute inset-0 cursor-pointer" />
+                        
+                        <div className={`w-14 h-14 rounded-2xl flex items-center justify-center transition-all duration-500 scale-90 group-hover/drop:scale-100 ${uploading ? 'bg-primary text-white' : 'bg-white text-slate-400 shadow-sm'}`}>
+                            {uploading ? <ArrowPathIcon className="w-6 h-6 animate-spin" /> : <CloudArrowUpIcon className="w-7 h-7" />}
+                        </div>
+                        
+                        <div className="text-center">
+                            <p className={`text-[11px] font-black uppercase tracking-[0.15em] mb-1 ${uploading ? 'text-primary' : 'text-slate-900'}`}>
+                                {uploading ? 'Synching Data...' : 'Manual Ingest'}
+                            </p>
+                            <p className="text-[9px] text-slate-400 font-bold uppercase tracking-widest leading-none">
+                                {uploading ? 'Encryption in Progress' : 'Drag & Drop or Click'}
+                            </p>
+                        </div>
+
+                        {uploading && (
+                            <div className="absolute inset-x-8 bottom-4 h-1 bg-primary/10 rounded-full overflow-hidden">
+                                <div className="h-full bg-primary animate-[upload-progress_2s_ease-in-out_infinite]" />
+                            </div>
+                        )}
+                    </div>
+                    
+                    <button 
+                        onClick={() => fetchMedia()}
+                        className="flex items-center justify-center gap-2 py-3 bg-white border border-slate-200 rounded-xl text-[9px] font-black text-slate-400 uppercase tracking-widest hover:text-primary hover:border-primary/30 hover:bg-primary/5 transition-all"
+                    >
+                        <ArrowPathIcon className="w-3 h-3" /> System Refresh
+                    </button>
+                </div>
             </div>
 
             {/* Tactical Search & View Filters */}

@@ -133,7 +133,7 @@ export default function DepartmentsPage() {
                                                 {/* Head preview */}
                                                 {dept.headName && (
                                                     <div className="flex items-center gap-3 mt-5 py-4 border-t border-white/5">
-                                                        <div className="w-8 h-8 rounded-full bg-white/5 overflow-hidden flex-shrink-0 flex items-center justify-center border border-white/10">
+                                                        <div className="w-10 h-10 rounded-full bg-white/5 overflow-hidden flex-shrink-0 flex items-center justify-center border border-white/10">
                                                             {dept.headImage ? (
                                                                 <img src={dept.headImage} className="w-full h-full object-cover" crossOrigin="anonymous" />
                                                             ) : (
@@ -143,6 +143,12 @@ export default function DepartmentsPage() {
                                                         <div className="min-w-0">
                                                             <p className="text-[9px] font-black text-blue-200/30 uppercase tracking-widest">Dept Head</p>
                                                             <p className="text-xs font-black text-blue-50 truncate">{dept.headName}</p>
+                                                            {dept.headTitle && (
+                                                                <p className="text-[10px] text-blue-300/40 font-medium truncate">{dept.headTitle}</p>
+                                                            )}
+                                                            {dept.headProfession && (
+                                                                <p className="text-[10px] text-blue-300/30 italic truncate">{dept.headProfession}</p>
+                                                            )}
                                                         </div>
                                                     </div>
                                                 )}

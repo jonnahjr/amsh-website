@@ -5,12 +5,29 @@ import nodemailer from 'nodemailer';
 
 const router = Router();
 
-const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port: parseInt(process.env.SMTP_PORT || '587'),
-    secure: false,
-    auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
-});
+const getTransporter = async () => {
+    const settings = await prisma.siteSetting.findMany({
+        where: {
+            key: { in: ['smtp_host', 'smtp_port', 'smtp_user', 'smtp_pass', 'smtp_secure'] }
+        }
+    });
+
+    const config: Record<string, string> = {};
+    settings.forEach(s => { config[s.key] = s.value; });
+
+    return nodemailer.createTransport({
+        host: config.smtp_host || process.env.SMTP_HOST,
+        port: parseInt(config.smtp_port || process.env.SMTP_PORT || '587'),
+        secure: (config.smtp_secure || process.env.SMTP_SECURE) === 'true',
+        auth: {
+            user: config.smtp_user || process.env.SMTP_USER,
+            pass: config.smtp_pass || process.env.SMTP_PASS
+        },
+        tls: {
+            rejectUnauthorized: false
+        }
+    });
+};
 
 // Newsletter subscribe
 router.post('/subscribe', async (req: Request, res: Response) => {
@@ -41,6 +58,9 @@ router.get('/subscribers', authenticate, authorize('ADMIN', 'SUPER_ADMIN'), asyn
 // Admin broadcast newsletter
 router.post('/broadcast', authenticate, authorize('ADMIN', 'SUPER_ADMIN'), async (req: AuthRequest, res: Response) => {
     try {
+        // Refresh environment variables for immediate pick-up of institutional changes
+        require('dotenv').config({ override: true });
+
         const { subject, content } = req.body;
         if (!subject || !content) return res.status(400).json({ error: 'Subject and content are required.' });
 
@@ -51,8 +71,15 @@ router.post('/broadcast', authenticate, authorize('ADMIN', 'SUPER_ADMIN'), async
 
         // For large numbers of emails, you'd typically use a queue or bcc
         // For simplicity, we'll send it as BCC to all
+        const transporter = await getTransporter();
+
+        const emailFromSetting = await prisma.siteSetting.findUnique({ where: { key: 'email_from' } });
+        const fromAddress = emailFromSetting?.value || process.env.EMAIL_FROM;
+
+        console.log(`📡 [Newsletter] Sending transmission via ${fromAddress}...`);
+
         await transporter.sendMail({
-            from: process.env.EMAIL_FROM,
+            from: fromAddress,
             bcc: emails,
             subject: subject,
             html: `
@@ -75,9 +102,14 @@ router.post('/broadcast', authenticate, authorize('ADMIN', 'SUPER_ADMIN'), async
         res.json({ message: `Newsletter broadcasted to ${emails.length} subscribers.` });
     } catch (error: any) {
         console.error('Broadcast error:', error);
+        const smtpHost = await prisma.siteSetting.findUnique({ where: { key: 'smtp_host' } });
+        const smtpPort = await prisma.siteSetting.findUnique({ where: { key: 'smtp_port' } });
+
         res.status(500).json({
             error: 'Failed to broadcast newsletter.',
-            details: process.env.NODE_ENV === 'development' ? error.message : undefined
+            host: smtpHost?.value || process.env.SMTP_HOST,
+            port: smtpPort?.value || process.env.SMTP_PORT,
+            details: error.message
         });
     }
 });

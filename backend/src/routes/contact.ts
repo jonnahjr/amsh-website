@@ -8,13 +8,29 @@ const router = Router();
 const transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST,
     port: parseInt(process.env.SMTP_PORT || '587'),
-    secure: false,
+    secure: process.env.SMTP_SECURE === 'true',
     auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
+    tls: {
+        rejectUnauthorized: false
+    }
 });
 
 // POST /api/contact - Submit contact form
 router.post('/', async (req: Request, res: Response) => {
     try {
+        // Refresh environment variables for immediate pick-up of institutional changes
+        require('dotenv').config();
+
+        const transporter = nodemailer.createTransport({
+            host: process.env.SMTP_HOST,
+            port: parseInt(process.env.SMTP_PORT || '587'),
+            secure: process.env.SMTP_SECURE === 'true',
+            auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
+            tls: {
+                rejectUnauthorized: false
+            }
+        });
+
         const { name, email, phone, subject, message } = req.body;
         if (!name || !email || !subject || !message) {
             return res.status(400).json({ error: 'Please fill all required fields.' });
@@ -33,8 +49,12 @@ router.post('/', async (req: Request, res: Response) => {
         } catch (_) { }
 
         res.status(201).json({ message: 'Message sent successfully. We will respond within 24 hours.', id: contact.id });
-    } catch (error) {
-        res.status(500).json({ error: 'Failed to send message.' });
+    } catch (error: any) {
+        console.error('Contact error:', error);
+        res.status(500).json({
+            error: 'Failed to send message.',
+            details: process.env.NODE_ENV === 'development' ? error.message : undefined
+        });
     }
 });
 

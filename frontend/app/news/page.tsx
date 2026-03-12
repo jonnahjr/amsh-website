@@ -4,13 +4,33 @@ import { useState, useEffect } from 'react';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import EmergencyBanner from '@/components/ui/EmergencyBanner';
-import { postsAPI } from '@/lib/api';
+import { postsAPI, newsletterAPI } from '@/lib/api';
 import Link from 'next/link';
 import { CalendarIcon, UserIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
 
 export default function NewsPage() {
     const [posts, setPosts] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
+    const [email, setEmail] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [subscribeStatus, setSubscribeStatus] = useState<'idle' | 'success' | 'error'>('idle');
+
+    const handleSubscribe = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!email) return;
+        setIsSubmitting(true);
+        setSubscribeStatus('idle');
+        try {
+            await newsletterAPI.subscribe(email);
+            setSubscribeStatus('success');
+            setEmail('');
+            setTimeout(() => setSubscribeStatus('idle'), 5000);
+        } catch (error) {
+            setSubscribeStatus('error');
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
 
 
     useEffect(() => {
@@ -139,7 +159,7 @@ export default function NewsPage() {
                                             <Link href={`/news/${filteredPosts[0].slug}`} className="block">
                                                 <div className="relative aspect-[21/9] overflow-hidden rounded-[2rem] mb-12 shadow-2xl transition-all duration-700 group-hover:shadow-blue-900/10">
                                                     <img
-                                                        src={filteredPosts[0].featuredImage || 'https://images.unsplash.com/photo-1538108149393-fdfd816944fd?auto=format&fit=crop&q=80&w=1200'}
+                                                        src={filteredPosts[0].featuredImage || '/hospital_legacy_building.png'}
                                                         alt={filteredPosts[0].title}
                                                         className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
                                                     />
@@ -178,7 +198,7 @@ export default function NewsPage() {
                                                 <Link href={`/news/${post.slug}`} className="block">
                                                     <div className="aspect-video overflow-hidden rounded-2xl mb-6 grayscale hover:grayscale-0 transition-all duration-700">
                                                         <img
-                                                            src={post.featuredImage}
+                                                            src={post.featuredImage || '/hospital_legacy_building.png'}
                                                             alt={post.title}
                                                             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                                                         />
@@ -222,9 +242,32 @@ export default function NewsPage() {
                                             </div>
                                             <div className="mt-8 pt-8 border-t border-gray-100 text-center">
                                                 <p className="text-[10px] text-gray-400 font-medium mb-4 uppercase tracking-[0.2em]">Established 1930 E.C.</p>
-                                                <button className="w-full py-3 bg-gray-50 text-gray-900 text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-blue-50 transition-colors">
-                                                    Subscribe to Gazette
-                                                </button>
+                                                {subscribeStatus === 'success' ? (
+                                                    <div className="p-3 bg-green-50/50 text-green-700 text-[11px] font-black uppercase tracking-wider rounded-xl border border-green-200">
+                                                        Successfully Subscribed
+                                                    </div>
+                                                ) : (
+                                                    <form onSubmit={handleSubscribe} className="space-y-3">
+                                                        <input
+                                                            type="email"
+                                                            required
+                                                            placeholder="Email Address"
+                                                            value={email}
+                                                            onChange={(e) => setEmail(e.target.value)}
+                                                            className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-blue-900/20 focus:bg-white transition-all outline-none text-center"
+                                                        />
+                                                        <button
+                                                            type="submit"
+                                                            disabled={isSubmitting}
+                                                            className="w-full py-3 bg-blue-900 text-white text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-blue-800 transition-colors disabled:opacity-50"
+                                                        >
+                                                            {isSubmitting ? 'Processing...' : 'Subscribe to Gazette'}
+                                                        </button>
+                                                        {subscribeStatus === 'error' && (
+                                                            <p className="text-[10px] text-red-500 font-bold mt-2">Subscription failed. Try again.</p>
+                                                        )}
+                                                    </form>
+                                                )}
                                             </div>
                                         </div>
 

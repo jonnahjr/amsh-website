@@ -38,34 +38,14 @@ export default function TestimonialsSection() {
             .then(res => {
                 const data = res.data.testimonials || [];
                 if (data.length > 0) {
-                    setTestimonials([...data, ...data, ...data]);
+                    setTestimonials(data);
                 }
             })
             .catch(() => { })
             .finally(() => setLoading(false));
     }, []);
 
-    const animate = (time: number) => {
-        if (lastTimeRef.current !== null && scrollRef.current && !isPaused && testimonials.length > 0) {
-            const deltaTime = time - lastTimeRef.current;
-            const speed = 0.05;
-            scrollRef.current.scrollLeft += speed * deltaTime;
 
-            const singleSetWidth = scrollRef.current.scrollWidth / 3;
-            if (scrollRef.current.scrollLeft >= singleSetWidth * 2) {
-                scrollRef.current.scrollLeft -= singleSetWidth;
-            }
-        }
-        lastTimeRef.current = time;
-        requestRef.current = requestAnimationFrame(animate);
-    };
-
-    useEffect(() => {
-        requestRef.current = requestAnimationFrame(animate);
-        return () => {
-            if (requestRef.current) cancelAnimationFrame(requestRef.current);
-        };
-    }, [isPaused, testimonials.length]);
 
     const handleImageUpload = async (file: File) => {
         try {
@@ -94,7 +74,36 @@ export default function TestimonialsSection() {
         }
     };
 
+    useEffect(() => {
+        const scroll = () => {
+            if (!scrollRef.current || isPaused || testimonials.length < 2) return;
+
+            const container = scrollRef.current;
+            const scrollWidth = container.scrollWidth;
+            const clientWidth = container.clientWidth;
+
+            // Move by 1 pixel
+            container.scrollLeft += 1;
+
+            // Reset to beginning if we are near the end of the first set
+            // (We'll duplicate the items in the map for a seamless loop)
+            if (container.scrollLeft >= (scrollWidth / 2)) {
+                container.scrollLeft = 0;
+            }
+
+            requestRef.current = requestAnimationFrame(scroll);
+        };
+
+        requestRef.current = requestAnimationFrame(scroll);
+        return () => {
+            if (requestRef.current) cancelAnimationFrame(requestRef.current);
+        };
+    }, [testimonials, isPaused]);
+
     if (!loading && testimonials.length === 0 && !isModalOpen) return null;
+
+    // Duplicate testimonials for seamless marquee
+    const displayTestimonials = [...testimonials, ...testimonials];
 
     return (
         <section className="section bg-[#FDFDFD] overflow-hidden py-32 relative">
@@ -132,9 +141,8 @@ export default function TestimonialsSection() {
                 </div>
             </div>
 
-            {/* Continuous Marquee */}
             <div
-                className="relative cursor-grab active:cursor-grabbing"
+                className="relative"
                 onMouseEnter={() => setIsPaused(true)}
                 onMouseLeave={() => setIsPaused(false)}
             >
@@ -143,10 +151,10 @@ export default function TestimonialsSection() {
 
                 <div
                     ref={scrollRef}
-                    className="flex gap-8 overflow-x-auto no-scrollbar py-10 px-6"
+                    className="flex gap-8 overflow-x-auto no-scrollbar py-10 px-6 cursor-grab active:cursor-grabbing"
                     style={{ scrollBehavior: 'auto' }}
                 >
-                    {testimonials.map((t, idx) => (
+                    {displayTestimonials.map((t, idx) => (
                         <div
                             key={`${t.id}-${idx}`}
                             className="flex-shrink-0 w-[380px] bg-white rounded-[2.5rem] p-8 border border-gray-100 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.03)] hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.06)] transition-all duration-700 flex flex-col group/card relative overflow-hidden active:scale-95"

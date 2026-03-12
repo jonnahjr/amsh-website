@@ -4,6 +4,7 @@ import { useAuth } from '@/lib/auth-context';
 import { useRouter, usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import NotificationCenter from '@/components/admin/NotificationCenter';
 import {
     Square2StackIcon,
     DocumentTextIcon,
@@ -148,8 +149,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 {/* Branding */}
                 <div className="h-24 flex items-center px-6 border-b border-white/5 shrink-0">
                     <Link href="/" className="flex items-center gap-4 group">
-                        <div className="w-12 h-12 rounded-xl bg-white flex items-center justify-center shadow-lg transform transition-transform group-hover:scale-110">
-                            <img src="/images/logo.png" alt="Logo" className="w-10 h-10 object-contain" />
+                        <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-lg transform transition-transform group-hover:scale-110">
+                            <img src="/images/logo.png" alt="Logo" className="w-full h-full object-cover rounded-full" />
                         </div>
                         {sidebarOpen && (
                             <div className="animate-in fade-in slide-in-from-left-2 duration-300">
@@ -194,7 +195,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 <div className="p-4 mt-auto border-t border-white/5">
                     <div className={`flex items-center gap-4 bg-white/[0.03] p-3 rounded-2xl border border-white/5 ${!sidebarOpen && 'justify-center'}`}>
                         <div className="relative shrink-0">
-                            <div className="w-10 h-10 rounded-xl bg-accent flex items-center justify-center text-white font-black text-sm">
+                            <div className="w-10 h-10 rounded-full bg-accent flex items-center justify-center text-white font-black text-sm">
                                 {user.name.charAt(0)}
                             </div>
                             <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-500 border-2 border-primary-dark rounded-full" />
@@ -250,18 +251,15 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                         </div>
 
                         <div className="flex items-center gap-2">
-                            <button className="p-2.5 rounded-xl text-slate-400 hover:text-primary hover:bg-primary/5 transition-all relative">
-                                <BellIcon className="w-6 h-6" />
-                                <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-accent rounded-full ring-2 ring-white" />
-                            </button>
+                            <NotificationCenter />
                             <div className="h-8 w-px bg-slate-200 mx-2" />
                             <Link href="/admin/settings" className="flex items-center gap-3 pl-2 group">
                                 <div className="text-right hidden xl:block">
                                     <p className="text-sm font-bold text-slate-900 leading-none">{user.name}</p>
                                     <p className="text-[10px] text-slate-400 font-medium uppercase tracking-widest mt-1">Super Admin</p>
                                 </div>
-                                <div className="w-10 h-10 rounded-xl bg-slate-100 border border-slate-200 flex items-center justify-center overflow-hidden transition-transform group-hover:scale-105">
-                                    <img src={`https://ui-avatars.com/api/?name=${user.name}&background=1B4F8A&color=fff`} alt="Avatar" />
+                                <div className="w-10 h-10 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center overflow-hidden transition-transform group-hover:scale-105">
+                                    <img src={`https://ui-avatars.com/api/?name=${user.name}&background=1B4F8A&color=fff`} alt="Avatar" className="w-full h-full object-cover rounded-full" />
                                 </div>
                             </Link>
                         </div>

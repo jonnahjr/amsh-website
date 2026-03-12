@@ -28,7 +28,7 @@ export default function AdminLoginPage() {
             await login(email, password);
             router.push('/admin/dashboard');
         } catch (err: any) {
-            setError(err.response?.data?.message || 'Invalid credentials. Please verify and retry.');
+            setError(err.response?.data?.error || 'Invalid credentials. Please verify and retry.');
         } finally {
             setLoading(false);
         }
@@ -45,8 +45,8 @@ export default function AdminLoginPage() {
                     {/* Header Section */}
                     <div className="p-10 text-center pb-6">
                         <Link href="/" className="inline-flex items-center gap-4 mb-8 group">
-                            <div className="w-16 h-16 rounded-2xl bg-white flex items-center justify-center shadow-2xl transition-transform group-hover:rotate-6">
-                                <img src="/images/logo.png" alt="Logo" className="w-11 h-11 object-contain" />
+                            <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center shadow-2xl transition-transform group-hover:rotate-6">
+                                <img src="/images/logo.png" alt="Logo" className="w-full h-full object-cover rounded-full" />
                             </div>
                             <div className="text-left">
                                 <h1 className="font-jakarta font-black text-2xl text-white tracking-tight leading-none">EMSH</h1>

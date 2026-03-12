@@ -1,4 +1,7 @@
-import Link from 'next/link';
+'use client';
+
+import Link from 'next/navigation';
+import { useSettings } from '@/lib/settings-context';
 
 interface FooterLink {
     label: string;
@@ -34,6 +37,22 @@ const footerLinks: Record<string, FooterLink[]> = {
 };
 
 export default function Footer() {
+    const { getSetting } = useSettings();
+
+    const siteNameLong = getSetting('site_name', 'Emmanuel Mental Specialized Hospital');
+    const siteDescription = getSetting('site_description', 'Specialized public mental health institution established in 1930 E.C. Providing comprehensive, compassionate psychiatric care for over 80 years.');
+    const siteAddress = getSetting('address', 'Addis Ababa, Ethiopia');
+    const sitePhone = getSetting('contact_phone', '+251-111-868-53-85');
+    const siteEmail = getSetting('contact_email', 'info@emsh.gov.et');
+    const siteHours = getSetting('working_hours', 'Mon - Fri: 2:30 AM - 10:00 AM');
+    const siteEmergency = getSetting('emergency_phone', '991');
+    const siteLogo = getSetting('site_logo', '');
+
+    // Social Links
+    const facebookUrl = getSetting('facebook_url', 'https://facebook.com/amsh.gov.et');
+    const twitterUrl = getSetting('twitter_url', 'https://twitter.com/amsh_hospital');
+    const youtubeUrl = getSetting('youtube_url', 'https://youtube.com');
+
     return (
         <footer className="bg-gray-900 text-gray-300">
 
@@ -43,26 +62,33 @@ export default function Footer() {
 
                     {/* Brand */}
                     <div className="lg:col-span-2">
-                        <Link href="/" className="flex items-center gap-4 mb-6 group">
+                        <a href="/" className="flex items-center gap-4 mb-6 group">
                             <div className="relative w-28 h-28 flex items-center justify-center p-0 transition-all duration-500 group-hover:scale-110 overflow-hidden rounded-full border-4 border-blue-600/30 shadow-2xl shadow-blue-500/20 group-hover:border-cyan-400/40">
-                                <video
-                                    src="/images/PixVerse_V5.6_Image_Text_360P_Create_a_premium.mp4"
-                                    autoPlay
-                                    loop
-                                    muted
-                                    playsInline
-                                    className="w-full h-full object-cover p-0"
-                                />
+                                {siteLogo ? (
+                                    <img
+                                        src={siteLogo}
+                                        alt="Institutional Logo"
+                                        className="w-full h-full object-contain p-2"
+                                    />
+                                ) : (
+                                    <video
+                                        src="/images/PixVerse_V5.6_Image_Text_360P_Create_a_premium.mp4"
+                                        autoPlay
+                                        loop
+                                        muted
+                                        playsInline
+                                        className="w-full h-full object-cover p-0"
+                                    />
+                                )}
                             </div>
                             <div>
                                 <div className="font-black text-white text-2xl tracking-tighter uppercase">EMSH</div>
-                                <div className="text-xs text-blue-400 font-bold uppercase tracking-widest leading-tight">Emmanuel Mental Specialized Hospital</div>
-                                <div className="motto-premium-lg mt-2">ለአዕምሮ ጤና እንተጋለን!</div>
+                                <div className="text-xs text-white font-bold uppercase tracking-widest leading-tight">አማኑኤል የአእምሮ ስፔሻላይዝድ ሆስፒታል</div>
+                                <div className="text-white font-black text-xl italic mt-2 uppercase tracking-wider">ለአዕምሮ ጤና እንተጋለን!</div>
                             </div>
-                        </Link>
+                        </a>
                         <p className="text-gray-400 text-sm leading-relaxed mb-6 max-w-sm">
-                            Specialized public mental health institution established in 1930 E.C.
-                            Providing comprehensive, compassionate psychiatric care for over 80 years.
+                            {siteDescription}
                         </p>
 
                         {/* Contact Info */}
@@ -71,15 +97,15 @@ export default function Footer() {
                                 <span className="text-blue-400 mt-0.5">📍</span>
                                 <div>
                                     <p className="text-white text-sm font-semibold">Address</p>
-                                    <p className="text-gray-400 text-sm">Addis Ababa, Ethiopia</p>
+                                    <p className="text-gray-400 text-sm">{siteAddress}</p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-3">
                                 <span className="text-blue-400">📞</span>
                                 <div>
                                     <p className="text-white text-sm font-semibold">Main Line</p>
-                                    <a href="tel:+2511118685385" className="text-gray-400 text-sm hover:text-blue-400 transition-colors">
-                                        +251-111-868-53-85
+                                    <a href={`tel:${sitePhone.replace(/\s/g, '')}`} className="text-gray-400 text-sm hover:text-blue-400 transition-colors">
+                                        {sitePhone}
                                     </a>
                                 </div>
                             </div>
@@ -87,8 +113,8 @@ export default function Footer() {
                                 <span className="text-blue-400">✉️</span>
                                 <div>
                                     <p className="text-white text-sm font-semibold">Email</p>
-                                    <a href="mailto:info@emsh.gov.et" className="text-gray-400 text-sm hover:text-blue-400 transition-colors">
-                                        info@emsh.gov.et
+                                    <a href={`mailto:${siteEmail}`} className="text-gray-400 text-sm hover:text-blue-400 transition-colors">
+                                        {siteEmail}
                                     </a>
                                 </div>
                             </div>
@@ -96,23 +122,23 @@ export default function Footer() {
                                 <span className="text-blue-400">🕐</span>
                                 <div>
                                     <p className="text-white text-sm font-semibold">Working Hours</p>
-                                    <p className="text-gray-400 text-sm">Mon - Fri: 2:30 AM - 10:00 AM</p>
-                                    <p className="text-green-400 text-xs">Emergency: 24/7</p>
+                                    <p className="text-gray-400 text-sm">{siteHours}</p>
+                                    <p className="text-green-400 text-xs">Emergency: {siteEmergency}</p>
                                 </div>
                             </div>
                         </div>
 
                         {/* Social Links */}
                         <div className="flex items-center gap-3 mt-6">
-                            <a href="https://web.facebook.com/p/Amanuel-mental-specialized-hospital-100064026784319/?_rdc=1&_rdr#" target="_blank" rel="noopener noreferrer"
+                            <a href={facebookUrl} target="_blank" rel="noopener noreferrer"
                                 className="w-9 h-9 rounded-lg bg-gray-700 hover:bg-blue-600 flex items-center justify-center transition-colors text-sm">
                                 f
                             </a>
-                            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer"
+                            <a href={twitterUrl} target="_blank" rel="noopener noreferrer"
                                 className="w-9 h-9 rounded-lg bg-gray-700 hover:bg-sky-500 flex items-center justify-center transition-colors text-sm">
                                 𝕏
                             </a>
-                            <a href="https://www.youtube.com/@st.amanuelmentalspecialize6962" target="_blank" rel="noopener noreferrer"
+                            <a href={youtubeUrl} target="_blank" rel="noopener noreferrer"
                                 className="w-9 h-9 rounded-lg bg-gray-700 hover:bg-red-600 flex items-center justify-center transition-colors text-sm">
                                 ▶
                             </a>
@@ -139,13 +165,13 @@ export default function Footer() {
                                                 {link.label} ↗
                                             </a>
                                         ) : (
-                                            <Link
+                                            <a
                                                 href={link.href}
                                                 className="text-gray-400 text-sm hover:text-blue-400 transition-colors flex items-center gap-1.5"
                                             >
                                                 <span className="w-1.5 h-1.5 rounded-full bg-gray-600 flex-shrink-0" />
                                                 {link.label}
-                                            </Link>
+                                            </a>
                                         )}
                                     </li>
                                 ))}
@@ -157,17 +183,17 @@ export default function Footer() {
 
             {/* Bottom Bar */}
             <div className="border-t border-gray-800">
-                <div className="container-custom py-6 flex flex-col md:flex-row items-center justify-between gap-4">
+                <div className="container-custom py-6 flex flex-col md:row items-center justify-between gap-4">
                     <p className="text-gray-500 text-sm">
-                        © {new Date().getFullYear()} Emmanuel Mental Specialized Hospital. All Rights Reserved.
+                        © {new Date().getFullYear()} {siteNameLong}. All Rights Reserved.
                     </p>
                     <div className="flex items-center gap-2">
                         <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
                         <span className="text-gray-500 text-sm">Yonas Bogale | EMSH IT Department</span>
                         <span className="text-gray-600 mx-2">|</span>
-                        <Link href="/privacy" className="text-gray-500 text-sm hover:text-gray-300 transition-colors">Privacy Policy</Link>
+                        <a href="/privacy" className="text-gray-500 text-sm hover:text-gray-300 transition-colors">Privacy Policy</a>
                         <span className="text-gray-600 mx-2">|</span>
-                        <Link href="/admin" className="text-gray-500 text-sm hover:text-gray-300 transition-colors">Admin</Link>
+                        <a href="/admin" className="text-gray-500 text-sm hover:text-gray-300 transition-colors">Admin</a>
                     </div>
                 </div>
             </div>
