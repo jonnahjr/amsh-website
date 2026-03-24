@@ -244,32 +244,32 @@ export default function ResearchPage() {
                             <form onSubmit={handleSubmit} className="space-y-8">
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div className="space-y-3">
-                                        <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Full Name</label>
+                                        <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Full Name *</label>
                                         <div className="relative">
                                             <UserIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-300" />
                                             <input required name="fullName" value={formData.fullName} onChange={handleInputChange} type="text" placeholder="Researcher Name" className="w-full pl-11 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-blue-900 transition-all font-bold text-sm" />
                                         </div>
                                     </div>
                                     <div className="space-y-3">
-                                        <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Institution</label>
+                                        <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Institution *</label>
                                         <div className="relative">
                                             <BuildingOfficeIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-300" />
                                             <input required name="institution" value={formData.institution} onChange={handleInputChange} type="text" placeholder="University / Hospital" className="w-full pl-11 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-blue-900 transition-all font-bold text-sm" />
                                         </div>
                                     </div>
                                     <div className="col-span-full space-y-3">
-                                        <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Email Address</label>
+                                        <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Email Address *</label>
                                         <div className="relative">
                                             <EnvelopeIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-300" />
                                             <input required name="email" value={formData.email} onChange={handleInputChange} type="email" placeholder="example@research.et" className="w-full pl-11 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-blue-900 transition-all font-bold text-sm" />
                                         </div>
                                     </div>
                                     <div className="col-span-full space-y-3">
-                                        <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Research Title</label>
+                                        <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Research Title *</label>
                                         <input required name="researchTitle" value={formData.researchTitle} onChange={handleInputChange} type="text" placeholder="The full title of your manuscript" className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-blue-900 transition-all font-bold text-sm" />
                                     </div>
                                     <div className="col-span-full space-y-3">
-                                        <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Abstract</label>
+                                        <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Abstract *</label>
                                         <textarea required name="abstract" value={formData.abstract} onChange={handleInputChange} rows={5} placeholder="Brief summary of research findings (Max 300 words)" className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-blue-900 transition-all font-bold text-sm" />
                                     </div>
                                 </div>
@@ -322,40 +322,49 @@ export default function ResearchPage() {
                         <h2 className="text-4xl font-black text-blue-950 tracking-tight">Contact Research Leadership</h2>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
                         {[
                             {
                                 role: "CPD, Clinical Training and Research Director",
                                 name: "Mr. Zegeye Yohannis",
                                 phone: "+251 91 330 7290",
                                 tel: "+251913307290",
-                                icon: <UserIcon className="w-8 h-8" />
+                                image: "",
+                                icon: <UserIcon className="w-10 h-10 opacity-50" />
                             },
                             {
                                 role: "Research & Clinical Training Desk Head",
                                 name: "Mr. Habtamu Derajaw",
                                 phone: "+251 92 386 4833",
                                 tel: "+251923864833",
-                                icon: <AcademicCapIcon className="w-8 h-8" />
+                                image: "",
+                                icon: <AcademicCapIcon className="w-10 h-10 opacity-50" />
                             },
                             {
                                 role: "Research Officer",
                                 name: "Mr. Mensur Nesru",
                                 phone: "+251 91 325 5584",
                                 tel: "+251913255584",
-                                icon: <DocumentTextIcon className="w-8 h-8" />
+                                image: "",
+                                icon: <DocumentTextIcon className="w-10 h-10 opacity-50" />
                             }
                         ].map((person, i) => (
-                            <div key={i} className="bg-white rounded-3xl p-8 border border-gray-100 group hover:bg-blue-900 hover:text-white transition-all duration-500">
-                                <div className="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-900 mb-6 group-hover:scale-110 group-hover:bg-white transition-all shadow-sm">
-                                    {person.icon}
+                            <div key={i} className="group bg-white rounded-[32px] border border-gray-100 overflow-hidden shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 p-8 flex flex-col items-center text-center">
+                                <div className="w-32 h-32 bg-gray-50 rounded-full flex items-center justify-center text-blue-900 mb-6 group-hover:scale-105 transition-all shadow-md border-4 border-white overflow-hidden flex-shrink-0">
+                                    <img 
+                                        src={person.image || `https://ui-avatars.com/api/?name=${encodeURIComponent(person.name.replace(/^(Mr\.|Mrs\.|Dr\.)\s+/i, ''))}&background=eff6ff&color=1e3a8a&size=256&font-size=0.33`} 
+                                        alt={person.name} 
+                                        className="w-full h-full object-cover" 
+                                    />
                                 </div>
-                                <h4 className="text-xs font-black uppercase tracking-widest opacity-60 mb-2">{person.role}</h4>
-                                <h3 className="text-xl font-black mb-6 leading-tight">{person.name}</h3>
-                                <div className="space-y-3 pt-6 border-t border-gray-100 group-hover:border-white/20">
-                                    <a href={`tel:${person.tel}`} className="flex items-center gap-3 text-sm font-bold hover:underline">
-                                        <PhoneIcon className="w-4 h-4 opacity-40" />
-                                        <span className="opacity-80">{person.phone}</span>
+                                <h4 className="text-[10px] font-black uppercase tracking-widest text-blue-600 mb-2">{person.role}</h4>
+                                <h3 className="text-xl font-black mb-6 leading-tight max-w-[200px] text-blue-950 group-hover:text-blue-700 transition-colors">{person.name}</h3>
+                                <div className="w-full mt-auto pt-6 border-t border-gray-50 flex justify-center">
+                                    <a href={`tel:${person.tel}`} className="inline-flex items-center justify-center gap-2 text-sm font-bold text-gray-500 hover:text-blue-600 transition-colors">
+                                        <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center group-hover:bg-blue-100 transition-colors">
+                                            <PhoneIcon className="w-4 h-4 text-blue-600" />
+                                        </div>
+                                        <span>{person.phone}</span>
                                     </a>
                                 </div>
                             </div>

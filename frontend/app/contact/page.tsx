@@ -106,14 +106,14 @@ export default function ContactPage() {
                                         <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
                                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                                 <div className="space-y-2">
-                                                    <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Full Name</label>
+                                                    <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Full Name *</label>
                                                     <div className="relative">
                                                         <UserIcon className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-300 pointer-events-none" />
                                                         <input name="name" value={form.name} onChange={handleChange} required placeholder="John Doe" className="w-full pl-14 pr-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-blue-900 transition-all font-bold text-sm" />
                                                     </div>
                                                 </div>
                                                 <div className="space-y-2">
-                                                    <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Email Address</label>
+                                                    <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Email Address *</label>
                                                     <div className="relative">
                                                         <EnvelopeIcon className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-300 pointer-events-none" />
                                                         <input name="email" type="email" value={form.email} onChange={handleChange} required placeholder="example@domain.com" className="w-full pl-14 pr-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-blue-900 transition-all font-bold text-sm" />
@@ -127,7 +127,7 @@ export default function ContactPage() {
                                                     </div>
                                                 </div>
                                                 <div className="space-y-2">
-                                                    <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Subject</label>
+                                                    <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Subject *</label>
                                                     <div className="relative">
                                                         <TagIcon className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-300 z-10 pointer-events-none" />
                                                         <select name="subject" value={form.subject} onChange={handleChange} required className="w-full pl-14 pr-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-blue-900 transition-all font-bold text-sm appearance-none cursor-pointer">

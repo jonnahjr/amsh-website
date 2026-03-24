@@ -67,7 +67,7 @@ export default function AdminLoginPage() {
 
                         <form onSubmit={handleSubmit} className="space-y-6">
                             <div className="space-y-2">
-                                <label className="block text-[10px] font-black text-white/40 uppercase tracking-[0.2em] ml-1">System Identifier</label>
+                                <label className="block text-[10px] font-black text-white/40 uppercase tracking-[0.2em] ml-1">System Identifier *</label>
                                 <div className="relative group">
                                     <div className="absolute left-5 top-1/2 -translate-y-1/2 text-white/20 group-focus-within:text-accent transition-colors">
                                         <EnvelopeIcon className="w-5 h-5" />
@@ -84,7 +84,7 @@ export default function AdminLoginPage() {
                             </div>
 
                             <div className="space-y-2">
-                                <label className="block text-[10px] font-black text-white/40 uppercase tracking-[0.2em] ml-1">Access Protocol</label>
+                                <label className="block text-[10px] font-black text-white/40 uppercase tracking-[0.2em] ml-1">Access Protocol *</label>
                                 <div className="relative group">
                                     <div className="absolute left-5 top-1/2 -translate-y-1/2 text-white/20 group-focus-within:text-accent transition-colors">
                                         <LockClosedIcon className="w-5 h-5" />

@@ -25,6 +25,7 @@ import {
     MapPinIcon,
     EnvelopeIcon,
     PhoneIcon,
+    LockClosedIcon,
 } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { CPD_COURSES } from './data';
@@ -220,12 +221,34 @@ export default function CPDPage() {
                                     <div className="text-gray-900 font-black text-lg">
                                         {course.fee}
                                     </div>
-                                    <Link
-                                        href={`/cpd/${course.id}/apply`}
-                                        className="bg-blue-950 text-white px-8 py-3.5 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-blue-800 transition-colors shadow-xl shadow-blue-900/10 inline-block"
-                                    >
-                                        Apply Now
-                                    </Link>
+                                    {course.status === 'On-going' ? (
+                                        <div
+                                            title="Registration Closed"
+                                            className="relative inline-flex items-center justify-center px-8 py-3.5 rounded-2xl bg-gray-900 overflow-hidden group cursor-not-allowed"
+                                        >
+                                            <div className="absolute inset-0 opacity-20 bg-[conic-gradient(from_0deg_at_50%_50%,#3b82f6_0%,transparent_60%,#3b82f6_100%)] animate-[spin_4s_linear_infinite]" />
+                                            <div className="absolute inset-[2px] bg-gray-900 rounded-[14px]" />
+                                            
+                                            <div className="relative z-10 overflow-hidden h-4 w-full">
+                                                <div className="flex flex-col animate-text-swap">
+                                                    <div className="flex items-center justify-center gap-2 h-4 text-gray-400 font-black text-xs uppercase tracking-widest text-center whitespace-nowrap">
+                                                        <LockClosedIcon className="w-4 h-4 text-gray-500" />
+                                                        Closed
+                                                    </div>
+                                                    <div className="flex items-center justify-center gap-2 h-4 text-gray-500 font-black text-xs uppercase tracking-widest text-center whitespace-nowrap">
+                                                        Not Available
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <Link
+                                            href={`/cpd/${course.id}/apply`}
+                                            className="bg-blue-950 text-white px-8 py-3.5 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-blue-800 transition-colors shadow-xl shadow-blue-900/10 inline-block"
+                                        >
+                                            Apply Now
+                                        </Link>
+                                    )}
                                 </div>
                             </div>
                         ))}
@@ -241,40 +264,49 @@ export default function CPDPage() {
                         <h2 className="text-4xl font-black text-blue-950 tracking-tight">Contact Our CPD Team</h2>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
                         {[
                             {
                                 role: "CPD, Clinical Training and Research Director",
                                 name: "Mr. Zegeye Yohannis",
                                 phone: "+251 91 330 7290",
                                 tel: "+251913307290",
-                                icon: <UserIcon className="w-8 h-8" />
+                                image: "",
+                                icon: <UserIcon className="w-10 h-10 opacity-50" />
                             },
                             {
                                 role: "CPD Desk Head",
                                 name: "Mrs. Azmera Hadush",
                                 phone: "+251 91 216 0130",
                                 tel: "+251912160130",
-                                icon: <AcademicCapIcon className="w-8 h-8" />
+                                image: "",
+                                icon: <AcademicCapIcon className="w-10 h-10 opacity-50" />
                             },
                             {
                                 role: "CPD Officer",
                                 name: "Mrs. Zebiba Nassir",
                                 phone: "+251 93 208 2657",
                                 tel: "+251932082657",
-                                icon: <UserGroupIcon className="w-8 h-8" />
+                                image: "",
+                                icon: <UserGroupIcon className="w-10 h-10 opacity-50" />
                             },
                         ].map((person, i) => (
-                            <div key={i} className="bg-gray-50 rounded-3xl p-8 border border-gray-100 group hover:bg-blue-900 hover:text-white transition-all duration-500">
-                                <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-blue-900 mb-6 group-hover:scale-110 transition-transform shadow-sm">
-                                    {person.icon}
+                            <div key={i} className="group bg-white rounded-[32px] border border-gray-100 overflow-hidden shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 p-8 flex flex-col items-center text-center">
+                                <div className="w-32 h-32 bg-gray-50 rounded-full flex items-center justify-center text-blue-900 mb-6 group-hover:scale-105 transition-all shadow-md border-4 border-white overflow-hidden flex-shrink-0">
+                                    <img 
+                                        src={person.image || `https://ui-avatars.com/api/?name=${encodeURIComponent(person.name.replace(/^(Mr\.|Mrs\.|Dr\.)\s+/i, ''))}&background=eff6ff&color=1e3a8a&size=256&font-size=0.33`} 
+                                        alt={person.name} 
+                                        className="w-full h-full object-cover" 
+                                    />
                                 </div>
-                                <h4 className="text-xs font-black uppercase tracking-widest opacity-60 mb-2">{person.role}</h4>
-                                <h3 className="text-xl font-black mb-6 leading-tight">{person.name}</h3>
-                                <div className="space-y-3 pt-6 border-t border-gray-200 group-hover:border-white/20">
-                                    <a href={`tel:${person.tel}`} className="flex items-center gap-3 text-sm font-bold hover:underline">
-                                        <PhoneIcon className="w-4 h-4 opacity-40" />
-                                        <span className="opacity-80">{person.phone}</span>
+                                <h4 className="text-[10px] font-black uppercase tracking-widest text-blue-600 mb-2">{person.role}</h4>
+                                <h3 className="text-xl font-black mb-6 leading-tight max-w-[200px] text-blue-950 group-hover:text-blue-700 transition-colors">{person.name}</h3>
+                                <div className="w-full mt-auto pt-6 border-t border-gray-50 flex justify-center">
+                                    <a href={`tel:${person.tel}`} className="inline-flex items-center justify-center gap-2 text-sm font-bold text-gray-500 hover:text-blue-600 transition-colors">
+                                        <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center group-hover:bg-blue-100 transition-colors">
+                                            <PhoneIcon className="w-4 h-4 text-blue-600" />
+                                        </div>
+                                        <span>{person.phone}</span>
                                     </a>
                                 </div>
                             </div>

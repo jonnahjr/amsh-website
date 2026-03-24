@@ -96,14 +96,12 @@ export default function Footer() {
                             <div className="flex items-start gap-3">
                                 <span className="text-blue-400 mt-0.5">📍</span>
                                 <div>
-                                    <p className="text-white text-sm font-semibold">Address</p>
                                     <p className="text-gray-400 text-sm">{siteAddress}</p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-3">
                                 <span className="text-blue-400">📞</span>
                                 <div>
-                                    <p className="text-white text-sm font-semibold">Main Line</p>
                                     <a href={`tel:${sitePhone.replace(/\s/g, '')}`} className="text-gray-400 text-sm hover:text-blue-400 transition-colors">
                                         {sitePhone}
                                     </a>
@@ -112,7 +110,6 @@ export default function Footer() {
                             <div className="flex items-start gap-3">
                                 <span className="text-blue-400">✉️</span>
                                 <div>
-                                    <p className="text-white text-sm font-semibold">Email</p>
                                     <a href={`mailto:${siteEmail}`} className="text-gray-400 text-sm hover:text-blue-400 transition-colors">
                                         {siteEmail}
                                     </a>
@@ -183,11 +180,11 @@ export default function Footer() {
 
             {/* Bottom Bar */}
             <div className="border-t border-gray-800">
-                <div className="container-custom py-6 flex flex-col md:row items-center justify-between gap-4">
-                    <p className="text-gray-500 text-sm">
+                <div className="container-custom py-6 flex flex-col md:flex-row items-center justify-between gap-4">
+                    <p className="text-gray-500 text-sm text-center md:text-left">
                         © {new Date().getFullYear()} {siteNameLong}. All Rights Reserved.
                     </p>
-                    <div className="flex items-center gap-2">
+                    <div className="flex flex-wrap justify-center md:justify-end items-center gap-2">
                         <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
                         <span className="text-gray-500 text-sm">Yonas Bogale | EMSH IT Department</span>
                         <span className="text-gray-600 mx-2">|</span>
