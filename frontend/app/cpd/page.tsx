@@ -5,7 +5,7 @@ import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import ChatbotButton from '@/components/chatbot/ChatbotButton';
 import EmergencyBanner from '@/components/ui/EmergencyBanner';
-import { cpdAPI } from '@/lib/api';
+import { cpdAPI, settingsAPI } from '@/lib/api';
 import {
     AcademicCapIcon,
     VideoCameraIcon,
@@ -31,6 +31,30 @@ import Link from 'next/link';
 import { CPD_COURSES } from './data';
 
 export default function CPDPage() {
+    const [staff, setStaff] = useState<any[]>([]);
+
+    useEffect(() => {
+        settingsAPI.getAll().then(res => {
+            if (res.data.settings?.staff_directory) {
+                try {
+                    const dir = JSON.parse(res.data.settings.staff_directory);
+                    if (Array.isArray(dir) && dir.length > 0) {
+                        setStaff(dir);
+                    }
+                } catch (e) {
+                    console.error('Failed to parse staff directory:', e);
+                }
+            }
+        }).catch(err => console.error('Failed to load staff settings:', err));
+    }, []);
+
+    const cpdTeam = staff.length > 0 
+        ? staff.filter(p => p.role.toLowerCase().includes('cpd') || p.role.toLowerCase().includes('clinical training'))
+        : [
+            { id: 'zegeye', name: "Mr. Zegeye Yohannis", role: "CPD, Clinical Training and Research Director", phone: "+251 91 330 7290", image: "" },
+            { id: 'azmera', name: "Mrs. Azmera Hadush", role: "CPD Desk Head", phone: "+251 91 216 0130", image: "" },
+            { id: 'zebiba', name: "Mrs. Zebiba Nassir", role: "CPD Officer", phone: "+251 93 208 2657", image: "" }
+        ];
 
     return (
         <div className="min-h-screen bg-[#FDFCF9]">
@@ -38,18 +62,16 @@ export default function CPDPage() {
             <Navbar />
 
             {/* Hero Section */}
-            <section className="relative pt-32 pb-24 overflow-hidden bg-blue-950">
+            <section className="relative min-h-screen overflow-hidden bg-blue-950 flex items-center">
                 <div className="absolute inset-0 opacity-10">
-                    <div className="absolute inset-0" style={{
-                        backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)',
-                        backgroundSize: '40px 40px',
-                    }} />
+                    <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)', backgroundSize: '48px 48px' }} />
                 </div>
-                <div className="container-custom relative z-10">
+
+                {/* Decorative Blue Orbs */}
+                <div className="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[120px] animate-float pointer-events-none" />
+                <div className="absolute bottom-1/4 left-1/4 w-[400px] h-[400px] bg-blue-400/5 rounded-full blur-[100px] animate-float pointer-events-none" style={{ animationDelay: '1.5s' }} />
+                <div className="container-custom relative z-10 py-32">
                     <div className="max-w-4xl">
-                        <span className="inline-block px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-400/20 text-blue-300 text-xs font-black uppercase tracking-[0.2em] mb-6 animate-fade-in">
-                            Professional Excellence
-                        </span>
                         <h1 className="text-5xl md:text-7xl font-black text-white mb-8 leading-[1.1] tracking-tighter animate-fade-in-up">
                             Continuing Professional <br />
                             <span className="text-blue-400 italic">Development</span> (CPD)
@@ -264,51 +286,30 @@ export default function CPDPage() {
                         <h2 className="text-4xl font-black text-blue-950 tracking-tight">Contact Our CPD Team</h2>
                     </div>
 
-                    <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-                        {[
-                            {
-                                role: "CPD, Clinical Training and Research Director",
-                                name: "Mr. Zegeye Yohannis",
-                                phone: "+251 91 330 7290",
-                                tel: "+251913307290",
-                                image: "",
-                                icon: <UserIcon className="w-10 h-10 opacity-50" />
-                            },
-                            {
-                                role: "CPD Desk Head",
-                                name: "Mrs. Azmera Hadush",
-                                phone: "+251 91 216 0130",
-                                tel: "+251912160130",
-                                image: "",
-                                icon: <AcademicCapIcon className="w-10 h-10 opacity-50" />
-                            },
-                            {
-                                role: "CPD Officer",
-                                name: "Mrs. Zebiba Nassir",
-                                phone: "+251 93 208 2657",
-                                tel: "+251932082657",
-                                image: "",
-                                icon: <UserGroupIcon className="w-10 h-10 opacity-50" />
-                            },
-                        ].map((person, i) => (
-                            <div key={i} className="group bg-white rounded-[32px] border border-gray-100 overflow-hidden shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 p-8 flex flex-col items-center text-center">
-                                <div className="w-32 h-32 bg-gray-50 rounded-full flex items-center justify-center text-blue-900 mb-6 group-hover:scale-105 transition-all shadow-md border-4 border-white overflow-hidden flex-shrink-0">
-                                    <img 
-                                        src={person.image || `https://ui-avatars.com/api/?name=${encodeURIComponent(person.name.replace(/^(Mr\.|Mrs\.|Dr\.)\s+/i, ''))}&background=eff6ff&color=1e3a8a&size=256&font-size=0.33`} 
-                                        alt={person.name} 
-                                        className="w-full h-full object-cover" 
-                                    />
+                    <div className="flex flex-wrap lg:flex-nowrap justify-center gap-4 lg:gap-8 overflow-x-auto pb-4">
+                        {cpdTeam.map((person, i) => (
+                            <div key={i} className="group flex flex-col items-center text-center min-w-[200px] max-w-[240px] p-6 bg-white rounded-[32px] border border-blue-100 hover:border-blue-300 hover:shadow-2xl transition-all duration-500">
+                                <div className="relative mb-4">
+                                    <div className="w-24 h-24 rounded-full overflow-hidden bg-slate-50 border-4 border-white shadow-md group-hover:scale-105 transition-all duration-500">
+                                        <img 
+                                            src={person.image || `https://ui-avatars.com/api/?name=${encodeURIComponent(person.name.replace(/^(Mr\.|Mrs\.|Dr\.)\s+/i, ''))}&background=eff6ff&color=1e3a8a&size=256&font-size=0.33`} 
+                                            alt={person.name} 
+                                            className="w-full h-full object-cover" 
+                                        />
+                                    </div>
+                                    <div className="absolute bottom-0 right-0 w-7 h-7 flex items-center justify-center">
+                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+                                            <path fill="#0095F6" d="M12,1 L14.46,2.82 L17.5,2.47 L18.72,5.28 L21.53,6.5 L21.18,9.54 L23,12 L21.18,14.46 L21.53,17.5 L18.72,18.72 L17.5,21.53 L14.46,21.18 L12,23 L9.54,21.18 L6.5,21.53 L5.28,18.72 L2.47,17.5 L2.82,14.46 L1,12 L2.82,9.54 L2.47,6.5 L5.28,5.28 L6.5,2.47 L9.54,2.82 Z"/>
+                                            <path d="M7 12.5L10.5 15.5L17 9" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
+                                        </svg>
+                                    </div>
                                 </div>
-                                <h4 className="text-[10px] font-black uppercase tracking-widest text-blue-600 mb-2">{person.role}</h4>
-                                <h3 className="text-xl font-black mb-6 leading-tight max-w-[200px] text-blue-950 group-hover:text-blue-700 transition-colors">{person.name}</h3>
-                                <div className="w-full mt-auto pt-6 border-t border-gray-50 flex justify-center">
-                                    <a href={`tel:${person.tel}`} className="inline-flex items-center justify-center gap-2 text-sm font-bold text-gray-500 hover:text-blue-600 transition-colors">
-                                        <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center group-hover:bg-blue-100 transition-colors">
-                                            <PhoneIcon className="w-4 h-4 text-blue-600" />
-                                        </div>
-                                        <span>{person.phone}</span>
-                                    </a>
-                                </div>
+                                <h3 className="text-sm font-black text-blue-950 mb-1 group-hover:text-blue-700 transition-colors uppercase tracking-tight">{person.name}</h3>
+                                <p className="text-[10px] font-bold text-blue-600 uppercase tracking-widest leading-tight mb-4">{person.role}</p>
+                                <a href={`tel:${person.phone?.replace(/\s+/g, '')}`} className="mt-auto px-4 py-2 rounded-xl bg-blue-50 text-blue-950 text-[10px] font-black hover:bg-blue-100 transition-colors flex items-center gap-2">
+                                    <PhoneIcon className="w-3 h-3" />
+                                    {person.phone}
+                                </a>
                             </div>
                         ))}
                     </div>

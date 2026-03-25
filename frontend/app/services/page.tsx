@@ -54,12 +54,18 @@ export default function ServicesPage() {
         <>
             <EmergencyBanner />
             <Navbar />
-            <main className="bg-white">
+            <main className="bg-blue-50/30">
                 {/* Hero */}
-                <section className="relative bg-blue-950 pt-40 pb-24 overflow-hidden">
-                    <div className="absolute inset-0 opacity-[0.06]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)', backgroundSize: '48px 48px' }} />
-                    <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at 70% 30%, #1e3a8a 0%, transparent 55%)' }} />
-                    <div className="container-custom relative z-10">
+                <section className="relative min-h-screen bg-blue-950 flex items-center overflow-hidden">
+                    {/* Background Pattern */}
+                    <div className="absolute inset-0 opacity-10">
+                        <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)', backgroundSize: '48px 48px' }} />
+                    </div>
+
+                    {/* Decorative Blue Orbs */}
+                    <div className="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[120px] animate-float pointer-events-none" />
+                    <div className="absolute bottom-1/4 left-1/4 w-[400px] h-[400px] bg-blue-400/5 rounded-full blur-[100px] animate-float pointer-events-none" style={{ animationDelay: '1.5s' }} />
+                    <div className="container-custom relative z-10 py-32">
                         <div className="inline-flex items-center gap-2 px-5 py-2 bg-cyan-500/20 border border-cyan-400/30 rounded-full text-cyan-300 text-[10px] font-black uppercase tracking-widest mb-8">
                             <BriefcaseIcon className="w-4 h-4" />
                             Emmanuel Mental Specialized Hospital

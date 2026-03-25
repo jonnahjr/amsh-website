@@ -39,7 +39,7 @@ const footerLinks: Record<string, FooterLink[]> = {
 export default function Footer() {
     const { getSetting } = useSettings();
 
-    const siteNameLong = getSetting('site_name', 'Emmanuel Mental Specialized Hospital');
+    const siteNameLong = getSetting('site_name', 'Amanuel Mental Specialized Hospital (AMSH)');
     const siteDescription = getSetting('site_description', 'Specialized public mental health institution established in 1930 E.C. Providing comprehensive, compassionate psychiatric care for over 80 years.');
     const siteAddress = getSetting('address', 'Addis Ababa, Ethiopia');
     const sitePhone = getSetting('contact_phone', '+251-111-868-53-85');
@@ -82,9 +82,10 @@ export default function Footer() {
                                 )}
                             </div>
                             <div>
-                                <div className="font-black text-white text-2xl tracking-tighter uppercase">EMSH</div>
-                                <div className="text-xs text-white font-bold uppercase tracking-widest leading-tight">አማኑኤል የአእምሮ ስፔሻላይዝድ ሆስፒታል</div>
-                                <div className="text-white font-black text-xl italic mt-2 uppercase tracking-wider">ለአዕምሮ ጤና እንተጋለን!</div>
+                                <div className="font-black text-white text-3xl tracking-tighter uppercase leading-none mb-1">AMSH</div>
+                                <div className="text-xs text-white font-bold uppercase tracking-widest leading-tight block mb-2">Amanuel Mental Specialized Hospital</div>
+                                <div className="text-[10px] text-blue-400 font-bold uppercase tracking-widest leading-tight">አማኑኤል የአእምሮ ስፔሻላይዝድ ሆስፒታል</div>
+                                <div className="text-white font-black text-lg italic mt-4 uppercase tracking-wider block border-l-4 border-blue-600 pl-4 py-2 bg-blue-950/30">ለአዕምሮ ጤና እንተጋለን!</div>
                             </div>
                         </a>
                         <p className="text-gray-400 text-sm leading-relaxed mb-6 max-w-sm">
@@ -186,7 +187,7 @@ export default function Footer() {
                     </p>
                     <div className="flex flex-wrap justify-center md:justify-end items-center gap-2">
                         <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-                        <span className="text-gray-500 text-sm">Yonas Bogale | EMSH IT Department</span>
+                        <span className="text-gray-500 text-sm">Yonas Bogale | AMSH IT Department</span>
                         <span className="text-gray-600 mx-2">|</span>
                         <a href="/privacy" className="text-gray-500 text-sm hover:text-gray-300 transition-colors">Privacy Policy</a>
                         <span className="text-gray-600 mx-2">|</span>

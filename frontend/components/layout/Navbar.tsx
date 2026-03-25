@@ -77,8 +77,8 @@ export default function Navbar() {
     const pathname = usePathname();
 
     // Dynanmic Identity Parameter
-    const siteNameLong = getSetting('site_name', 'Emmanuel Mental Specialized Hospital');
-    const siteNameShort = 'EMSH';
+    const siteNameLong = getSetting('site_name', 'Amanuel Mental Specialized Hospital');
+    const siteNameShort = 'AMSH';
     const sitePhone = getSetting('contact_phone', '+251-111-868-53-85');
     const siteEmail = getSetting('contact_email', 'info@emsh.gov.et');
     const siteHours = getSetting('working_hours', 'Mon - Fri: 2:30 AM - 10:00 AM');

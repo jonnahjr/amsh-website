@@ -45,6 +45,30 @@ const DEPT_MISSIONS: Record<string, { vision: string; mission: string[]; goal: s
         goal: 'Minimize risk and maximize outcomes through rapid, expert emergency response.',
         about: 'The Emergency Department at EMSH operates around the clock to manage acute psychiatric crises, medical emergencies, and urgent procedures. Our trained emergency team works in an integrated manner with all departments to ensure every patient receives timely, appropriate care regardless of the nature or time of the emergency.',
     },
+    'infection-prevention-control': {
+        vision: 'A safe healthcare environment with zero or minimal healthcare-associated infections (HAIs), protecting patients, healthcare workers, and visitors through high-quality infection prevention practices.',
+        mission: ['Ensure continuous surveillance, prevention, and control of infections.', 'Reduce infection risks through evidence-based standard precautions and surveillance.', 'Promote safe, clean, and hygienic hospital environments.', 'Build staff capacity and ensure compliance with global IPC standards.', 'Early detection and management of infectious disease outbreaks.'],
+        goal: 'Achieve zero preventable healthcare-associated infections and ensure a 100% safe hospital environment for all.',
+        about: 'The Infection Prevention and Control (IPC) unit at AMSH is dedicated to creating a safer clinical world. We monitor healthcare-associated infections, manage antimicrobial resistance, and implement strict protocols for hand hygiene, PPE use, and equipment sterilization to maintain the highest clinical standards.',
+    },
+    'health-literacy': {
+        vision: 'An empowered, health-literate population capable of making informed decisions about their conditions, treatments, and preventive measures.',
+        mission: ['Improve patients’ understanding of health information and clinical services.', 'Enhance communication between healthcare providers and patients using visual aids and local languages.', 'Promote self-care, medication adherence, and disease prevention.', 'Train healthcare workers in effective, patient-centered communication.'],
+        goal: 'Empower every patient with the knowledge to actively participate in their own recovery and long-term health.',
+        about: 'Our Health Literacy team bridges the communication gap in mental healthcare. We develop accessible educational materials, provide clear explanations of diagnoses, and foster patient-centered communication to help the community make informed health decisions and achieve better outcomes.',
+    },
+    'community-outreach': {
+        vision: 'To achieve a mentally healthy community with equitable, stigma-free, and community-based mental health services integrated into primary healthcare.',
+        mission: ['Extend mental health services beyond hospital settings via mobile clinics and community screening.', 'Promote early identification and treatment of mental health conditions.', 'Reduce stigma and discrimination through education and awareness campaigns.', 'Strengthen community support systems and home-visit continuity of care.', 'Integrate mental health into primary healthcare through task-shifting and training.'],
+        goal: 'Bring psychiatric excellence to underserved populations and eliminate the stigma associated with mental health.',
+        about: 'The Community Outreach unit at AMSH extends specialized psychiatric care beyond the hospital walls. We provide mobile clinics, conduct early screenings, and offer psychosocial rehabilitation to ensure that vulnerable and rural populations can access quality mental healthcare without discrimination.',
+    },
+    'phem': {
+        vision: 'To become a highly responsive, well-coordinated, and resilient unit capable of effectively managing all public health emergencies, contributing to a safe and healthy population.',
+        mission: ['Rapidly detect, assess, and respond to public health emergencies to reduce illness and social disruption.', 'Implement early warning systems and conduct hazard mapping for priority diseases.', 'Activate rapid response mechanisms during outbreaks and coordinate hospital-wide case management.', 'Engage in risk communication to address misinformation and promote preventive behaviors.', 'Ensure availability of emergency supplies and evaluate response performance.'],
+        goal: 'Minimize risk and maximize outcomes through proactive emergency preparedness and coordinated institutional response.',
+        about: 'The Public Health Emergency Management (PHEM) unit is the hospital\'s emergency resilience hub. We monitor priority diseases, maintain stockpiles of essential supplies, and coordinate rapid responses to outbreaks to protect both the hospital and the general community from health threats.',
+    },
 };
 
 const DEFAULT_CONTENT = {
@@ -99,22 +123,26 @@ export default function DepartmentDetailPage() {
         <>
             <EmergencyBanner />
             <Navbar />
-            <main className="bg-white">
+            <main className="bg-blue-50/30">
                 {/* Hero */}
-                <section className="relative min-h-[70vh] bg-blue-950 flex items-end overflow-hidden">
-                    {dept.image ? (
+                <section className="relative min-h-screen bg-blue-950 flex items-center overflow-hidden">
+                    {/* Background Pattern */}
+                    <div className="absolute inset-0 opacity-10">
+                        <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)', backgroundSize: '48px 48px' }} />
+                    </div>
+
+                    {/* Decorative Blue Orbs */}
+                    <div className="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[120px] animate-float pointer-events-none" />
+                    <div className="absolute bottom-1/4 left-1/4 w-[400px] h-[400px] bg-blue-400/5 rounded-full blur-[100px] animate-float pointer-events-none" style={{ animationDelay: '1.5s' }} />
+
+                    {dept.image && (
                         <>
                             <img src={dept.image} alt={dept.name} className="absolute inset-0 w-full h-full object-cover opacity-30 scale-105" crossOrigin="anonymous" />
                             <div className="absolute inset-0 bg-gradient-to-t from-blue-950 via-blue-950/70 to-blue-950/20" />
                         </>
-                    ) : (
-                        <div className="absolute inset-0">
-                            <div className="absolute inset-0 opacity-[0.06]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)', backgroundSize: '48px 48px' }} />
-                            <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at 70% 30%, #1e3a8a 0%, transparent 60%)' }} />
-                        </div>
                     )}
 
-                    <div className="container-custom relative z-10 pb-20 pt-40">
+                    <div className="container-custom relative z-10 py-32">
                         <div className="max-w-4xl">
                             <h1 className="text-4xl md:text-6xl lg:text-7xl font-black text-white leading-[0.95] mb-6 tracking-tighter">
                                 {dept.name}
@@ -124,48 +152,14 @@ export default function DepartmentDetailPage() {
                     </div>
                 </section>
 
-                {/* Head of Department — Premium Card */}
-                {dept.headName && (
-                    <div className="bg-white border-b border-gray-100">
-                        <div className="container-custom py-10">
-                            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 bg-gradient-to-r from-blue-50 to-white rounded-3xl p-6 border border-blue-100 shadow-sm">
-                                {/* Photo */}
-                                <div className="w-24 h-24 rounded-2xl overflow-hidden flex-shrink-0 bg-blue-100 border-4 border-white shadow-xl">
-                                    {dept.headImage ? (
-                                        <img src={dept.headImage} alt={dept.headName} className="w-full h-full object-cover" crossOrigin="anonymous" />
-                                    ) : (
-                                        <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-900 to-blue-700">
-                                            <UserGroupIcon className="w-10 h-10 text-white/40" />
-                                        </div>
-                                    )}
-                                </div>
-                                {/* Info */}
-                                <div className="flex-1">
-                                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-600 mb-1">Department Head</p>
-                                    <h2 className="font-black text-gray-900 text-2xl leading-tight">{dept.headName}</h2>
-                                    <p className="text-sm font-bold text-blue-900 mt-1">{dept.headTitle || 'Clinical Director'}</p>
-                                    {dept.headProfession && (
-                                        <p className="text-xs text-gray-500 font-medium mt-1 italic">{dept.headProfession}</p>
-                                    )}
-                                </div>
-                                {/* Decoration */}
-                                <div className="hidden lg:flex flex-col items-end gap-2">
-                                    <div className="px-4 py-2 bg-blue-900 text-white text-[9px] font-black uppercase tracking-widest rounded-xl shadow-lg">
-                                        {dept.name}
-                                    </div>
-                                    <p className="text-[9px] font-black text-gray-300 uppercase tracking-widest">Emmanuel Mental Specialized Hospital</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                )}
+                {/* Content removed per user request */}
 
                 <div className="container-custom py-20 max-w-5xl space-y-32">
 
                     {/* ABOUT SECTION */}
                     <section id="about" className="space-y-16 animate-fade-in">
                         {/* Picture holder + text */}
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+                        <div className="max-w-4xl">
                             <div>
                                 <div className="flex items-center gap-4 mb-8">
                                     <div className="w-12 h-1 bg-blue-900" />
@@ -178,49 +172,7 @@ export default function DepartmentDetailPage() {
                                     {aboutText.split('\n').map((p: string, i: number) => <p key={i}>{p}</p>)}
                                 </div>
                             </div>
-                            {/* Picture holder — uses dept image or gradient placeholder */}
-                            <div className="space-y-4">
-                                <div className="w-full aspect-[4/3] rounded-[40px] overflow-hidden shadow-2xl relative group">
-                                    {dept.image ? (
-                                        <img src={dept.image} alt={dept.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" crossOrigin="anonymous" />
-                                    ) : (
-                                        <div className="w-full h-full bg-gradient-to-br from-blue-950 to-blue-800 flex flex-col items-center justify-center">
-                                            <div className="text-8xl mb-4 opacity-30">{dept.icon || '🏥'}</div>
-                                            <p className="text-white/30 font-black text-[10px] uppercase tracking-widest">Department Photo</p>
-                                        </div>
-                                    )}
-                                    <div className="absolute inset-0 bg-gradient-to-t from-blue-950/60 to-transparent pointer-events-none" />
-                                    {dept.headName && (
-                                        <div className="absolute bottom-5 left-5 right-5 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-4 flex items-center gap-3">
-                                            <div className="w-12 h-12 rounded-full bg-white/20 overflow-hidden flex-shrink-0 flex items-center justify-center border-2 border-white/30">
-                                                {dept.headImage
-                                                    ? <img src={dept.headImage} className="w-full h-full object-cover" crossOrigin="anonymous" />
-                                                    : <UserGroupIcon className="w-7 h-7 text-white/60" />}
-                                            </div>
-                                            <div>
-                                                <p className="text-[9px] font-black uppercase tracking-widest text-white/50">Department Head</p>
-                                                <p className="font-black text-white text-sm">{dept.headName}</p>
-                                                {dept.headProfession && (
-                                                    <p className="text-[10px] text-white/60 font-medium italic">{dept.headProfession}</p>
-                                                )}
-                                            </div>
-                                        </div>
-                                    )}
-                                </div>
-                                {/* Gallery strip — image holders */}
-                                <div className="grid grid-cols-3 gap-3">
-                                    {galleryImages.slice(0, 3).map((url: string, i: number) => (
-                                        <div key={i} className="aspect-square rounded-2xl overflow-hidden shadow-md">
-                                            <img src={url} alt={`${dept.name} ${i + 1}`} className="w-full h-full object-cover" crossOrigin="anonymous" />
-                                        </div>
-                                    ))}
-                                    {galleryImages.length === 0 && [0, 1, 2].map(i => (
-                                        <div key={i} className="aspect-square rounded-2xl bg-gray-50 border-2 border-dashed border-gray-100 flex items-center justify-center">
-                                            <span className="text-2xl opacity-20">{dept.icon || '🏥'}</span>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
+                                {/* Image holder removed per user request */}
                         </div>
                         {/* Clinical stats */}
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -230,13 +182,13 @@ export default function DepartmentDetailPage() {
                                 { icon: ClockIcon, label: 'Availability', value: '24/7 + OPD' },
                                 { icon: StarIcon, label: 'Accreditation', value: 'MOH Certified' },
                             ].map((item, i) => (
-                                <div key={i} className="flex flex-col gap-3 p-6 bg-gray-50 rounded-3xl">
+                                <div key={i} className="flex flex-col gap-3 p-6 bg-white rounded-3xl border border-blue-100 shadow-sm hover:shadow-md transition-shadow">
                                     <div className="w-10 h-10 bg-blue-50 rounded-2xl flex items-center justify-center">
                                         <item.icon className="w-5 h-5 text-blue-900" />
                                     </div>
                                     <div>
-                                        <p className="text-[9px] font-black uppercase tracking-widest text-gray-400">{item.label}</p>
-                                        <p className="font-black text-gray-900 mt-0.5 text-sm">{item.value}</p>
+                                        <p className="text-[9px] font-black uppercase tracking-widest text-blue-400">{item.label}</p>
+                                        <p className="font-black text-blue-950 mt-0.5 text-sm">{item.value}</p>
                                     </div>
                                 </div>
                             ))}
@@ -256,20 +208,23 @@ export default function DepartmentDetailPage() {
                         </div>
 
                         {/* Mission */}
-                        <div className="bg-gray-50 rounded-[56px] p-12 lg:p-20">
-                            <div className="w-16 h-1 bg-blue-900 mb-8" />
-                            <p className="text-[10px] font-black uppercase tracking-[0.4em] text-blue-900 mb-4">Our Mission</p>
-                            <h2 className="text-3xl font-black text-gray-900 mb-10 tracking-tighter">What We Stand For</h2>
-                            <ul className="space-y-6">
-                                {missionPoints.map((m: string, i: number) => (
-                                    <li key={i} className="flex items-start gap-5">
-                                        <div className="w-8 h-8 rounded-full bg-blue-900 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                            <CheckCircleIcon className="w-5 h-5 text-white" />
-                                        </div>
-                                        <p className="text-gray-700 text-lg font-medium leading-relaxed">{m}</p>
-                                    </li>
-                                ))}
-                            </ul>
+                        <div className="bg-blue-900 rounded-[56px] p-12 lg:p-20 relative overflow-hidden group">
+                            <div className="absolute inset-0 opacity-5" style={{ backgroundImage: 'radial-gradient(circle at 20% 80%, white 0%, transparent 50%)' }} />
+                            <div className="relative z-10">
+                                <div className="w-16 h-1 bg-cyan-400 mb-8" />
+                                <p className="text-[10px] font-black uppercase tracking-[0.4em] text-cyan-400 mb-4">Our Mission</p>
+                                <h2 className="text-3xl font-black text-white mb-10 tracking-tighter">What We Stand For</h2>
+                                <ul className="space-y-6">
+                                    {missionPoints.map((m: string, i: number) => (
+                                        <li key={i} className="flex items-start gap-5">
+                                            <div className="w-8 h-8 rounded-full bg-cyan-500 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                                <CheckCircleIcon className="w-5 h-5 text-blue-950" />
+                                            </div>
+                                            <p className="text-blue-100 text-lg font-medium leading-relaxed">{m}</p>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
                         </div>
 
                         {/* Goal */}
@@ -298,29 +253,7 @@ export default function DepartmentDetailPage() {
                                         href={`/services/${svc.slug}`}
                                         className="group rounded-[28px] overflow-hidden border border-gray-100 hover:border-blue-900 bg-white shadow-sm hover:shadow-xl transition-all duration-400 hover:-translate-y-1 flex flex-col"
                                     >
-                                        {/* Image / icon placeholder */}
-                                        <div className="relative h-36 bg-blue-50 flex items-center justify-center overflow-hidden border-b border-gray-100">
-                                            {svc.image ? (
-                                                <img src={svc.image} alt={svc.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" crossOrigin="anonymous" />
-                                            ) : (
-                                                <div className="absolute inset-0 bg-gradient-to-br from-blue-100 to-blue-50 flex flex-col items-center justify-center">
-                                                    <span className="text-[40px] opacity-[0.1] text-blue-900 group-hover:scale-110 transition-transform duration-500 leading-none select-none">
-                                                        {svc.icon || '🏥'}
-                                                    </span>
-                                                    <p className="text-[8px] font-black uppercase tracking-widest text-blue-900/10 mt-1">Service Photo</p>
-                                                </div>
-                                            )}
-
-                                            {/* Icon badge - floats between image and content */}
-                                            <div className="absolute -bottom-5 left-5 w-10 h-10 rounded-xl bg-white border border-gray-100 flex items-center justify-center text-lg shadow-md z-10 group-hover:-translate-y-1 transition-transform duration-300">
-                                                {svc.icon || '💉'}
-                                            </div>
-
-                                            {/* Hover arrow top-right */}
-                                            <div className="absolute top-3 right-3 w-8 h-8 rounded-lg bg-white/80 backdrop-blur-md border border-gray-200 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:translate-y-0 translate-y-1 shadow-sm">
-                                                <ChevronRightIcon className="w-3 h-3 text-gray-700" />
-                                            </div>
-                                        </div>
+                                        {/* Content removed per user request */}
                                         {/* Content */}
                                         <div className="bg-blue-950 flex-1 flex flex-col px-5 pb-5 pt-7 relative overflow-hidden">
                                             <div className="absolute top-0 right-0 w-24 h-24 bg-cyan-400 opacity-[0.02] rounded-full -mr-12 -mt-12 blur-xl" />
@@ -344,27 +277,7 @@ export default function DepartmentDetailPage() {
                         )}
                     </section>
 
-                    {/* GALLERY SECTION */}
-                    <section id="gallery" className="animate-fade-in pt-16 border-t border-gray-50">
-                        <div className="flex items-center gap-4 mb-12">
-                            <div className="w-12 h-1 bg-blue-900" />
-                            <h2 className="text-[10px] font-black uppercase tracking-[0.4em] text-blue-900">Department Gallery</h2>
-                        </div>
-                        {galleryImages.length > 0 ? (
-                            <div className={`grid gap-6 ${galleryImages.length === 1 ? 'grid-cols-1' : galleryImages.length === 2 ? 'grid-cols-2' : 'grid-cols-2'}`}>
-                                {galleryImages.map((url: string, i: number) => (
-                                    <div key={i} className={`rounded-[40px] overflow-hidden shadow-xl group ${i === 0 && galleryImages.length >= 3 ? 'col-span-2 aspect-video' : 'aspect-square'}`}>
-                                        <img src={url} alt={`${dept.name} photo ${i + 1}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" crossOrigin="anonymous" />
-                                    </div>
-                                ))}
-                            </div>
-                        ) : (
-                            <div className="text-center py-24 bg-gray-50 rounded-[48px]">
-                                <div className="text-6xl mb-4 opacity-30">{dept.icon || '🏥'}</div>
-                                <p className="text-gray-400 font-bold uppercase tracking-widest text-sm">Photography coming soon.</p>
-                            </div>
-                        )}
-                    </section>
+                    {/* Gallery removed per user request */}
 
 
                 </div>

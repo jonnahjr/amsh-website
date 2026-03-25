@@ -32,7 +32,8 @@ export default function CPDApplyPage() {
     // Status tracking for document uploads 
     const [uploadStatus, setUploadStatus] = useState<Record<string, 'idle' | 'uploading' | 'success'>>({
         licenseDoc: 'idle',
-        idDoc: 'idle'
+        idDoc: 'idle',
+        paymentDoc: 'idle'
     });
 
     useEffect(() => {
@@ -255,6 +256,7 @@ export default function CPDApplyPage() {
                                             {[
                                                 { id: 'licenseDoc', label: 'Professional License', desc: 'Valid certification only' },
                                                 { id: 'idDoc', label: 'National ID / Passport', desc: 'Or Hospital/Kebele ID' },
+                                                { id: 'paymentDoc', label: 'Payment Receipt', desc: 'Bank transfer slip or deposit receipt' },
                                             ].map((doc) => (
                                                 <label
                                                     key={doc.id}

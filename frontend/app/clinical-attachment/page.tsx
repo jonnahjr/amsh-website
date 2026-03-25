@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import ChatbotButton from '@/components/chatbot/ChatbotButton';
@@ -22,9 +22,30 @@ import {
     PhoneIcon,
     EnvelopeIcon,
 } from '@heroicons/react/24/outline';
-import { formsAPI } from '@/lib/api';
+import { formsAPI, settingsAPI } from '@/lib/api';
 
 export default function ClinicalAttachmentPage() {
+    const [staff, setStaff] = useState<any[]>([]);
+
+    useEffect(() => {
+        settingsAPI.getAll().then(res => {
+            if (res.data.settings?.staff_directory) {
+                try {
+                    const dir = JSON.parse(res.data.settings.staff_directory);
+                    setStaff(Array.isArray(dir) ? dir : []);
+                } catch (e) {
+                    console.error('Failed to parse staff directory:', e);
+                }
+            }
+        }).catch(err => console.error('Failed to load staff settings:', err));
+    }, []);
+
+    const trainingTeam = staff.length > 0 
+        ? staff.filter(p => p.role.toLowerCase().includes('clinical training') || p.role.toLowerCase().includes('research director'))
+        : [
+            { id: 'zegeye', name: "Mr. Zegeye Yohannis", role: "CPD, Clinical Training and Research Director", phone: "+251 91 330 7290", image: "" },
+            { id: 'habtamu', name: "Mr. Habtamu Derajaw", role: "Research & Clinical Training Desk Head", phone: "+251 92 386 4833", image: "" }
+        ];
     const [category, setCategory] = useState<'GOVERNMENT' | 'PRIVATE' | 'SELF_SPONSORED' | null>(null);
     const [isApplyModalOpen, setIsApplyModalOpen] = useState(false);
     const [currentStep, setCurrentStep] = useState(1);
@@ -140,7 +161,7 @@ export default function ClinicalAttachmentPage() {
                         Attachment Portal
                     </h1>
                     <p className="text-blue-100/70 text-lg md:text-xl max-w-3xl mx-auto mb-8 animate-fade-in-up font-medium" style={{ animationDelay: '0.2s' }}>
-                        Join Ethiopia's premier psychiatric teaching hospital. We offer specialized clinical exposure for government and private institutions as well as self-sponsored professionals.
+                        Join Amanuel's specialized psychiatric teaching hospital. We offer specialized clinical exposure for government and private institutions as well as self-sponsored professionals.
                     </p>
                 </div>
             </section>
@@ -692,35 +713,30 @@ export default function ClinicalAttachmentPage() {
                         <h2 className="text-4xl font-black text-blue-950 tracking-tight">Contact Clinical Training Desk</h2>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
-                        {[
-                            {
-                                role: "CPD, Clinical Training and Research Director",
-                                name: "Mr. Zegeye Yohannis",
-                                phone: "+251 91 330 7290",
-                                tel: "+251913307290",
-                                icon: <IdentificationIcon className="w-8 h-8" />
-                            },
-                            {
-                                role: "Research & Clinical Training Desk Head",
-                                name: "Mr. Habtamu Derajaw",
-                                phone: "+251 92 386 4833",
-                                tel: "+251923864833",
-                                icon: <AcademicCapIcon className="w-8 h-8" />
-                            },
-                        ].map((person, i) => (
-                            <div key={i} className="bg-gray-50 rounded-3xl p-8 border border-gray-100 group hover:bg-blue-900 hover:text-white transition-all duration-500">
-                                <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-blue-900 mb-6 group-hover:scale-110 transition-transform shadow-sm">
-                                    {person.icon}
+                    <div className="flex flex-wrap lg:flex-nowrap justify-center gap-4 lg:gap-8 overflow-x-auto pb-4">
+                        {trainingTeam.map((person, i) => (
+                            <div key={i} className="group flex flex-col items-center text-center min-w-[200px] max-w-[240px] p-6 bg-white rounded-[32px] border border-blue-100 hover:border-blue-300 hover:shadow-2xl transition-all duration-500">
+                                <div className="relative mb-4">
+                                    <div className="w-24 h-24 rounded-full overflow-hidden bg-white border-4 border-white shadow-md group-hover:scale-105 transition-all duration-500">
+                                        <img 
+                                            src={person.image || `https://ui-avatars.com/api/?name=${encodeURIComponent(person.name.replace(/^(Mr\.|Mrs\.|Dr\.)\s+/i, ''))}&background=eff6ff&color=1e3a8a&size=256&font-size=0.33`} 
+                                            alt={person.name} 
+                                            className="w-full h-full object-cover" 
+                                        />
+                                    </div>
+                                    <div className="absolute bottom-0 right-0 w-7 h-7 flex items-center justify-center">
+                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+                                            <path fill="#0095F6" d="M12,1 L14.46,2.82 L17.5,2.47 L18.72,5.28 L21.53,6.5 L21.18,9.54 L23,12 L21.18,14.46 L21.53,17.5 L18.72,18.72 L17.5,21.53 L14.46,21.18 L12,23 L9.54,21.18 L6.5,21.53 L5.28,18.72 L2.47,17.5 L2.82,14.46 L1,12 L2.82,9.54 L2.47,6.5 L5.28,5.28 L6.5,2.47 L9.54,2.82 Z"/>
+                                            <path d="M7 12.5L10.5 15.5L17 9" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
+                                        </svg>
+                                    </div>
                                 </div>
-                                <h4 className="text-xs font-black uppercase tracking-widest opacity-60 mb-2">{person.role}</h4>
-                                <h3 className="text-xl font-black mb-6 leading-tight">{person.name}</h3>
-                                <div className="space-y-3 pt-6 border-t border-gray-200 group-hover:border-white/20">
-                                    <a href={`tel:${person.tel}`} className="flex items-center gap-3 text-sm font-bold hover:underline">
-                                        <PhoneIcon className="w-4 h-4 opacity-40" />
-                                        <span className="opacity-80">{person.phone}</span>
-                                    </a>
-                                </div>
+                                <h3 className="text-sm font-black text-blue-950 mb-1 group-hover:text-blue-700 transition-colors uppercase tracking-tight">{person.name}</h3>
+                                <p className="text-[10px] font-bold text-blue-600 uppercase tracking-widest leading-tight mb-4">{person.role}</p>
+                                <a href={`tel:${person.phone?.replace(/\s+/g, '')}`} className="mt-auto px-4 py-2 rounded-xl bg-blue-50 text-blue-950 text-[10px] font-black hover:bg-blue-100 transition-colors flex items-center gap-2">
+                                    <PhoneIcon className="w-3 h-3" />
+                                    {person.phone}
+                                </a>
                             </div>
                         ))}
                     </div>

@@ -22,10 +22,11 @@ router.get('/:slug', async (req: Request, res: Response) => {
 
 router.post('/', authenticate, authorize('ADMIN', 'SUPER_ADMIN'), async (req: AuthRequest, res: Response) => {
     try {
-        const { name, slug, description, content, image, icon, departmentId, vision, mission, goal, highlights, order, isActive, gallery } = req.body;
+        const { name, slug, description, content, image, icon, departmentId, headName, headTitle, headProfession, headImage, vision, mission, goal, highlights, order, isActive, gallery } = req.body;
         const service = await prisma.service.create({
             data: {
                 name, slug, description, content, image, icon, departmentId,
+                headName, headTitle, headProfession, headImage,
                 vision, mission, goal, highlights,
                 order: parseInt(order as any) || 0,
                 isActive: isActive !== false,
@@ -38,11 +39,12 @@ router.post('/', authenticate, authorize('ADMIN', 'SUPER_ADMIN'), async (req: Au
 
 router.put('/:id', authenticate, authorize('ADMIN', 'SUPER_ADMIN'), async (req: AuthRequest, res: Response) => {
     try {
-        const { name, slug, description, content, image, icon, departmentId, vision, mission, goal, highlights, order, isActive, gallery } = req.body;
+        const { name, slug, description, content, image, icon, departmentId, headName, headTitle, headProfession, headImage, vision, mission, goal, highlights, order, isActive, gallery } = req.body;
         const service = await prisma.service.update({
             where: { id: req.params.id },
             data: {
                 name, slug, description, content, image, icon, departmentId,
+                headName, headTitle, headProfession, headImage,
                 vision, mission, goal, highlights,
                 order: parseInt(order as any) || 0,
                 isActive: isActive !== false,

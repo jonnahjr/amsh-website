@@ -91,6 +91,34 @@ const SERVICE_CONTENT: Record<string, {
         goal: 'Eliminate supply-related interruptions in hospital clinical services.',
         highlights: [{ label: 'Scope', value: 'Hospital-Wide' }, { label: 'Control', value: 'Inventory Management' }, { label: 'Priority', value: 'Supply Continuity' }],
     },
+    'infection-prevention-control': {
+        about: 'Our IPC program specializes in the prevention and control of healthcare-associated infections (HAIs) through surveillance, standardized protocols, and environmental hygiene.',
+        vision: 'A safe healthcare environment with zero or minimal infections for every patient and staff member.',
+        mission: ['Conduct continuous infection surveillance and monitoring.', 'Implement strict hand hygiene and PPE protocols.', 'Manage clinical waste and equipment sterilization.', 'Coordinate rapid response for infection outbreaks.'],
+        goal: 'Protect the hospital community from preventable infections through clinical excellence.',
+        highlights: [{ label: 'Safety', value: 'National Standard' }, { label: 'Monitoring', value: '24/7 Surveillance' }, { label: 'Focus', value: 'Zero HAIs' }],
+    },
+    'health-literacy': {
+        about: 'Health Literacy services at AMSH empower patients to understand their health conditions, navigate treatment options, and make informed medical decisions.',
+        vision: 'A health-literate patient community that actively participates in holistic healing.',
+        mission: ['Deliver patient education using simple, localized visual materials.', 'Improve doctor-patient communication through health literacy training.', 'Promote self-care strategies for chronic disease management.', 'Develop culturally appropriate educational brochures and digital tools.'],
+        goal: 'Bridge the information gap in healthcare to ensure better patient outcomes.',
+        highlights: [{ label: 'Language', value: 'Localized' }, { label: 'Approach', value: 'Patient-Centered' }, { label: 'Impact', value: 'Self-Efficacy' }],
+    },
+    'community-outreach': {
+        about: 'Outreach Services extend hospital excellence beyond its walls, bringing mobile clinics, mental health education, and psychosocial support to underserved communities.',
+        vision: 'A stigma-free society where quality mental healthcare is available in every community.',
+        mission: ['Operate mobile mental health clinics and screening units.', 'Provide home-based follow-up and psychosocial rehabilitation.', 'Conduct large-scale mental health awareness campaigns.', 'Collaborate with primary healthcare workers for integrated care.'],
+        goal: 'Eliminate barriers to mental healthcare through direct community intervention.',
+        highlights: [{ label: 'Reach', value: 'Regional & Rural' }, { label: 'Focus', value: 'Stigma Reduction' }, { label: 'Mobile Unit', value: 'Operational' }],
+    },
+    'phem': {
+        about: 'The Public Health Emergency Management (PHEM) unit coordinates rapid responses to health crises, ensuring the hospital remains resilient and responsive during emergencies.',
+        vision: 'Operational resilience and safety in the face of all public health emergencies.',
+        mission: ['Implement early warning systems for priority disease detection.', 'Maintain and manage emergency medical stockpiles.', 'Coordinate rapid response teams for clinical crises.', 'Promote risk communication and preventive behavior in the public.'],
+        goal: 'Rapidly detect, assess, and manage health threats to prevent social and clinical disruption.',
+        highlights: [{ label: 'Response', value: 'Rapid Team' }, { label: 'Preparedness', value: 'High Level' }, { label: 'Supply', value: 'Crisis Stock' }],
+    },
 };
 
 const DEFAULT_CONTENT = {
@@ -163,34 +191,27 @@ export default function ServiceDetailPage() {
         <>
             <EmergencyBanner />
             <Navbar />
-            <main className="bg-white">
+            <main className="bg-blue-50/30">
                 {/* Hero */}
-                <section className="relative min-h-[70vh] bg-blue-950 flex items-end overflow-hidden">
-                    {service.image ? (
-                        <>
-                            <img src={service.image} alt={service.name} className="absolute inset-0 w-full h-full object-cover opacity-25 scale-105" crossOrigin="anonymous" />
-                            <div className="absolute inset-0 bg-gradient-to-t from-blue-950 via-blue-950/60 to-blue-950/20" />
-                        </>
-                    ) : (
-                        <div className="absolute inset-0">
-                            <div className="absolute inset-0 opacity-[0.06]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)', backgroundSize: '48px 48px' }} />
-                            <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at 30% 70%, #1e3a8a 0%, transparent 60%)' }} />
-                        </div>
-                    )}
+                <section className="relative min-h-screen bg-blue-950 flex items-center overflow-hidden">
+                    {/* Background Pattern */}
+                    <div className="absolute inset-0 opacity-10">
+                        <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)', backgroundSize: '48px 48px' }} />
+                    </div>
 
-                    <div className="container-custom relative z-10 pb-24">
+                    {/* Decorative Blue Orbs */}
+                    <div className="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[120px] animate-float pointer-events-none" />
+                    <div className="absolute bottom-1/4 left-1/4 w-[400px] h-[400px] bg-blue-400/5 rounded-full blur-[100px] animate-float pointer-events-none" style={{ animationDelay: '1.5s' }} />
+
+                    <div className="container-custom relative z-10 py-32">
                         <div className="max-w-4xl">
-                            <div className="flex items-center gap-4 mb-8">
-                                <div className="w-12 h-1 bg-cyan-400" />
-                                <Link href="/services" className="text-[10px] font-black uppercase tracking-[0.4em] text-cyan-400 hover:text-white transition-colors">
-                                    Our Clinical Services
-                                </Link>
-                            </div>
-                            <h1 className="text-[60px] lg:text-[100px] font-black text-white leading-[0.85] tracking-[-0.04em] mb-12">
-                                {service.name.split(' ').map((word: string, i: number) => (
-                                    <span key={i} className="block">{word}</span>
-                                ))}
+                            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black text-white leading-[0.95] mb-6 tracking-tighter">
+                                {service.name}
                             </h1>
+                            <p className="text-xl text-blue-100/60 max-w-2xl mb-10 leading-relaxed font-medium">
+                                {service.description || 'Specialized clinical service at Emmanuel Mental Specialized Hospital.'}
+                            </p>
+                            
                             <div className="flex flex-wrap items-center gap-8">
                                 <div className="px-8 py-4 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 flex items-center gap-4">
                                     <div>
@@ -202,6 +223,8 @@ export default function ServiceDetailPage() {
                         </div>
                     </div>
                 </section>
+
+                {/* Content removed per user request */}
 
                 <div className="container-custom py-20 max-w-5xl space-y-32">
 
@@ -222,15 +245,15 @@ export default function ServiceDetailPage() {
                             </div>
                             <div className="space-y-5">
                                 {highlights.map((h: any, i: number) => (
-                                    <div key={i} className="flex items-center gap-5 p-6 bg-gray-50 rounded-3xl">
+                                    <div key={i} className="flex items-center gap-5 p-6 bg-white rounded-3xl border border-blue-100 shadow-sm hover:shadow-md transition-shadow">
                                         <div className="w-12 h-12 bg-blue-50 rounded-2xl flex items-center justify-center flex-shrink-0">
                                             {i === 0 ? <ShieldCheckIcon className="w-6 h-6 text-blue-900" /> :
                                                 i === 1 ? <UserGroupIcon className="w-6 h-6 text-blue-900" /> :
                                                     <ClockIcon className="w-6 h-6 text-blue-900" />}
                                         </div>
                                         <div>
-                                            <p className="text-[10px] font-black uppercase tracking-widest text-gray-400">{h.label}</p>
-                                            <p className="font-black text-gray-900 mt-0.5">{h.value}</p>
+                                            <p className="text-[10px] font-black uppercase tracking-widest text-blue-400">{h.label}</p>
+                                            <p className="font-black text-blue-950 mt-0.5">{h.value}</p>
                                         </div>
                                     </div>
                                 ))}
@@ -251,33 +274,29 @@ export default function ServiceDetailPage() {
                             </div>
                         </div>
 
-                        {/* Service image */}
-                        {service.image && (
-                            <div className="rounded-[56px] overflow-hidden shadow-2xl aspect-video">
-                                <img src={service.image} alt={service.name} className="w-full h-full object-cover" crossOrigin="anonymous" />
-                            </div>
-                        )}
+                        {/* Service image removed per user request */}
                     </div>
 
                     {/* Integrated Care Philosophy */}
-                    <div className="py-24 border-y border-gray-100 bg-gray-50/30 -mx-4 px-4 sm:-mx-8 sm:px-8 lg:-mx-20 lg:px-20 rounded-[80px]">
-                        <div className="max-w-4xl mx-auto">
+                    <div className="py-24 border-y border-white/5 bg-blue-950 -mx-4 px-4 sm:-mx-8 sm:px-8 lg:-mx-20 lg:px-20 rounded-[80px] relative overflow-hidden group">
+                        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 10% 10%, #3b82f6 0%, transparent 60%)' }} />
+                        <div className="max-w-4xl mx-auto relative z-10">
                             <div className="flex items-center gap-4 mb-8 justify-center">
                                 <div className="w-8 h-1 bg-cyan-500 rounded-full" />
-                                <h2 className="text-[10px] font-black uppercase tracking-[0.4em] text-cyan-600">Our Clinical Philosophy</h2>
+                                <h2 className="text-[10px] font-black uppercase tracking-[0.4em] text-cyan-400">Our Clinical Philosophy</h2>
                                 <div className="w-8 h-1 bg-cyan-500 rounded-full" />
                             </div>
-                            <h3 className="text-3xl lg:text-[50px] font-black text-gray-900 mb-10 tracking-tighter leading-tight text-center">
+                            <h3 className="text-3xl lg:text-[50px] font-black text-white mb-10 tracking-tighter leading-tight text-center">
                                 Evidence-Based Care <br />
-                                <span className="text-blue-900">Tailored To Your Journey.</span>
+                                <span className="text-cyan-400 italic font-medium">Tailored To Your Journey.</span>
                             </h3>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-                                <div className="space-y-6 text-gray-600 leading-relaxed font-medium text-center md:text-left">
+                                <div className="space-y-6 text-blue-100/60 leading-relaxed font-medium text-center md:text-left">
                                     <p>
                                         We approach {service?.name} with a deep understanding that clinical excellence requires both technical expertise and human compassion. Our protocols are regularly reviewed against international mental health standards.
                                     </p>
                                 </div>
-                                <div className="space-y-6 text-gray-600 leading-relaxed font-medium text-center md:text-left">
+                                <div className="space-y-6 text-blue-100/60 leading-relaxed font-medium text-center md:text-left">
                                     <p>
                                         Every patient's path is unique. That's why our clinical team focuses on personalized interventions that consider not only the immediate diagnosis but also the long-term well-being of the individual.
                                     </p>
@@ -370,51 +389,7 @@ export default function ServiceDetailPage() {
                         </div>
                     </div>
 
-                    {/* SERVICE VISUALS SECTION */}
-                    <div className="space-y-12">
-                        <div className="flex items-center gap-4">
-                            <div className="w-12 h-1 bg-blue-900" />
-                            <h2 className="text-[10px] font-black uppercase tracking-[0.4em] text-blue-900">Service Visuals</h2>
-                        </div>
-
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                            {[0, 1].map((idx) => (
-                                <div key={idx} className="rounded-[56px] overflow-hidden shadow-2xl aspect-[4/3] relative group bg-blue-50 border border-blue-100 flex flex-col items-center justify-center">
-                                    {galleryImages[idx] ? (
-                                        <img
-                                            src={galleryImages[idx]}
-                                            alt={`${service.name} view ${idx + 1}`}
-                                            className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
-                                            crossOrigin="anonymous"
-                                        />
-                                    ) : (
-                                        <>
-                                            {/* Background Pattern for placeholder */}
-                                            <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, #1e3a8a 1px, transparent 0)', backgroundSize: '24px 24px' }} />
-
-                                            <div className="text-8xl mb-6 grayscale opacity-20 group-hover:grayscale-0 group-hover:opacity-40 transition-all duration-700 scale-90 group-hover:scale-100">
-                                                {idx === 0 ? '🏥' : '🔬'}
-                                            </div>
-
-                                            <div className="relative z-10 flex flex-col items-center">
-                                                <div className="px-6 py-2 bg-blue-900/5 backdrop-blur-sm rounded-full border border-blue-900/10 transition-all group-hover:bg-blue-900 group-hover:border-blue-900">
-                                                    <p className="text-[9px] font-black uppercase tracking-[0.3em] text-blue-900/40 group-hover:text-white transition-colors">
-                                                        {idx === 0 ? 'Clinical Environment' : 'Diagnostic Equipment'}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </>
-                                    )}
-                                    {/* Glassy overlay */}
-                                    <div className="absolute inset-0 bg-gradient-to-t from-blue-950/20 to-transparent opacity-60 pointer-events-none" />
-                                </div>
-                            ))}
-                        </div>
-
-                        <p className="text-center text-gray-400 text-[10px] font-black uppercase tracking-widest opacity-50">
-                            Images representative of our specialized {service.name} facilities
-                        </p>
-                    </div>
+                    {/* Content removed per user request */}
 
 
                 </div>

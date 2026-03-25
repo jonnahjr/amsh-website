@@ -21,6 +21,8 @@ import {
     PaperAirplaneIcon,
     PhotoIcon,
     CloudArrowUpIcon,
+    UserGroupIcon,
+    UsersIcon,
 } from '@heroicons/react/24/outline';
 
 const tabs = [
@@ -29,6 +31,7 @@ const tabs = [
     { id: 'contact', label: 'Tactical Presence', icon: MapPinIcon, desc: 'Global contact points and location data' },
     { id: 'social', label: 'Social Spectrum', icon: ShareIcon, desc: 'Connectivity to institutional social feeds' },
     { id: 'broadcast', label: 'Broadcast Protocols', icon: PaperAirplaneIcon, desc: 'SMTP configuration and newsletter gateway' },
+    { id: 'staff', label: 'Staff Matrix', icon: UserGroupIcon, desc: 'Institutional leadership and staff directory' },
     { id: 'integrations', label: 'API Protocols', icon: CpuChipIcon, desc: 'Facebook Graph and external microservices' },
     { id: 'security', label: 'Security Firewall', icon: ShieldCheckIcon, desc: 'Maintenance mode and access protocols' },
 ];
@@ -51,7 +54,7 @@ export default function AdminSettingsPage() {
             // Fallback for development if API is unreachable
             setSettings({
                 site_name: 'Amanuel Mental Specialized Hospital',
-                site_description: "Ethiopia's Premier Mental Health Institution",
+                site_description: "Specialized public mental health hospital established in 1930 E.C. providing comprehensive compassionate psychiatric care for over 80 years.",
                 contact_email: 'info@amsh.gov.et',
                 contact_phone: '+251-111-868-53-85',
                 emergency_phone: '991',
@@ -557,6 +560,148 @@ export default function AdminSettingsPage() {
                                         <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-500"></div>
                                     </label>
                                 </div>
+                            </div>
+                        </div>
+                    )}
+                    {activeTab === 'staff' && (
+                        <div className="space-y-12 animate-in fade-in slide-in-from-right-10 duration-500">
+                            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 border-b border-slate-50 pb-8">
+                                <div className="flex items-center gap-4">
+                                    <div className="w-3 h-10 bg-primary rounded-full" />
+                                    <h3 className="text-2xl font-jakarta font-black text-slate-900 tracking-tight">Institutional Staff Matrix</h3>
+                                </div>
+                                <button
+                                    onClick={() => {
+                                        const directory = JSON.parse(settings.staff_directory || '[]');
+                                        const newDir = [...directory, { id: 'staff-' + Date.now(), name: '', role: '', phone: '', image: '' }];
+                                        handleChange('staff_directory', JSON.stringify(newDir));
+                                    }}
+                                    className="px-6 py-3 bg-primary/10 text-primary text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-primary hover:text-white transition-all flex items-center gap-2"
+                                >
+                                    <UsersIcon className="w-4 h-4" />
+                                    <span>Append New Profile</span>
+                                </button>
+                            </div>
+
+                            <div className="grid grid-cols-1 gap-6">
+                                {(() => {
+                                    let staff = [];
+                                    try {
+                                        staff = JSON.parse(settings.staff_directory || '[]');
+                                        if (staff.length === 0) {
+                                            // Initialize with the requested people if blank
+                                            staff = [
+                                                { id: 'zegeye', name: "Mr. Zegeye Yohannis", role: "CPD, Clinical Training and Research Director", phone: "+251 91 330 7290", image: "" },
+                                                { id: 'habtamu_research', name: "Mr. Habtamu Derajaw", role: "Research & Clinical Training Desk Head", phone: "+251 92 386 4833", image: "" },
+                                                { id: 'azmera', name: "Mrs. Azmera Hadush", role: "CPD Desk Head", phone: "+251 91 216 0130", image: "" },
+                                                { id: 'zebiba', name: "Mrs. Zebiba Nassir", role: "CPD Officer", phone: "+251 93 208 2657", image: "" },
+                                                { id: 'mensur', name: "Mr. Mensur Nesru", role: "Research Officer", phone: "+251 91 325 5584", image: "" }
+                                            ];
+                                        }
+                                    } catch (e) {
+                                        staff = [];
+                                    }
+
+                                    return staff.map((person: any, idx: number) => (
+                                        <div key={person.id} className="p-8 bg-slate-50 rounded-[2.5rem] border border-slate-100 flex flex-col lg:flex-row items-center gap-8 group">
+                                            {/* Avatar Management */}
+                                            <div className="relative shrink-0">
+                                                <div className="w-32 h-32 rounded-full overflow-hidden bg-white border-4 border-white shadow-xl group-hover:scale-105 transition-all duration-500">
+                                                    {person.image ? (
+                                                        <img src={person.image} alt={person.name} className="w-full h-full object-cover" />
+                                                    ) : (
+                                                        <div className="w-full h-full bg-slate-100 flex items-center justify-center text-slate-300">
+                                                            <UsersIcon className="w-12 h-12" />
+                                                        </div>
+                                                    )}
+                                                </div>
+                                                <button
+                                                    onClick={() => {
+                                                        const input = document.createElement('input');
+                                                        input.type = 'file';
+                                                        input.accept = 'image/*';
+                                                        input.onchange = async (e: any) => {
+                                                            const file = e.target.files?.[0];
+                                                            if (file) {
+                                                                setUploading(person.id);
+                                                                try {
+                                                                    const res = await mediaAPI.upload(file, 'staff');
+                                                                    const url = res.data.media?.url || res.data.url;
+                                                                    const newStaff = [...staff];
+                                                                    newStaff[idx].image = url;
+                                                                    handleChange('staff_directory', JSON.stringify(newStaff));
+                                                                } finally {
+                                                                    setUploading(null);
+                                                                }
+                                                            }
+                                                        };
+                                                        input.click();
+                                                    }}
+                                                    className="absolute -bottom-2 -right-2 p-3 bg-primary text-white rounded-2xl shadow-xl hover:scale-110 active:scale-95 transition-all border-4 border-white"
+                                                >
+                                                    {uploading === person.id ? <ArrowPathIcon className="w-4 h-4 animate-spin" /> : <PhotoIcon className="w-4 h-4" />}
+                                                </button>
+                                            </div>
+
+                                            {/* Detail Management */}
+                                            <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+                                                <div className="space-y-2">
+                                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Full Nomenclature</label>
+                                                    <input
+                                                        type="text"
+                                                        value={person.name}
+                                                        onChange={(e) => {
+                                                            const newStaff = [...staff];
+                                                            newStaff[idx].name = e.target.value;
+                                                            handleChange('staff_directory', JSON.stringify(newStaff));
+                                                        }}
+                                                        className="w-full px-6 py-4 bg-white border border-slate-100 rounded-2xl text-sm font-bold outline-none focus:ring-4 focus:ring-primary/5"
+                                                        placeholder="Name..."
+                                                    />
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Assigned Protocol / Role</label>
+                                                    <input
+                                                        type="text"
+                                                        value={person.role}
+                                                        onChange={(e) => {
+                                                            const newStaff = [...staff];
+                                                            newStaff[idx].role = e.target.value;
+                                                            handleChange('staff_directory', JSON.stringify(newStaff));
+                                                        }}
+                                                        className="w-full px-6 py-4 bg-white border border-slate-100 rounded-2xl text-sm font-bold outline-none focus:ring-4 focus:ring-primary/5"
+                                                        placeholder="Role..."
+                                                    />
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Audio Communication Channel</label>
+                                                    <input
+                                                        type="text"
+                                                        value={person.phone}
+                                                        onChange={(e) => {
+                                                            const newStaff = [...staff];
+                                                            newStaff[idx].phone = e.target.value;
+                                                            handleChange('staff_directory', JSON.stringify(newStaff));
+                                                        }}
+                                                        className="w-full px-6 py-4 bg-white border border-slate-100 rounded-2xl text-sm font-bold outline-none focus:ring-4 focus:ring-primary/5"
+                                                        placeholder="Phone..."
+                                                    />
+                                                </div>
+                                                <div className="flex items-end justify-end">
+                                                    <button
+                                                        onClick={() => {
+                                                            const newStaff = staff.filter((_: any, i: number) => i !== idx);
+                                                            handleChange('staff_directory', JSON.stringify(newStaff));
+                                                        }}
+                                                        className="px-6 py-4 text-red-500 font-bold text-[10px] uppercase tracking-widest hover:bg-red-50 rounded-2xl transition-all"
+                                                    >
+                                                        Terminate Profile
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ));
+                                })()}
                             </div>
                         </div>
                     )}

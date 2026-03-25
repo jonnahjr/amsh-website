@@ -84,33 +84,22 @@ export default function ServiceCategoryPage() {
             <Navbar />
             <main className="bg-white">
                 {/* Hero Banner */}
-                <section className={`relative min-h-[55vh] flex items-end overflow-hidden ${category?.image ? '' : `bg-gradient-to-br ${category?.gradient || 'from-blue-950 to-blue-800'}`}`}>
-                    {category?.image && (
-                        <img
-                            src={category.image}
-                            alt={category.name}
-                            className="absolute inset-0 w-full h-full object-cover"
-                            crossOrigin="anonymous"
-                        />
-                    )}
-                    {category?.image && <div className="absolute inset-0 bg-blue-950/70 backdrop-blur-[2px]" />}
-                    {/* Dot grid */}
-                    <div className="absolute inset-0 opacity-[0.07]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)', backgroundSize: '40px 40px' }} />
-                    {/* Glow */}
-                    <div className="absolute inset-0 opacity-30" style={{ background: 'radial-gradient(ellipse at 20% 20%, rgba(255,255,255,0.12) 0%, transparent 60%)' }} />
+                <section className="relative min-h-screen flex items-center overflow-hidden bg-blue-950">
+                    {/* Background Pattern */}
+                    <div className="absolute inset-0 opacity-10">
+                        <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)', backgroundSize: '48px 48px' }} />
+                    </div>
+
+                    {/* Decorative Blue Orbs */}
+                    <div className="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[120px] animate-float pointer-events-none" />
+                    <div className="absolute bottom-1/4 left-1/4 w-[400px] h-[400px] bg-blue-400/5 rounded-full blur-[100px] animate-float pointer-events-none" style={{ animationDelay: '1.5s' }} />
 
 
-                    <div className="container-custom relative z-10 pb-16 pt-40">
-                        <div className="inline-flex items-center gap-2 px-5 py-2 bg-white/10 border border-white/20 rounded-full text-white/70 text-[10px] font-black uppercase tracking-widest mb-6">
-                            <BriefcaseIcon className="w-4 h-4" />
-                            {subServices.length} Sub-Service{subServices.length !== 1 ? 's' : ''}
-                        </div>
-
-
-                        <h1 className="text-4xl md:text-6xl font-black text-white tracking-tighter leading-[0.92] mb-5 max-w-3xl">
+                    <div className="container-custom relative z-10 py-32">
+                        <h1 className="text-4xl md:text-6xl lg:text-7xl font-black text-white leading-[0.95] mb-6 tracking-tighter">
                             {category?.name}
                         </h1>
-                        <p className="text-white/50 text-lg max-w-2xl font-medium leading-relaxed mb-10">
+                        <p className="text-xl text-blue-100/60 max-w-2xl mb-10 leading-relaxed font-medium">
                             {category?.description}
                         </p>
                     </div>

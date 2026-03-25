@@ -9,10 +9,10 @@ const heroSlides = [
         id: 1,
         badge: '',
         title: 'Comprehensive Mental Health Care You Can Trust',
-        subtitle: 'Serving Ethiopia since 1930 E.C. with expert psychiatric care, research, and professional development. Your mental health is our priority.',
+        subtitle: 'Specialized public mental health hospital established in 1930 E.C. Providing comprehensive, compassionate psychiatric care for over 80 years.',
         primaryCTA: { label: 'Our Services', href: '/services' },
         bg: 'bg-blue-950',
-        accent: '80+ Years of Dedicated Mental Health Services',
+        accent: 'Specialized Public Mental Health Hospital since 1930 E.C.',
     },
     {
         id: 2,

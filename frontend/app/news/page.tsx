@@ -56,7 +56,7 @@ export default function NewsPage() {
 
             <main className="bg-gray-50 min-h-screen">
                 {/* Hero */}
-                <section className="relative min-h-[60vh] bg-blue-950 flex items-center overflow-hidden">
+                <section className="relative min-h-screen bg-blue-950 flex items-center overflow-hidden">
                     {/* Background Pattern */}
                     <div className="absolute inset-0 opacity-10">
                         <div className="absolute inset-0" style={{
@@ -70,15 +70,8 @@ export default function NewsPage() {
                     <div className="absolute bottom-1/4 left-1/4 w-[400px] h-[400px] bg-blue-400/5 rounded-full blur-[100px] animate-float pointer-events-none" style={{ animationDelay: '1.5s' }} />
 
                     {/* Content */}
-                    <div className="container-custom relative z-10 py-24 text-center">
+                    <div className="container-custom relative z-10 py-32 text-center">
                         <div className="max-w-4xl mx-auto">
-                            {/* Badge */}
-                            <div className="animate-fade-in-up mb-6">
-                                <span className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 backdrop-blur-sm border border-white/10 rounded-full text-blue-200 text-sm font-semibold uppercase tracking-widest">
-                                    ✦ Hospital News & Media
-                                </span>
-                            </div>
-
                             {/* Title */}
                             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white leading-[1.1] mb-8 animate-fade-in-up tracking-tighter" style={{ animationDelay: '0.1s' }}>
                                 Latest Updates <br />

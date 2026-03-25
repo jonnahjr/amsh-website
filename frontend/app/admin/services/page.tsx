@@ -35,6 +35,10 @@ export default function ServicesAdmin() {
         image: '',
         icon: '',
         departmentId: '',
+        headName: '',
+        headTitle: '',
+        headProfession: '',
+        headImage: '',
         vision: '',
         mission: '',
         goal: '',
@@ -76,6 +80,10 @@ export default function ServicesAdmin() {
                 image: service.image || '',
                 icon: service.icon || '',
                 departmentId: service.departmentId || '',
+                headName: service.headName || '',
+                headTitle: service.headTitle || '',
+                headProfession: service.headProfession || '',
+                headImage: service.headImage || '',
                 vision: service.vision || '',
                 mission: service.mission || '',
                 goal: service.goal || '',
@@ -94,6 +102,10 @@ export default function ServicesAdmin() {
                 image: '',
                 icon: '',
                 departmentId: filterDept || '',
+                headName: '',
+                headTitle: '',
+                headProfession: '',
+                headImage: '',
                 vision: '',
                 mission: '',
                 goal: '',
@@ -133,7 +145,7 @@ export default function ServicesAdmin() {
         }
     };
 
-    const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, field: 'image' | 'gallery') => {
+    const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, field: 'image' | 'gallery' | 'headImage') => {
         const file = e.target.files?.[0];
         if (!file) return;
         setUploading(field);
@@ -143,6 +155,8 @@ export default function ServicesAdmin() {
                 const current = formData.gallery ? formData.gallery.split(';') : [];
                 current.push(res.data.media.url);
                 setFormData({ ...formData, gallery: current.join(';') });
+            } else if (field === 'headImage') {
+                setFormData({ ...formData, headImage: res.data.media.url });
             } else {
                 setFormData({ ...formData, image: res.data.media.url });
             }
@@ -407,6 +421,87 @@ export default function ServicesAdmin() {
                                     className="w-full px-8 py-6 bg-slate-50 border-0 rounded-[2.5rem] focus:ring-[10px] focus:ring-primary/5 transition-all placeholder-slate-200 text-[15px] font-medium outline-none resize-none leading-relaxed"
                                     placeholder="Brief clinical summary for global indexing..."
                                 />
+                            </div>
+
+                            {/* Service Head Details */}
+                            <div className="space-y-8 pt-10 border-t border-slate-100">
+                                <div className="flex items-center gap-3">
+                                    <div className="w-2 h-8 bg-emerald-500 rounded-full" />
+                                    <h4 className="text-xs font-black text-slate-900 uppercase tracking-[0.3em]">Service Head / Leadership</h4>
+                                </div>
+                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 border border-slate-100 p-8 rounded-[3rem] bg-white">
+                                    <div className="space-y-6">
+                                        <div className="space-y-4">
+                                            <label className="text-[11px] font-black uppercase tracking-[0.2em] text-slate-400 ml-2">Head Name</label>
+                                            <input
+                                                type="text"
+                                                value={formData.headName}
+                                                onChange={(e) => setFormData({ ...formData, headName: e.target.value })}
+                                                className="w-full px-8 py-6 bg-slate-50 border-0 rounded-[2rem] focus:ring-[10px] focus:ring-emerald-500/5 focus:border-emerald-500/20 text-[15px] font-bold transition-all outline-none"
+                                                placeholder="e.g. Dr. Abebe Kebede"
+                                            />
+                                        </div>
+                                        <div className="space-y-4">
+                                            <label className="text-[11px] font-black uppercase tracking-[0.2em] text-slate-400 ml-2">Head Title</label>
+                                            <input
+                                                type="text"
+                                                value={formData.headTitle}
+                                                onChange={(e) => setFormData({ ...formData, headTitle: e.target.value })}
+                                                className="w-full px-8 py-6 bg-slate-50 border-0 rounded-[2rem] focus:ring-[10px] focus:ring-emerald-500/5 focus:border-emerald-500/20 text-[15px] font-bold transition-all outline-none"
+                                                placeholder="e.g. Head of Psychiatry Service"
+                                            />
+                                        </div>
+                                        <div className="space-y-4">
+                                            <label className="text-[11px] font-black uppercase tracking-[0.2em] text-slate-400 ml-2">Professional Background</label>
+                                            <input
+                                                type="text"
+                                                value={formData.headProfession}
+                                                onChange={(e) => setFormData({ ...formData, headProfession: e.target.value })}
+                                                className="w-full px-8 py-6 bg-slate-50 border-0 rounded-[2rem] focus:ring-[10px] focus:ring-emerald-500/5 focus:border-emerald-500/20 text-[15px] font-bold transition-all outline-none"
+                                                placeholder="e.g. Consultant Psychiatrist"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    {/* Head Image Upload */}
+                                    <div className="space-y-4 flex flex-col items-center justify-center">
+                                        <label className="text-[11px] font-black uppercase tracking-[0.2em] text-slate-400 w-full text-center">Head Profile Picture</label>
+                                        <div className="relative w-48 h-48 rounded-full overflow-hidden border-4 border-slate-50 shadow-xl group bg-slate-100 flex items-center justify-center">
+                                            {formData.headImage ? (
+                                                <>
+                                                    <img src={formData.headImage} alt="Head" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" crossOrigin="anonymous" />
+                                                    <div className="absolute inset-0 bg-slate-900/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center pointer-events-none">
+                                                        <span className="text-[10px] font-black text-white px-3 py-1 bg-black/50 rounded-full mt-2">Change Image</span>
+                                                    </div>
+                                                </>
+                                            ) : (
+                                                <div className="text-center group-hover:text-emerald-500 transition-colors pointer-events-none">
+                                                    <PhotoIcon className="w-12 h-12 mx-auto mb-2 opacity-30" />
+                                                    <span className="text-[9px] font-black uppercase tracking-widest opacity-50 block px-4">Upload Portrait</span>
+                                                </div>
+                                            )}
+                                            <input
+                                                title="Upload Image"
+                                                type="file"
+                                                onChange={(e) => handleImageUpload(e, 'headImage')}
+                                                className="absolute inset-0 opacity-0 cursor-pointer"
+                                                accept="image/*"
+                                            />
+                                        </div>
+                                        {uploading === 'headImage' && (
+                                            <p className="text-[10px] font-black text-emerald-500 animate-pulse mt-2 uppercase tracking-widest">Uploading...</p>
+                                        )}
+                                        {formData.headImage && (
+                                            <button
+                                                type="button"
+                                                onClick={() => setFormData({ ...formData, headImage: '' })}
+                                                className="mt-4 text-[10px] font-black text-red-500 hover:text-red-700 uppercase tracking-widest px-4 py-2 hover:bg-red-50 rounded-xl transition-colors"
+                                            >
+                                                Remove Image
+                                            </button>
+                                        )}
+                                    </div>
+                                </div>
                             </div>
 
                             {/* Tactical Core Section */}

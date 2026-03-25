@@ -27,15 +27,13 @@ export default function AboutSection() {
                             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
                             <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
                         </span>
-                        Ethopia's Foremost Mental Health Center
+                        Amanuel Mental Specialized Institution
                     </div>
 
                     <h2 className="text-5xl md:text-7xl lg:text-[6rem] font-black text-blue-950 tracking-tighter leading-[0.85] mb-12 text-center">
-                        Welcome to <span className="text-blue-900">Emmanuel Mental</span> <br />
+                        Welcome to <span className="text-blue-900">Amanuel Mental</span> <br />
                         <span className="text-gray-300 italic tracking-[-0.05em]">Specialized Hospital</span>
                     </h2>
-
-
                 </div>
 
                 {/* Content Hub - Wide "Side to Side" Layout */}

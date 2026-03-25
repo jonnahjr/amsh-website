@@ -226,6 +226,10 @@ model Service {
   icon         String?
   departmentId String?
   department   Department? @relation(fields: [departmentId], references: [id])
+  headName     String?
+  headTitle    String?
+  headProfession String?
+  headImage    String?
   vision       String?
   mission      String?
   goal         String?
