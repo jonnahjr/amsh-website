@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express';
 import { authenticate, authorize, AuthRequest } from '../middleware/auth';
-import { prisma } from '../index';
+import { prisma } from '../core/db/prisma.service';
 
 const router = Router();
 
@@ -37,7 +37,7 @@ router.get('/:slug', async (req: Request, res: Response) => {
 
 router.post('/', authenticate, authorize('ADMIN', 'SUPER_ADMIN'), async (req: AuthRequest, res: Response) => {
     try {
-        const { name, slug, description, image, icon, headName, headTitle, headImage, category, vision, mission, goal, order, isActive, gallery, categoryId } = req.body;
+        const { name, slug, description, image, icon, headName, headTitle, headImage, category, vision, mission, goal, order, isActive, showOnHome, gallery, categoryId } = req.body;
         const dept = await prisma.department.create({
             data: {
                 name, slug, description, image, icon, headName, headTitle, headImage,
@@ -46,6 +46,7 @@ router.post('/', authenticate, authorize('ADMIN', 'SUPER_ADMIN'), async (req: Au
                 vision, mission, goal,
                 order: parseInt(order as any) || 0,
                 isActive: isActive !== false,
+                showOnHome: !!showOnHome,
                 gallery
             }
         });
@@ -58,7 +59,7 @@ router.post('/', authenticate, authorize('ADMIN', 'SUPER_ADMIN'), async (req: Au
 
 router.put('/:id', authenticate, authorize('ADMIN', 'SUPER_ADMIN'), async (req: AuthRequest, res: Response) => {
     try {
-        const { name, slug, description, image, icon, headName, headTitle, headImage, category, vision, mission, goal, order, isActive, gallery, categoryId } = req.body;
+        const { name, slug, description, image, icon, headName, headTitle, headImage, category, vision, mission, goal, order, isActive, showOnHome, gallery, categoryId } = req.body;
         const dept = await prisma.department.update({
             where: { id: req.params.id },
             data: {
@@ -68,6 +69,7 @@ router.put('/:id', authenticate, authorize('ADMIN', 'SUPER_ADMIN'), async (req: 
                 vision, mission, goal,
                 order: parseInt(order as any) || 0,
                 isActive: isActive !== false,
+                showOnHome: !!showOnHome,
                 gallery
             }
         });

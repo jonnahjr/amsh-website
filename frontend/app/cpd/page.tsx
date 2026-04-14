@@ -1,33 +1,24 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
 import ChatbotButton from '@/components/chatbot/ChatbotButton';
+import Footer from '@/components/layout/Footer';
+import Navbar from '@/components/layout/Navbar';
 import EmergencyBanner from '@/components/ui/EmergencyBanner';
-import { cpdAPI, settingsAPI } from '@/lib/api';
+import { settingsAPI, resolveImageUrl } from '@/lib/api';
 import {
     AcademicCapIcon,
-    VideoCameraIcon,
-    UserGroupIcon,
-    CalendarDaysIcon,
-    EyeIcon,
-    ArrowRightIcon,
-    ClockIcon,
-    CheckBadgeIcon,
     BuildingOfficeIcon,
-    UserIcon,
-    IdentificationIcon,
-    ShieldCheckIcon,
-    XMarkIcon,
-    DocumentArrowUpIcon,
-    BriefcaseIcon,
-    MapPinIcon,
+    CalendarDaysIcon,
+    CheckBadgeIcon,
+    ClockIcon,
+    LockClosedIcon,
     EnvelopeIcon,
     PhoneIcon,
-    LockClosedIcon,
+    ShieldCheckIcon,
+    UserGroupIcon
 } from '@heroicons/react/24/outline';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 import { CPD_COURSES } from './data';
 
 export default function CPDPage() {
@@ -37,7 +28,15 @@ export default function CPDPage() {
         settingsAPI.getAll().then(res => {
             if (res.data.settings?.staff_directory) {
                 try {
-                    const dir = JSON.parse(res.data.settings.staff_directory);
+                    let rawDir = res.data.settings.staff_directory;
+                    if (typeof rawDir === 'string') {
+                        rawDir = rawDir.trim();
+                        if (rawDir.startsWith("'") || rawDir.includes("':")) {
+                            rawDir = rawDir.replace(/'/g, '"');
+                        }
+                        rawDir = rawDir.replace(/,(\s*[\]}])/g, '$1');
+                    }
+                    const dir = JSON.parse(rawDir);
                     if (Array.isArray(dir) && dir.length > 0) {
                         setStaff(dir);
                     }
@@ -48,13 +47,22 @@ export default function CPDPage() {
         }).catch(err => console.error('Failed to load staff settings:', err));
     }, []);
 
-    const cpdTeam = staff.length > 0 
-        ? staff.filter(p => p.role.toLowerCase().includes('cpd') || p.role.toLowerCase().includes('clinical training'))
-        : [
-            { id: 'zegeye', name: "Mr. Zegeye Yohannis", role: "CPD, Clinical Training and Research Director", phone: "+251 91 330 7290", image: "" },
-            { id: 'azmera', name: "Mrs. Azmera Hadush", role: "CPD Desk Head", phone: "+251 91 216 0130", image: "" },
-            { id: 'zebiba', name: "Mrs. Zebiba Nassir", role: "CPD Officer", phone: "+251 93 208 2657", image: "" }
-        ];
+    const defaultStaff = [
+        { id: 'zegeye', name: "Mr. Zegeye Yohannis", role: "CPD, Clinical Training and Research Director", phone: "+251 91 330 7290", image: "/assets/research/mr_zegeye_yohannis_headshot_1775135176650.png" },
+        { id: 'habtamu', name: "Mr. Habtamu Derajaw", role: "Research & Clinical Training Desk Head", phone: "", image: "/assets/research/mr_habtamu_derajaw_headshot_1775135205786.png" },
+        { id: 'azmera', name: "Mrs. Azmera Hadush", role: "CPD Desk Head", phone: "+251 91 216 0130", image: "" },
+        { id: 'zebiba', name: "Mrs. Zebiba Nassir", role: "CPD Officer", phone: "+251 93 208 2657", image: "" },
+        { id: 'mensur', name: "Mr. Mensur Nesru", role: "Research Officer", phone: "", image: "/assets/research/mr_mensur_nesru_headshot_1775135244113.png" }
+    ];
+
+    const sourceStaff = staff.length > 0 ? staff : defaultStaff;
+    const cpdTeam = sourceStaff.filter(p => {
+        if (Array.isArray(p.pages)) return p.pages.includes('cpd');
+        // Fallback for legacy compatibility
+        return p.name?.toLowerCase().includes('zegeye') || 
+               p.name?.toLowerCase().includes('azmera') || 
+               p.name?.toLowerCase().includes('zebiba');
+    });
 
     return (
         <div className="min-h-screen bg-[#FDFCF9]">
@@ -197,7 +205,7 @@ export default function CPDPage() {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {CPD_COURSES.map((course) => (
-                            <div key={course.id} className="group bg-white rounded-[32px] border border-gray-100 overflow-hidden shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 p-8 flex flex-col">
+                            <div key={course.id} className="content-box-premium group rounded-[32px] overflow-hidden hover:-translate-y-2 p-8 flex flex-col">
                                 <div className="flex justify-between items-start mb-6">
                                     <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${course.mode === 'Online' ? 'bg-emerald-50 text-emerald-600' :
                                         course.mode === 'Hybrid' ? 'bg-purple-50 text-purple-600' :
@@ -288,11 +296,11 @@ export default function CPDPage() {
 
                     <div className="flex flex-wrap lg:flex-nowrap justify-center gap-4 lg:gap-8 overflow-x-auto pb-4">
                         {cpdTeam.map((person, i) => (
-                            <div key={i} className="group flex flex-col items-center text-center min-w-[200px] max-w-[240px] p-6 bg-white rounded-[32px] border border-blue-100 hover:border-blue-300 hover:shadow-2xl transition-all duration-500">
+                            <div key={i} className="content-box-premium group flex flex-col items-center text-center min-w-[200px] max-w-[240px] p-6 rounded-[32px]">
                                 <div className="relative mb-4">
                                     <div className="w-24 h-24 rounded-full overflow-hidden bg-slate-50 border-4 border-white shadow-md group-hover:scale-105 transition-all duration-500">
                                         <img 
-                                            src={person.image || `https://ui-avatars.com/api/?name=${encodeURIComponent(person.name.replace(/^(Mr\.|Mrs\.|Dr\.)\s+/i, ''))}&background=eff6ff&color=1e3a8a&size=256&font-size=0.33`} 
+                                            src={resolveImageUrl(person.image || `https://ui-avatars.com/api/?name=${encodeURIComponent(person.name.replace(/^(Mr\.|Mrs\.|Dr\.)\s+/i, ''))}&background=eff6ff&color=1e3a8a&size=256&font-size=0.33`)} 
                                             alt={person.name} 
                                             className="w-full h-full object-cover" 
                                         />
@@ -305,11 +313,20 @@ export default function CPDPage() {
                                     </div>
                                 </div>
                                 <h3 className="text-sm font-black text-blue-950 mb-1 group-hover:text-blue-700 transition-colors uppercase tracking-tight">{person.name}</h3>
-                                <p className="text-[10px] font-bold text-blue-600 uppercase tracking-widest leading-tight mb-4">{person.role}</p>
-                                <a href={`tel:${person.phone?.replace(/\s+/g, '')}`} className="mt-auto px-4 py-2 rounded-xl bg-blue-50 text-blue-950 text-[10px] font-black hover:bg-blue-100 transition-colors flex items-center gap-2">
-                                    <PhoneIcon className="w-3 h-3" />
-                                    {person.phone}
-                                </a>
+                                <div className="mt-auto space-y-2 w-full">
+                                    {person.phone && person.showPhone !== false && (
+                                        <a href={`tel:${person.phone?.replace(/\s+/g, '')}`} className="px-4 py-2 rounded-xl bg-blue-50 text-blue-950 text-[10px] font-black hover:bg-blue-100 transition-colors flex items-center justify-center gap-2">
+                                            <PhoneIcon className="w-3 h-3" />
+                                            {person.phone}
+                                        </a>
+                                    )}
+                                    {person.email && person.showEmail !== false && (
+                                        <a href={`mailto:${person.email}`} className="px-4 py-2 rounded-xl bg-blue-50 text-blue-950 text-[10px] font-black hover:bg-blue-100 transition-colors flex items-center justify-center gap-2">
+                                            <EnvelopeIcon className="w-3 h-3" />
+                                            Email Card
+                                        </a>
+                                    )}
+                                </div>
                             </div>
                         ))}
                     </div>

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { formsAPI } from '@/lib/api';
+import { exportToCSV } from '@/lib/export';
 import {
     DocumentTextIcon,
     CheckCircleIcon,
@@ -16,13 +17,16 @@ import {
     BriefcaseIcon,
     BuildingOfficeIcon,
     MagnifyingGlassIcon,
+    XMarkIcon,
 } from '@heroicons/react/24/outline';
+import SubmissionDetailsModal from '@/components/admin/SubmissionDetailsModal';
 
 export default function ClinicalAttachmentsAdmin() {
     const [submissions, setSubmissions] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [filter, setFilter] = useState('ALL');
     const [search, setSearch] = useState('');
+    const [selectedSubmission, setSelectedSubmission] = useState<any>(null);
 
     const fetchSubmissions = async () => {
         setLoading(true);
@@ -86,7 +90,10 @@ export default function ClinicalAttachmentsAdmin() {
                 </div>
 
                 <div className="flex items-center gap-4 relative z-10">
-                    <button className="flex items-center gap-4 px-10 py-5 bg-white border border-slate-200 text-slate-900 rounded-[1.5rem] text-[11px] font-black uppercase tracking-[0.2em] hover:bg-slate-50 transition-all shadow-sm">
+                    <button 
+                        onClick={() => exportToCSV(filtered, 'Clinical_Intake_Matrix')}
+                        className="flex items-center gap-4 px-10 py-5 bg-white border border-slate-200 text-slate-900 rounded-[1.5rem] text-[11px] font-black uppercase tracking-[0.2em] hover:bg-slate-50 transition-all shadow-sm"
+                    >
                         <ArrowDownTrayIcon className="w-5 h-5" />
                         <span>Export Intake Matrix</span>
                     </button>
@@ -185,7 +192,12 @@ export default function ClinicalAttachmentsAdmin() {
                                         </div>
                                     </div>
                                     <div className="flex items-center gap-3 relative z-10 w-full md:w-auto">
-                                        <button className="flex-1 md:flex-none px-10 py-5 bg-slate-900 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-primary transition-all shadow-xl">Audit Dossier</button>
+                                        <button 
+                                            onClick={() => setSelectedSubmission(sub)}
+                                            className="flex-1 md:flex-none px-10 py-5 bg-slate-900 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-primary transition-all shadow-xl"
+                                        >
+                                            Audit Dossier
+                                        </button>
                                         <button
                                             onClick={() => handleStatusUpdate(sub.id, 'APPROVED')}
                                             className="p-5 bg-emerald-50 text-emerald-600 hover:bg-emerald-600 hover:text-white rounded-[1.5rem] transition-all border border-emerald-100 shadow-sm"
@@ -205,6 +217,13 @@ export default function ClinicalAttachmentsAdmin() {
                     })
                 )}
             </div>
+            {selectedSubmission && (
+                <SubmissionDetailsModal 
+                    submission={selectedSubmission} 
+                    onClose={() => setSelectedSubmission(null)} 
+                    onStatusUpdate={handleStatusUpdate} 
+                />
+            )}
         </div>
     );
 }

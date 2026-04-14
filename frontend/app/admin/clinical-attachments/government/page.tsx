@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { formsAPI } from '@/lib/api';
+import { exportToCSV } from '@/lib/export';
+import SubmissionDetailsModal from '@/components/admin/SubmissionDetailsModal';
 import {
     BuildingLibraryIcon,
     CheckCircleIcon,
@@ -15,6 +17,7 @@ export default function GovernmentAttachmentsAdmin() {
     const [submissions, setSubmissions] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [filter, setFilter] = useState('ALL');
+    const [selectedSubmission, setSelectedSubmission] = useState<any>(null);
 
     const fetchSubmissions = async () => {
         setLoading(true);
@@ -67,7 +70,10 @@ export default function GovernmentAttachmentsAdmin() {
                     <p className="text-gray-500 text-sm">Manage applications from government universities and colleges.</p>
                 </div>
                 <div className="flex items-center gap-2">
-                    <button className="px-4 py-2 bg-white border border-gray-100 rounded-xl text-xs font-bold text-gray-600 hover:bg-gray-50 flex items-center gap-2 transition-all">
+                    <button 
+                        onClick={() => exportToCSV(filtered, 'Gov_Attachments_Export')}
+                        className="px-4 py-2 bg-white border border-gray-100 rounded-xl text-xs font-bold text-gray-600 hover:bg-gray-50 flex items-center gap-2 transition-all"
+                    >
                         <ArrowDownTrayIcon className="w-4 h-4" />
                         <span>Export CSV</span>
                     </button>
@@ -128,7 +134,12 @@ export default function GovernmentAttachmentsAdmin() {
                                         </div>
                                     </div>
                                     <div className="flex items-center gap-2">
-                                        <button className="flex-1 md:flex-none px-6 py-3 bg-gray-50 hover:bg-blue-900 hover:text-white rounded-xl text-[10px] font-black uppercase tracking-widest transition-all">Details</button>
+                                        <button 
+                                            onClick={() => setSelectedSubmission(sub)}
+                                            className="flex-1 md:flex-none px-6 py-3 bg-gray-50 hover:bg-blue-900 hover:text-white rounded-xl text-[10px] font-black uppercase tracking-widest transition-all"
+                                        >
+                                            Details
+                                        </button>
                                         <button
                                             onClick={() => handleStatusUpdate(sub.id, 'APPROVED')}
                                             className="p-3 text-emerald-600 hover:bg-emerald-50 rounded-xl transition-all"
@@ -148,6 +159,13 @@ export default function GovernmentAttachmentsAdmin() {
                     })
                 )}
             </div>
+            {selectedSubmission && (
+                <SubmissionDetailsModal 
+                    submission={selectedSubmission} 
+                    onClose={() => setSelectedSubmission(null)} 
+                    onStatusUpdate={handleStatusUpdate} 
+                />
+            )}
         </div>
     );
 }

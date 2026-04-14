@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
-import { departmentsAPI } from '@/lib/api';
+import { departmentsAPI, resolveImageUrl } from '@/lib/api';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import ChatbotButton from '@/components/chatbot/ChatbotButton';
@@ -137,7 +137,7 @@ export default function DepartmentDetailPage() {
 
                     {dept.image && (
                         <>
-                            <img src={dept.image} alt={dept.name} className="absolute inset-0 w-full h-full object-cover opacity-30 scale-105" crossOrigin="anonymous" />
+                            <img src={resolveImageUrl(dept.image)} alt={dept.name} className="absolute inset-0 w-full h-full object-cover opacity-30 scale-105"  />
                             <div className="absolute inset-0 bg-gradient-to-t from-blue-950 via-blue-950/70 to-blue-950/20" />
                         </>
                     )}

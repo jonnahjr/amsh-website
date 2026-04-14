@@ -76,13 +76,13 @@ export default function ContactPage() {
                     </div>
                 </section>
 
-                <section className="py-24 bg-[#FDFCF9]">
+                <section className="py-24 bg-white">
                     <div className="container-custom">
                         <div className="max-w-7xl mx-auto flex flex-col-reverse lg:flex-row-reverse gap-12">
 
                             {/* Right: Contact Form */}
                             <div className="lg:w-2/3">
-                                <div className="bg-white rounded-[40px] shadow-xl shadow-blue-900/5 border border-gray-100 p-8 md:p-12 h-full relative overflow-hidden group">
+                                <div className="content-box-premium rounded-[40px] p-8 md:p-12 h-full relative overflow-hidden group">
                                     <div className="absolute top-0 right-0 w-64 h-64 bg-blue-50/50 rounded-full blur-[80px] -mr-32 -mt-32 transition-all duration-700 group-hover:bg-cyan-50/50 pointer-events-none"></div>
                                     <h2 className="text-3xl font-black text-blue-950 mb-2 relative z-10">Send a Message</h2>
                                     <p className="text-gray-500 mb-10 relative z-10 font-medium max-w-lg">
@@ -106,31 +106,31 @@ export default function ContactPage() {
                                         <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
                                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                                 <div className="space-y-2">
-                                                    <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Full Name *</label>
+                                                    <label className="block text-[10px] font-black text-gray-900 uppercase tracking-widest ml-1 whitespace-nowrap">Full Name <span className="text-red-500">*</span></label>
                                                     <div className="relative">
                                                         <UserIcon className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-300 pointer-events-none" />
-                                                        <input name="name" value={form.name} onChange={handleChange} required placeholder="John Doe" className="w-full pl-14 pr-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-blue-900 transition-all font-bold text-sm" />
+                                                        <input name="name" value={form.name} onChange={handleChange} required placeholder="Amanuel Bekele" className="w-full pl-14 pr-6 py-4 border-2 border-blue-950 rounded-2xl focus:ring-2 focus:ring-blue-900 transition-all font-bold text-sm" />
                                                     </div>
                                                 </div>
                                                 <div className="space-y-2">
-                                                    <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Email Address *</label>
+                                                    <label className="block text-[10px] font-black text-gray-900 uppercase tracking-widest ml-1 whitespace-nowrap">Email Address <span className="text-red-500">*</span></label>
                                                     <div className="relative">
                                                         <EnvelopeIcon className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-300 pointer-events-none" />
-                                                        <input name="email" type="email" value={form.email} onChange={handleChange} required placeholder="example@domain.com" className="w-full pl-14 pr-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-blue-900 transition-all font-bold text-sm" />
+                                                        <input name="email" type="email" value={form.email} onChange={handleChange} required placeholder="amanuel@gmail.com" className="w-full pl-14 pr-6 py-4 border-2 border-blue-950 rounded-2xl focus:ring-2 focus:ring-blue-900 transition-all font-bold text-sm" />
                                                     </div>
                                                 </div>
                                                 <div className="space-y-2">
-                                                    <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Phone Number</label>
+                                                    <label className="block text-[10px] font-black text-gray-900 uppercase tracking-widest ml-1 whitespace-nowrap">Phone Number</label>
                                                     <div className="relative">
                                                         <PhoneIcon className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-300 pointer-events-none" />
-                                                        <input name="phone" value={form.phone} onChange={handleChange} placeholder="+251 911 000 000" className="w-full pl-14 pr-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-blue-900 transition-all font-bold text-sm" />
+                                                        <input name="phone" value={form.phone} onChange={handleChange} placeholder="+251 911 223 344" className="w-full pl-14 pr-6 py-4 border-2 border-blue-950 rounded-2xl focus:ring-2 focus:ring-blue-900 transition-all font-bold text-sm" />
                                                     </div>
                                                 </div>
                                                 <div className="space-y-2">
-                                                    <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Subject *</label>
+                                                    <label className="block text-[10px] font-black text-gray-900 uppercase tracking-widest ml-1 whitespace-nowrap">Subject <span className="text-red-500">*</span></label>
                                                     <div className="relative">
                                                         <TagIcon className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-300 z-10 pointer-events-none" />
-                                                        <select name="subject" value={form.subject} onChange={handleChange} required className="w-full pl-14 pr-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-blue-900 transition-all font-bold text-sm appearance-none cursor-pointer">
+                                                        <select name="subject" value={form.subject} onChange={handleChange} required className="w-full pl-14 pr-6 py-4 border-2 border-blue-950 rounded-2xl focus:ring-2 focus:ring-blue-900 transition-all font-bold text-sm appearance-none cursor-pointer">
                                                             <option value="" disabled>Subject</option>
                                                             <option>General Inquiry</option>
                                                             <option>Appointment Request</option>
@@ -145,10 +145,10 @@ export default function ContactPage() {
                                                 </div>
                                             </div>
                                             <div className="space-y-2">
-                                                <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Message</label>
+                                                <label className="block text-[10px] font-black text-gray-900 uppercase tracking-widest ml-1 whitespace-nowrap">Message</label>
                                                 <div className="relative">
                                                     <ChatBubbleLeftEllipsisIcon className="absolute left-5 top-5 w-5 h-5 text-gray-300 pointer-events-none" />
-                                                    <textarea name="message" value={form.message} onChange={handleChange} required rows={5} placeholder="How can we help you?" className="w-full pl-14 pr-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-blue-900 transition-all font-bold text-sm resize-none"></textarea>
+                                                    <textarea name="message" value={form.message} onChange={handleChange} required rows={5} placeholder="How can we help you?" className="w-full pl-14 pr-6 py-4 border-2 border-blue-950 rounded-2xl focus:ring-2 focus:ring-blue-900 transition-all font-bold text-sm resize-none"></textarea>
                                                 </div>
                                             </div>
 
@@ -208,7 +208,7 @@ export default function ContactPage() {
                                                 </div>
                                                 <div>
                                                     <p className="text-[10px] text-blue-300 font-bold uppercase tracking-widest mb-1">Email Address</p>
-                                                    <a href="mailto:info@emsh.gov.et" className="font-black text-sm hover:text-cyan-400 transition-colors">info@emsh.gov.et</a>
+                                                    <a href="mailto:info@amsh.gov.et" className="font-black text-sm hover:text-cyan-400 transition-colors">info@amsh.gov.et</a>
                                                 </div>
                                             </div>
 
@@ -235,11 +235,7 @@ export default function ContactPage() {
                                             </div>
                                             <div className="flex justify-between items-center text-blue-400">
                                                 <span>Sat - Sun</span>
-                                                <span className="font-bold">Closed</span>
-                                            </div>
-                                            <div className="flex justify-between items-center border-t border-white/10 pt-3 mt-1">
-                                                <span>Emergency Services</span>
-                                                <span className="text-emerald-400 font-black">24/7 Available</span>
+                                                <span className="font-bold text-emerald-400">Emergencies Open 24/7</span>
                                             </div>
                                         </div>
                                     </div>

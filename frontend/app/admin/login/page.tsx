@@ -49,7 +49,7 @@ export default function AdminLoginPage() {
                                 <img src="/images/logo.png" alt="Logo" className="w-full h-full object-cover rounded-full" />
                             </div>
                             <div className="text-left">
-                                <h1 className="font-jakarta font-black text-2xl text-white tracking-tight leading-none">EMSH</h1>
+                                <h1 className="font-jakarta font-black text-2xl text-white tracking-tight leading-none">AMSH</h1>
                                 <p className="text-[10px] text-accent font-black uppercase tracking-[0.3em] mt-2 opacity-80 whitespace-nowrap">Command Portal</p>
                             </div>
                         </Link>
@@ -67,7 +67,7 @@ export default function AdminLoginPage() {
 
                         <form onSubmit={handleSubmit} className="space-y-6">
                             <div className="space-y-2">
-                                <label className="block text-[10px] font-black text-white/40 uppercase tracking-[0.2em] ml-1">System Identifier *</label>
+                                <label className="block text-[10px] font-black text-white/40 uppercase tracking-[0.2em] ml-1 whitespace-nowrap">System Identifier <span className="text-red-500">*</span></label>
                                 <div className="relative group">
                                     <div className="absolute left-5 top-1/2 -translate-y-1/2 text-white/20 group-focus-within:text-accent transition-colors">
                                         <EnvelopeIcon className="w-5 h-5" />
@@ -78,13 +78,13 @@ export default function AdminLoginPage() {
                                         onChange={(e) => setEmail(e.target.value)}
                                         required
                                         className="w-full pl-14 pr-6 py-4 bg-white/5 border border-white/10 rounded-2xl text-white placeholder-white/20 focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent/50 transition-all font-medium"
-                                        placeholder="staff@emsh.gov.et"
+                                        placeholder="staff@amsh.gov.et"
                                     />
                                 </div>
                             </div>
 
                             <div className="space-y-2">
-                                <label className="block text-[10px] font-black text-white/40 uppercase tracking-[0.2em] ml-1">Access Protocol *</label>
+                                <label className="block text-[10px] font-black text-white/40 uppercase tracking-[0.2em] ml-1 whitespace-nowrap">Access Protocol <span className="text-red-500">*</span></label>
                                 <div className="relative group">
                                     <div className="absolute left-5 top-1/2 -translate-y-1/2 text-white/20 group-focus-within:text-accent transition-colors">
                                         <LockClosedIcon className="w-5 h-5" />

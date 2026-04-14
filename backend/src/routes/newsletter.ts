@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express';
 import { authenticate, authorize, AuthRequest } from '../middleware/auth';
-import { prisma } from '../index';
+import { prisma } from '../core/db/prisma.service';
 import nodemailer from 'nodemailer';
 
 const router = Router();
@@ -15,17 +15,20 @@ const getTransporter = async () => {
     const config: Record<string, string> = {};
     settings.forEach(s => { config[s.key] = s.value; });
 
+    const host = config.smtp_host || process.env.SMTP_HOST || 'smtp.amsh.gov.et';
+    const port = parseInt(config.smtp_port || process.env.SMTP_PORT || '587');
+    const secure = (config.smtp_secure || process.env.SMTP_SECURE) === 'true';
+    const user = config.smtp_user || process.env.SMTP_USER || 'newsletter@amsh.gov.et';
+    const pass = config.smtp_pass || process.env.SMTP_PASS || 'Amsh@1234';
+
+    console.log(`📠 [SMTP] Configuring transporter for ${user}@${host}:${port} (Secure: ${secure})`);
+
     return nodemailer.createTransport({
-        host: config.smtp_host || process.env.SMTP_HOST,
-        port: parseInt(config.smtp_port || process.env.SMTP_PORT || '587'),
-        secure: (config.smtp_secure || process.env.SMTP_SECURE) === 'true',
-        auth: {
-            user: config.smtp_user || process.env.SMTP_USER,
-            pass: config.smtp_pass || process.env.SMTP_PASS
-        },
-        tls: {
-            rejectUnauthorized: false
-        }
+        host,
+        port,
+        secure,
+        auth: { user, pass },
+        tls: { rejectUnauthorized: false }
     });
 };
 
@@ -69,31 +72,35 @@ router.post('/broadcast', authenticate, authorize('ADMIN', 'SUPER_ADMIN'), async
 
         if (emails.length === 0) return res.status(400).json({ error: 'No active subscribers found.' });
 
-        // For large numbers of emails, you'd typically use a queue or bcc
-        // For simplicity, we'll send it as BCC to all
         const transporter = await getTransporter();
 
         const emailFromSetting = await prisma.siteSetting.findUnique({ where: { key: 'email_from' } });
-        const fromAddress = emailFromSetting?.value || process.env.EMAIL_FROM;
+        const fromAddress = emailFromSetting?.value || process.env.EMAIL_FROM || 'newsletter@amsh.gov.et';
 
-        console.log(`📡 [Newsletter] Sending transmission via ${fromAddress}...`);
+        console.log(`📡 [Newsletter] Broadcasting transmission from ${fromAddress} to ${emails.length} subscribers...`);
 
         await transporter.sendMail({
-            from: fromAddress,
+            from: `"AMSH Newsletter" <${fromAddress}>`,
             bcc: emails,
             subject: subject,
             html: `
-                <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 10px;">
-                    <div style="text-align: center; margin-bottom: 30px;">
-                        <h1 style="color: #1e3a8a; margin: 0;">EMSH Newsletter</h1>
-                        <p style="color: #64748b; font-size: 14px;">Emmanuel Mental Specialized Hospital</p>
+                <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; padding: 0; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; background-color: #ffffff;">
+                    <div style="background-color: #1e3a8a; padding: 40px 20px; text-align: center; color: #ffffff;">
+                        <h1 style="margin: 0; font-size: 24px; letter-spacing: 1px; text-transform: uppercase;">AMSH Institutional Bulletin</h1>
+                        <p style="margin: 10px 0 0 0; font-size: 14px; opacity: 0.9;">Amanuel Mental Specialized Hospital</p>
                     </div>
-                    <div style="color: #334155; line-height: 1.6;">
-                        ${content.replace(/\n/g, '<br/>')}
+                    <div style="padding: 40px 30px; color: #334155; line-height: 1.8; font-size: 16px;">
+                        <div style="margin-bottom: 30px;">
+                            ${content.replace(/\n/g, '<br/>')}
+                        </div>
+                        <div style="background-color: #f8fafc; padding: 20px; border-radius: 8px; font-size: 14px; color: #64748b;">
+                            <strong>Note:</strong> This is an official institutional transmission from Amanuel Mental Specialized Hospital.
+                        </div>
                     </div>
-                    <div style="margin-top: 40px; padding-top: 20px; border-t: 1px solid #eee; font-size: 12px; color: #94a3b8; text-align: center;">
-                        <p>&copy; ${new Date().getFullYear()} Emmanuel Mental Specialized Hospital. All rights reserved.</p>
-                        <p>You are receiving this because you subscribed to our newsletter.</p>
+                    <div style="background-color: #f1f5f9; padding: 30px; text-align: center; font-size: 13px; color: #94a3b8; border-top: 1px solid #e2e8f0;">
+                        <p style="margin: 0 0 10px 0;">&copy; ${new Date().getFullYear()} Amanuel Mental Specialized Hospital. Addis Ababa, Ethiopia.</p>
+                        <p style="margin: 0;">You are receiving this communication based on your subscription to our health bulletins. 
+                        To unsubscribe, please contact info@amsh.gov.et</p>
                     </div>
                 </div>
             `,

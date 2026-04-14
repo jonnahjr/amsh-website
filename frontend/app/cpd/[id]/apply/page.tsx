@@ -35,6 +35,9 @@ export default function CPDApplyPage() {
         idDoc: 'idle',
         paymentDoc: 'idle'
     });
+    
+    // Actual file storage
+    const [files, setFiles] = useState<any>({});
 
     useEffect(() => {
         if (id) {
@@ -57,6 +60,7 @@ export default function CPDApplyPage() {
         yearsOfExperience: '',
         region: '',
         category: 'PERSONAL',
+        educationLevel: '',
         agreement: false,
     });
 
@@ -70,8 +74,14 @@ export default function CPDApplyPage() {
         }));
     };
 
-    const handleFileUpload = (docId: keyof typeof uploadStatus) => {
+    const handleFileUpload = (docId: keyof typeof uploadStatus, e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
         setUploadStatus(prev => ({ ...prev, [docId]: 'uploading' }));
+        // Store physical file
+        setFiles((prev: any) => ({ ...prev, [docId]: file }));
+        
         setTimeout(() => {
             setUploadStatus(prev => ({ ...prev, [docId]: 'success' }));
         }, 1500);
@@ -79,20 +89,37 @@ export default function CPDApplyPage() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        // Validate step progression
+        if (currentStep === 2) {
+            if (uploadStatus.licenseDoc !== 'success' || uploadStatus.idDoc !== 'success' || uploadStatus.paymentDoc !== 'success') {
+                alert('Please upload all required documents (Professional License, National ID, and Payment Receipt) before proceeding to the next step.');
+                return;
+            }
+        }
+
+        if (currentStep < 3) {
+            setCurrentStep(prev => prev + 1);
+            return;
+        }
+
         if (!selectedCourse) return;
 
         setIsSubmitting(true);
         try {
-            const payload = {
-                firstName: formData.fullName.split(' ')[0],
-                lastName: formData.fullName.split(' ').slice(1).join(' ') || ' ',
-                email: formData.email,
-                phone: formData.phoneNumber,
-                profession: formData.professionTitle,
-                workplace: formData.placeOfWork,
-                licenseNo: formData.licenseNumber,
-                category: formData.category,
-            };
+            const payload = new FormData();
+            payload.append('firstName', formData.fullName.split(' ')[0]);
+            payload.append('lastName', formData.fullName.split(' ').slice(1).join(' ') || ' ');
+            payload.append('email', formData.email);
+            payload.append('phone', formData.phoneNumber);
+            payload.append('profession', formData.professionTitle);
+            payload.append('workplace', formData.placeOfWork);
+            payload.append('licenseNo', formData.licenseNumber);
+            payload.append('category', formData.category);
+
+            if (files.licenseDoc) payload.append('licenseDoc', files.licenseDoc);
+            if (files.idDoc) payload.append('idDoc', files.idDoc);
+            if (files.paymentDoc) payload.append('paymentDoc', files.paymentDoc);
 
             await cpdAPI.register(selectedCourse.id, payload);
             setIsSubmitted(true);
@@ -114,14 +141,7 @@ export default function CPDApplyPage() {
             {/* Header Area */}
             <div className="pt-32 pb-12 bg-blue-950 text-white">
                 <div className="container-custom">
-                    <Link href="/cpd" className="inline-flex items-center gap-2 text-blue-300 hover:text-white transition-colors text-sm font-bold mb-8">
-                        <ChevronLeftIcon className="w-4 h-4" /> Back to Courses
-                    </Link>
-
                     <div className="max-w-4xl">
-                        <span className="inline-block px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-400/20 text-cyan-400 text-[10px] font-black uppercase tracking-[0.2em] mb-4">
-                            Application Form
-                        </span>
                         <h1 className="text-4xl md:text-5xl font-black mb-4 tracking-tighter">
                             Apply for {selectedCourse.title}
                         </h1>
@@ -161,7 +181,7 @@ export default function CPDApplyPage() {
                         </div>
                     )}
 
-                    <div className="bg-white rounded-[40px] shadow-xl shadow-blue-900/5 border border-gray-100 p-8 md:p-12 lg:p-16">
+                    <div className="form-card-bg rounded-[40px] shadow-xl shadow-blue-900/5 border border-gray-200 p-8 md:p-12 lg:p-16">
 
                         {!isSubmitted ? (
                             <form onSubmit={handleSubmit} className="space-y-10">
@@ -182,63 +202,101 @@ export default function CPDApplyPage() {
 
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                             <div className="space-y-4">
-                                                <label className="block text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Full Name *</label>
+                                                <label className="block text-xs font-black text-gray-900 uppercase tracking-widest ml-1 whitespace-nowrap">Full Name <span className="text-red-500">*</span></label>
                                                 <div className="relative">
                                                     <UserIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-300" />
-                                                    <input required type="text" name="fullName" value={formData.fullName} onChange={handleInputChange} placeholder="As per your license" className="w-full pl-12 pr-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-blue-900 transition-all font-bold text-sm" />
+                                                    <input required type="text" name="fullName" value={formData.fullName} onChange={handleInputChange} placeholder="Selamawit Kebede" className="w-full pl-12 pr-6 py-4 border-2 border-blue-950 rounded-2xl focus:ring-2 focus:ring-blue-900 transition-all font-bold text-sm" />
                                                 </div>
                                             </div>
                                             <div className="space-y-4">
-                                                <label className="block text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Phone Number *</label>
+                                                <label className="block text-xs font-black text-gray-900 uppercase tracking-widest ml-1 whitespace-nowrap">Phone Number <span className="text-red-500">*</span></label>
                                                 <div className="relative">
                                                     <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300 font-black">+251</span>
-                                                    <input required type="tel" name="phoneNumber" value={formData.phoneNumber} onChange={handleInputChange} placeholder="911 000 000" className="w-full pl-16 pr-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-blue-900 transition-all font-bold text-sm" />
+                                                    <input required type="tel" name="phoneNumber" value={formData.phoneNumber} onChange={handleInputChange} placeholder="911 223 344" className="w-full pl-16 pr-6 py-4 border-2 border-blue-950 rounded-2xl focus:ring-2 focus:ring-blue-900 transition-all font-bold text-sm" />
                                                 </div>
                                             </div>
                                             <div className="space-y-4 md:col-span-2">
-                                                <label className="block text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Email Address *</label>
-                                                <input required type="email" name="email" value={formData.email} onChange={handleInputChange} placeholder="example@health.gov.et" className="w-full px-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-blue-900 transition-all font-bold text-sm" />
+                                                <label className="block text-xs font-black text-gray-900 uppercase tracking-widest ml-1 whitespace-nowrap">Email Address <span className="text-red-500">*</span></label>
+                                                <input required type="email" name="email" value={formData.email} onChange={handleInputChange} placeholder="selam@gmail.com" className="w-full px-6 py-4 border-2 border-blue-950 rounded-2xl focus:ring-2 focus:ring-blue-900 transition-all font-bold text-sm" />
                                             </div>
 
                                             <div className="space-y-4">
-                                                <label className="block text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Profession Title *</label>
-                                                <select required name="professionTitle" value={formData.professionTitle} onChange={handleInputChange} className="w-full px-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-blue-900 transition-all font-bold text-sm">
+                                                <label className="block text-xs font-black text-gray-900 uppercase tracking-widest ml-1 whitespace-nowrap">Profession Title <span className="text-red-500">*</span></label>
+                                                <select required name="professionTitle" value={formData.professionTitle} onChange={handleInputChange} className="w-full px-6 py-4 border-2 border-blue-950 rounded-2xl focus:ring-2 focus:ring-blue-900 transition-all font-bold text-sm">
                                                     <option value="">Select Profession</option>
-                                                    <option>Psychiatrist</option>
-                                                    <option>Mental Health Nurse</option>
-                                                    <option>Clinical Psychologist</option>
-                                                    <option>Health Officer</option>
-                                                    <option>Other Licensed Professional</option>
+                                                    <optgroup label="Medical Doctors">
+                                                        <option>Psychiatrist</option>
+                                                        <option>Neurologist</option>
+                                                        <option>General Practitioner (MD)</option>
+                                                        <option>Emergency Medicine Specialist</option>
+                                                        <option>Other Medical Specialist</option>
+                                                    </optgroup>
+                                                    <optgroup label="Nursing Professionals">
+                                                        <option>Mental Health Nurse</option>
+                                                        <option>Clinical Nurse (BSc)</option>
+                                                        <option>Emergency & Critical Care Nurse</option>
+                                                        <option>Anesthetic Nurse</option>
+                                                        <option>Midwife</option>
+                                                        <option>Neonatal Nurse</option>
+                                                    </optgroup>
+                                                    <optgroup label="Psychology & Counseling">
+                                                        <option>Clinical Psychologist</option>
+                                                        <option>Counseling Psychologist</option>
+                                                        <option>Psychosocial Counselor</option>
+                                                        <option>Social Worker (MSc/BSc)</option>
+                                                    </optgroup>
+                                                    <optgroup label="Allied Health Professionals">
+                                                        <option>Health Officer</option>
+                                                        <option>Pharmacist</option>
+                                                        <option>Laboratory Technologist</option>
+                                                        <option>Radiologic Technologist</option>
+                                                        <option>Physiotherapist</option>
+                                                        <option>Occupational Therapist</option>
+                                                        <option>Anesthetist (BSc)</option>
+                                                        <option>Speech Therapist</option>
+                                                    </optgroup>
+                                                    <option>Other Licensed Healthcare Professional</option>
                                                 </select>
                                             </div>
                                             <div className="space-y-4">
-                                                <label className="block text-xs font-black text-gray-400 uppercase tracking-widest ml-1">License Number *</label>
+                                                <label className="block text-xs font-black text-gray-900 uppercase tracking-widest ml-1 whitespace-nowrap">License Number <span className="text-red-500">*</span></label>
                                                 <div className="relative">
                                                     <IdentificationIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-300" />
-                                                    <input required type="text" name="licenseNumber" value={formData.licenseNumber} onChange={handleInputChange} placeholder="MOH/RN/..." className="w-full pl-12 pr-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-blue-900 transition-all font-bold text-sm" />
+                                                    <input required type="text" name="licenseNumber" value={formData.licenseNumber} onChange={handleInputChange} placeholder="MOH/RN/..." className="w-full pl-12 pr-6 py-4 border-2 border-blue-950 rounded-2xl focus:ring-2 focus:ring-blue-900 transition-all font-bold text-sm" />
                                                 </div>
                                             </div>
                                             <div className="space-y-4">
-                                                <label className="block text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Place of Work *</label>
+                                                <label className="block text-xs font-black text-gray-900 uppercase tracking-widest ml-1 whitespace-nowrap">Place of Work <span className="text-red-500">*</span></label>
                                                 <div className="relative">
                                                     <BuildingOfficeIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-300" />
-                                                    <input required type="text" name="placeOfWork" value={formData.placeOfWork} onChange={handleInputChange} placeholder="Hospital / Clinical Name" className="w-full pl-12 pr-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-blue-900 transition-all font-bold text-sm" />
+                                                    <input required type="text" name="placeOfWork" value={formData.placeOfWork} onChange={handleInputChange} placeholder="Amanuel Hospital" className="w-full pl-12 pr-6 py-4 border-2 border-blue-950 rounded-2xl focus:ring-2 focus:ring-blue-900 transition-all font-bold text-sm" />
                                                 </div>
                                             </div>
                                             <div className="space-y-4">
-                                                <label className="block text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Years of Experience *</label>
-                                                <input required type="number" name="yearsOfExperience" value={formData.yearsOfExperience} onChange={handleInputChange} placeholder="Number of years" className="w-full px-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-blue-900 transition-all font-bold text-sm" />
+                                                <label className="block text-xs font-black text-gray-900 uppercase tracking-widest ml-1 whitespace-nowrap">Years of Experience <span className="text-red-500">*</span></label>
+                                                <input required type="number" name="yearsOfExperience" value={formData.yearsOfExperience} onChange={handleInputChange} placeholder="Number of years" className="w-full px-6 py-4 border-2 border-blue-950 rounded-2xl focus:ring-2 focus:ring-blue-900 transition-all font-bold text-sm" />
                                             </div>
                                             <div className="space-y-4">
-                                                <label className="block text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Region *</label>
-                                                <input required type="text" name="region" value={formData.region} onChange={handleInputChange} placeholder="Current City / Region" className="w-full px-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-blue-900 transition-all font-bold text-sm" />
+                                                <label className="block text-xs font-black text-gray-900 uppercase tracking-widest ml-1 whitespace-nowrap">Region <span className="text-red-500">*</span></label>
+                                                <input required type="text" name="region" value={formData.region} onChange={handleInputChange} placeholder="Addis Ababa" className="w-full px-6 py-4 border-2 border-blue-950 rounded-2xl focus:ring-2 focus:ring-blue-900 transition-all font-bold text-sm" />
                                             </div>
                                             <div className="space-y-4">
-                                                <label className="block text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Registration Type *</label>
-                                                <select required name="category" value={formData.category} onChange={handleInputChange} className="w-full px-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-blue-900 transition-all font-bold text-sm">
+                                                <label className="block text-xs font-black text-gray-900 uppercase tracking-widest ml-1 whitespace-nowrap">Registration Type <span className="text-red-500">*</span></label>
+                                                <select required name="category" value={formData.category} onChange={handleInputChange} className="w-full px-6 py-4 border-2 border-blue-950 rounded-2xl focus:ring-2 focus:ring-blue-900 transition-all font-bold text-sm">
+                                                    <option value="PERSONAL">Independent / Personal</option>
                                                     <option value="GOVERNMENT">Public Institution (Government)</option>
                                                     <option value="PRIVATE">Private College / Hospital</option>
-                                                    <option value="PERSONAL">Independent / Personal</option>
+                                                </select>
+                                            </div>
+                                            <div className="space-y-4">
+                                                <label className="block text-xs font-black text-gray-900 uppercase tracking-widest ml-1 whitespace-nowrap">Education Level <span className="text-red-500">*</span></label>
+                                                <select required name="educationLevel" value={formData.educationLevel} onChange={handleInputChange} className="w-full px-6 py-4 border-2 border-blue-950 rounded-2xl focus:ring-2 focus:ring-blue-900 transition-all font-bold text-sm">
+                                                    <option value="">Select Education Level</option>
+                                                    <option>Diploma</option>
+                                                    <option>BSc / First Degree</option>
+                                                    <option>MSc / Second Degree</option>
+                                                    <option>Doctorate / Specialist / MD</option>
+                                                    <option>Sub-specialist / PhD</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -270,7 +328,7 @@ export default function CPDApplyPage() {
                                                         <p className="font-bold text-gray-900 text-sm">{doc.label}</p>
                                                         <p className="text-xs text-gray-400 font-medium">{doc.desc}</p>
                                                     </div>
-                                                    <input type="file" className="hidden" onChange={() => handleFileUpload(doc.id as any)} />
+                                                    <input type="file" className="hidden" onChange={(e) => handleFileUpload(doc.id as any, e)} />
                                                     {uploadStatus[doc.id as keyof typeof uploadStatus] === 'success' && <span className="text-[10px] font-black text-emerald-600 uppercase tracking-widest bg-emerald-100 px-3 py-1 rounded-full">Uploaded</span>}
                                                 </label>
                                             ))}
@@ -332,8 +390,7 @@ export default function CPDApplyPage() {
                                     )}
                                     {currentStep < 3 ? (
                                         <button
-                                            type="button"
-                                            onClick={() => setCurrentStep(prev => prev + 1)}
+                                            type="submit"
                                             className="flex-1 bg-blue-950 text-white hover:bg-blue-800 py-4 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all shadow-xl shadow-blue-900/20 hover:-translate-y-1 cursor-pointer"
                                         >
                                             Next Step

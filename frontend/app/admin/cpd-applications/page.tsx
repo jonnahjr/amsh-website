@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { cpdAPI } from '@/lib/api';
+import { exportToCSV } from '@/lib/export';
 import {
     AcademicCapIcon,
     CheckCircleIcon,
@@ -17,13 +18,18 @@ import {
     MagnifyingGlassIcon,
     DocumentMagnifyingGlassIcon,
     ExclamationCircleIcon,
+    XMarkIcon,
+    UserIcon,
+    BuildingOfficeIcon,
 } from '@heroicons/react/24/outline';
+import CPDDetailsModal from '@/components/admin/CPDDetailsModal';
 
 export default function CpdApplicationsAdmin() {
     const [registrations, setRegistrations] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [filter, setFilter] = useState('ALL');
     const [search, setSearch] = useState('');
+    const [selectedProfile, setSelectedProfile] = useState<any>(null);
 
     const fetchRegistrations = async () => {
         setLoading(true);
@@ -86,7 +92,10 @@ export default function CpdApplicationsAdmin() {
                 </div>
 
                 <div className="flex items-center gap-4 relative z-10">
-                    <button className="flex items-center gap-4 px-10 py-5 bg-white border border-slate-200 text-slate-900 rounded-[1.5rem] text-[11px] font-black uppercase tracking-[0.2em] hover:bg-slate-50 transition-all shadow-sm hover:-translate-y-1 active:translate-y-0">
+                    <button 
+                        onClick={() => exportToCSV(filtered, 'CPD_Applications_Matrix')}
+                        className="flex items-center gap-4 px-10 py-5 bg-white border border-slate-200 text-slate-900 rounded-[1.5rem] text-[11px] font-black uppercase tracking-[0.2em] hover:bg-slate-50 transition-all shadow-sm hover:-translate-y-1 active:translate-y-0"
+                    >
                         <ArrowDownTrayIcon className="w-5 h-5" />
                         <span>Export CSV Matrix</span>
                     </button>
@@ -185,7 +194,7 @@ export default function CpdApplicationsAdmin() {
                                     </div>
                                 </div>
                                 <div className="flex items-center gap-3 relative z-10 w-full md:w-auto mt-6 md:mt-0">
-                                    <button className="flex-1 md:flex-none px-10 py-5 bg-slate-900 text-white hover:bg-primary rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all shadow-xl hover:-translate-y-1">Inspect Profile</button>
+                                    <button onClick={() => setSelectedProfile(reg)} className="flex-1 md:flex-none px-10 py-5 bg-slate-900 text-white hover:bg-primary rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all shadow-xl hover:-translate-y-1">Inspect Profile</button>
                                     <button
                                         onClick={() => handleStatusUpdate(reg.id, 'APPROVED')}
                                         className="p-5 bg-emerald-50 text-emerald-600 hover:bg-emerald-600 hover:text-white rounded-[1.5rem] transition-all border border-emerald-100 shadow-sm hover:shadow-emerald-500/30"
@@ -221,6 +230,14 @@ export default function CpdApplicationsAdmin() {
                     </div>
                 </div>
             </div>
+            {/* Inspect Profile Modal */}
+            {selectedProfile && (
+                <CPDDetailsModal 
+                    profile={selectedProfile} 
+                    onClose={() => setSelectedProfile(null)} 
+                    onStatusUpdate={handleStatusUpdate} 
+                />
+            )}
         </div>
     );
 }

@@ -1,89 +1,121 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { servicesAPI } from '@/lib/api';
+import { servicesAPI, resolveImageUrl, sanitizeIcon } from '@/lib/api';
 import { ArrowRightIcon } from '@heroicons/react/24/outline';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
+
+
 
 export default function ServicesSection() {
-    const [services, setServices] = useState<any[]>([]);
+    const [categories, setCategories] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        servicesAPI.getAll().then(res => {
-            setServices(res.data.services || []);
-        }).catch(err => {
-            console.error('Failed to fetch services:', err);
-        }).finally(() => setLoading(false));
+        const fetchServices = async () => {
+            try {
+                // Focus exclusively on clinical individual services as requested
+                const servRes = await servicesAPI.getAll();
+                setCategories(servRes.data.services || []);
+            } catch (err) {
+                console.error('Failed to resolve clinical services synchronization:', err);
+            } finally {
+                setLoading(false);
+            }
+        };
+        
+        fetchServices();
     }, []);
 
-    // Fallback static data if loading or empty
-    const displayServices = services.length > 0 ? services.slice(0, 4) : [
-        { icon: '🚑', name: 'Emergency Service', slug: 'emergency-service', description: '24/7 rapid psychiatric intervention and crisis stabilization.' },
-        { icon: '🏥', name: 'Outpatient Services', slug: 'outpatient-services', description: 'Expert psychiatric consultations and follow-up care.' },
-        { icon: '🛏️', name: 'Inpatient Services', slug: 'inpatient-services', description: 'Intensive psychiatric care in a safe, restorative environment.' },
-        { icon: '🧠', name: 'Psychological Services', slug: 'psychological-services', description: 'Psychological assessment and evidence-based therapies.' },
-    ];
+    // Exclusive High-Authority Filter: Only show if FEATURED and HAS PHOTO (no placeholders)
+    const visibleServices = categories.filter(s => {
+        const isFeatured = s.show_on_home === true || s.show_on_home === 1 || s.showOnHome === true || s.is_featured === 1;
+        const hasPhoto = !!s.image;
+        return isFeatured && hasPhoto;
+    });
+
+    if (loading) {
+        return (
+            <div className="py-24 animate-pulse container-custom">
+                <div className="h-4 w-32 bg-gray-200 rounded-full mx-auto mb-8" />
+                <div className="h-12 w-96 bg-gray-200 rounded-2xl mx-auto mb-20" />
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+                    {[1, 2, 3, 4].map(i => <div key={i} className="h-80 bg-gray-100 rounded-[40px]" />)}
+                </div>
+            </div>
+        );
+    }
 
     return (
-        <section className="section bg-[#F8FAFB] overflow-hidden py-24">
-            <div className="container-custom">
+        <section className="relative py-24 bg-white overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-full opacity-[0.03] bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] pointer-events-none" />
+            
+            <div className="container-custom relative z-10">
                 <div className="text-center max-w-5xl mx-auto mb-20">
-                    <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-blue-900 text-white text-[10px] font-black uppercase tracking-[0.3em] rounded-full mb-8 shadow-lg shadow-blue-900/20">
+                    <div className="inline-flex items-center gap-2 px-5 py-2 bg-blue-900 text-white text-[10px] font-black uppercase tracking-[0.3em] rounded-full mb-8 shadow-lg shadow-blue-900/20">
                         <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
-                        Our Medical Expertise
+                        Trusted Medical Partners
                     </div>
-                    <h2 className="text-4xl md:text-6xl font-black text-blue-950 tracking-tighter leading-tight mb-8">
+                    <h2 className="text-5xl md:text-6xl font-black text-blue-950 tracking-tighter leading-tight mb-8">
                         Clinical Solutions for <br />
-                        <span className="text-blue-900 italic font-medium ml-2">Every Patient</span>
+                        <span className="text-blue-900 italic font-medium">Every Patient</span>
                     </h2>
-
                     <p className="text-blue-900/60 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed font-medium">
                         Comprehensive, multidisciplinary care delivered by East Africa's leading psychiatric specialists.
                     </p>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                    {displayServices.map((service, i) => (
-                        <div
-                            key={service.slug}
-                            className="group relative bg-white rounded-[48px] p-8 text-blue-950 transition-all duration-700 hover:-translate-y-3 hover:shadow-[0_40px_80px_rgba(0,0,0,0.1)] flex flex-col h-full border border-gray-100 overflow-hidden shadow-sm"
-                        >
-                            {/* Card Header with Image/Icon */}
-                            <div className="relative h-40 w-full mb-8 rounded-[32px] overflow-hidden bg-blue-50">
-                                {service.image ? (
-                                    <img src={service.image} alt={service.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" crossOrigin="anonymous" />
+                {visibleServices.length > 0 && (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-7">
+                        {visibleServices.map((s, i) => (
+                        <div key={i} className="group relative bg-blue-950 rounded-[40px] p-4 flex flex-col h-full hover:-translate-y-3 transition-all duration-700 shadow-3xl overflow-hidden border border-white/5">
+                            {/* Decorative Corner Aperture */}
+                            <div className="absolute top-0 right-0 w-20 h-20 bg-white/5 rounded-bl-[50px] translate-x-3 -translate-y-3 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+
+                            {/* Category Photo Aperture */}
+                            <div className="relative h-48 w-full rounded-[32px] overflow-hidden bg-white/5 group-hover:p-1 transition-all">
+                                {s.image ? (
+                                    <img 
+                                        src={resolveImageUrl(s.image)} 
+                                        alt={s.name} 
+                                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 group-hover:rounded-[30px]"
+                                        
+                                    />
                                 ) : (
-                                    <div className="w-full h-full flex items-center justify-center text-6xl opacity-50">
-                                        {service.icon || '💉'}
+                                    <div className="w-full h-full flex items-center justify-center text-white/10 font-black uppercase tracking-[0.2em] text-[10px] border-2 border-dashed border-white/10 rounded-[30px]">
+                                        Service Photo
                                     </div>
                                 )}
-                                <div className="absolute top-4 left-4 w-12 h-12 rounded-2xl bg-white/90 backdrop-blur-md flex items-center justify-center text-2xl shadow-lg border border-white/50">
-                                    {service.icon || '💉'}
-                                </div>
+                                <div className="absolute inset-0 bg-gradient-to-t from-blue-950/40 via-transparent to-transparent opacity-60 group-hover:opacity-20 transition-opacity" />
+                                
+                                {/* Floating Icon Badge */}
+                                {s.icon && (
+                                    <div className="absolute top-4 left-4 bg-white/10 backdrop-blur-md border border-white/20 w-10 h-10 rounded-2xl flex items-center justify-center text-xl shadow-2xl z-20 group-hover:scale-110 transition-transform">
+                                        {sanitizeIcon(s.icon)}
+                                    </div>
+                                )}
                             </div>
 
-                            <div className="flex flex-col flex-1">
-                                <h3 className="font-black text-xl mb-4 leading-tight uppercase tracking-tight group-hover:text-blue-900 transition-colors">
-                                    {service.name}
-                                </h3>
-
-                                <p className="text-gray-400 text-sm leading-relaxed font-medium mb-10 flex-1 line-clamp-3">
-                                    {service.description}
-                                </p>
-
-                                <div className="pt-8 border-t border-gray-50 mt-auto">
-                                    <Link
-                                        href={`/services/${service.slug}`}
-                                        className="flex items-center justify-center gap-3 w-full py-5 bg-blue-950 text-white rounded-2xl font-black uppercase tracking-widest text-[9px] hover:bg-blue-900 hover:shadow-xl transition-all shadow-lg active:scale-95"
-                                    >
-                                        Clinical Details <ArrowRightIcon className="w-3 h-3" />
-                                    </Link>
+                            <div className="px-3 pt-6 pb-2 flex flex-col flex-1">
+                                <div className="flex items-center gap-2 mb-2">
+                                    <h3 className="text-lg font-black text-white leading-tight tracking-tight uppercase group-hover:text-cyan-400 transition-colors">
+                                        {s.name}
+                                    </h3>
                                 </div>
+                                <p className="text-[12px] text-blue-100/50 font-medium leading-relaxed mb-6 flex-1 line-clamp-2 italic">
+                                    "{s.description}"
+                                </p>
+                                <Link 
+                                    href={`/services/${s.slug}`} 
+                                    className="mt-auto py-4 bg-white/5 hover:bg-white hover:text-blue-950 border border-white/10 rounded-xl flex items-center justify-center gap-3 text-[10px] font-black uppercase tracking-widest text-white transition-all shadow-xl active:scale-95 group/btn"
+                                >
+                                    View Services <ArrowRightIcon className="w-3 h-3 group-hover/btn:translate-x-1 transition-transform" />
+                                </Link>
                             </div>
                         </div>
                     ))}
                 </div>
+                )}
 
                 <div className="mt-20 text-center">
                     <Link href="/services" className="inline-flex items-center gap-4 group text-blue-950 font-black uppercase tracking-[0.3em] text-[11px] hover:text-blue-700 transition-all">

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { settingsAPI, facebookAPI, mediaAPI } from '@/lib/api';
+import { settingsAPI, facebookAPI, mediaAPI, departmentsAPI, servicesAPI, resolveImageUrl } from '@/lib/api';
 import {
     DevicePhoneMobileIcon,
     EnvelopeIcon,
@@ -16,6 +16,8 @@ import {
     EyeIcon,
     ArrowPathIcon,
     CheckBadgeIcon,
+    ChevronDownIcon,
+    ChevronUpIcon,
     ExclamationTriangleIcon,
     LockClosedIcon,
     PaperAirplaneIcon,
@@ -23,10 +25,15 @@ import {
     CloudArrowUpIcon,
     UserGroupIcon,
     UsersIcon,
+    HomeIcon,
+    CircleStackIcon,
+    BriefcaseIcon,
+    SparklesIcon,
 } from '@heroicons/react/24/outline';
 
 const tabs = [
     { id: 'general', label: 'Identity Matrix', icon: GlobeAltIcon, desc: 'Core hospital nomenclature and SEO' },
+    { id: 'homepage', label: 'Homepage Layout', icon: HomeIcon, desc: 'Featured departments and clinical units' },
     { id: 'branding', label: 'Visual Branding', icon: PaintBrushIcon, desc: 'Logos, favicons and institutional aesthetics' },
     { id: 'contact', label: 'Tactical Presence', icon: MapPinIcon, desc: 'Global contact points and location data' },
     { id: 'social', label: 'Social Spectrum', icon: ShareIcon, desc: 'Connectivity to institutional social feeds' },
@@ -47,22 +54,41 @@ export default function AdminSettingsPage() {
     const logoInputRef = useRef<HTMLInputElement>(null);
     const faviconInputRef = useRef<HTMLInputElement>(null);
 
+    const [departments, setDepartments] = useState<any[]>([]);
+    const [services, setServices] = useState<any[]>([]);
+    const [fetchingFeatured, setFetchingFeatured] = useState(false);
+
     useEffect(() => {
-        settingsAPI.getAll().then(res => {
-            setSettings(res.data.settings || {});
+        setLoading(true);
+        Promise.all([
+            settingsAPI.getAll(),
+            departmentsAPI.getAll(),
+            servicesAPI.getAll()
+        ]).then(([settingsRes, deptsRes, servicesRes]) => {
+            setSettings(settingsRes.data.settings || {});
+            setDepartments(deptsRes.data.departments || []);
+            setServices(deptsRes.data.services || servicesRes.data.services || []);
         }).catch(() => {
-            // Fallback for development if API is unreachable
-            setSettings({
-                site_name: 'Amanuel Mental Specialized Hospital',
-                site_description: "Specialized public mental health hospital established in 1930 E.C. providing comprehensive compassionate psychiatric care for over 80 years.",
-                contact_email: 'info@amsh.gov.et',
-                contact_phone: '+251-111-868-53-85',
-                emergency_phone: '991',
-                address: 'Addis Ababa, Ethiopia',
-                maintenance_mode: 'false',
-            });
+            // Fallback for development...
         }).finally(() => setLoading(false));
     }, []);
+
+    const toggleFeatured = async (type: 'dept' | 'service', id: string, currentStatus: boolean) => {
+        try {
+            if (type === 'dept') {
+                await departmentsAPI.update(id, { showOnHome: !currentStatus });
+                setDepartments(departments.map(d => d.id === id ? { ...d, showOnHome: !currentStatus } : d));
+            } else {
+                await servicesAPI.update(id, { showOnHome: !currentStatus });
+                setServices(services.map(s => s.id === id ? { ...s, showOnHome: !currentStatus } : s));
+            }
+            setMessage({ type: 'success', text: 'Homepage visibility updated.' });
+        } catch (err) {
+            setMessage({ type: 'error', text: 'Failed to update visibility.' });
+        } finally {
+            setTimeout(() => setMessage({ type: '', text: '' }), 3000);
+        }
+    };
 
     const handleChange = (key: string, value: string) => {
         setSettings(prev => ({ ...prev, [key]: value }));
@@ -168,6 +194,7 @@ export default function AdminSettingsPage() {
                 <div className="flex-1 bg-white rounded-[4rem] border border-slate-200/60 shadow-sm p-12 lg:p-16 space-y-12">
                     {activeTab === 'general' && (
                         <div className="space-y-10 animate-in fade-in slide-in-from-right-10 duration-500">
+
                             <div className="flex items-center gap-4 border-b border-slate-50 pb-8">
                                 <div className="w-3 h-10 bg-primary rounded-full" />
                                 <h3 className="text-2xl font-jakarta font-black text-slate-900 tracking-tight">Institutional Identity Matrix</h3>
@@ -247,6 +274,91 @@ export default function AdminSettingsPage() {
                                         value={settings.site_alert_text || ''}
                                         onChange={(e) => handleChange('site_alert_text', e.target.value)}
                                     />
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {activeTab === 'homepage' && (
+                        <div className="space-y-12 animate-in fade-in slide-in-from-right-10 duration-500">
+                            <div className="flex items-center gap-4 border-b border-slate-50 pb-8">
+                                <div className="w-3 h-10 bg-primary rounded-full" />
+                                <h3 className="text-2xl font-jakarta font-black text-slate-900 tracking-tight">Homepage Display Selection</h3>
+                            </div>
+
+                            <div className="space-y-10">
+                                {/* Departments Section */}
+                                <div className="space-y-6">
+                                    <div className="flex items-center gap-4 mb-2">
+                                        <CircleStackIcon className="w-5 h-5 text-primary" />
+                                        <h4 className="text-[11px] font-black uppercase tracking-[0.3em] text-slate-400">Featured Departments</h4>
+                                    </div>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        {departments.map((dept) => (
+                                            <div key={dept.id} className={`p-6 rounded-[2rem] border transition-all flex items-center justify-between group ${dept.showOnHome ? 'bg-primary/5 border-primary/20 ring-4 ring-primary/5' : 'bg-slate-50 border-slate-100'}`}>
+                                                <div className="flex items-center gap-4">
+                                                    <div className={`p-3 rounded-xl ${dept.showOnHome ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'bg-white text-slate-300 shadow-sm'}`}>
+                                                        <CircleStackIcon className="w-5 h-5" />
+                                                    </div>
+                                                    <div>
+                                                        <p className={`font-bold text-sm ${dept.showOnHome ? 'text-slate-900' : 'text-slate-500'}`}>{dept.name}</p>
+                                                        {dept.showOnHome && (
+                                                            <div className="flex items-center gap-1 mt-1 text-[9px] font-black text-primary uppercase tracking-widest">
+                                                                <SparklesIcon className="w-3 h-3" />
+                                                                Visible
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                                <label className="relative inline-flex items-center cursor-pointer">
+                                                    <input
+                                                        type="checkbox"
+                                                        className="sr-only peer"
+                                                        checked={dept.showOnHome || false}
+                                                        onChange={() => toggleFeatured('dept', dept.id, !!dept.showOnHome)}
+                                                    />
+                                                    <div className="w-10 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary"></div>
+                                                </label>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* Services Section */}
+                                <div className="space-y-6">
+                                    <div className="flex items-center gap-4 mb-2">
+                                        <BriefcaseIcon className="w-5 h-5 text-primary" />
+                                        <h4 className="text-[11px] font-black uppercase tracking-[0.3em] text-slate-400">Featured Clinical Protocols (Services)</h4>
+                                    </div>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        {services.map((service) => (
+                                            <div key={service.id} className={`p-6 rounded-[2rem] border transition-all flex items-center justify-between group ${service.showOnHome ? 'bg-accent/5 border-accent/20 ring-4 ring-accent/5' : 'bg-slate-50 border-slate-100'}`}>
+                                                <div className="flex items-center gap-4">
+                                                    <div className={`p-3 rounded-xl ${service.showOnHome ? 'bg-accent text-white shadow-lg shadow-accent/20' : 'bg-white text-slate-300 shadow-sm'}`}>
+                                                        <BriefcaseIcon className="w-5 h-5" />
+                                                    </div>
+                                                    <div>
+                                                        <p className={`font-bold text-sm ${service.showOnHome ? 'text-slate-900' : 'text-slate-500'}`}>{service.name}</p>
+                                                        {service.showOnHome && (
+                                                            <div className="flex items-center gap-1 mt-1 text-[9px] font-black text-accent uppercase tracking-widest">
+                                                                <SparklesIcon className="w-3 h-3" />
+                                                                Visible
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                                <label className="relative inline-flex items-center cursor-pointer">
+                                                    <input
+                                                        type="checkbox"
+                                                        className="sr-only peer"
+                                                        checked={service.showOnHome || false}
+                                                        onChange={() => toggleFeatured('service', service.id, !!service.showOnHome)}
+                                                    />
+                                                    <div className="w-10 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-accent"></div>
+                                                </label>
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -587,18 +699,28 @@ export default function AdminSettingsPage() {
                                 {(() => {
                                     let staff = [];
                                     try {
-                                        staff = JSON.parse(settings.staff_directory || '[]');
-                                        if (staff.length === 0) {
-                                            // Initialize with the requested people if blank
+                                        const dir = settings.staff_directory;
+                                        if (dir) {
+                                            try {
+                                                staff = JSON.parse(dir);
+                                            } catch (err) {
+                                                console.error('JSON Parse Error in directory settings:', err);
+                                                staff = [];
+                                            }
+                                        }
+                                        
+                                        if (!staff || staff.length === 0) {
+                                            // Initialize with the requested research people if blank
                                             staff = [
-                                                { id: 'zegeye', name: "Mr. Zegeye Yohannis", role: "CPD, Clinical Training and Research Director", phone: "+251 91 330 7290", image: "" },
-                                                { id: 'habtamu_research', name: "Mr. Habtamu Derajaw", role: "Research & Clinical Training Desk Head", phone: "+251 92 386 4833", image: "" },
-                                                { id: 'azmera', name: "Mrs. Azmera Hadush", role: "CPD Desk Head", phone: "+251 91 216 0130", image: "" },
-                                                { id: 'zebiba', name: "Mrs. Zebiba Nassir", role: "CPD Officer", phone: "+251 93 208 2657", image: "" },
-                                                { id: 'mensur', name: "Mr. Mensur Nesru", role: "Research Officer", phone: "+251 91 325 5584", image: "" }
+                                                { id: 'zegeye', name: "Mr. Zegeye Yohannis", role: "CPD, Clinical Training and Research Director", phone: "+251 91 330 7290", email: "", image: "/assets/research/mr_zegeye_yohannis_headshot_1775135176650.png" },
+                                                { id: 'habtamu', name: "Mr. Habtamu Derajaw", role: "Research & Clinical Training Desk Head", phone: "", email: "", image: "/assets/research/mr_habtamu_derajaw_headshot_1775135205786.png" },
+                                                { id: 'azmera', name: "Mrs. Azmera Hadush", role: "CPD Desk Head", phone: "+251 91 216 0130", email: "", image: "" },
+                                                { id: 'zebiba', name: "Mrs. Zebiba Nassir", role: "CPD Officer", phone: "+251 93 208 2657", email: "", image: "" },
+                                                { id: 'mensur', name: "Mr. Mensur Nesru", role: "Research Officer", phone: "", email: "", image: "/assets/research/mr_mensur_nesru_headshot_1775135244113.png" }
                                             ];
                                         }
                                     } catch (e) {
+                                        console.error('Staff parse error:', e);
                                         staff = [];
                                     }
 
@@ -608,7 +730,7 @@ export default function AdminSettingsPage() {
                                             <div className="relative shrink-0">
                                                 <div className="w-32 h-32 rounded-full overflow-hidden bg-white border-4 border-white shadow-xl group-hover:scale-105 transition-all duration-500">
                                                     {person.image ? (
-                                                        <img src={person.image} alt={person.name} className="w-full h-full object-cover" />
+                                                        <img src={resolveImageUrl(person.image)} alt={person.name} className="w-full h-full object-cover" />
                                                     ) : (
                                                         <div className="w-full h-full bg-slate-100 flex items-center justify-center text-slate-300">
                                                             <UsersIcon className="w-12 h-12" />
@@ -687,13 +809,117 @@ export default function AdminSettingsPage() {
                                                         placeholder="Phone..."
                                                     />
                                                 </div>
-                                                <div className="flex items-end justify-end">
+                                                <div className="space-y-2">
+                                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Digital Correspondence (Email)</label>
+                                                    <input
+                                                        type="email"
+                                                        value={person.email || ''}
+                                                        onChange={(e) => {
+                                                            const newStaff = [...staff];
+                                                            newStaff[idx].email = e.target.value;
+                                                            handleChange('staff_directory', JSON.stringify(newStaff));
+                                                        }}
+                                                        className="w-full px-6 py-4 bg-white border border-slate-100 rounded-2xl text-sm font-bold outline-none focus:ring-4 focus:ring-primary/5"
+                                                        placeholder="Email Address..."
+                                                    />
+                                                </div>
+                                                <div className="space-y-4 col-span-full border-t border-slate-200 pt-6">
+                                                    <div className="flex flex-wrap gap-8">
+                                                        <div className="flex items-center gap-3">
+                                                            <input
+                                                                type="checkbox"
+                                                                id={`showPhone-${person.id}`}
+                                                                checked={person.showPhone !== false}
+                                                                onChange={(e) => {
+                                                                    const newStaff = [...staff];
+                                                                    newStaff[idx].showPhone = e.target.checked;
+                                                                    handleChange('staff_directory', JSON.stringify(newStaff));
+                                                                }}
+                                                                className="w-5 h-5 accent-blue-600"
+                                                            />
+                                                            <label htmlFor={`showPhone-${person.id}`} className="text-xs font-bold text-slate-700">Show Phone</label>
+                                                        </div>
+                                                        <div className="flex items-center gap-3">
+                                                            <input
+                                                                type="checkbox"
+                                                                id={`showEmail-${person.id}`}
+                                                                checked={person.showEmail !== false}
+                                                                onChange={(e) => {
+                                                                    const newStaff = [...staff];
+                                                                    newStaff[idx].showEmail = e.target.checked;
+                                                                    handleChange('staff_directory', JSON.stringify(newStaff));
+                                                                }}
+                                                                className="w-5 h-5 accent-blue-600"
+                                                            />
+                                                            <label htmlFor={`showEmail-${person.id}`} className="text-xs font-bold text-slate-700">Show Email</label>
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="space-y-3">
+                                                        <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Display Portals</label>
+                                                        <div className="flex flex-wrap gap-4">
+                                                            {['research', 'cpd', 'clinical_attachment'].map(pageKey => (
+                                                                <label key={pageKey} className="flex items-center gap-2 p-3 bg-white border border-slate-100 rounded-xl cursor-pointer hover:bg-slate-50 transition-all">
+                                                                    <input
+                                                                        type="checkbox"
+                                                                        checked={Array.isArray(person.pages) ? person.pages.includes(pageKey) : true}
+                                                                        onChange={(e) => {
+                                                                            const newStaff = [...staff];
+                                                                            let pages = Array.isArray(newStaff[idx].pages) ? [...newStaff[idx].pages] : ['research', 'cpd', 'clinical_attachment'];
+                                                                            if (e.target.checked) {
+                                                                                if (!pages.includes(pageKey)) pages.push(pageKey);
+                                                                            } else {
+                                                                                pages = pages.filter((p: string) => p !== pageKey);
+                                                                            }
+                                                                            newStaff[idx].pages = pages;
+                                                                            handleChange('staff_directory', JSON.stringify(newStaff));
+                                                                        }}
+                                                                        className="w-4 h-4 accent-blue-600"
+                                                                    />
+                                                                    <span className="text-[10px] font-black uppercase tracking-tight text-slate-600">{pageKey.replace('_', ' ')}</span>
+                                                                </label>
+                                                            ))}
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div className="col-span-full flex items-center justify-between mt-4">
+                                                    <div className="flex gap-2">
+                                                        <button
+                                                            disabled={idx === 0}
+                                                            onClick={() => {
+                                                                const newStaff = [...staff];
+                                                                const temp = newStaff[idx - 1];
+                                                                newStaff[idx - 1] = newStaff[idx];
+                                                                newStaff[idx] = temp;
+                                                                handleChange('staff_directory', JSON.stringify(newStaff));
+                                                            }}
+                                                            className="p-2 bg-white border border-slate-100 rounded-lg text-slate-400 hover:text-blue-600 disabled:opacity-20"
+                                                            title="Move Up"
+                                                        >
+                                                            <ChevronUpIcon className="w-5 h-5" />
+                                                        </button>
+                                                        <button
+                                                            disabled={idx === staff.length - 1}
+                                                            onClick={() => {
+                                                                const newStaff = [...staff];
+                                                                const temp = newStaff[idx + 1];
+                                                                newStaff[idx + 1] = newStaff[idx];
+                                                                newStaff[idx] = temp;
+                                                                handleChange('staff_directory', JSON.stringify(newStaff));
+                                                            }}
+                                                            className="p-2 bg-white border border-slate-100 rounded-lg text-slate-400 hover:text-blue-600 disabled:opacity-20"
+                                                            title="Move Down"
+                                                        >
+                                                            <ChevronDownIcon className="w-5 h-5" />
+                                                        </button>
+                                                    </div>
                                                     <button
                                                         onClick={() => {
                                                             const newStaff = staff.filter((_: any, i: number) => i !== idx);
                                                             handleChange('staff_directory', JSON.stringify(newStaff));
                                                         }}
-                                                        className="px-6 py-4 text-red-500 font-bold text-[10px] uppercase tracking-widest hover:bg-red-50 rounded-2xl transition-all"
+                                                        className="px-6 py-3 bg-red-50 text-red-500 font-bold text-[10px] uppercase tracking-widest hover:bg-red-500 hover:text-white rounded-xl transition-all border border-red-100"
                                                     >
                                                         Terminate Profile
                                                     </button>

@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express';
 import { authenticate, authorize, AuthRequest } from '../middleware/auth';
-import { prisma } from '../index';
+import { prisma } from '../core/db/prisma.service';
 
 const router = Router();
 
@@ -22,7 +22,7 @@ router.get('/:slug', async (req: Request, res: Response) => {
 
 router.post('/', authenticate, authorize('ADMIN', 'SUPER_ADMIN'), async (req: AuthRequest, res: Response) => {
     try {
-        const { name, slug, description, content, image, icon, departmentId, headName, headTitle, headProfession, headImage, vision, mission, goal, highlights, order, isActive, gallery } = req.body;
+        const { name, slug, description, content, image, icon, departmentId, headName, headTitle, headProfession, headImage, vision, mission, goal, highlights, order, isActive, showOnHome, gallery } = req.body;
         const service = await prisma.service.create({
             data: {
                 name, slug, description, content, image, icon, departmentId,
@@ -30,6 +30,7 @@ router.post('/', authenticate, authorize('ADMIN', 'SUPER_ADMIN'), async (req: Au
                 vision, mission, goal, highlights,
                 order: parseInt(order as any) || 0,
                 isActive: isActive !== false,
+                showOnHome: !!showOnHome,
                 gallery
             }
         });
@@ -39,7 +40,7 @@ router.post('/', authenticate, authorize('ADMIN', 'SUPER_ADMIN'), async (req: Au
 
 router.put('/:id', authenticate, authorize('ADMIN', 'SUPER_ADMIN'), async (req: AuthRequest, res: Response) => {
     try {
-        const { name, slug, description, content, image, icon, departmentId, headName, headTitle, headProfession, headImage, vision, mission, goal, highlights, order, isActive, gallery } = req.body;
+        const { name, slug, description, content, image, icon, departmentId, headName, headTitle, headProfession, headImage, vision, mission, goal, highlights, order, isActive, showOnHome, gallery } = req.body;
         const service = await prisma.service.update({
             where: { id: req.params.id },
             data: {
@@ -48,6 +49,7 @@ router.put('/:id', authenticate, authorize('ADMIN', 'SUPER_ADMIN'), async (req: 
                 vision, mission, goal, highlights,
                 order: parseInt(order as any) || 0,
                 isActive: isActive !== false,
+                showOnHome: !!showOnHome,
                 gallery
             }
         });

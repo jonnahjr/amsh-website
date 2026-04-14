@@ -8,115 +8,84 @@ import {
     UserGroupIcon,
     ShieldCheckIcon,
     GlobeAltIcon,
-    SparklesIcon
+    SparklesIcon,
+    ArrowRightIcon
 } from '@heroicons/react/24/outline';
 
 export default function AboutSection() {
     return (
-        <section className="relative py-24 md:py-32 bg-[#F8FAFB] overflow-hidden w-full">
-            {/* Corner Decorative Elements - "fit the side top left and right" */}
-            <div className="absolute top-0 left-0 w-96 h-96 bg-blue-900/5 rounded-br-full -translate-x-1/2 -translate-y-1/2 blur-3xl pointer-events-none" />
-            <div className="absolute top-0 right-0 w-96 h-96 bg-cyan-400/5 rounded-bl-full translate-x-1/2 -translate-y-1/2 blur-3xl pointer-events-none" />
-            <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-900/5 rounded-tr-full -translate-x-1/2 translate-y-1/2 blur-2xl pointer-events-none" />
-
-            <div className="px-6 md:px-12 lg:px-24 relative z-10 w-full">
-                {/* Header - Wide and Prominent */}
-                <div className="flex flex-col items-center justify-center text-center mb-24 max-w-6xl mx-auto -mt-12 -translate-y-4">
-                    <div className="inline-flex items-center gap-3 px-6 py-2.5 bg-blue-950 text-white text-[10px] font-black uppercase tracking-[0.5em] rounded-full mb-8 shadow-2xl shadow-blue-900/30">
-                        <span className="flex h-2 w-2 relative">
-                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
-                            <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
-                        </span>
-                        Amanuel Mental Specialized Institution
+        <section className="relative py-24 bg-white overflow-hidden border-t border-gray-100">
+            <div className="container-custom relative z-10">
+                
+                {/* Header Block: Refined Institutional Style */}
+                <div className="flex flex-col items-center justify-center text-center mb-20 max-w-5xl mx-auto">
+                    <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-blue-50 text-blue-900 text-[10px] font-bold uppercase tracking-[0.2em] rounded-md mb-6 border border-blue-100">
+                        Official Institutional Welcome
                     </div>
-
-                    <h2 className="text-5xl md:text-7xl lg:text-[6rem] font-black text-blue-950 tracking-tighter leading-[0.85] mb-12 text-center">
-                        Welcome to <span className="text-blue-900">Amanuel Mental</span> <br />
-                        <span className="text-gray-300 italic tracking-[-0.05em]">Specialized Hospital</span>
+                    <h2 className="text-4xl md:text-6xl font-black text-slate-900 leading-[1.1] tracking-tight">
+                        Welcome to Amanuel Mental <br />
+                        <span className="text-blue-900">Specialized Hospital</span>
                     </h2>
+                    <div className="h-1.5 w-24 bg-blue-900 mt-10 rounded-full mx-auto" />
                 </div>
 
-                {/* Content Hub - Wide "Side to Side" Layout */}
-                <div className="max-w-[1800px] mx-auto">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 text-center items-start">
-
-                        {/* Section 1: Legacy & Transformation */}
-                        <div className="space-y-10 group">
-                            <div className="flex flex-col items-center space-y-6 bg-white p-10 rounded-[3rem] shadow-xl border border-gray-50 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 h-full">
-                                <div className="w-20 h-20 bg-blue-900/10 rounded-3xl flex items-center justify-center text-blue-900 group-hover:bg-blue-900 group-hover:text-white transition-all duration-500">
-                                    <ShieldCheckIcon className="w-10 h-10" />
-                                </div>
-                                <div className="space-y-6">
-                                    <p className="font-bold text-gray-800 leading-relaxed text-center">
-                                        Emmanuel Mental Specialized Hospital stands as Ethiopia’s foremost and oldest specialized institution dedicated exclusively to mental health care. With a proud legacy spanning decades, the hospital has become the cornerstone of psychiatric services in the nation, providing comprehensive, compassionate, and evidence-based care.
-                                    </p>
-                                    <p className="text-gray-600 leading-relaxed text-sm text-center">
-                                        Since its establishment, the hospital has played a central role in transforming mental health care in Ethiopia. It has grown from a modest facility into a national center of excellence, delivering specialized psychiatric treatment and advancing clinical research.
-                                    </p>
-                                </div>
-                            </div>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+                    {/* Visual Narrative Side: Professional & Grounded */}
+                    <div className="relative">
+                        <div className="relative rounded-[40px] overflow-hidden shadow-2xl border-8 border-gray-50 bg-gray-50 hover:border-blue-50 transition-colors duration-500">
+                            <img
+                                src="/uploads/_49A7644.JPG"
+                                alt="Amanuel Mental Specialized Hospital Exterior"
+                                className="w-full h-[550px] object-cover hover:scale-110 transition-transform duration-1000"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent pointer-events-none" />
                         </div>
 
-                        {/* Section 2: Clinical Excellence & Compassion */}
-                        <div className="space-y-10 group">
-                            <div className="flex flex-col items-center space-y-6 bg-white p-10 rounded-[3rem] shadow-xl border border-gray-50 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 h-full">
-                                <div className="w-20 h-20 bg-pink-50 rounded-3xl flex items-center justify-center text-pink-600 group-hover:bg-pink-600 group-hover:text-white transition-all duration-500">
-                                    <HeartIcon className="w-10 h-10" />
-                                </div>
-                                <div className="space-y-6">
-                                    <p className="font-bold text-gray-800 leading-relaxed text-center">
-                                        Our hospital is dedicated to addressing the full spectrum of mental health conditions, including common and severe psychiatric disorders, substance use disorders, and psychological conditions affecting children, adolescents, adults, and the elderly.
-                                    </p>
-                                    <p className="text-gray-600 leading-relaxed text-sm text-center">
-                                        Patient care is guided by compassion, professionalism, and respect for human dignity. We understand that mental health challenges affect families and communities. Therefore, our approach focuses on holistic care that supports emotional and functional recovery.
-                                    </p>
-                                </div>
+                        {/* Stats Overlay: Clean Government Grid */}
+                        <div className="absolute -bottom-10 right-0 md:right-10 bg-white p-8 rounded-[30px] shadow-2xl border border-gray-100 flex flex-col items-center min-w-[220px]">
+                            <div className="flex flex-col items-center mb-6">
+                                <span className="text-5xl font-black text-blue-950 tracking-tighter mb-1">80+</span>
+                                <span className="text-[11px] font-black text-slate-500 uppercase tracking-widest text-center leading-tight">Years of <br />Institutional Legacy</span>
                             </div>
-                        </div>
-
-                        {/* Section 3: Training & Innovation */}
-                        <div className="space-y-10 group">
-                            <div className="flex flex-col items-center space-y-6 bg-white p-10 rounded-[3rem] shadow-xl border border-gray-50 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 h-full">
-                                <div className="w-20 h-20 bg-indigo-50 rounded-3xl flex items-center justify-center text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white transition-all duration-500">
-                                    <AcademicCapIcon className="w-10 h-10" />
+                            <div className="h-px w-full bg-gray-100 mb-6" />
+                            <div className="flex items-center gap-4 text-left w-full">
+                                <div className="p-2 bg-blue-50 rounded-lg shrink-0">
+                                    <ShieldCheckIcon className="w-6 h-6 text-blue-900" />
                                 </div>
-                                <div className="space-y-6">
-                                    <p className="font-bold text-gray-800 leading-relaxed text-center">
-                                        Beyond clinical services, the hospital serves as a national training and academic center. It provides practical education and clinical training for psychiatrists, medical doctors, mental health nurses, psychologists, and other health professionals.
-                                    </p>
-                                    <p className="text-gray-600 leading-relaxed text-sm text-center">
-                                        The hospital is also actively engaged in research and innovation, working to improve treatment methods and support evidence-based policies. By integrating modern medical technologies, we are expanding access to mental health care for everyone.
-                                    </p>
+                                <div>
+                                    <h4 className="text-[11px] font-black text-blue-950 uppercase tracking-widest">National Center</h4>
+                                    <p className="text-[9px] font-bold text-gray-500 uppercase tracking-widest">Clinical Excellence</p>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    {/* Wide Integration Bar - Final Commitment */}
-                    <div className="mt-20 bg-blue-900 rounded-[4rem] p-12 md:p-20 relative overflow-hidden group">
-                        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10 pointer-events-none" />
-                        <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-400 opacity-5 rounded-full blur-3xl -mr-32 -mt-32 transition-all duration-700 group-hover:opacity-10" />
+                    {/* Content Narrative Side: Authoritative & Clear */}
+                    <div className="flex flex-col h-full pt-4">
+                        <div className="space-y-8 flex-1">
+                            <p className="text-2xl font-bold text-slate-800 leading-snug tracking-tight border-l-8 border-blue-900 pl-10 mb-12">
+                                Emmanuel Mental Specialized Hospital stands as Ethiopia’s foremost and oldest specialized institution dedicated exclusively to mental health care.
+                            </p>
 
-                        <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center text-center">
-                            <div className="bg-white/10 backdrop-blur-xl p-10 rounded-[3rem] border border-white/10">
-                                <p className="text-blue-100 text-lg md:text-xl font-medium leading-relaxed italic text-center">
-                                    "Our commitment extends beyond the hospital walls. We work closely with government institutions, partners, and communities to promote mental health awareness and reduce stigma nationwide."
-                                </p>
-                            </div>
-                            <div className="space-y-8 flex flex-col items-center">
-                                <h3 className="text-white text-3xl md:text-5xl font-black tracking-tight leading-tight text-center">
-                                    Restoring Hope, <br />
-                                    <span className="text-cyan-400 italic">Improving Lives.</span>
-                                </h3>
-                                <div className="flex flex-wrap gap-6 justify-center">
-                                    <Link href="/about" className="px-10 py-5 bg-white text-blue-950 rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-blue-50 transition-all shadow-2xl">
-                                        Read Our Story
-                                    </Link>
-                                    <Link href="/services" className="px-10 py-5 bg-white/10 border border-white/20 text-white rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-white/20 transition-all backdrop-blur-md">
-                                        View Services
-                                    </Link>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                                <div className="space-y-6">
+                                    <p className="text-[15px] text-slate-600 leading-relaxed font-medium">
+                                        Since its establishment, the hospital has played a central role in transforming mental health care in Ethiopia. It has grown from a modest facility into a national center of excellence, delivering specialized psychiatric treatment and advancing clinical research.
+                                    </p>
+                                    <p className="text-[15px] text-slate-600 leading-relaxed font-medium pb-8 border-b border-gray-100">
+                                        Our hospital is dedicated to addressing the full spectrum of mental health conditions, including common and severe psychiatric disorders, substance use disorders, and psychological conditions.
+                                    </p>
+                                </div>
+                                <div className="space-y-6">
+                                    <p className="text-[15px] text-slate-600 leading-relaxed font-medium">
+                                        Patient care is guided by compassion, professionalism, and respect for human dignity. Our approach focuses on holistic care that supports emotional and functional recovery for families and communities.
+                                    </p>
+                                    <p className="text-[15px] text-slate-600 leading-relaxed font-medium pb-8 border-b border-gray-100">
+                                        Beyond clinical services, the hospital serves as a national training and academic center, providing practical education for psychiatrists and psychiatric nurses.
+                                    </p>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>

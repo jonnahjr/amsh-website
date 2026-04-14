@@ -29,7 +29,7 @@ export default function NewsletterSection() {
     };
 
     return (
-        <section className="section bg-[#FFF9F0] relative overflow-hidden">
+        <section className="section bg-white relative overflow-hidden">
             {/* Background Elements */}
             <div className="absolute inset-0 opacity-[0.05]">
                 <div className="absolute top-0 left-0 w-96 h-96 bg-blue-500 rounded-full blur-3xl opacity-20" />
@@ -62,14 +62,14 @@ export default function NewsletterSection() {
                                     type="text"
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
-                                    placeholder="Your Name (optional)"
+                                    placeholder="Dawit Haile (optional)"
                                     className="flex-1 px-5 py-4 bg-white border border-gray-200 rounded-2xl text-blue-950 placeholder-gray-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 />
                                 <input
                                     type="email"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
-                                    placeholder="Your Email Address"
+                                    placeholder="dawit@gmail.com"
                                     required
                                     className="flex-1 px-5 py-4 bg-white border border-gray-200 rounded-2xl text-blue-950 placeholder-gray-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 />

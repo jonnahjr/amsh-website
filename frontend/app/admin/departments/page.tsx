@@ -43,6 +43,7 @@ export default function DepartmentsAdmin() {
         goal: '',
         order: 0,
         isActive: true,
+        showOnHome: false,
         gallery: '',
     });
     const [uploading, setUploading] = useState<string | null>(null);
@@ -93,6 +94,7 @@ export default function DepartmentsAdmin() {
                 goal: dept.goal || '',
                 order: dept.order || 0,
                 isActive: dept.isActive,
+                showOnHome: dept.showOnHome || false,
                 gallery: dept.gallery || '',
             });
         } else {
@@ -114,6 +116,7 @@ export default function DepartmentsAdmin() {
                 goal: '',
                 order: departments.length,
                 isActive: true,
+                showOnHome: false,
                 gallery: '',
             });
         }
@@ -305,7 +308,7 @@ export default function DepartmentsAdmin() {
                                         {/* Visualization Header */}
                                         <div className="h-56 relative overflow-hidden flex-shrink-0">
                                             {dept.image ? (
-                                                <img src={dept.image} alt={dept.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 opacity-90 group-hover:opacity-100" crossOrigin="anonymous" />
+                                                <img src={dept.image} alt={dept.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 opacity-90 group-hover:opacity-100"  />
                                             ) : (
                                                 <div className="w-full h-full bg-slate-900 flex items-center justify-center">
                                                     <BuildingOfficeIcon className="w-20 h-20 text-white/5" />
@@ -321,6 +324,12 @@ export default function DepartmentsAdmin() {
                                                     <div className={`w-1.5 h-1.5 rounded-full bg-current ${dept.isActive && 'animate-pulse'}`} />
                                                     {dept.isActive ? 'OPERATIONAL' : 'STANDBY'}
                                                 </span>
+                                                {dept.showOnHome && (
+                                                    <span className="px-3 py-1.5 bg-accent text-white rounded-xl text-[9px] font-black uppercase tracking-widest backdrop-blur-md shadow-lg border border-white/20 flex items-center gap-2">
+                                                        <SparklesIcon className="w-3 h-3" />
+                                                        HOME FEATURED
+                                                    </span>
+                                                )}
                                             </div>
 
                                             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
@@ -338,7 +347,7 @@ export default function DepartmentsAdmin() {
                                             {dept.headName && (
                                                 <div className="flex items-center gap-4 mb-10 p-4 bg-slate-50 rounded-[2rem] border border-slate-100 shadow-inner group/head">
                                                     <div className="w-12 h-12 rounded-2xl overflow-hidden bg-white border border-slate-200 flex-shrink-0 group-hover/head:scale-110 transition-transform shadow-sm">
-                                                        {dept.headImage ? <img src={dept.headImage} alt={dept.headName} className="w-full h-full object-cover" crossOrigin="anonymous" /> : <UserCircleIcon className="w-full h-full text-slate-100" />}
+                                                        {dept.headImage ? <img src={dept.headImage} alt={dept.headName} className="w-full h-full object-cover"  /> : <UserCircleIcon className="w-full h-full text-slate-100" />}
                                                     </div>
                                                     <div className="min-w-0">
                                                         <p className="text-[11px] font-black text-slate-900 uppercase tracking-widest truncate">{dept.headName}</p>
@@ -531,7 +540,7 @@ export default function DepartmentsAdmin() {
                                     <div className="flex items-center gap-6">
                                         {formData.headImage && (
                                             <div className="w-16 h-16 rounded-2xl overflow-hidden border-2 border-white/10 shadow-xl flex-shrink-0 group relative">
-                                                <img src={formData.headImage} className="w-full h-full object-cover" crossOrigin="anonymous" />
+                                                <img src={formData.headImage} className="w-full h-full object-cover"  />
                                                 <div className="absolute inset-0 bg-red-600/80 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity cursor-pointer" onClick={() => setFormData({ ...formData, headImage: '' })}>
                                                     <XMarkIcon className="w-4 h-4 text-white" />
                                                 </div>
@@ -573,6 +582,17 @@ export default function DepartmentsAdmin() {
                                         <option value="false">⚠️ NON-AUTHORIZED / DRAFT</option>
                                     </select>
                                 </div>
+                                <div className="space-y-3">
+                                    <label className="text-[11px] font-black uppercase tracking-[0.2em] text-slate-400 ml-2">Home Page Visibility</label>
+                                    <select
+                                        value={formData.showOnHome ? 'true' : 'false'}
+                                        onChange={(e) => setFormData({ ...formData, showOnHome: e.target.value === 'true' })}
+                                        className="w-full px-6 py-5 bg-slate-50 border-0 rounded-3xl focus:ring-2 focus:ring-primary/10 text-sm font-bold outline-none appearance-none"
+                                    >
+                                        <option value="true">✅ SHOW ON HOME PAGE</option>
+                                        <option value="false">❌ HIDE FROM HOME PAGE</option>
+                                    </select>
+                                </div>
                             </div>
 
                             <div className="space-y-6 pt-8 border-t border-slate-100">
@@ -593,7 +613,7 @@ export default function DepartmentsAdmin() {
                                 <div className="grid grid-cols-3 md:grid-cols-6 gap-4">
                                     {formData.gallery && formData.gallery.split(';').map((url, idx) => (
                                         <div key={idx} className="relative aspect-square rounded-[1.5rem] overflow-hidden group shadow-lg">
-                                            <img src={url} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" crossOrigin="anonymous" />
+                                            <img src={url} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"  />
                                             <div className="absolute inset-0 bg-red-600/80 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center cursor-pointer" onClick={() => removeGalleryImage(url)}>
                                                 <TrashIcon className="w-5 h-5 text-white" />
                                             </div>
@@ -625,7 +645,7 @@ export default function DepartmentsAdmin() {
                                 </div>
                                 {formData.image ? (
                                     <div className="relative h-64 rounded-[2.5rem] overflow-hidden group shadow-2xl ring-4 ring-slate-50">
-                                        <img src={formData.image} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" crossOrigin="anonymous" />
+                                        <img src={formData.image} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000"  />
                                         <div className="absolute inset-0 bg-slate-900/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                                             <button
                                                 type="button"

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { testimonialsAPI, mediaAPI } from '@/lib/api';
+import { testimonialsAPI, mediaAPI, resolveImageUrl } from '@/lib/api';
 import {
     StarIcon,
     ChatBubbleBottomCenterTextIcon,
@@ -106,7 +106,7 @@ export default function TestimonialsSection() {
     const displayTestimonials = [...testimonials, ...testimonials];
 
     return (
-        <section className="section bg-[#FDFDFD] overflow-hidden py-32 relative">
+        <section className="section bg-white overflow-hidden py-32 relative">
             {/* Background elements */}
             <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-gray-100 to-transparent" />
             <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-gray-100 to-transparent" />
@@ -146,8 +146,8 @@ export default function TestimonialsSection() {
                 onMouseEnter={() => setIsPaused(true)}
                 onMouseLeave={() => setIsPaused(false)}
             >
-                <div className="absolute inset-y-0 left-0 w-[15%] bg-gradient-to-r from-[#FDFDFD] to-transparent z-10 pointer-events-none" />
-                <div className="absolute inset-y-0 right-0 w-[15%] bg-gradient-to-l from-[#FDFDFD] to-transparent z-10 pointer-events-none" />
+                <div className="absolute inset-y-0 left-0 w-[15%] bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
+                <div className="absolute inset-y-0 right-0 w-[15%] bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
 
                 <div
                     ref={scrollRef}
@@ -178,7 +178,7 @@ export default function TestimonialsSection() {
                                 <div className="relative shrink-0">
                                     {t.image ? (
                                         <img
-                                            src={t.image}
+                                            src={resolveImageUrl(t.image)}
                                             alt={t.name}
                                             className="w-14 h-14 rounded-full object-cover shadow-lg group-hover/card:scale-110 transition-transform duration-700"
                                         />
@@ -246,7 +246,7 @@ export default function TestimonialsSection() {
                                                 type="text"
                                                 required
                                                 className="w-full px-8 py-5 bg-slate-50 border-0 rounded-[1.5rem] text-sm font-black text-gray-900 focus:ring-[12px] focus:ring-blue-900/5 transition-all outline-none placeholder:text-gray-300 shadow-inner"
-                                                placeholder="Full Signature"
+                                                placeholder="Hana Girma"
                                                 value={formData.name}
                                                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                                             />
@@ -257,7 +257,7 @@ export default function TestimonialsSection() {
                                                 type="text"
                                                 required
                                                 className="w-full px-8 py-5 bg-slate-50 border-0 rounded-[1.5rem] text-sm font-black text-gray-900 focus:ring-[12px] focus:ring-blue-900/5 transition-all outline-none placeholder:text-gray-300 shadow-inner"
-                                                placeholder="e.g. Member, Professional"
+                                                placeholder="e.g. Patient, Nurse, Caregiver"
                                                 value={formData.role}
                                                 onChange={(e) => setFormData({ ...formData, role: e.target.value })}
                                             />
@@ -296,7 +296,7 @@ export default function TestimonialsSection() {
                                         <div className="shrink-0 flex items-center gap-6">
                                             <div className="relative w-20 h-20 group/avatar">
                                                 {formData.image ? (
-                                                    <img src={formData.image} className="w-full h-full object-cover rounded-[1.5rem] border-2 border-slate-100 shadow-lg" />
+                                                    <img src={resolveImageUrl(formData.image)} className="w-full h-full object-cover rounded-[1.5rem] border-2 border-slate-100 shadow-lg" />
                                                 ) : (
                                                     <div className="w-full h-full bg-slate-50 border-2 border-dashed border-slate-200 rounded-[1.5rem] flex items-center justify-center text-gray-200">
                                                         <CloudArrowUpIcon className="w-8 h-8" />

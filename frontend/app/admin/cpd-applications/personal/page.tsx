@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { cpdAPI } from '@/lib/api';
+import { exportToCSV } from '@/lib/export';
+import CPDDetailsModal from '@/components/admin/CPDDetailsModal';
 import {
     AcademicCapIcon,
     CheckCircleIcon,
@@ -16,6 +18,7 @@ import {
 export default function PersonalCpdApplications() {
     const [registrations, setRegistrations] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
+    const [selectedProfile, setSelectedProfile] = useState<any>(null);
 
     const fetchRegistrations = async () => {
         setLoading(true);
@@ -58,7 +61,10 @@ export default function PersonalCpdApplications() {
                     </div>
                 </div>
                 <div className="flex items-center gap-2">
-                    <button className="px-4 py-2 bg-white border border-gray-100 rounded-xl text-xs font-bold text-gray-600 hover:bg-gray-50 flex items-center gap-2 transition-all">
+                    <button 
+                        onClick={() => exportToCSV(registrations, 'Personal_CPD_Export')}
+                        className="px-4 py-2 bg-white border border-gray-100 rounded-xl text-xs font-bold text-gray-600 hover:bg-gray-50 flex items-center gap-2 transition-all"
+                    >
                         <ArrowDownTrayIcon className="w-4 h-4" />
                         <span>Export CSV</span>
                     </button>
@@ -110,7 +116,12 @@ export default function PersonalCpdApplications() {
                                     </div>
                                 </div>
                                 <div className="flex items-center gap-2">
-                                    <button className="flex-1 md:flex-none px-6 py-3 bg-gray-50 hover:bg-amber-600 hover:text-white rounded-xl text-[10px] font-black uppercase tracking-widest transition-all">View Details</button>
+                                    <button 
+                                        onClick={() => setSelectedProfile(reg)}
+                                        className="flex-1 md:flex-none px-6 py-3 bg-gray-50 hover:bg-amber-600 hover:text-white rounded-xl text-[10px] font-black uppercase tracking-widest transition-all"
+                                    >
+                                        View Details
+                                    </button>
                                     <button
                                         onClick={() => handleStatusUpdate(reg.id, 'APPROVED')}
                                         className="p-3 text-emerald-600 hover:bg-emerald-50 rounded-xl transition-all"
@@ -129,6 +140,13 @@ export default function PersonalCpdApplications() {
                     ))
                 )}
             </div>
+            {selectedProfile && (
+                <CPDDetailsModal 
+                    profile={selectedProfile} 
+                    onClose={() => setSelectedProfile(null)} 
+                    onStatusUpdate={handleStatusUpdate} 
+                />
+            )}
         </div>
     );
 }

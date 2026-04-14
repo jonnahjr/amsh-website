@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
-import { postsAPI } from '@/lib/api';
+import { postsAPI, resolveImageUrl } from '@/lib/api';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import ChatbotButton from '@/components/chatbot/ChatbotButton';
@@ -118,10 +118,10 @@ export default function NewsDetailPage() {
                     {post.featuredImage && (
                         <div className="relative aspect-video rounded-[2.5rem] overflow-hidden shadow-2xl mb-16 group">
                             <img
-                                src={post.featuredImage}
+                                src={resolveImageUrl(post.featuredImage)}
                                 alt={post.title}
                                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                                crossOrigin="anonymous"
+                                
                             />
                         </div>
                     )}
@@ -165,10 +165,10 @@ export default function NewsDetailPage() {
                                     {galleryImages.map((img, i) => (
                                         <div key={i} className={`relative rounded-3xl overflow-hidden group shadow-sm hover:shadow-xl transition-all duration-500 bg-gray-50 ${i === 0 && galleryImages.length % 2 !== 0 ? 'md:col-span-2 aspect-[21/9]' : 'aspect-square'}`}>
                                             <img
-                                                src={img}
+                                                src={resolveImageUrl(img)}
                                                 alt={`Gallery image ${i + 1}`}
                                                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                                                crossOrigin="anonymous"
+                                                
                                             />
                                             <div className="absolute inset-0 bg-blue-900/0 group-hover:bg-blue-900/10 transition-colors pointer-events-none" />
                                         </div>

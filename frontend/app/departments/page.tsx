@@ -6,11 +6,12 @@ import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import EmergencyBanner from '@/components/ui/EmergencyBanner';
 import ChatbotButton from '@/components/chatbot/ChatbotButton';
-import { departmentsAPI, departmentCategoriesAPI } from '@/lib/api';
-import {
-    ChevronRightIcon,
-    BuildingOfficeIcon,
-} from '@heroicons/react/24/outline';
+import { departmentsAPI, departmentCategoriesAPI, resolveImageUrl, sanitizeIcon } from '@/lib/api';
+ import {
+     ChevronRightIcon,
+     BuildingOfficeIcon,
+ 	UserIcon,
+ } from '@heroicons/react/24/outline';
 
 export default function DepartmentsPage() {
     const [departments, setDepartments] = useState<any[]>([]);
@@ -93,16 +94,16 @@ export default function DepartmentsPage() {
                                         >
                                             {/* Image / Gradient Header (Picture Holder) */}
                                             <div className="relative h-60 overflow-hidden bg-blue-900">
-                                                {dept.image ? (
-                                                    <>
-                                                        <img src={dept.image} alt={dept.name} className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" crossOrigin="anonymous" />
-                                                        <div className="absolute inset-0 bg-gradient-to-t from-blue-950 via-transparent to-transparent" />
-                                                    </>
-                                                ) : (
+                                                 {dept.image ? (
+                                                     <>
+                                                         <img src={resolveImageUrl(dept.image)} alt={dept.name} className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"  />
+                                                         <div className="absolute inset-0 bg-gradient-to-t from-blue-950 via-transparent to-transparent" />
+                                                     </>
+                                                 ) : (
                                                     <div className={`absolute inset-0 bg-gradient-to-br ${gradient} opacity-40 group-hover:opacity-60 transition-opacity duration-700`}>
                                                         <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)', backgroundSize: '24px 24px' }} />
                                                         <div className="w-full h-full flex flex-col items-center justify-center">
-                                                            <span className="text-4xl opacity-20 filter grayscale mb-2">{dept.icon || '🏥'}</span>
+                                                            <span className="text-4xl opacity-20 filter grayscale mb-2">{sanitizeIcon(dept.icon)}</span>
                                                             <p className="text-[8px] font-black text-white/20 uppercase tracking-[0.3em]">Department Photo</p>
                                                         </div>
                                                     </div>
@@ -118,13 +119,15 @@ export default function DepartmentsPage() {
                                                 {/* Services Count Badge */}
                                                 {dept.services?.length > 0 && (
                                                     <div className="absolute top-5 right-5 z-20 px-3 py-1.5 bg-blue-950/80 backdrop-blur-md border border-white/10 rounded-xl text-[9px] font-black text-cyan-400 uppercase tracking-widest shadow-2xl">
-                                                        {dept.services.length} svc
+                                                        {dept.services.length} Services
                                                     </div>
                                                 )}
 
+
+
                                                 {/* Icon Badge - Floating */}
                                                 <div className="absolute top-5 left-5 w-12 h-12 rounded-2xl bg-white/95 backdrop-blur-md flex items-center justify-center text-xl shadow-2xl group-hover:-translate-y-1 transition-transform duration-300 z-20">
-                                                    {dept.icon || '🏥'}
+                                                    {sanitizeIcon(dept.icon)}
                                                 </div>
                                             </div>
 
@@ -139,13 +142,13 @@ export default function DepartmentsPage() {
                                                 {/* Head preview */}
                                                 {dept.headName && (
                                                     <div className="flex items-center gap-3 mt-5 py-4 border-t border-white/5">
-                                                        <div className="w-10 h-10 rounded-full bg-white/5 overflow-hidden flex-shrink-0 flex items-center justify-center border border-white/10">
-                                                            {dept.headImage ? (
-                                                                <img src={dept.headImage} className="w-full h-full object-cover" crossOrigin="anonymous" />
-                                                            ) : (
-                                                                <span className="text-sm opacity-30">👤</span>
-                                                            )}
-                                                        </div>
+                                                         <div className="w-10 h-10 rounded-full bg-white/5 overflow-hidden flex-shrink-0 flex items-center justify-center border border-white/10">
+                                                             {dept.headImage ? (
+                                                                 <img src={resolveImageUrl(dept.headImage)} className="w-full h-full object-cover"  />
+                                                             ) : (
+                                                                 <span className="text-sm opacity-30">👤</span>
+                                                             )}
+                                                         </div>
                                                         <div className="min-w-0">
                                                             <p className="text-[9px] font-black text-blue-200/30 uppercase tracking-widest">Dept Head</p>
                                                             <p className="text-xs font-black text-blue-50 truncate">{dept.headName}</p>

@@ -1,18 +1,26 @@
 import { Router, Request, Response } from 'express';
 import { authenticate, authorize, AuthRequest } from '../middleware/auth';
-import { prisma } from '../index';
+import { prisma } from '../core/db/prisma.service';
 
 const router = Router();
 
 // GET /api/settings - Public (returns all settings as key-value object)
 router.get('/', async (req: Request, res: Response) => {
     try {
+        console.log('📡 [API] Fetching site settings...');
+        const start = Date.now();
         const settings = await prisma.siteSetting.findMany();
+        console.log(`✅ [API] Settings fetched in ${Date.now() - start}ms`);
+        
         const settingsMap: Record<string, string> = {};
-        settings.forEach(s => { settingsMap[s.key] = s.value; });
+        settings.forEach(s => { 
+            if (s.key) settingsMap[s.key] = s.value; 
+        });
+        
         res.json({ settings: settingsMap });
-    } catch (error) {
-        res.status(500).json({ error: 'Failed to fetch settings.' });
+    } catch (error: any) {
+        console.error('❌ [API] Settings fetch error:', error);
+        res.status(500).json({ error: 'Failed to fetch settings.', details: error.message });
     }
 });
 

@@ -64,7 +64,7 @@ export default function AppointmentPage() {
                     </div>
                 </section>
 
-                <section className="section bg-gray-50">
+                <section className="section form-section-bg">
                     <div className="container-custom max-w-4xl">
                         {success ? (
                             <div className="card p-12 text-center">
@@ -87,7 +87,7 @@ export default function AppointmentPage() {
                                 <button onClick={() => setSuccess(false)} className="btn-primary">Book Another Appointment</button>
                             </div>
                         ) : (
-                            <div className="card p-8">
+                            <div className="card form-card-bg p-8">
                                 <h2 className="text-2xl font-black text-gray-900 mb-2">Patient Appointment Form</h2>
                                 <p className="text-gray-500 mb-8">Please fill out all required fields. We will contact you to confirm.</p>
 
@@ -97,20 +97,20 @@ export default function AppointmentPage() {
                                         <legend className="text-sm font-bold text-blue-900 uppercase tracking-wider mb-4 pb-2 border-b border-gray-100 w-full">👤 Personal Information</legend>
                                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                                             <div>
-                                                <label className="form-label">First Name *</label>
-                                                <input name="firstName" value={form.firstName} onChange={handleChange} required className="form-input" placeholder="First name" />
+                                                <label className="form-label">First Name <span className="text-red-500">*</span></label>
+                                                <input name="firstName" value={form.firstName} onChange={handleChange} required className="form-input" placeholder="Abebe" />
                                             </div>
                                             <div>
-                                                <label className="form-label">Last Name *</label>
-                                                <input name="lastName" value={form.lastName} onChange={handleChange} required className="form-input" placeholder="Last name" />
+                                                <label className="form-label">Last Name <span className="text-red-500">*</span></label>
+                                                <input name="lastName" value={form.lastName} onChange={handleChange} required className="form-input" placeholder="Bikila" />
                                             </div>
                                             <div>
-                                                <label className="form-label">Email Address *</label>
-                                                <input name="email" type="email" value={form.email} onChange={handleChange} required className="form-input" placeholder="your@email.com" />
+                                                <label className="form-label">Email Address <span className="text-red-500">*</span></label>
+                                                <input name="email" type="email" value={form.email} onChange={handleChange} required className="form-input" placeholder="abebe@gmail.com" />
                                             </div>
                                             <div>
-                                                <label className="form-label">Phone Number *</label>
-                                                <input name="phone" value={form.phone} onChange={handleChange} required className="form-input" placeholder="+251 9XX XXX XXX" />
+                                                <label className="form-label">Phone Number <span className="text-red-500">*</span></label>
+                                                <input name="phone" value={form.phone} onChange={handleChange} required className="form-input" placeholder="+251 911 223 344" />
                                             </div>
                                         </div>
                                     </fieldset>
@@ -120,7 +120,7 @@ export default function AppointmentPage() {
                                         <legend className="text-sm font-bold text-blue-900 uppercase tracking-wider mb-4 pb-2 border-b border-gray-100 w-full">🏥 Appointment Details</legend>
                                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                                             <div>
-                                                <label className="form-label">Department *</label>
+                                                <label className="form-label">Department <span className="text-red-500">*</span></label>
                                                 <select name="department" value={form.department} onChange={handleChange} required className="form-select">
                                                     <option value="">Select department</option>
                                                     {departments.map(d => <option key={d}>{d}</option>)}
@@ -128,15 +128,15 @@ export default function AppointmentPage() {
                                             </div>
                                             <div>
                                                 <label className="form-label">Preferred Doctor (optional)</label>
-                                                <input name="doctor" value={form.doctor} onChange={handleChange} className="form-input" placeholder="Doctor name (if any)" />
+                                                <input name="doctor" value={form.doctor} onChange={handleChange} className="form-input" placeholder="Dr. Kebede" />
                                             </div>
                                             <div>
-                                                <label className="form-label">Preferred Date *</label>
+                                                <label className="form-label">Preferred Date <span className="text-red-500">*</span></label>
                                                 <input name="date" type="date" value={form.date} onChange={handleChange} required className="form-input"
                                                     min={new Date().toISOString().split('T')[0]} />
                                             </div>
                                             <div>
-                                                <label className="form-label">Preferred Time *</label>
+                                                <label className="form-label">Preferred Time <span className="text-red-500">*</span></label>
                                                 <select name="time" value={form.time} onChange={handleChange} required className="form-select">
                                                     <option value="">Select time</option>
                                                     {timeSlots.map(t => <option key={t}>{t}</option>)}

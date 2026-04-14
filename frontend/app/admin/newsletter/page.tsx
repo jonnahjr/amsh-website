@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { newsletterAPI } from '@/lib/api';
+import { exportToCSV } from '@/lib/export';
+import { ArrowDownTrayIcon } from '@heroicons/react/24/outline';
 import { toast } from 'react-hot-toast';
 import {
     EnvelopeIcon,
@@ -146,6 +148,13 @@ export default function NewsletterAdminPage() {
                         />
                     </div>
                     <div className="flex items-center gap-3">
+                        <button 
+                            onClick={() => exportToCSV(filteredSubscribers, 'Newsletter_Audience_Node_Matrix')}
+                            className="p-4 bg-white border border-slate-100 rounded-2xl hover:bg-slate-50 transition-all text-slate-600 flex items-center gap-2 group/export"
+                        >
+                            <ArrowDownTrayIcon className="w-5 h-5 group-hover/export:text-primary transition-colors" />
+                            <span className="text-[10px] font-black uppercase tracking-widest hidden md:inline">Export CSV Matrix</span>
+                        </button>
                         <button className="p-4 bg-white border border-slate-100 rounded-2xl hover:bg-slate-50 transition-all text-slate-600">
                             <FunnelIcon className="w-5 h-5" />
                         </button>

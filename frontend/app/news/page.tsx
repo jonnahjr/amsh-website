@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import EmergencyBanner from '@/components/ui/EmergencyBanner';
-import { postsAPI, newsletterAPI } from '@/lib/api';
+import { postsAPI, newsletterAPI, resolveImageUrl } from '@/lib/api';
 import Link from 'next/link';
 import { CalendarIcon, UserIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
 
@@ -151,11 +151,11 @@ export default function NewsPage() {
                                         <article className="group mb-16 border-b-4 border-double border-gray-200 pb-16">
                                             <Link href={`/news/${filteredPosts[0].slug}`} className="block">
                                                 <div className="relative aspect-[21/9] overflow-hidden rounded-[2rem] mb-12 shadow-2xl transition-all duration-700 group-hover:shadow-blue-900/10">
-                                                    <img
-                                                        src={filteredPosts[0].featuredImage || '/hospital_legacy_building.png'}
-                                                        alt={filteredPosts[0].title}
-                                                        className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-                                                    />
+                                                     <img
+                                                         src={resolveImageUrl(filteredPosts[0].featuredImage) || '/hospital_legacy_building.png'}
+                                                         alt={filteredPosts[0].title}
+                                                         className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                                                     />
                                                     <div className="absolute top-8 left-8">
                                                         <span className="px-6 py-2 bg-blue-900 text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-full shadow-xl">
                                                             Institutional Lead
@@ -190,11 +190,11 @@ export default function NewsPage() {
                                             <article key={post.id} className={`group ${idx % 2 === 0 ? 'md:border-r md:border-gray-200 md:pr-12' : ''}`}>
                                                 <Link href={`/news/${post.slug}`} className="block">
                                                     <div className="aspect-video overflow-hidden rounded-2xl mb-6 grayscale hover:grayscale-0 transition-all duration-700">
-                                                        <img
-                                                            src={post.featuredImage || '/hospital_legacy_building.png'}
-                                                            alt={post.title}
-                                                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                                                        />
+                                                     <img
+                                                         src={resolveImageUrl(post.featuredImage) || '/hospital_legacy_building.png'}
+                                                         alt={post.title}
+                                                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                                                     />
                                                     </div>
                                                     <div className="flex items-center gap-4 text-gray-400 text-[9px] font-black uppercase tracking-[0.2em] mb-4">
                                                         <span className="px-2 py-0.5 border border-gray-200 rounded text-blue-900">{post.category?.name}</span>

@@ -65,6 +65,7 @@ export default function AdminPostsPage() {
                 search: search || undefined,
                 type: typeFilter || undefined,
                 status: statusFilter || 'ALL',
+                includeAuthor: true,
             });
             setPosts(res.data.posts || []);
             setTotal(res.data.total || res.data.pagination?.total || 0);
@@ -261,7 +262,7 @@ export default function AdminPostsPage() {
                                             src={post.featuredImage}
                                             alt={post.title}
                                             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 opacity-80 group-hover:opacity-100"
-                                            crossOrigin="anonymous"
+                                            
                                         />
                                     ) : (
                                         <div className="w-full h-full flex items-center justify-center text-9xl opacity-10 group-hover:scale-125 transition-transform duration-1000">

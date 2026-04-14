@@ -503,7 +503,7 @@ export default function TestimonialsAdmin() {
                                         <div className="relative w-32 h-32 group/avatar">
                                             {formData.image ? (
                                                 <>
-                                                    <img src={formData.image} className="w-full h-full object-cover rounded-[2.5rem] border-4 border-white shadow-2xl" crossOrigin="anonymous" />
+                                                    <img src={formData.image} className="w-full h-full object-cover rounded-[2.5rem] border-4 border-white shadow-2xl"  />
                                                     <button
                                                         type="button"
                                                         onClick={() => setFormData(prev => ({ ...prev, image: '' }))}

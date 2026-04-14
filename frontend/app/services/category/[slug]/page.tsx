@@ -7,7 +7,7 @@ import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import EmergencyBanner from '@/components/ui/EmergencyBanner';
 import ChatbotButton from '@/components/chatbot/ChatbotButton';
-import { departmentsAPI, serviceCategoriesAPI } from '@/lib/api';
+import { departmentsAPI, serviceCategoriesAPI, resolveImageUrl, sanitizeIcon } from '@/lib/api';
 import {
     ChevronRightIcon,
     BriefcaseIcon,
@@ -163,7 +163,7 @@ export default function ServiceCategoryPage() {
                             </div>
                         ) : subServices.length === 0 ? (
                             <div className="text-center py-24 bg-gray-50 rounded-[48px]">
-                                <div className="text-6xl mb-4 opacity-20">{category?.icon}</div>
+                                <div className="text-6xl mb-4 opacity-20">{sanitizeIcon(category?.icon)}</div>
                                 <p className="text-gray-400 font-bold uppercase tracking-widest">No sub-services available yet.</p>
                                 <p className="text-gray-300 text-xs mt-2">Contact us for more information about this service area.</p>
                             </div>
@@ -179,17 +179,17 @@ export default function ServiceCategoryPage() {
                                         >
                                             {/* Card Image / Placeholder Header */}
                                             <div className="relative h-44 bg-blue-50 flex items-center justify-center overflow-hidden border-b border-gray-100">
-                                                {svc.image ? (
-                                                    <img
-                                                        src={svc.image}
-                                                        alt={svc.name}
-                                                        className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                                                        crossOrigin="anonymous"
-                                                    />
-                                                ) : (
+                                                 {svc.image ? (
+                                                     <img
+                                                         src={resolveImageUrl(svc.image)}
+                                                         alt={svc.name}
+                                                         className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                                                         
+                                                     />
+                                                 ) : (
                                                     <div className="absolute inset-0 bg-gradient-to-br from-blue-100 to-blue-50 flex flex-col items-center justify-center">
                                                         <span className="text-[50px] opacity-[0.1] text-blue-900 group-hover:scale-110 transition-transform duration-500 leading-none select-none">
-                                                            {svc.icon || '🏥'}
+                                                            {sanitizeIcon(svc.icon)}
                                                         </span>
                                                         <p className="text-[9px] font-black uppercase tracking-widest text-blue-900/10 mt-2">Service Photo</p>
                                                     </div>
@@ -197,7 +197,7 @@ export default function ServiceCategoryPage() {
 
                                                 {/* Icon badge - floats between image and content */}
                                                 <div className="absolute -bottom-6 left-6 w-14 h-14 rounded-2xl bg-white border border-gray-100 flex items-center justify-center text-2xl shadow-md z-10 group-hover:-translate-y-1 transition-transform duration-300">
-                                                    {svc.icon || '💉'}
+                                                    {sanitizeIcon(svc.icon) || '💉'}
                                                 </div>
 
                                                 {/* Hover arrow top-right */}

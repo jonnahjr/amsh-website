@@ -43,13 +43,11 @@ const navLinks = [
         href: '/departments',
         children: [
             { label: 'All Departments', href: '/departments' },
-            { label: 'Adult Psychiatry', href: '/departments/adult-psychiatry' },
-            { label: 'Child & Adolescent', href: '/departments/child-psychiatry' },
-            { label: 'Emergency Psychiatry', href: '/departments/emergency' },
-            { label: 'Addiction Treatment', href: '/departments/addiction-treatment' },
-            { label: 'Clinical Psychology', href: '/departments/psychology' },
-            { label: 'Forensic Psychiatry', href: '/departments/forensic-psychiatry' },
-            { label: 'Rehabilitation Services', href: '/departments/rehabilitation' },
+            { label: 'Psychiatry Department', href: '/departments/psychiatry' },
+            { label: 'Internal Medicine', href: '/departments/internal-medicine' },
+            { label: 'Neurology', href: '/departments/neurology' },
+            { label: 'Radiology', href: '/departments/radiology' },
+            { label: 'Laboratory', href: '/departments/laboratory' },
         ],
     },
     { label: 'Research', href: '/research' },
@@ -80,7 +78,7 @@ export default function Navbar() {
     const siteNameLong = getSetting('site_name', 'Amanuel Mental Specialized Hospital');
     const siteNameShort = 'AMSH';
     const sitePhone = getSetting('contact_phone', '+251-111-868-53-85');
-    const siteEmail = getSetting('contact_email', 'info@emsh.gov.et');
+    const siteEmail = getSetting('contact_email', 'info@amsh.gov.et');
     const siteHours = getSetting('working_hours', 'Mon - Fri: 2:30 AM - 10:00 AM');
     const siteLogo = getSetting('site_logo', '');
 
@@ -99,7 +97,7 @@ export default function Navbar() {
                             ...link,
                             children: [
                                 { label: 'All Services', href: '/services' },
-                                ...services.slice(0, 6).map((s: any) => ({ label: s.name, href: `/services/${s.slug}` }))
+                                ...services.slice(0, 10).map((s: any) => ({ label: s.name, href: `/services/${s.slug}` }))
                             ]
                         };
                     }
@@ -108,7 +106,7 @@ export default function Navbar() {
                             ...link,
                             children: [
                                 { label: 'All Departments', href: '/departments' },
-                                ...departments.slice(0, 6).map((d: any) => ({ label: d.name, href: `/departments/${d.slug}` }))
+                                ...departments.slice(0, 12).map((d: any) => ({ label: d.name, href: `/departments/${d.slug}` }))
                             ]
                         };
                     }
@@ -142,24 +140,18 @@ export default function Navbar() {
     return (
         <>
             {/* TOP BAR */}
-            <div className="bg-blue-900 text-white text-sm py-2 hidden md:block">
-                <div className="container-custom flex items-center justify-between">
-                    <div className="flex items-center gap-6">
-                        <a href={`tel:${sitePhone.replace(/\s/g, '')}`} className="flex items-center gap-1.5 hover:text-cyan-300 transition-colors">
-                            <PhoneIcon className="w-3.5 h-3.5" />
-                            <span>{sitePhone}</span>
+            <div className="bg-blue-900 text-white text-[11px] font-bold py-2 hidden md:block border-b border-white/5">
+                <div className="container-custom flex items-center justify-center">
+                    <div className="flex items-center gap-4">
+                        <a href={`tel:${sitePhone.replace(/\s/g, '')}`} className="hover:text-cyan-300 transition-colors tracking-widest uppercase">
+                            {sitePhone}
                         </a>
-                        <span className="text-blue-300">|</span>
-                        <a href={`mailto:${siteEmail}`} className="hover:text-cyan-300 transition-colors">
+                        <span className="text-blue-400 font-normal">|</span>
+                        <a href={`mailto:${siteEmail}`} className="hover:text-cyan-300 transition-colors tracking-widest opacity-90">
                             {siteEmail}
                         </a>
-                        <span className="text-blue-300">|</span>
-                        <span className="text-blue-200">{siteHours}</span>
-                    </div>
-                    <div className="flex items-center gap-4">
-                        <a href="/admin/dashboard" className="text-blue-300 hover:text-white transition-colors text-xs">
-                            Admin Portal
-                        </a>
+                        <span className="text-blue-400 font-normal">|</span>
+                        <span className="text-blue-300 tracking-wider uppercase">{siteHours}</span>
                     </div>
                 </div>
             </div>
@@ -202,7 +194,6 @@ export default function Navbar() {
                                 <div className={`font-black text-blue-900 leading-none uppercase tracking-tight transition-all duration-500 ${scrolled ? 'text-xl' : 'text-2xl'}`}>{siteNameShort}</div>
                                 <div className={`text-gray-600 font-extrabold leading-tight transition-all duration-500 ${scrolled ? 'text-[11px]' : 'text-xs'}`}>አማኑኤል የአእምሮ ስፔሻላይዝድ ሆስፒታል</div>
                                 <div className={`text-gray-400 font-bold leading-tight transition-all duration-500 ${scrolled ? 'text-[10px]' : 'text-[11px]'}`}>{siteNameLong}</div>
-                                <div className="text-black font-black text-[11px] mt-0.5 animate-pulse-slow tracking-wider uppercase">ለአዕምሮ ጤና እንተጋለን!</div>
                             </div>
                         </a>
 

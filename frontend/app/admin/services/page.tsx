@@ -45,6 +45,7 @@ export default function ServicesAdmin() {
         highlights: '',
         order: 0,
         isActive: true,
+        showOnHome: false,
         gallery: '',
     });
     const [uploading, setUploading] = useState<string | null>(null);
@@ -90,6 +91,7 @@ export default function ServicesAdmin() {
                 highlights: service.highlights || '',
                 order: service.order || 0,
                 isActive: service.isActive,
+                showOnHome: service.showOnHome || false,
                 gallery: service.gallery || '',
             });
         } else {
@@ -112,6 +114,7 @@ export default function ServicesAdmin() {
                 highlights: '',
                 order: services.length,
                 isActive: true,
+                showOnHome: false,
                 gallery: '',
             });
         }
@@ -255,7 +258,7 @@ export default function ServicesAdmin() {
                             {/* Visualization Module */}
                             <div className="h-64 relative overflow-hidden flex-shrink-0">
                                 {service.image ? (
-                                    <img src={service.image} alt={service.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" crossOrigin="anonymous" />
+                                    <img src={service.image} alt={service.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"  />
                                 ) : (
                                     <div className="w-full h-full bg-gradient-to-br from-slate-900 to-primary-dark flex items-center justify-center">
                                         <div className="opacity-10 group-hover:scale-150 transition-transform duration-700">
@@ -274,6 +277,12 @@ export default function ServicesAdmin() {
                                     <span className={`px-4 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-widest backdrop-blur-md border border-white/20 shadow-xl ${service.isActive ? 'bg-emerald-500/90 text-white' : 'bg-slate-500/90 text-white'}`}>
                                         {service.isActive ? 'OPERATIONAL' : 'DRAFT'}
                                     </span>
+                                    {service.showOnHome && (
+                                        <span className="px-4 py-1.5 bg-accent text-white rounded-xl text-[9px] font-black uppercase tracking-widest backdrop-blur-md border border-white/20 shadow-xl flex items-center gap-2">
+                                            <SparklesIcon className="w-3 h-3" />
+                                            HOME FEATURED
+                                        </span>
+                                    )}
                                 </div>
 
                                 <div className="absolute bottom-8 left-10 right-10">
@@ -296,7 +305,7 @@ export default function ServicesAdmin() {
                                         <div className="flex -space-x-3">
                                             {service.gallery.split(';').slice(0, 3).map((url: string, i: number) => (
                                                 <div key={i} className="w-10 h-10 rounded-xl overflow-hidden border-2 border-white shadow-sm hover:z-10 transition-transform hover:scale-110">
-                                                    <img src={url} className="w-full h-full object-cover" crossOrigin="anonymous" />
+                                                    <img src={url} className="w-full h-full object-cover"  />
                                                 </div>
                                             ))}
                                             {service.gallery.split(';').length > 3 && (
@@ -469,7 +478,7 @@ export default function ServicesAdmin() {
                                         <div className="relative w-48 h-48 rounded-full overflow-hidden border-4 border-slate-50 shadow-xl group bg-slate-100 flex items-center justify-center">
                                             {formData.headImage ? (
                                                 <>
-                                                    <img src={formData.headImage} alt="Head" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" crossOrigin="anonymous" />
+                                                    <img src={formData.headImage} alt="Head" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"  />
                                                     <div className="absolute inset-0 bg-slate-900/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center pointer-events-none">
                                                         <span className="text-[10px] font-black text-white px-3 py-1 bg-black/50 rounded-full mt-2">Change Image</span>
                                                     </div>
@@ -585,7 +594,7 @@ export default function ServicesAdmin() {
                                     </div>
                                     {formData.image ? (
                                         <div className="relative h-64 rounded-[3rem] overflow-hidden group shadow-2xl">
-                                            <img src={formData.image} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" crossOrigin="anonymous" />
+                                            <img src={formData.image} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000"  />
                                             <div className="absolute inset-0 bg-slate-900/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                                                 <button type="button" onClick={() => setFormData({ ...formData, image: '' })} className="px-10 py-4 bg-red-600/90 text-white rounded-2xl text-[11px] font-black uppercase tracking-widest hover:bg-red-500 transition-all shadow-2xl">
                                                     PURGE ASSET
@@ -613,7 +622,7 @@ export default function ServicesAdmin() {
                                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                                         {formData.gallery && formData.gallery.split(';').map((url, idx) => (
                                             <div key={idx} className="relative aspect-square rounded-[1.5rem] overflow-hidden group shadow-xl">
-                                                <img src={url} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" crossOrigin="anonymous" />
+                                                <img src={url} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"  />
                                                 <div className="absolute inset-0 bg-red-600/80 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center cursor-pointer" onClick={() => removeGalleryImage(url)}>
                                                     <TrashIcon className="w-5 h-5 text-white" />
                                                 </div>
@@ -649,6 +658,17 @@ export default function ServicesAdmin() {
                                     >
                                         <option value="true">✅ AUTHORIZED / OPERATIONAL</option>
                                         <option value="false">⚠️ RESTRICTED / DRAFT</option>
+                                    </select>
+                                </div>
+                                <div className="space-y-4">
+                                    <label className="text-[11px] font-black uppercase tracking-[0.3em] text-slate-400 ml-2">Home Page Visibility Status</label>
+                                    <select
+                                        value={formData.showOnHome ? 'true' : 'false'}
+                                        onChange={(e) => setFormData({ ...formData, showOnHome: e.target.value === 'true' })}
+                                        className="w-full px-8 py-6 bg-slate-50 border-0 rounded-[2rem] focus:ring-[10px] focus:ring-primary/5 text-[15px] font-bold outline-none appearance-none"
+                                    >
+                                        <option value="true">✅ FEATURE ON HOME PAGE</option>
+                                        <option value="false">❌ HIDE FROM HOME PAGE</option>
                                     </select>
                                 </div>
                             </div>

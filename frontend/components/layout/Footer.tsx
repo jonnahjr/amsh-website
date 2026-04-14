@@ -43,15 +43,15 @@ export default function Footer() {
     const siteDescription = getSetting('site_description', 'Specialized public mental health institution established in 1930 E.C. Providing comprehensive, compassionate psychiatric care for over 80 years.');
     const siteAddress = getSetting('address', 'Addis Ababa, Ethiopia');
     const sitePhone = getSetting('contact_phone', '+251-111-868-53-85');
-    const siteEmail = getSetting('contact_email', 'info@emsh.gov.et');
+    const siteEmail = getSetting('contact_email', 'info@amsh.gov.et');
     const siteHours = getSetting('working_hours', 'Mon - Fri: 2:30 AM - 10:00 AM');
     const siteEmergency = getSetting('emergency_phone', '991');
     const siteLogo = getSetting('site_logo', '');
 
     // Social Links
-    const facebookUrl = getSetting('facebook_url', 'https://facebook.com/amsh.gov.et');
+    const facebookUrl = getSetting('facebook_url', 'https://www.facebook.com/100064026784319');
     const twitterUrl = getSetting('twitter_url', 'https://twitter.com/amsh_hospital');
-    const youtubeUrl = getSetting('youtube_url', 'https://youtube.com');
+    const youtubeUrl = getSetting('youtube_url', 'https://www.youtube.com/@st.amanuelmentalspecialize6962');
 
     return (
         <footer className="bg-gray-900 text-gray-300">
@@ -190,8 +190,6 @@ export default function Footer() {
                         <span className="text-gray-500 text-sm">Yonas Bogale | AMSH IT Department</span>
                         <span className="text-gray-600 mx-2">|</span>
                         <a href="/privacy" className="text-gray-500 text-sm hover:text-gray-300 transition-colors">Privacy Policy</a>
-                        <span className="text-gray-600 mx-2">|</span>
-                        <a href="/admin" className="text-gray-500 text-sm hover:text-gray-300 transition-colors">Admin</a>
                     </div>
                 </div>
             </div>

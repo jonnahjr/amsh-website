@@ -6,7 +6,7 @@ import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import EmergencyBanner from '@/components/ui/EmergencyBanner';
 import ChatbotButton from '@/components/chatbot/ChatbotButton';
-import { departmentsAPI, serviceCategoriesAPI } from '@/lib/api';
+import { departmentsAPI, serviceCategoriesAPI, resolveImageUrl, sanitizeIcon } from '@/lib/api';
 import { BriefcaseIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 
 export default function ServicesPage() {
@@ -157,28 +157,30 @@ export default function ServicesPage() {
                                         {/* Image Header */}
                                         {cat.image ? (
                                             <img
-                                                src={cat.image}
+                                                src={resolveImageUrl(cat.image)}
                                                 alt={cat.name}
                                                 className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                                                crossOrigin="anonymous"
+                                                
                                             />
                                         ) : (
                                             <div className={`absolute inset-0 bg-gradient-to-br ${cat.gradient || 'from-blue-200 to-blue-100'} flex flex-col items-center justify-center`}>
                                                 <span className="text-[50px] opacity-[0.1] text-blue-900 group-hover:scale-110 transition-transform duration-500 leading-none select-none">
-                                                    {cat.icon}
+                                                    {sanitizeIcon(cat.icon)}
                                                 </span>
                                                 <p className="text-[9px] font-black uppercase tracking-widest text-blue-900/10 mt-2">Category Photo</p>
                                             </div>
                                         )}
 
+
+
                                         {/* Icon badge - Now floats between image and content */}
                                         <div className="absolute -bottom-6 left-6 w-14 h-14 rounded-2xl bg-white border border-gray-100 flex items-center justify-center text-2xl shadow-md z-10 group-hover:-translate-y-1 transition-transform duration-300">
-                                            {cat.icon}
+                                            {sanitizeIcon(cat.icon)}
                                         </div>
 
                                         {/* Count badge */}
                                         <div className="absolute top-4 right-4 px-3 py-1 bg-white/80 backdrop-blur-md border border-gray-200 rounded-lg text-[9px] font-black text-gray-700 uppercase tracking-widest shadow-sm">
-                                            {loading ? '…' : `${serviceCounts[cat.slug] || 0} svc`}
+                                            {loading ? '…' : `${serviceCounts[cat.slug] || 0} Sub-services`}
                                         </div>
                                     </div>
 

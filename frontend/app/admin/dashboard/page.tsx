@@ -22,17 +22,24 @@ import {
     SparklesIcon,
     MegaphoneIcon,
     Cog6ToothIcon,
+    ExclamationTriangleIcon,
 } from '@heroicons/react/24/outline';
 
 export default function AdminDashboard() {
     const [data, setData] = useState<any>(null);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
     const [activeTab, setActiveTab] = useState<'OVERVIEW' | 'ATTACHMENTS' | 'CPD'>('OVERVIEW');
 
     useEffect(() => {
+        setLoading(true);
+        setError(null);
         analyticsAPI.getOverview()
             .then(res => setData(res.data))
-            .catch(() => { })
+            .catch((err) => {
+                console.error('Dashboard error:', err);
+                setError('Unable to synchronize with the institutional database. Please verify system connectivity.');
+            })
             .finally(() => setLoading(false));
     }, []);
 
@@ -53,7 +60,20 @@ export default function AdminDashboard() {
     }
 
     return (
-        <div className="space-y-10 pb-20">
+        <div className="space-y-12 pb-20 animate-in fade-in duration-700">
+            {/* --- ERROR ALERT --- */}
+            {error && (
+                <div className="bg-red-500/10 border border-red-500/20 text-red-700 p-8 rounded-[2rem] flex items-center gap-6 animate-in fade-in slide-in-from-top-4">
+                    <div className="w-12 h-12 bg-red-100 rounded-2xl flex items-center justify-center flex-shrink-0">
+                        <ExclamationTriangleIcon className="w-6 h-6 text-red-600" />
+                    </div>
+                    <div>
+                        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-red-500 mb-1">System Intelligence Failure</p>
+                        <p className="font-bold text-lg">{error}</p>
+                    </div>
+                </div>
+            )}
+
             {/* --- HERO HEADER --- */}
             <div className="relative group overflow-hidden bg-white border border-slate-200/60 p-10 rounded-[2.5rem] shadow-[0_8px_30px_rgb(0,0,0,0.02)] transition-all hover:shadow-[0_20px_50px_rgba(27,79,138,0.05)]">
                 <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary/5 to-transparent pointer-events-none transition-opacity group-hover:opacity-80" />

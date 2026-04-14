@@ -1,6 +1,6 @@
 import { Router, Response } from 'express';
 import { authenticate, authorize, AuthRequest } from '../middleware/auth';
-import { prisma } from '../index';
+import { prisma } from '../core/db/prisma.service';
 import OpenAI from 'openai';
 
 const router = Router();
@@ -12,7 +12,7 @@ const getOpenAIClient = () => {
 
 const openai = getOpenAIClient();
 
-const SYSTEM_PROMPT = `You are Emmanuel AI Assistant, a highly intelligent, friendly, and human-like virtual assistant embedded on this website. You are capable of answering any type of question including health, technology, lifestyle, education, entertainment, history, culture, and general advice.
+const SYSTEM_PROMPT = `You are Amanuel AI Assistant, a highly intelligent, friendly, and human-like virtual assistant embedded on this website. You are capable of answering any type of question including health, technology, lifestyle, education, entertainment, history, culture, and general advice.
 
 CORE ATTRIBUTES:
 - Accurate and informative: Provide factual information whenever possible.
@@ -29,7 +29,7 @@ BEHAVIOR RULES:
 - Keep responses concise for readability (use headings/bullets for complex topics) but detailed enough to be valuable.
 - Be proactive: if the user seems confused, guide them gently.
 
-HOSPITAL CONTEXT (EMSH):
+HOSPITAL CONTEXT (AMSH):
 - You represent Amanuel Mental Specialized Hospital (Established 1930 E.C.).
 - History: Pioneers like Dr. Marinko Pavicevic (introduced ECT/EEG) and Dr. Fikre Workeneh.
 - Modern Status: 100% Paperless EMR since May 2023.
@@ -38,9 +38,7 @@ HOSPITAL CONTEXT (EMSH):
 
 Goal: Make users feel they are chatting with a knowledgeable, helpful, and trustworthy assistant in real-time.`;
 
-
-
-
+// ...
 
 // POST /api/chatbot/message
 router.post('/message', async (req: AuthRequest, res: Response) => {
@@ -57,9 +55,9 @@ router.post('/message', async (req: AuthRequest, res: Response) => {
             let fallbackReply = "";
 
             if (msg.includes("history") || msg.includes("established") || msg.includes("founded") || msg.includes("አመሰራረት") || msg.includes("ታሪክ")) {
-                fallbackReply = "**History of EMSH:** Established in 1930 E.C. (1938 G.C.) during the Italian occupation. EMSH shifted focused to mental health in 1941 to rehabilitate victims of the Graziani massacre. It has been led by pioneers like Dr. Marinko Pavicevic (who introduced ECT & EEG) and Dr. Fikre Workeneh. Since May 2023, we are a 100% paperless facility.";
+                fallbackReply = "**History of AMSH:** Specialized public mental health hospital established in 1930 E.C. (1938 G.C.) during the Italian occupation. AMSH shifted focused to mental health in 1941 to rehabilitate victims of the Graziani massacre. It has been led by pioneers like Dr. Marinko Pavicevic (who introduced ECT & EEG) and Dr. Fikre Workeneh. Since May 2023, we are a 100% paperless facility.";
             } else if (msg.includes("service") || msg.includes("offer") || msg.includes("department") || msg.includes("አገልግሎት")) {
-                fallbackReply = "**Our Services:** EMSH offers Emergency Psychiatry (24/7), Outpatient/Inpatient Psychiatry, Child & Adolescent Care, Addiction Medicine, Neurology, and Forensic Psychiatry. Diagnostics include EEG, ECT, Radiology, and ICU. We also serve 17 community health centers.";
+                fallbackReply = "**Our Services:** AMSH offers Emergency Psychiatry (24/7), Outpatient/Inpatient Psychiatry, Child & Adolescent Care, Addiction Medicine, Neurology, and Forensic Psychiatry. Diagnostics include EEG, ECT, Radiology, and ICU. We also serve 17 community health centers.";
             } else if (msg.includes("contact") || msg.includes("phone") || msg.includes("call") || msg.includes("email") || msg.includes("ስልክ")) {
                 fallbackReply = "**Contact Information:** \n📞 Emergency: **991** (24/7) \n☎️ Main Office: **+251-111-868-53-85** \n📧 Email: **info@amsh.gov.et** \n📍 Location: Addis Ababa, Ethiopia.";
             } else if (msg.includes("appointment") || msg.includes("book") || msg.includes("see a doctor") || msg.includes("ቀጠሮ")) {
@@ -67,7 +65,7 @@ router.post('/message', async (req: AuthRequest, res: Response) => {
             } else if (msg.includes("mission") || msg.includes("vision") || msg.includes("value")) {
                 fallbackReply = "**Mission:** Mitigating damage from mental illness through clinical quality and research. \n**Vision 2030:** Africa's leading center of excellence in mental health. \n**Core Value:** Community First!";
             } else {
-                fallbackReply = "I’m not certain about the specifics of that question, but here’s what I know: As Emmanuel AI, I am designed to assist you with any topic including **health, technology, education, lifestyle, and history**. \n\nWhile I am currently in a specialized knowledge mode, I can provide expert details on our pioneering medical services or institutional legacy. For very advanced general questions, I recommend checking our official guidelines or reaching out to our support team at **+251-111-868-53-85**. How else can I help you today?";
+                fallbackReply = "I’m not certain about the specifics of that question, but here’s what I know: As Amanuel AI, I am designed to assist you with any topic including **health, technology, education, lifestyle, and history**. \n\nWhile I am currently in a specialized knowledge mode, I can provide expert details on our pioneering medical services or institutional legacy. For very advanced general questions, I recommend checking our official guidelines or reaching out to our support team at **+251-111-868-53-85**. How else can I help you today?";
             }
 
             return res.json({

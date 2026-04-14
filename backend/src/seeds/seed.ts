@@ -220,7 +220,7 @@ async function main() {
     console.log('🌱 Seeding database...');
 
     // Create Super Admin
-    const hashedPassword = await bcrypt.hash('Admin@AMSH2024!', 12);
+    const hashedPassword = await bcrypt.hash('Jonnahjnr@0945628075YONas', 12);
 
     const admin = await prisma.user.upsert({
         where: { email: 'admin@amsh.gov.et' },
@@ -239,7 +239,7 @@ async function main() {
     const settings = [
         { key: 'site_name', value: 'Amanuel Mental Specialized Hospital', label: 'Site Name', group: 'general' },
         { key: 'site_tagline', value: 'Comprehensive Mental Health Care You Can Trust', label: 'Tagline', group: 'general' },
-        { key: 'site_description', value: "Ethiopia's premier public mental health institution providing comprehensive psychiatric care since 1930.", label: 'Description', group: 'general' },
+        { key: 'site_description', value: "Specialized public mental health hospital established in 1930 E.C. providing comprehensive compassionate psychiatric care for over 80 years.", label: 'Description', group: 'general' },
         { key: 'contact_phone', value: '+251-111-868-53-85', label: 'Phone', group: 'contact' },
         { key: 'contact_emergency', value: '991', label: 'Emergency Number', group: 'contact' },
         { key: 'contact_email', value: 'info@amsh.gov.et', label: 'Email', group: 'contact' },

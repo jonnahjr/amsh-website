@@ -188,7 +188,7 @@ export default function DepartmentCategoriesAdmin() {
                             <div key={category.id} className="bg-white rounded-[4rem] border border-slate-200/60 shadow-sm hover:shadow-2xl hover:border-primary/20 transition-all duration-700 group overflow-hidden flex flex-col animate-in slide-in-from-bottom-12" style={{ animationDelay: `${idx * 100}ms` }}>
                                 <div className="h-64 relative overflow-hidden">
                                     {category.image ? (
-                                        <img src={category.image} alt={category.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" crossOrigin="anonymous" />
+                                        <img src={category.image} alt={category.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"  />
                                     ) : (
                                         <div className={`w-full h-full bg-gradient-to-br ${category.gradient || 'from-primary-dark to-primary'} flex items-center justify-center group-hover:scale-110 transition-transform duration-1000`}>
                                             <span className="text-8xl transform group-hover:rotate-12 transition-transform">{category.icon || '🏥'}</span>
@@ -357,7 +357,7 @@ export default function DepartmentCategoriesAdmin() {
                                 </div>
                                 {formData.image && (
                                     <div className="relative h-56 rounded-[2.5rem] overflow-hidden group/img shadow-2xl">
-                                        <img src={formData.image} className="w-full h-full object-cover" crossOrigin="anonymous" />
+                                        <img src={formData.image} className="w-full h-full object-cover"  />
                                         <div className="absolute inset-0 bg-slate-950/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-sm">
                                             <button
                                                 type="button"

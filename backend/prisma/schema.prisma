@@ -1,19 +1,12 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-1.1.x", "debian-openssl-3.0.x", "linux-musl", "linux-musl-openssl-3.0.x"]
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "mysql"
+  url      = env("DATABASE_URL")
 }
-
-// ============================================================
-// USERS & AUTH
-// ============================================================
-
 
 model User {
   id           String   @id @default(cuid())
@@ -27,8 +20,6 @@ model User {
   refreshToken String?
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
-
-  // Relations
   posts       Post[]
   jobs        Job[]
   research    Research[]
@@ -37,15 +28,11 @@ model User {
   @@map("users")
 }
 
-// ============================================================
-// SITE SETTINGS (CMS)
-// ============================================================
-
 model SiteSetting {
   id        String   @id @default(cuid())
   key       String   @unique
-  value     String
-  type      String   @default("text") // text, image, json, boolean
+  value     String   @db.Text
+  type      String   @default("text") 
   group     String   @default("general")
   label     String
   createdAt DateTime @default(now())
@@ -54,16 +41,11 @@ model SiteSetting {
   @@map("site_settings")
 }
 
-// ============================================================
-// PAGES (Page Builder CMS)
-// ============================================================
-
-
 model Page {
   id          String     @id @default(cuid())
   title       String
   slug        String     @unique
-  content     String
+  content     String     @db.Text
   metaTitle   String?
   metaDesc    String?
   status      String @default("DRAFT")
@@ -76,10 +58,6 @@ model Page {
 
   @@map("pages")
 }
-
-// ============================================================
-// NAVIGATION
-// ============================================================
 
 model NavItem {
   id       String    @id @default(cuid())
@@ -96,20 +74,15 @@ model NavItem {
   @@map("nav_items")
 }
 
-// ============================================================
-// MEDIA LIBRARY
-// ============================================================
-
-
 model Media {
   id         String    @id @default(cuid())
   filename   String
   originalName String
-  url        String
-  publicId   String?   // Cloudinary public ID
+  url        String    @db.Text
+  publicId   String?   
   type       String @default("IMAGE")
   mimeType   String
-  size       Int       // bytes
+  size       Int       
   width      Int?
   height     Int?
   alt        String?
@@ -120,12 +93,6 @@ model Media {
 
   @@map("media")
 }
-
-// ============================================================
-// BLOGS / NEWS / ANNOUNCEMENTS
-// ============================================================
-
-
 
 model Category {
   id        String   @id @default(cuid())
@@ -142,8 +109,8 @@ model Post {
   id          String     @id @default(cuid())
   title       String
   slug        String     @unique
-  excerpt     String?
-  content     String
+  excerpt     String?    @db.Text
+  content     String     @db.Text
   featuredImage String?
   type        String   @default("BLOG")
   status      String @default("DRAFT")
@@ -151,7 +118,7 @@ model Post {
   author      User       @relation(fields: [authorId], references: [id])
   categoryId  String?
   category    Category?  @relation(fields: [categoryId], references: [id])
-  tags        String? // JSON array
+  tags        String?  @db.Text
   views       Int        @default(0)
   isFeatured  Boolean    @default(false)
   metaTitle   String?
@@ -159,38 +126,35 @@ model Post {
   publishedAt DateTime?
   eventDate   DateTime?
   eventLocation String?
-  gallery     String? // JSON array
-  externalId  String?    @unique // To handle sync from FB/External sources
+  gallery     String?  @db.Text
+  externalId  String?    @unique 
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
 
   @@map("posts")
 }
 
-// ============================================================
-// SERVICES & DEPARTMENTS
-// ============================================================
-
 model Department {
   id          String   @id @default(cuid())
   name        String
   slug        String   @unique
-  description String
+  description String   @db.Text
   image       String?
   icon        String?
   headName    String?
-  headTitle   String?   // e.g. "Director", "Chief Medical Officer"
-  headProfession String? // e.g. "PhD, Clinical Psychologist"
+  headTitle   String?   
+  headProfession String? 
   headImage   String?
   categoryId  String?
   category    DepartmentCategory? @relation(fields: [categoryId], references: [id])
-  categoryName String?  @default("Clinical Departments") // Fallback/Legacy string field
-  vision      String?
-  mission     String?
-  goal        String?
+  categoryName String?  @default("Clinical Departments") 
+  vision      String?  @db.Text
+  mission      String?  @db.Text
+  goal        String?  @db.Text
   order       Int      @default(0)
   isActive    Boolean  @default(true)
-  gallery     String?  // Semicolon separated image URLs
+  showOnHome  Boolean  @default(false)
+  gallery     String?  @db.Text
   services    Service[]
   doctors     Doctor[]
   createdAt   DateTime @default(now())
@@ -206,7 +170,7 @@ model DepartmentCategory {
   description String?
   image       String?
   icon        String?
-  gradient    String?  // e.g. "from-blue-900 to-blue-700"
+  gradient    String?  
   order       Int      @default(0)
   isActive    Boolean  @default(true)
   departments Department[]
@@ -220,8 +184,8 @@ model Service {
   id           String     @id @default(cuid())
   name         String
   slug         String     @unique
-  description  String
-  content      String?
+  description  String     @db.Text
+  content      String?    @db.Text
   image        String?
   icon         String?
   departmentId String?
@@ -230,13 +194,14 @@ model Service {
   headTitle    String?
   headProfession String?
   headImage    String?
-  vision       String?
-  mission      String?
-  goal         String?
-  highlights   String?    // JSON string for [{label, value}]
+  vision       String?   @db.Text
+  mission      String?   @db.Text
+  goal         String?   @db.Text
+  highlights   String?   @db.Text
   order        Int        @default(0)
   isActive     Boolean    @default(true)
-  gallery      String?    // Semicolon separated image URLs
+  showOnHome   Boolean    @default(false)
+  gallery      String?    @db.Text
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
 
@@ -247,31 +212,27 @@ model ServiceCategory {
   id          String   @id @default(cuid())
   name        String
   slug        String   @unique
-  description String
+  description String   @db.Text
   image       String?
   icon        String?
-  gradient    String?  // e.g. "from-blue-950 to-blue-800"
-  accentColor String?  // e.g. "bg-blue-900"
+  gradient    String?  
+  accentColor String?  
   order       Int      @default(0)
   isActive    Boolean  @default(true)
-  deptSlugs   String?  // Semicolon separated department slugs (static mapping fallback)
+  deptSlugs   String?  
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
   @@map("service_categories")
 }
 
-// ============================================================
-// DOCTORS / STAFF
-// ============================================================
-
 model Doctor {
   id           String     @id @default(cuid())
   name         String
-  title        String     // Dr., Prof., etc.
+  title        String     
   specialty    String
   qualification String
-  bio          String?
+  bio          String?    @db.Text
   image        String?
   email        String?
   phone        String?
@@ -286,49 +247,91 @@ model Doctor {
   @@map("doctors")
 }
 
-// ============================================================
-// RESEARCH
-// ============================================================
-
-
 model Research {
-  id          String         @id @default(cuid())
-  title       String
-  abstract    String
-  authors     String? // JSON array
-  keywords    String? // JSON array
-  document    String?        // File URL
-  category    String
-  status      String @default("PENDING")
-  submittedBy String?
-  user        User?          @relation(fields: [submittedBy], references: [id])
-  publishedAt DateTime?
-  journal     String?
-  doi         String?
-  views       Int            @default(0)
-  downloads   Int            @default(0)
-  createdAt   DateTime       @default(now())
-  updatedAt   DateTime       @updatedAt
+  id               String         @id @default(cuid())
+  // Investigator Details
+  investigatorName String?        
+  email            String?        
+  phone            String?        
+  institution      String?        
+  department       String?        
+  position         String?        
+
+  // Research Metadata
+  title            String
+  abstract         String?        @db.Text
+  researchType     String?        // Clinical / Survey / Review / Experimental
+  studyArea        String?        // Psychiatry / Neurology / Public Health
+  studyLocation    String?        
+  startDate        DateTime?      
+  endDate          DateTime?      
+  keywords         String? 
+
+  // Data Collection Details
+  patientsInvolved     Boolean?   @default(false)
+  participantType      String?    // Inpatients / Outpatients / Staff
+  dataCollectionMethod String?    // Interview / Questionnaire / Clinical data
+  sampleSize           String?
+
+  // Co-Investigators & Supervisor
+  coInvestigators      String?    @db.Text // JSON string
+  supervisorName       String?    
+  supervisorEmail      String?    
+  supervisorInstitution String?   
+  
+  // Corresponding Author
+  correspondingAuthorName  String?
+  correspondingAuthorEmail String?
+
+  // Documents & Ethics
+  ethicalLetter        String?        
+  universityLetter     String?        
+  proposal             String?        
+  coInvestigatorFile   String?      // Optional file for co-investigators
+  publishedEthical     String?        
+  publishedProposal    String?       
+  document             String?
+  ethicsApproved       Boolean?     @default(false)
+  ethicsCommittee      String?
+  ethicsApprovalNumber String?
+  fundingSource        String?
+
+  // Tracking & Status
+  submissionId     String?        @unique // Readable ID for user
+  status           String         @default("PENDING") // PENDING, UNDER_REVIEW, APPROVED, REJECTED, PUBLISHED
+  reviewerComments String?        @db.Text
+  
+  // Additional fields
+  category         String         @default("General")
+  submittedBy      String?
+  user             User?          @relation(fields: [submittedBy], references: [id])
+  publishedAt      DateTime?
+  journal          String?
+  year             String?
+  doi              String?
+  volume           String?
+  issue            String?
+  findingsSummary  String?        @db.Text
+  views            Int            @default(0)
+  downloads        Int            @default(0)
+  requestDate      DateTime?      
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
 
   @@map("research")
 }
 
-// ============================================================
-// CPD (Continuing Professional Development)
-// ============================================================
-
-
 model CPDCourse {
   id           String       @id @default(cuid())
   title        String
-  description  String
-  content      String?
+  description  String       @db.Text
+  content      String?      @db.Text
   instructor   String
-  duration     String       // e.g. "2 days", "8 hours"
+  duration     String       
   category     String
   level        String       @default("Intermediate")
   image        String?
-  documents    String? // JSON array
+  documents    String?  @db.Text
   startDate    DateTime?
   endDate      DateTime?
   location     String?
@@ -354,21 +357,15 @@ model CPDRegistration {
   phone      String
   profession String
   workplace  String
-  category   String    @default("PERSONAL") // GOVERNMENT, PRIVATE, PERSONAL
+  category   String    @default("PERSONAL") 
   licenseNo  String?
-  status     String    @default("PENDING") // PENDING, APPROVED, REJECTED, COMPLETED
-  certificate String?  // Certificate URL
+  status     String    @default("PENDING") 
+  certificate String?  
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
 
   @@map("cpd_registrations")
 }
-
-// ============================================================
-// CAREERS / JOBS
-// ============================================================
-
-
 
 model Job {
   id           String      @id @default(cuid())
@@ -376,9 +373,9 @@ model Job {
   department   String
   type         String     @default("FULL_TIME")
   location     String
-  description  String
-  requirements String
-  benefits     String?
+  description  String      @db.Text
+  requirements String      @db.Text
+  benefits     String?     @db.Text
   salary       String?
   deadline     DateTime
   status       String   @default("DRAFT")
@@ -399,9 +396,9 @@ model JobApplication {
   lastName    String
   email       String
   phone       String
-  coverLetter String?
+  coverLetter String?  @db.Text
   cvUrl       String
-  status      String   @default("PENDING") // PENDING, REVIEWED, SHORTLISTED, REJECTED, HIRED
+  status      String   @default("PENDING") 
   notes       String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -409,15 +406,11 @@ model JobApplication {
   @@map("job_applications")
 }
 
-// ============================================================
-// FORMS & SURVEYS
-// ============================================================
-
 model Form {
   id          String           @id @default(cuid())
   title       String
   description String?
-  fields      String
+  fields      String           @db.Text
   isActive    Boolean          @default(true)
   isPublic    Boolean          @default(true)
   submissions FormSubmission[]
@@ -431,7 +424,7 @@ model FormSubmission {
   id        String   @id @default(cuid())
   formId    String
   form      Form     @relation(fields: [formId], references: [id])
-  data      String
+  data      String   @db.Text
   userId    String?
   user      User?    @relation(fields: [userId], references: [id])
   ipAddress String?
@@ -441,11 +434,6 @@ model FormSubmission {
 
   @@map("form_submissions")
 }
-
-// ============================================================
-// APPOINTMENTS
-// ============================================================
-
 
 model Appointment {
   id          String            @id @default(cuid())
@@ -466,10 +454,6 @@ model Appointment {
   @@map("appointments")
 }
 
-// ============================================================
-// NEWSLETTER
-// ============================================================
-
 model NewsletterSubscriber {
   id          String   @id @default(cuid())
   email       String   @unique
@@ -480,27 +464,19 @@ model NewsletterSubscriber {
   @@map("newsletter_subscribers")
 }
 
-// ============================================================
-// CONTACT MESSAGES
-// ============================================================
-
 model ContactMessage {
   id        String   @id @default(cuid())
   name      String
   email     String
   phone     String?
   subject   String
-  message   String
+  message   String   @db.Text
   isRead    Boolean  @default(false)
   isReplied Boolean  @default(false)
   createdAt DateTime @default(now())
 
   @@map("contact_messages")
 }
-
-// ============================================================
-// ANALYTICS
-// ============================================================
 
 model PageView {
   id        String   @id @default(cuid())
@@ -526,15 +502,11 @@ model VisitorStat {
   @@map("visitor_stats")
 }
 
-// ============================================================
-// TESTIMONIALS
-// ============================================================
-
 model Testimonial {
   id        String   @id @default(cuid())
   name      String
   role      String?
-  content   String
+  content   String   @db.Text
   rating    Int      @default(5)
   image     String?
   isActive  Boolean  @default(true)
@@ -544,14 +516,10 @@ model Testimonial {
   @@map("testimonials")
 }
 
-// ============================================================
-// FAQ
-// ============================================================
-
 model FAQ {
   id        String   @id @default(cuid())
   question  String
-  answer    String
+  answer    String   @db.Text
   category  String?
   order     Int      @default(0)
   isActive  Boolean  @default(true)

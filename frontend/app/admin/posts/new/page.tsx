@@ -411,7 +411,7 @@ export default function PostEditorPage() {
                                         <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
                                             {gallery.map((url, i) => (
                                                 <div key={i} className="relative group aspect-square rounded-2xl overflow-hidden border border-slate-100 shadow-sm transition-all hover:shadow-xl">
-                                                    <img src={url} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" crossOrigin="anonymous" />
+                                                    <img src={url} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"  />
                                                     <div className="absolute inset-0 bg-slate-900/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                                                         <button
                                                             type="button"
@@ -543,7 +543,7 @@ export default function PostEditorPage() {
                         >
                             {form.featuredImage ? (
                                 <>
-                                    <img src={form.featuredImage} alt="Master" className="w-full h-full object-cover" crossOrigin="anonymous" />
+                                    <img src={form.featuredImage} alt="Master" className="w-full h-full object-cover"  />
                                     <div className="absolute inset-0 bg-slate-900/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-4">
                                         <label className="px-8 py-3 bg-white text-slate-900 rounded-xl text-[10px] font-black uppercase tracking-widest cursor-pointer hover:bg-white active:scale-95 transition-all">
                                             Replace

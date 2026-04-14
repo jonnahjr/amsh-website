@@ -107,6 +107,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     const router = useRouter();
     const pathname = usePathname();
     const [sidebarOpen, setSidebarOpen] = useState(true);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [showResults, setShowResults] = useState(false);
 
     useEffect(() => {
         if (!loading && !user && pathname !== '/admin/login') {
@@ -241,13 +243,105 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     </div>
 
                     <div className="flex items-center gap-4">
-                        <div className="hidden lg:flex items-center gap-2 px-4 py-2 bg-slate-50 rounded-xl border border-slate-100 group">
-                            <MagnifyingGlassIcon className="w-4 h-4 text-slate-400 group-focus-within:text-primary" />
-                            <input
-                                type="text"
-                                placeholder="Search everything..."
-                                className="bg-transparent border-none focus:ring-0 text-sm placeholder:text-slate-400 w-48 font-medium"
-                            />
+                        <div className="relative">
+                            <div className="hidden lg:flex items-center gap-2 px-4 py-2 bg-slate-50 rounded-xl border border-slate-100 group focus-within:ring-2 focus-within:ring-primary/20 focus-within:border-primary/30 transition-all">
+                                <MagnifyingGlassIcon className={`w-4 h-4 transition-colors ${searchQuery ? 'text-primary' : 'text-slate-400'}`} />
+                                <input
+                                    type="text"
+                                    placeholder="Search everything..."
+                                    className="bg-transparent border-none focus:ring-0 text-sm placeholder:text-slate-400 w-48 font-medium"
+                                    value={searchQuery}
+                                    onChange={(e) => {
+                                        setSearchQuery(e.target.value);
+                                        setShowResults(true);
+                                    }}
+                                    onKeyDown={(e) => {
+                                        if (e.key === 'Escape') setShowResults(false);
+                                    }}
+                                />
+                            </div>
+
+                            {/* Global Search Results Dropdown */}
+                            {showResults && searchQuery && (
+                                <div className="absolute top-full mt-3 right-0 w-[400px] bg-white rounded-3xl shadow-[0_20px_70px_rgba(0,0,0,0.15)] border border-slate-100 overflow-hidden z-[60] animate-in fade-in slide-in-from-top-4 duration-300">
+                                    <div className="p-4 border-b border-slate-50 bg-slate-50/50 flex items-center justify-between">
+                                        <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-2">Global Command Results</h4>
+                                        <button onClick={() => setShowResults(false)} className="p-1 hover:bg-slate-200 rounded-lg transition-colors">
+                                            <ArrowLeftOnRectangleIcon className="w-4 h-4 text-slate-400 rotate-180" />
+                                        </button>
+                                    </div>
+                                    <div className="max-h-[450px] overflow-y-auto p-2 no-scrollbar">
+                                        {menuItems.flatMap(g => 
+                                            g.items.flatMap(item => {
+                                                const matches = [];
+                                                if (item.label.toLowerCase().includes(searchQuery.toLowerCase())) {
+                                                    matches.push({ label: item.label, href: item.href, icon: item.icon, group: g.group });
+                                                }
+                                                item.children?.forEach(child => {
+                                                    if (child.label.toLowerCase().includes(searchQuery.toLowerCase())) {
+                                                        matches.push({ label: child.label, href: child.href, icon: child.icon || item.icon, group: `${g.group} > ${item.label}` });
+                                                    }
+                                                });
+                                                return matches;
+                                            })
+                                        ).length > 0 ? (
+                                            menuItems.flatMap(g => 
+                                                g.items.flatMap(item => {
+                                                    const matches = [];
+                                                    if (item.label.toLowerCase().includes(searchQuery.toLowerCase())) {
+                                                        matches.push({ label: item.label, href: item.href, icon: item.icon, group: g.group });
+                                                    }
+                                                    item.children?.forEach(child => {
+                                                        if (child.label.toLowerCase().includes(searchQuery.toLowerCase())) {
+                                                            matches.push({ label: child.label, href: child.href, icon: child.icon || item.icon, group: `${g.group} > ${item.label}` });
+                                                        }
+                                                    });
+                                                    return matches;
+                                                })
+                                            ).map((result, idx) => (
+                                                <Link
+                                                    key={idx}
+                                                    href={result.href || '#'}
+                                                    onClick={() => {
+                                                        setSearchQuery('');
+                                                        setShowResults(false);
+                                                    }}
+                                                    className="flex items-center gap-4 p-4 rounded-2xl hover:bg-slate-50 border border-transparent hover:border-slate-100 transition-all group"
+                                                >
+                                                    <div className="w-10 h-10 bg-slate-100 rounded-xl flex items-center justify-center text-slate-400 group-hover:bg-primary group-hover:text-white transition-all shadow-sm">
+                                                        <result.icon className="w-5 h-5" />
+                                                    </div>
+                                                    <div className="flex-1">
+                                                        <p className="text-sm font-bold text-slate-900 leading-none">{result.label}</p>
+                                                        <p className="text-[10px] text-slate-400 font-medium uppercase tracking-widest mt-1.5">{result.group}</p>
+                                                    </div>
+                                                    <div className="text-[10px] h-6 px-2 bg-slate-100 rounded-md border border-slate-200 flex items-center justify-center text-slate-400 font-black uppercase tracking-tighter group-hover:bg-primary/10 group-hover:text-primary transition-all">
+                                                        Jump →
+                                                    </div>
+                                                </Link>
+                                            ))
+                                        ) : (
+                                            <div className="py-12 px-6 text-center">
+                                                <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4 border border-slate-100">
+                                                    <MagnifyingGlassIcon className="w-6 h-6 text-slate-200" />
+                                                </div>
+                                                <p className="text-sm font-black text-slate-900 uppercase tracking-tight">No Commands Found</p>
+                                                <p className="text-xs text-slate-400 mt-1">Try searching for settings, news, or clinical services.</p>
+                                            </div>
+                                        )}
+                                    </div>
+                                    <div className="p-4 bg-slate-50/50 border-t border-slate-50 flex items-center justify-center gap-6">
+                                        <div className="flex items-center gap-2">
+                                            <kbd className="px-1.5 py-0.5 rounded border border-slate-200 bg-white text-[9px] font-black text-slate-400">ESC</kbd>
+                                            <span className="text-[9px] text-slate-400 font-medium uppercase tracking-widest">to close</span>
+                                        </div>
+                                        <div className="flex items-center gap-2">
+                                            <kbd className="px-1.5 py-0.5 rounded border border-slate-200 bg-white text-[9px] font-black text-slate-400">↵</kbd>
+                                            <span className="text-[9px] text-slate-400 font-medium uppercase tracking-widest">to select</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
                         </div>
 
                         <div className="flex items-center gap-2">
@@ -256,7 +350,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                             <Link href="/admin/settings" className="flex items-center gap-3 pl-2 group">
                                 <div className="text-right hidden xl:block">
                                     <p className="text-sm font-bold text-slate-900 leading-none">{user.name}</p>
-                                    <p className="text-[10px] text-slate-400 font-medium uppercase tracking-widest mt-1">Super Admin</p>
+                                    <p className="text-[10px] text-slate-400 font-medium uppercase tracking-widest mt-1">{user.role.replace('_', ' ')}</p>
                                 </div>
                                 <div className="w-10 h-10 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center overflow-hidden transition-transform group-hover:scale-105">
                                     <img src={`https://ui-avatars.com/api/?name=${user.name}&background=1B4F8A&color=fff`} alt="Avatar" className="w-full h-full object-cover rounded-full" />

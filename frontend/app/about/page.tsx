@@ -77,6 +77,60 @@ export default function AboutPage() {
                     </div>
                 </section>
 
+                {/* CEO Message Section */}
+                <section className="section bg-[#F5F1E6] border-y border-gray-100">
+                    <div className="container-custom">
+                        <div className="max-w-6xl mx-auto bg-white rounded-[3rem] shadow-2xl overflow-hidden border border-gray-100 relative group/card hover:shadow-[0_20px_50px_rgba(30,58,138,0.1)] transition-all duration-500">
+                            {/* Decorative quotes */}
+                            <div className="absolute top-12 right-12 text-blue-100 opacity-40 text-9xl font-serif pointer-events-none tracking-tighter mix-blend-multiply">"</div>
+                            
+                            <div className="grid grid-cols-1 md:grid-cols-12 gap-0 relative z-10">
+                                {/* Image Placeholder Sidebar */}
+                                <div className="col-span-1 md:col-span-4 bg-gradient-to-br from-blue-950 to-blue-900 relative min-h-[400px] flex items-center justify-center p-8 text-center border-r border-blue-800">
+                                    <div className="absolute inset-0 bg-blue-900/20" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(255,255,255,0.1) 1px, transparent 0)', backgroundSize: '24px 24px' }}></div>
+                                    <div className="relative z-10 flex flex-col items-center w-full">
+                                        {/* CEO Image Placeholder */}
+                                        <div className="w-40 h-40 rounded-full bg-blue-100 border-[6px] border-white flex items-center justify-center mb-8 shadow-2xl relative overflow-hidden group-hover/card:scale-105 transition-transform duration-500">
+                                            <span className="text-7xl text-blue-900 group-hover/card:scale-110 transition-transform duration-300">👨‍💼</span>
+                                        </div>
+                                        <h3 className="text-2xl lg:text-3xl font-black text-white mb-2 leading-tight">Dr. Edao Fejo</h3>
+                                        <p className="text-cyan-400 text-xs font-bold uppercase tracking-[0.2em] mb-2">(Master of Public Health)</p>
+                                        <div className="w-16 h-1 bg-gradient-to-r from-cyan-500 to-blue-500 my-6 mx-auto rounded-full"></div>
+                                        <p className="text-white text-sm font-black uppercase tracking-widest bg-white/10 py-2 px-4 rounded-xl border border-white/10">Chief Executive Officer</p>
+                                        <p className="text-blue-200 text-xs mt-3 font-medium">Amanuel Mental Specialized Hospital</p>
+                                    </div>
+                                </div>
+                                
+                                {/* Message Content */}
+                                <div className="col-span-1 md:col-span-8 p-8 md:p-14 lg:p-16">
+                                    <span className="section-badge bg-blue-50 text-blue-900 border-blue-100 mb-6 font-black tracking-widest">🎙️ MESSAGE FROM THE CEO</span>
+                                    <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-8 leading-[1.2] tracking-tight">
+                                        Committed to delivering exceptional patient care through <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-700 to-cyan-500 italic">specialized mental health services.</span>
+                                    </h2>
+                                    
+                                    <div className="space-y-6 text-gray-600 leading-relaxed font-medium">
+                                        <p>
+                                            Welcome to the official website of Amanuel Mental Specialized Hospital. As one of Ethiopia's premier healthcare institutions, we are committed to delivering exceptional patient care through specialized psychiatric services, cutting-edge therapies, and a team of highly skilled professionals.
+                                        </p>
+                                        <p>
+                                            With a legacy of over 85 years, Amanuel Hospital has been a beacon of hope for patients across Ethiopia and beyond. Our unwavering commitment to innovation and quality drives us to continuously enhance our services in Emergency Psychiatry, Clinical Psychology, Neurology, Substance Addiction Treatment, Forensic Psychiatry, and Child Mental Health.
+                                        </p>
+                                        <p>
+                                            As a federal institution, Amanuel Mental Specialized Hospital is directly accountable to the Ministry of Health, playing a vital role in Ethiopia's healthcare framework. Our primary source of funding comes from the Ministry of Finance, with additional support from partners through the Ministry of Health. The hospital is governed by its management team, overseen by the Hospital Board, and ultimately accountable to the Ministry of Health.
+                                        </p>
+                                        <p>
+                                            At Amanuel, our mission is to ensure that every patient receives compassionate, comprehensive, and world-class care. We are actively working toward establishing a state-of-the-art National Mental Health Treatment Center, expanding our psychological rehabilitation programs, and strengthening our role as the leader in regional psychiatric healthcare.
+                                        </p>
+                                        <p className="font-bold text-blue-950 italic border-l-4 border-cyan-500 pl-4 py-2 mt-8 bg-blue-50/50 rounded-r-lg">
+                                            "Thank you for visiting our website. We invite you to explore our services, stay informed about our advancements, and join us in our mission to transform lives through excellence in mental healthcare."
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
                 {/* Welcome Introduction (History & Legacy) */}
                 <section className="section bg-white">
                     <div className="container-custom">
@@ -178,39 +232,41 @@ export default function AboutPage() {
                 <section className="section bg-gray-50">
                     <div className="container-custom">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-                            {/* Mission */}
-                            <div className="card p-12 border-t-8 border-blue-900 bg-white shadow-2xl">
-                                <div className="text-6xl mb-8">🎯</div>
-                                <h3 className="text-3xl font-black text-gray-900 mb-2 uppercase tracking-tight">Mission</h3>
-                                <p className="text-sm text-blue-400 font-bold mb-8 uppercase tracking-widest">ተልዕኮ</p>
-                                <div className="space-y-8">
-                                    <div className="p-6 bg-blue-50/50 rounded-2xl border border-blue-100">
-                                        <p className="font-bold text-xl text-blue-950 mb-4 leading-tight">
-                                            Mitigating damages and death due to mental illness through providing standardized and quality disease prevention, treatment, and mental rehabilitation health services and enhancing capacity building supports via researches and trainings.
-                                        </p>
-                                        <div className="w-10 h-0.5 bg-blue-200 mb-4"></div>
-                                        <p className="text-base text-gray-600 italic font-medium">
-                                            ጥራቱን የጠበቀ የበሽታ መከላከል፤ ማከም እና የተሀድሶ ጤና አገልግሎትን በመስጠት በጥናትና በምርምር የታገዘ የአቅም ግንባታ ስራ በመስራት ከአዕምሮ ህመም የተነሳ የሚመጣ ጉዳት እና ሞትን መቀነስ፡፡
-                                        </p>
-                                    </div>
+                            {/* Government Standard - Mission */}
+                            <div className="bg-white p-12 border-t-8 border-blue-900 shadow-xl rounded-2xl animate-in fade-in slide-in-from-bottom-10">
+                                <div className="text-5xl mb-8 flex items-center justify-between">
+                                    <span>🎯</span>
+                                    <span className="text-[10px] font-black text-blue-900/40 uppercase tracking-[0.3em] border border-blue-900/10 px-4 py-1.5 rounded-full">Institutional Mission</span>
+                                </div>
+                                <h3 className="text-3xl font-black text-gray-950 mb-1 uppercase tracking-tight">Mission</h3>
+                                <p className="text-sm text-blue-600 font-bold mb-8 uppercase tracking-widest pl-0.5">ተልዕኮ</p>
+                                <div className="space-y-6">
+                                    <p className="font-bold text-xl text-blue-950 leading-tight">
+                                        Mitigating damages and death due to mental illness through providing standardized and quality disease prevention, treatment, and mental rehabilitation health services and enhancing capacity building supports via researches and trainings.
+                                    </p>
+                                    <div className="h-[1px] bg-gray-100 w-full" />
+                                    <p className="text-base text-gray-600 italic font-medium leading-relaxed">
+                                        ጥራቱን የጠበቀ የበሽታ መከላከል፤ ማከም እና የተሀድሶ ጤና አገልግሎትን በመስጠት በጥናትና በምርምር የታገዘ የአቅም ግንባታ ስራ በመስራት ከአዕምሮ ህመም የተነሳ የሚመጣ ጉዳት እና ሞትን መቀነስ፡፡
+                                    </p>
                                 </div>
                             </div>
 
-                            {/* Vision */}
-                            <div className="card p-12 border-t-8 border-cyan-500 bg-white shadow-2xl">
-                                <div className="text-6xl mb-8">🔭</div>
-                                <h3 className="text-3xl font-black text-gray-900 mb-2 uppercase tracking-tight">Vision</h3>
-                                <p className="text-sm text-cyan-500 font-bold mb-8 uppercase tracking-widest">ራዕይ</p>
-                                <div className="space-y-8">
-                                    <div className="p-6 bg-cyan-50/50 rounded-2xl border border-cyan-100">
-                                        <p className="font-bold text-xl text-cyan-900 mb-4 leading-tight">
-                                            To be a center of excellence through bringing specialty services on mental health, and multifaceted health services relying on researches and trainings thematically on mental health in Africa by 2030.
-                                        </p>
-                                        <div className="w-10 h-0.5 bg-cyan-200 mb-4"></div>
-                                        <p className="text-base text-gray-600 italic font-medium">
-                                            በ2022 ዓ.ም በአፍሪካ ሁሉን አቀፍ የጤና አገልግሎት የሚሰጥ፤ በአዕምሮ ጤና ህክምና እንዲሁም በአእምሮ ጤና ምርምርና ስልጠና የልህቀት ማዕከል ሆኖ ማየት፡፡
-                                        </p>
-                                    </div>
+                            {/* Government Standard - Vision */}
+                            <div className="bg-white p-12 border-t-8 border-cyan-500 shadow-xl rounded-2xl animate-in fade-in slide-in-from-bottom-10" style={{ animationDelay: '0.1s' }}>
+                                <div className="text-5xl mb-8 flex items-center justify-between">
+                                    <span>🔭</span>
+                                    <span className="text-[10px] font-black text-cyan-600/40 uppercase tracking-[0.3em] border border-cyan-500/10 px-4 py-1.5 rounded-full">Institutional Vision</span>
+                                </div>
+                                <h3 className="text-3xl font-black text-gray-950 mb-1 uppercase tracking-tight">Vision</h3>
+                                <p className="text-sm text-cyan-600 font-bold mb-8 uppercase tracking-widest pl-0.5">ራዕይ</p>
+                                <div className="space-y-6">
+                                    <p className="font-bold text-xl text-cyan-950 leading-tight">
+                                        To be a center of excellence through bringing specialty services on mental health, and multifaceted health services relying on researches and trainings thematically on mental health in Africa by 2030.
+                                    </p>
+                                    <div className="h-[1px] bg-gray-100 w-full" />
+                                    <p className="text-base text-gray-600 italic font-medium leading-relaxed">
+                                        በ2022 ዓ.ም በአፍሪካ ሁሉን አቀፍ የጤና አገልግሎት የሚሰጥ፤ በአዕምሮ ጤና ህክምና እንዲሁም በአእምሮ ጤና ምርምርና ስልጠና የልህቀት ማዕከል ሆኖ ማየት፡፡
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -268,19 +324,8 @@ export default function AboutPage() {
                                 }
                             ].map((value) => (
                                 <div key={value.title} className="bg-white p-10 rounded-[3rem] border border-gray-100 shadow-md hover:shadow-2xl transition-all duration-500 group">
-                                    <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-3xl shadow-lg border border-gray-100 group-hover:scale-110 group-hover:bg-blue-50 transition-all duration-300 relative overflow-hidden mb-8">
-                                        {value.icon === 'logo' ? (
-                                            <video
-                                                src="/images/PixVerse_V5.6_Image_Text_360P_Create_a_premium.mp4"
-                                                autoPlay
-                                                loop
-                                                muted
-                                                playsInline
-                                                className="w-full h-full object-cover"
-                                            />
-                                        ) : (
-                                            value.icon
-                                        )}
+                                    <div className="text-5xl mb-8 group-hover:scale-110 transition-transform duration-300">
+                                        {value.icon === 'logo' ? '🏥' : value.icon}
                                     </div>
                                     <h3 className="text-2xl font-black text-blue-900 mb-1 uppercase tracking-tight">{value.title}</h3>
                                     <p className="text-cyan-500 font-bold mb-4 text-sm">{value.am}</p>
@@ -387,28 +432,7 @@ export default function AboutPage() {
                     </div>
                 </section>
 
-                {/* Leadership */}
-                <section id="leadership" className="section bg-white">
-                    <div className="container-custom">
-                        <div className="text-center mb-14">
-                            <span className="section-badge">👥 Leadership</span>
-                            <h2 className="section-title">Hospital Leadership Team</h2>
-                            <p className="section-subtitle">Experienced professionals guiding EMSH toward excellence in mental health care.</p>
-                        </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {leadership.map((person) => (
-                                <div key={person.name} className="card p-6 text-center">
-                                    <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center text-4xl mx-auto mb-4">
-                                        {person.icon}
-                                    </div>
-                                    <h3 className="font-bold text-gray-900 text-lg">{person.name}</h3>
-                                    <p className="text-blue-900 font-semibold text-sm mt-1">{person.title}</p>
-                                    <p className="text-gray-400 text-xs mt-1">{person.dept}</p>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </section>
+
 
                 {/* Org Structure */}
                 <section id="structure" className="section bg-gray-50 relative overflow-hidden">

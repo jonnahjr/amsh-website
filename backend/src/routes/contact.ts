@@ -1,60 +1,96 @@
 import { Router, Request, Response } from 'express';
 import { authenticate, authorize, AuthRequest } from '../middleware/auth';
-import { prisma } from '../index';
+import { prisma } from '../core/db/prisma.service';
 import nodemailer from 'nodemailer';
 
 const router = Router();
 
-const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port: parseInt(process.env.SMTP_PORT || '587'),
-    secure: process.env.SMTP_SECURE === 'true',
-    auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
-    tls: {
-        rejectUnauthorized: false
-    }
-});
-
-// POST /api/contact - Submit contact form
+// POST /api/contact - Submit contact form with Email Notifications
 router.post('/', async (req: Request, res: Response) => {
+    console.log('📬 [EMAIL SYSTEM] Received new contact submission...');
+    
     try {
-        // Refresh environment variables for immediate pick-up of institutional changes
-        require('dotenv').config();
-
-        const transporter = nodemailer.createTransport({
-            host: process.env.SMTP_HOST,
-            port: parseInt(process.env.SMTP_PORT || '587'),
-            secure: process.env.SMTP_SECURE === 'true',
-            auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
-            tls: {
-                rejectUnauthorized: false
-            }
-        });
-
         const { name, email, phone, subject, message } = req.body;
+        
+        // 1. Validation
         if (!name || !email || !subject || !message) {
+            console.warn('⚠️ [EMAIL SYSTEM] Validation failed: Missing fields');
             return res.status(400).json({ error: 'Please fill all required fields.' });
         }
 
-        const contact = await prisma.contactMessage.create({ data: { name, email, phone, subject, message } });
-
-        // Send notification email to admin (optional)
-        try {
-            await transporter.sendMail({
-                from: process.env.EMAIL_FROM,
-                to: process.env.SMTP_USER,
-                subject: `New Contact: ${subject}`,
-                html: `<h3>New contact message from ${name}</h3><p>Email: ${email}</p><p>Phone: ${phone}</p><p>Message: ${message}</p>`,
-            });
-        } catch (_) { }
-
-        res.status(201).json({ message: 'Message sent successfully. We will respond within 24 hours.', id: contact.id });
-    } catch (error: any) {
-        console.error('Contact error:', error);
-        res.status(500).json({
-            error: 'Failed to send message.',
-            details: process.env.NODE_ENV === 'development' ? error.message : undefined
+        // 2. Save to Database
+        const contact = await prisma.contactMessage.create({ 
+            data: { name, email, phone, subject, message } 
         });
+        console.log(`✅ [DB] Message saved. ID: ${contact.id}`);
+
+        // 3. SMTP Configuration from Environment
+        const smtpConfig = {
+            host: process.env.SMTP_HOST || '213.55.96.132',
+            port: parseInt(process.env.SMTP_PORT || '587'),
+            secure: process.env.SMTP_SECURE === 'true', // false for 25/587
+            auth: {
+                user: process.env.SMTP_USER,
+                pass: process.env.SMTP_PASS,
+            },
+            tls: { rejectUnauthorized: false } // Required for institutional servers
+        };
+
+        const transporter = nodemailer.createTransport(smtpConfig);
+
+        // 4. Send Email to Admin (info@amsh.gov.et)
+        const adminMailOptions = {
+            from: `"AMSH Website" <${process.env.SMTP_USER}>`,
+            to: 'info@amsh.gov.et',
+            replyTo: email,
+            subject: `New Inquiry: ${subject}`,
+            html: `
+                <div style="font-family: Arial, sans-serif; padding: 20px; border: 1px solid #eee;">
+                    <h2 style="color: #1B4F8A;">New Website Inquiry</h2>
+                    <p><strong>From:</strong> ${name} (${email})</p>
+                    <p><strong>Phone:</strong> ${phone || 'N/A'}</p>
+                    <p><strong>Subject:</strong> ${subject}</p>
+                    <div style="background: #f4f4f4; padding: 15px; border-left: 4px solid #1B4F8A;">
+                        ${message}
+                    </div>
+                </div>`
+        };
+
+        // 5. Send Auto-Reply to User
+        const userMailOptions = {
+            from: `"Ayder Multi-Specialty Hospital" <${process.env.SMTP_USER}>`,
+            to: email,
+            subject: `Thank you for contacting EMSH`,
+            html: `
+                <div style="font-family: Arial, sans-serif; padding: 20px;">
+                    <h2 style="color: #1B4F8A;">Dear ${name},</h2>
+                    <p>Thank you for reaching out to Ayder Multi-Specialty Hospital. We have received your message regarding <strong>"${subject}"</strong>.</p>
+                    <p>Our dedicated team will review your inquiry and get back to you within 24 hours.</p>
+                    <br>
+                    <p>Best regards,<br><strong>EMSH Administration</strong></p>
+                </div>`
+        };
+
+        // Execute sends in background (don't block the UI response)
+        console.log('🚀 [SMTP] Attempting to send Admin notification...');
+        transporter.sendMail(adminMailOptions)
+            .then(() => console.log('✅ [SMTP] Admin notified successfully.'))
+            .catch(err => console.error('❌ [SMTP] Admin notification failed:', err.message));
+
+        console.log('🚀 [SMTP] Sending Auto-Reply to User...');
+        transporter.sendMail(userMailOptions)
+            .then(() => console.log('✅ [SMTP] Auto-reply sent to user.'))
+            .catch(err => console.error('❌ [SMTP] User auto-reply failed:', err.message));
+
+        // Return success to frontend immediately
+        res.status(201).json({ 
+            message: 'Message sent successfully. We will respond within 24 hours.',
+            id: contact.id 
+        });
+
+    } catch (error: any) {
+        console.error('💥 [CRITICAL] Contact form crash:', error.message);
+        res.status(500).json({ error: 'System error processing your message.' });
     }
 });
 

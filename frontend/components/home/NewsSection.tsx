@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { postsAPI } from '@/lib/api';
+import { postsAPI, resolveImageUrl } from '@/lib/api';
 
 export default function NewsSection() {
     const [posts, setPosts] = useState<any[]>([]);
@@ -36,7 +36,7 @@ export default function NewsSection() {
     };
 
     return (
-        <section className="section bg-gray-50">
+        <section className="section bg-[#F5F1E6]">
             <div className="container-custom">
                 <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-12 gap-4">
                     <div>
@@ -71,10 +71,10 @@ export default function NewsSection() {
                                 <div className="h-52 relative overflow-hidden bg-gray-200">
                                     {post.featuredImage ? (
                                         <img
-                                            src={post.featuredImage}
+                                            src={resolveImageUrl(post.featuredImage)}
                                             alt={post.title}
                                             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                                            crossOrigin="anonymous"
+                                            
                                         />
                                     ) : (
                                         <div className={`w-full h-full flex items-center justify-center text-white ${i === 0 ? 'bg-gradient-to-br from-blue-700 to-blue-900' :

@@ -205,7 +205,7 @@ export default function AdminMediaPage() {
                         media.map((item) => (
                             <div key={item.id} className="group relative aspect-square bg-white rounded-[3rem] border border-slate-200/60 p-3 shadow-sm hover:shadow-2xl hover:border-primary/20 transition-all overflow-hidden hover:-translate-y-1">
                                 {item.type === 'IMAGE' ? (
-                                    <img src={item.url} alt={item.filename} className="w-full h-full object-cover rounded-[2.5rem] group-hover:scale-110 transition-transform duration-1000" crossOrigin="anonymous" />
+                                    <img src={item.url} alt={item.filename} className="w-full h-full object-cover rounded-[2.5rem] group-hover:scale-110 transition-transform duration-1000"  />
                                 ) : (
                                     <div className="w-full h-full bg-slate-50 flex flex-col items-center justify-center rounded-[2.5rem] p-8 text-center border border-slate-100 group-hover:bg-primary/5 transition-colors">
                                         <DocumentIcon className="w-16 h-16 text-slate-200 mb-3 group-hover:text-primary transition-colors" />
@@ -260,7 +260,7 @@ export default function AdminMediaPage() {
                                     <td className="px-10 py-6">
                                         <div className="w-20 h-20 rounded-2xl overflow-hidden border border-slate-100 bg-slate-50 shadow-sm">
                                             {item.type === 'IMAGE' ? (
-                                                <img src={item.url} className="w-full h-full object-cover" crossOrigin="anonymous" />
+                                                <img src={item.url} className="w-full h-full object-cover"  />
                                             ) : (
                                                 <div className="w-full h-full flex items-center justify-center"><DocumentIcon className="w-8 h-8 text-slate-200" /></div>
                                             )}
