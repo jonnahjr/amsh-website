@@ -5,9 +5,9 @@ import Image from 'next/image';
 const partners = [
     { name: "Addis Ababa University & Tikur Anbessa Hospital", type: "Academic & Clinical Partner", image: "/partners/aau.png" },
     { name: "St. Paul's Hospital", type: "Clinical Partner", image: "/partners/st-pauls.png" },
-    { name: "University of Gondar", type: "Academic Partner", image: "/partners/gondar-removebg-preview.png" },
     { name: "Wudassie Diagnostic", type: "Clinical Partner", image: "/partners/wudassie-removebg-preview.png" },
     { name: "Mekedonia Home", type: "Community Partner", image: "/partners/mekedonya-removebg-preview.png" },
+    { name: "Menelik II Referral Hospital", type: "Clinical Partner", image: "/partners/menelik.png" },
     { name: "Ministry of Health", type: "Government Partner", image: "/partners/moh.png" },
     { name: "PDC", type: "Partner", image: "/partners/PDC-logo.webp" },
     { name: "Ethiopian Red Cross Society", type: "Community Partner", image: "/partners/key_meskel-removebg-preview.png" },

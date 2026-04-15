@@ -29,7 +29,19 @@ export default function CpdApplicationsAdmin() {
     const [loading, setLoading] = useState(true);
     const [filter, setFilter] = useState('ALL');
     const [search, setSearch] = useState('');
+    const [timeFilter, setTimeFilter] = useState<'ALL'|'1M'|'3M'|'6M'|'1Y'>('ALL');
     const [selectedProfile, setSelectedProfile] = useState<any>(null);
+
+    const filterByTime = (items: any[]) => {
+        if (timeFilter === 'ALL') return items;
+        const now = new Date();
+        const past = new Date();
+        if (timeFilter === '1M') past.setMonth(now.getMonth() - 1);
+        if (timeFilter === '3M') past.setMonth(now.getMonth() - 3);
+        if (timeFilter === '6M') past.setMonth(now.getMonth() - 6);
+        if (timeFilter === '1Y') past.setFullYear(now.getFullYear() - 1);
+        return items.filter(r => new Date(r.createdAt) >= past);
+    };
 
     const fetchRegistrations = async () => {
         setLoading(true);
@@ -57,7 +69,9 @@ export default function CpdApplicationsAdmin() {
         fetchRegistrations();
     }, []);
 
-    const filtered = registrations.filter(r => {
+    const timeFilteredRegistrations = filterByTime(registrations);
+
+    const filtered = timeFilteredRegistrations.filter(r => {
         const matchesSearch = (r.fullName || '').toLowerCase().includes(search.toLowerCase()) ||
             (r.profession || '').toLowerCase().includes(search.toLowerCase());
         const matchesFilter = filter === 'ALL' || r.status === filter;
@@ -65,10 +79,10 @@ export default function CpdApplicationsAdmin() {
     });
 
     const stats = [
-        { label: 'Total Applicants', value: registrations.length, icon: IdentificationIcon, color: 'primary' },
-        { label: 'Pending Review', value: registrations.filter(r => r.status === 'PENDING').length, icon: ClockIcon, color: 'amber' },
-        { label: 'Verified Experts', value: registrations.filter(r => r.status === 'APPROVED').length, icon: CheckCircleIcon, color: 'emerald' },
-        { label: 'Decommissioned', value: registrations.filter(r => r.status === 'REJECTED').length, icon: XCircleIcon, color: 'red' },
+        { label: 'Total Applicants', value: timeFilteredRegistrations.length, icon: IdentificationIcon, color: 'primary' },
+        { label: 'Pending Review', value: timeFilteredRegistrations.filter(r => r.status === 'PENDING').length, icon: ClockIcon, color: 'amber' },
+        { label: 'Verified Experts', value: timeFilteredRegistrations.filter(r => r.status === 'APPROVED').length, icon: CheckCircleIcon, color: 'emerald' },
+        { label: 'Decommissioned', value: timeFilteredRegistrations.filter(r => r.status === 'REJECTED').length, icon: XCircleIcon, color: 'red' },
     ];
 
     return (
@@ -122,7 +136,20 @@ export default function CpdApplicationsAdmin() {
             </div>
 
             {/* Tactical Control Bar */}
-            <div className="bg-white p-6 rounded-[2.5rem] border border-slate-200/60 shadow-sm flex flex-col lg:flex-row gap-6 items-center">
+            <div className="bg-white p-6 rounded-[2.5rem] border border-slate-200/60 shadow-sm flex flex-col xl:flex-row gap-6 items-center">
+                <div className="flex items-center gap-4 w-full xl:w-auto">
+                    <select
+                        value={timeFilter}
+                        onChange={(e: any) => setTimeFilter(e.target.value)}
+                        className="px-4 py-5 bg-slate-50 border-0 rounded-[1.8rem] text-sm font-bold text-slate-700 focus:ring-[10px] focus:ring-primary/5 cursor-pointer shadow-inner outline-none transition-all"
+                    >
+                        <option value="ALL">All Time</option>
+                        <option value="1M">Last 1 Month</option>
+                        <option value="3M">Last 3 Months</option>
+                        <option value="6M">Last 6 Months</option>
+                        <option value="1Y">Last Year</option>
+                    </select>
+                </div>
                 <div className="relative flex-1 w-full group">
                     <MagnifyingGlassIcon className="absolute left-8 top-1/2 -translate-y-1/2 w-6 h-6 text-slate-300 group-focus-within:text-primary transition-colors" />
                     <input

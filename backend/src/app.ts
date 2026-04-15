@@ -38,6 +38,7 @@ import legacyPagesRoutes from './routes/pages';
 import legacyTestimonialsRoutes from './routes/testimonials';
 import legacyUsersRoutes from './routes/users';
 import legacyCategoriesRoutes from './routes/categories';
+import institutionsRoutes from './routes/institutions';
 
 const app = express();
 
@@ -283,6 +284,7 @@ app.use('/api/pages', legacyPagesRoutes);
 app.use('/api/testimonials', legacyTestimonialsRoutes);
 app.use('/api/users', legacyUsersRoutes);
 app.use('/api/categories', legacyCategoriesRoutes);
+app.use('/api/institutions', institutionsRoutes);
 
 // 🚨 Global Error Hub
 app.use(errorHandler);

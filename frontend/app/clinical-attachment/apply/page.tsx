@@ -7,7 +7,7 @@ import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import ChatbotButton from '@/components/chatbot/ChatbotButton';
 import EmergencyBanner from '@/components/ui/EmergencyBanner';
-import { formsAPI } from '@/lib/api';
+import { formsAPI, settingsAPI, institutionsAPI } from '@/lib/api';
 import {
     UserIcon,
     IdentificationIcon,
@@ -19,6 +19,10 @@ import {
     UserGroupIcon,
     CalendarDaysIcon,
     ChevronLeftIcon,
+    CalculatorIcon,
+    CircleStackIcon,
+    BuildingLibraryIcon,
+    XMarkIcon,
 } from '@heroicons/react/24/outline';
 
 function ApplyContent() {
@@ -29,9 +33,56 @@ function ApplyContent() {
     type Category = 'GOVERNMENT' | 'PRIVATE' | 'SELF_SPONSORED';
     const [category, setCategory] = useState<Category>('GOVERNMENT');
 
+    const [universities, setUniversities] = useState<any[]>([]);
+    const [isLoadingUnis, setIsLoadingUnis] = useState(true);
+
+    useEffect(() => {
+        const fetchUnis = async () => {
+            try {
+                const res = await institutionsAPI.getAll();
+                const data = res.data;
+                
+                // If it's an array, set it directly
+                if (Array.isArray(data)) {
+                    setUniversities(data);
+                } else if (data && data.institutions && Array.isArray(data.institutions)) {
+                    // Fallback in case of wrapper object
+                    setUniversities(data.institutions);
+                } else {
+                    throw new Error("Invalid format received");
+                }
+            } catch (err) {
+                console.error('Failed to fetch universities:', err);
+                // Fallback to basic list if API fails
+                setUniversities([
+                    { name: "Addis Ababa University (AAU)", status: "Approved" },
+                    { name: "St. Paul's Hospital Millennium Medical College", status: "Approved" },
+                ]);
+            } finally {
+                setIsLoadingUnis(false);
+            }
+        };
+        fetchUnis();
+    }, []);
+
     const [currentStep, setCurrentStep] = useState(1);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSubmitted, setIsSubmitted] = useState(false);
+    const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+    const [paymentDuration, setPaymentDuration] = useState('1');
+    const [hospitalSettings, setHospitalSettings] = useState<Record<string, string>>({});
+
+    useEffect(() => {
+        const fetchSettings = async () => {
+            try {
+                const res = await settingsAPI.getAll();
+                setHospitalSettings(res.data.settings || {});
+            } catch (err) {
+                console.error('Failed to fetch settings:', err);
+            }
+        };
+        fetchSettings();
+    }, []);
 
     const [uploadStatus, setUploadStatus] = useState<Record<string, 'idle' | 'uploading' | 'success'>>({
         officialLetter: 'idle',
@@ -41,6 +92,7 @@ function ApplyContent() {
     
     const [formData, setFormData] = useState({
         institutionName: '',
+        mouAgreed: false,
         departmentName: '',
         profession: '',
         studentCount: '',
@@ -83,11 +135,29 @@ function ApplyContent() {
         e.preventDefault();
 
         if (currentStep === 1) {
+            if (category === 'SELF_SPONSORED') {
+                setCurrentStep(2);
+                return;
+            }
+            if (!formData.mouAgreed) {
+                alert('Please confirm the MOU agreement is still active.');
+                return;
+            }
+            const uni = universities.find(u => u.name === formData.institutionName);
+            if (!uni || uni.status !== 'Approved') {
+                alert("You can't apply. The selected university or college name is not approved or the MOU is expired. Please make sure it is renewed before you apply.");
+                return;
+            }
             setCurrentStep(2);
             return;
         }
 
         if (currentStep === 2) {
+            setCurrentStep(3);
+            return;
+        }
+
+        if (currentStep === 3) {
             const requiredDocs = ['officialLetter', 'studentList'];
             if (category !== 'GOVERNMENT') requiredDocs.push('paymentDoc');
             
@@ -96,7 +166,7 @@ function ApplyContent() {
                 alert('Please upload all required documents before proceeding.');
                 return;
             }
-            setCurrentStep(3);
+            setCurrentStep(4);
             return;
         }
 
@@ -131,7 +201,7 @@ function ApplyContent() {
                             } Attachment
                         </h1>
                         <p className="text-blue-200/60 font-medium text-lg">
-                            Please provide your professional details. Your license will be verified by the institutional review board.
+                            Institutional collaboration portal for clinical placements and student rotations.
                         </p>
                     </div>
                 </div>
@@ -143,22 +213,22 @@ function ApplyContent() {
 
                     {/* Step Progress Bar */}
                     {!isSubmitted && (
-                        <div className="mb-12 max-w-2xl mx-auto px-4">
+                        <div className="mb-12 max-w-3xl mx-auto px-4">
                             <div className="relative flex justify-between items-center">
                                 <div className="absolute top-1/2 left-0 w-full h-0.5 bg-gray-200 -translate-y-1/2" />
                                 <div
                                     className="absolute top-1/2 left-0 h-0.5 bg-blue-900 -translate-y-1/2 transition-all duration-500"
-                                    style={{ width: `${((currentStep - 1) / 3) * 100}%` }}
+                                    style={{ width: `${((currentStep - 1) / 4) * 100}%` }}
                                 />
-                                {[1, 2, 3, 4].map((step) => (
+                                {[1, 2, 3, 4, 5].map((step) => (
                                     <div key={step} className="relative z-10 flex flex-col items-center">
                                         <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs transition-all duration-500 ${currentStep >= step ? 'bg-blue-900 text-white shadow-lg' : 'bg-white border-2 border-gray-200 text-gray-400'
                                             }`}>
                                             {currentStep > step ? <CheckBadgeIcon className="w-4 h-4" /> : step}
                                         </div>
-                                        <span className={`hidden sm:block text-[10px] font-bold uppercase tracking-wider mt-2 transition-colors duration-500 ${currentStep >= step ? 'text-blue-900' : 'text-gray-400'
+                                        <span className={`hidden sm:block text-[9px] font-bold uppercase tracking-wider mt-2 transition-colors duration-500 ${currentStep >= step ? 'text-blue-900' : 'text-gray-400'
                                             }`}>
-                                            {step === 1 ? 'Details' : step === 2 ? 'Documents' : step === 3 ? 'Review' : 'Status'}
+                                            {step === 1 ? 'Verification' : step === 2 ? 'Details' : step === 3 ? 'Documents' : step === 4 ? 'Review' : 'Status'}
                                         </span>
                                     </div>
                                 ))}
@@ -170,6 +240,100 @@ function ApplyContent() {
                         {!isSubmitted ? (
                             <form onSubmit={handleSubmit} className="space-y-10">
                                 {currentStep === 1 && (
+                                    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                                        {category === 'SELF_SPONSORED' ? (
+                                            <div className="text-center py-10 space-y-6">
+                                                <div className="w-20 h-20 bg-blue-100 text-blue-900 rounded-full flex items-center justify-center mx-auto">
+                                                    <UserIcon className="w-10 h-10" />
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <h3 className="text-2xl font-black text-blue-950 uppercase tracking-tighter">Individual Application</h3>
+                                                    <p className="text-sm font-medium text-gray-500 max-w-md mx-auto leading-relaxed">
+                                                        Self-sponsored applicants are not required to provide institutional MOU verification. You may proceed directly to the details section.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        ) : (
+                                            <>
+                                                <div className="mb-8 p-6 bg-blue-50 border-2 border-blue-100 rounded-[32px] flex items-start gap-4">
+                                             <ShieldCheckIcon className="w-8 h-8 text-blue-900 shrink-0 mt-1" />
+                                             <div className="space-y-1">
+                                                 <h4 className="text-lg font-black text-blue-950 uppercase tracking-tighter">Institutional MOU Verification</h4>
+                                                 <p className="text-xs font-bold text-blue-600/70 leading-relaxed uppercase tracking-widest">
+                                                     Mandatory check to confirm your institution's active partnership with AMSH.
+                                                 </p>
+                                             </div>
+                                         </div>
+
+                                         <div className="space-y-6">
+                                             <div className="space-y-3">
+                                                 <label className="text-[10px] font-black text-blue-950 uppercase tracking-widest ml-1">Select University / College <span className="text-red-500">*</span></label>
+                                                 <select 
+                                                     required 
+                                                     name="institutionName" 
+                                                     value={formData.institutionName} 
+                                                     onChange={handleInputChange} 
+                                                     className="w-full px-6 py-4 border-2 border-blue-950 rounded-2xl focus:ring-2 focus:ring-blue-900 transition-all font-bold text-sm bg-white"
+                                                 >
+                                                     <option value="">Select University</option>
+                                                     {universities.map(u => (
+                                                         <option key={u.name} value={u.name}>{u.name}</option>
+                                                     ))}
+                                                 </select>
+                                             </div>
+
+                                             {formData.institutionName && (
+                                                 <div className={`p-5 rounded-2xl border-2 animate-in fade-in zoom-in-95 ${
+                                                     universities.find(u => u.name === formData.institutionName)?.status === 'Approved' 
+                                                     ? 'bg-emerald-50 border-emerald-100' 
+                                                     : 'bg-red-50 border-red-100'
+                                                 }`}>
+                                                     <div className="flex items-center gap-3">
+                                                         <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                                                             universities.find(u => u.name === formData.institutionName)?.status === 'Approved' 
+                                                             ? 'bg-emerald-500 text-white' 
+                                                             : 'bg-red-500 text-white'
+                                                         }`}>
+                                                             {universities.find(u => u.name === formData.institutionName)?.status === 'Approved' ? <CheckBadgeIcon className="w-5 h-5" /> : <InformationCircleIcon className="w-5 h-5" />}
+                                                         </div>
+                                                         <div>
+                                                             <p className="text-xs font-black uppercase tracking-widest">
+                                                                 Status: <span className={universities.find(u => u.name === formData.institutionName)?.status === 'Approved' ? 'text-emerald-700' : 'text-red-700'}>
+                                                                     {universities.find(u => u.name === formData.institutionName)?.status || 'Unknown'}
+                                                                 </span>
+                                                             </p>
+                                                             {universities.find(u => u.name === formData.institutionName)?.status !== 'Approved' && (
+                                                                 <p className="text-[10px] font-bold text-red-600 uppercase mt-1">
+                                                                    You are unable to proceed with your application because the selected university or college is associated with a Memorandum of Understanding (MoU) that has expired. <br /><br /> Please ensure that the institution renews its MoU before attempting to apply again.
+                                                                 </p>
+                                                             )}
+                                                         </div>
+                                                     </div>
+                                                 </div>
+                                             )}
+
+                                             <label className="flex items-center gap-4 cursor-pointer group p-5 bg-white border-2 border-gray-100 rounded-2xl hover:border-blue-950 transition-all">
+                                                 <div className="relative flex items-center">
+                                                     <input 
+                                                         type="checkbox" 
+                                                         name="mouAgreed" 
+                                                         checked={formData.mouAgreed} 
+                                                         onChange={handleInputChange} 
+                                                         className="w-6 h-6 border-2 border-gray-300 rounded-lg checked:bg-blue-950 transition-all appearance-none cursor-pointer" 
+                                                     />
+                                                     {formData.mouAgreed && <CheckBadgeIcon className="absolute inset-0 w-6 h-6 text-white p-1 pointer-events-none" />}
+                                                 </div>
+                                                 <span className="text-[10px] font-black text-blue-950 uppercase tracking-widest leading-relaxed">
+                                                     I confirm that our institution's MOU agreement with AMSH is still active and valid
+                                                 </span>
+                                             </label>
+                                         </div>
+                                     </>
+                                 )}
+                                    </div>
+                                )}
+
+                                {currentStep === 2 && (
                                     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
                                         {category === 'PRIVATE' && (
                                             <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-xl flex gap-3 items-center">
@@ -189,12 +353,13 @@ function ApplyContent() {
                                                     <BuildingOfficeIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-300" />
                                                     <input
                                                         required
+                                                        readOnly={category !== 'SELF_SPONSORED'}
                                                         name="institutionName"
                                                         value={formData.institutionName}
                                                         onChange={handleInputChange}
                                                         type="text"
                                                         placeholder={category === 'SELF_SPONSORED' ? "As on National ID / Passport" : "Enter institutional legal name"}
-                                                        className="w-full pl-12 pr-6 py-4 border-2 border-blue-950 rounded-2xl focus:ring-2 focus:ring-blue-900 transition-all font-bold text-sm"
+                                                        className={`w-full pl-12 pr-6 py-4 border-2 border-blue-950 rounded-2xl focus:ring-2 focus:ring-blue-900 transition-all font-bold text-sm ${category !== 'SELF_SPONSORED' ? 'bg-gray-50 opacity-60' : ''}`}
                                                     />
                                                 </div>
                                             </div>
@@ -242,15 +407,20 @@ function ApplyContent() {
 
                                             <div className="space-y-4">
                                                 <label className="block text-xs font-black text-gray-900 uppercase tracking-widest ml-1">Duration <span className="text-red-500">*</span></label>
-                                                <input
+                                                <select
                                                     required
                                                     name="durationValue"
                                                     value={formData.durationValue}
                                                     onChange={handleInputChange}
-                                                    type="text"
-                                                    placeholder="e.g. 2 Months"
                                                     className="w-full px-6 py-4 border-2 border-blue-950 rounded-2xl focus:ring-2 focus:ring-blue-900 transition-all font-bold text-sm"
-                                                />
+                                                >
+                                                    <option value="" disabled>Select Duration</option>
+                                                    <option value="1 week">1 week</option>
+                                                    <option value="2 weeks">2 weeks</option>
+                                                    <option value="3 weeks">3 weeks</option>
+                                                    <option value="1 month">1 month</option>
+                                                    <option value="1 month with 1 week">1 month with 1 week</option>
+                                                </select>
                                             </div>
 
                                             <div className="space-y-4">
@@ -287,18 +457,43 @@ function ApplyContent() {
                                     </div>
                                 )}
 
-                                {currentStep === 2 && (
+                                {currentStep === 3 && (
                                     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 text-center">
                                         <div className="mb-4">
-                                            <h3 className="text-2xl font-black text-gray-900">Document Upload</h3>
-                                            <p className="text-gray-500 text-sm">Please provide clear scans of the required files (PDF/JPG).</p>
+                                            <h3 className="text-2xl font-black text-gray-900 uppercase tracking-tighter leading-none">Document Upload</h3>
+                                            <p className="text-gray-500 text-[10px] font-bold uppercase tracking-widest mt-2">Please provide clear scans of the required files (PDF/JPG).</p>
                                         </div>
 
                                         <div className="grid grid-cols-1 gap-4 text-left">
+                                            {category !== 'GOVERNMENT' && (
+                                                <div className="p-6 bg-blue-900 rounded-[32px] text-white shadow-xl shadow-blue-900/20 mb-6">
+                                                    <div className="flex items-start gap-5">
+                                                        <div className="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center shrink-0">
+                                                            <CircleStackIcon className="w-6 h-6 text-white" />
+                                                        </div>
+                                                        <div className="space-y-4">
+                                                            <div>
+                                                                <h3 className="text-lg font-black uppercase tracking-tighter">Placement Fee Calculation</h3>
+                                                                <p className="text-blue-200/60 text-[10px] font-bold uppercase tracking-widest leading-relaxed">
+                                                                    Calculate your total institutional contribution and view payment accounts.
+                                                                </p>
+                                                            </div>
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => setIsPaymentModalOpen(true)}
+                                                                className="px-6 py-3 bg-white text-blue-900 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-blue-50 transition-all flex items-center gap-2"
+                                                            >
+                                                                <CalculatorIcon className="w-4 h-4" /> Calculate & View Account
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )}
+
                                             {[
                                                 { id: 'officialLetter', label: 'Official Request Letter', desc: 'Formal letter with seal' },
                                                 { id: 'studentList', label: category === 'SELF_SPONSORED' ? 'National ID / Passport' : 'Complete Student List', desc: 'Required for verification' },
-                                                ...(category !== 'GOVERNMENT' ? [{ id: 'paymentDoc', label: 'Payment Slip', desc: 'Bank deposit confirmation' }] : [])
+                                                ...(category !== 'GOVERNMENT' ? [{ id: 'paymentDoc', label: 'Payment Receipt (Slip)', desc: 'Upload validated bank slip' }] : [])
                                             ].map((doc) => (
                                                 <label
                                                     key={doc.id}
@@ -320,7 +515,7 @@ function ApplyContent() {
                                     </div>
                                 )}
 
-                                {currentStep === 3 && (
+                                {currentStep === 4 && (
                                     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
                                         <div className="bg-blue-50/50 rounded-2xl p-6 border border-blue-100">
                                             <h3 className="font-bold text-blue-900 mb-4 flex items-center gap-2">
@@ -328,7 +523,7 @@ function ApplyContent() {
                                             </h3>
                                             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4 text-sm">
                                                 <div className="flex justify-between py-2 border-b border-blue-100/50">
-                                                    <span className="text-gray-500">Target:</span>
+                                                    <span className="text-gray-500">Target Institutional:</span>
                                                     <span className="font-bold text-gray-900">{formData.institutionName}</span>
                                                 </div>
                                                 <div className="flex justify-between py-2 border-b border-blue-100/50">
@@ -381,7 +576,7 @@ function ApplyContent() {
                                             Previous
                                         </button>
                                     )}
-                                    {currentStep < 3 ? (
+                                    {currentStep < 4 ? (
                                         <button
                                             type="submit"
                                             className="flex-1 bg-blue-950 text-white hover:bg-blue-800 py-4 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all shadow-xl shadow-blue-900/20 hover:-translate-y-1"
@@ -426,6 +621,85 @@ function ApplyContent() {
                 </div>
             </main>
 
+                                 {isPaymentModalOpen && (
+                                    <div className="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-blue-950/40 backdrop-blur-md">
+                                        <div className="bg-white w-full max-w-lg rounded-[48px] shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+                                            <div className="p-10 border-b border-gray-100 flex items-center justify-between bg-blue-950 text-white">
+                                                <div>
+                                                    <h2 className="text-2xl font-black uppercase tracking-tighter">Fee Calculator</h2>
+                                                    <p className="text-blue-200/50 text-[10px] font-bold uppercase tracking-widest mt-1">Private Institutional Rates</p>
+                                                </div>
+                                                <button onClick={() => setIsPaymentModalOpen(false)} className="p-2 hover:bg-white/10 rounded-full transition-colors"><XMarkIcon className="w-6 h-6" /></button>
+                                            </div>
+                                            <div className="p-10 space-y-8">
+                                                <div className="grid grid-cols-2 gap-6">
+                                                    <div className="space-y-3">
+                                                        <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Number of Students</label>
+                                                        <input 
+                                                            type="number" 
+                                                            min="1"
+                                                            value={formData.studentCount} 
+                                                            onChange={(e) => setFormData({ ...formData, studentCount: e.target.value })}
+                                                            className="w-full px-6 py-5 bg-gray-50 border-2 border-transparent focus:border-blue-900 focus:bg-white rounded-[24px] transition-all font-bold text-sm"
+                                                        />
+                                                    </div>
+                                                    <div className="space-y-3">
+                                                        <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Duration Cycle</label>
+                                                        <select 
+                                                            value={paymentDuration} 
+                                                            onChange={(e) => setPaymentDuration(e.target.value)}
+                                                            className="w-full px-6 py-5 bg-gray-50 border-2 border-transparent focus:border-blue-900 focus:bg-white rounded-[24px] transition-all font-bold text-sm"
+                                                        >
+                                                            <option value="1">Up to 1 Month</option>
+                                                            <option value="1.5">1 Month & 2 Weeks</option>
+                                                            <option value="2">2 Months</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div className="p-8 bg-blue-50 rounded-[32px] border-2 border-blue-100 flex flex-col items-center text-center space-y-2">
+                                                    <p className="text-[10px] font-black text-blue-400 uppercase tracking-[0.2em]">Total Amount Due</p>
+                                                    <p className="text-5xl font-black text-blue-950 tracking-tighter">
+                                                        {(Number(formData.studentCount) || 0) * (
+                                                            paymentDuration === '1' ? Number(hospitalSettings.attachment_rate_1m || 300) : 
+                                                            paymentDuration === '1.5' ? Number(hospitalSettings.attachment_rate_1_5m || 450) : 
+                                                            Number(hospitalSettings.attachment_rate_2m || 600)
+                                                        )}
+                                                        <span className="text-lg font-bold ml-2">ETB</span>
+                                                    </p>
+                                                    <p className="text-[9px] font-bold text-blue-600/60 uppercase tracking-widest mt-2 italic">
+                                                        Rate: {
+                                                            paymentDuration === '1' ? (hospitalSettings.attachment_rate_1m || '300') : 
+                                                            paymentDuration === '1.5' ? (hospitalSettings.attachment_rate_1_5m || '450') : 
+                                                            (hospitalSettings.attachment_rate_2m || '600')
+                                                        } ETB per student for selected duration.
+                                                    </p>
+                                                </div>
+
+                                                <div className="space-y-3">
+                                                    <div className="flex items-center gap-3">
+                                                        <BuildingLibraryIcon className="w-5 h-5 text-gray-400" />
+                                                        <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Bank Account Information</p>
+                                                    </div>
+                                                    <div className="p-6 bg-gray-50 rounded-[28px] border border-gray-100">
+                                                        <p className="text-lg font-black text-gray-900 tracking-tight leading-none uppercase">Institutional Banking Details</p>
+                                                        <p className="text-2xl font-black text-blue-900 mt-2 tracking-tighter break-words">
+                                                            {hospitalSettings.attachment_bank_account || 'Commercial Bank of Ethiopia: 1000163359676'}
+                                                        </p>
+                                                        <p className="text-[9px] font-bold text-gray-400 uppercase mt-2 tracking-widest">Amanuel Mental Specialized Hospital</p>
+                                                    </div>
+                                                </div>
+
+                                                <button 
+                                                    onClick={() => setIsPaymentModalOpen(false)}
+                                                    className="w-full bg-blue-950 text-white py-5 rounded-[24px] font-black uppercase tracking-widest text-[11px] shadow-2xl shadow-blue-950/20 hover:-translate-y-1 transition-all"
+                                                >
+                                                    I Understand, Go Back
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
             <Footer />
             <ChatbotButton />
         </div>

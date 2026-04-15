@@ -26,7 +26,19 @@ export default function ClinicalAttachmentsAdmin() {
     const [loading, setLoading] = useState(true);
     const [filter, setFilter] = useState('ALL');
     const [search, setSearch] = useState('');
+    const [timeFilter, setTimeFilter] = useState<'ALL'|'1M'|'3M'|'6M'|'1Y'>('ALL');
     const [selectedSubmission, setSelectedSubmission] = useState<any>(null);
+
+    const filterByTime = (items: any[]) => {
+        if (timeFilter === 'ALL') return items;
+        const now = new Date();
+        const past = new Date();
+        if (timeFilter === '1M') past.setMonth(now.getMonth() - 1);
+        if (timeFilter === '3M') past.setMonth(now.getMonth() - 3);
+        if (timeFilter === '6M') past.setMonth(now.getMonth() - 6);
+        if (timeFilter === '1Y') past.setFullYear(now.getFullYear() - 1);
+        return items.filter(r => new Date(r.createdAt) >= past);
+    };
 
     const fetchSubmissions = async () => {
         setLoading(true);
@@ -54,19 +66,26 @@ export default function ClinicalAttachmentsAdmin() {
         fetchSubmissions();
     }, []);
 
-    const filtered = submissions.filter(sub => {
-        const data = JSON.parse(sub.data || '{}');
-        const matchesSearch = (data.institutionName || '').toLowerCase().includes(search.toLowerCase()) ||
-            (data.contactPerson || '').toLowerCase().includes(search.toLowerCase());
-        const matchesFilter = filter === 'ALL' || sub.status === filter;
-        return matchesSearch && matchesFilter;
+    const timeFilteredSubmissions = filterByTime(submissions);
+
+    const filtered = timeFilteredSubmissions.filter(sub => {
+        try {
+            const data = JSON.parse(sub.data || '{}');
+            const matchesSearch = (data.institutionName || '').toLowerCase().includes(search.toLowerCase()) ||
+                (data.contactPerson || '').toLowerCase().includes(search.toLowerCase());
+            const matchesFilter = filter === 'ALL' || sub.status === filter;
+            return matchesSearch && matchesFilter;
+        } catch (e) {
+            console.error('Invalid submission data detected:', sub.id);
+            return false;
+        }
     });
 
     const stats = [
-        { label: 'Total Intake', value: submissions.length, icon: BuildingOfficeIcon, color: 'primary' },
-        { label: 'Awaiting Review', value: submissions.filter(r => r.status === 'PENDING').length, icon: ClockIcon, color: 'amber' },
-        { label: 'Authorized Attachments', value: submissions.filter(r => r.status === 'APPROVED').length, icon: CheckCircleIcon, color: 'emerald' },
-        { label: 'Decommissioned', value: submissions.filter(r => r.status === 'REJECTED').length, icon: XCircleIcon, color: 'red' },
+        { label: 'Total Intake', value: timeFilteredSubmissions.length, icon: BuildingOfficeIcon, color: 'primary' },
+        { label: 'Awaiting Review', value: timeFilteredSubmissions.filter(r => r.status === 'PENDING').length, icon: ClockIcon, color: 'amber' },
+        { label: 'Authorized Attachments', value: timeFilteredSubmissions.filter(r => r.status === 'APPROVED').length, icon: CheckCircleIcon, color: 'emerald' },
+        { label: 'Decommissioned', value: timeFilteredSubmissions.filter(r => r.status === 'REJECTED').length, icon: XCircleIcon, color: 'red' },
     ];
 
     return (
@@ -120,7 +139,20 @@ export default function ClinicalAttachmentsAdmin() {
             </div>
 
             {/* Strategic Filters */}
-            <div className="bg-white p-6 rounded-[2.5rem] border border-slate-200/60 shadow-sm flex flex-col lg:flex-row gap-6 items-center">
+            <div className="bg-white p-6 rounded-[2.5rem] border border-slate-200/60 shadow-sm flex flex-col xl:flex-row gap-6 items-center">
+                <div className="flex items-center gap-4 w-full xl:w-auto">
+                    <select
+                        value={timeFilter}
+                        onChange={(e: any) => setTimeFilter(e.target.value)}
+                        className="px-4 py-5 bg-slate-50 border-0 rounded-[1.8rem] text-sm font-bold text-slate-700 focus:ring-[10px] focus:ring-primary/5 cursor-pointer shadow-inner outline-none transition-all"
+                    >
+                        <option value="ALL">All Time</option>
+                        <option value="1M">Last 1 Month</option>
+                        <option value="3M">Last 3 Months</option>
+                        <option value="6M">Last 6 Months</option>
+                        <option value="1Y">Last Year</option>
+                    </select>
+                </div>
                 <div className="relative flex-1 w-full group">
                     <MagnifyingGlassIcon className="absolute left-8 top-1/2 -translate-y-1/2 w-6 h-6 text-slate-300 group-focus-within:text-primary transition-colors" />
                     <input
@@ -161,7 +193,12 @@ export default function ClinicalAttachmentsAdmin() {
                     </div>
                 ) : (
                     filtered.map((sub, idx) => {
-                        const data = JSON.parse(sub.data || '{}');
+                        let data: any = {};
+                        try {
+                            data = JSON.parse(sub.data || '{}');
+                        } catch (e) {
+                            console.error('Corruption in data cluster:', sub.id);
+                        }
                         return (
                             <div key={idx} className="bg-white p-8 md:p-12 rounded-[3.5rem] border border-slate-200/60 shadow-sm hover:shadow-2xl transition-all duration-500 hover:-translate-y-1 relative overflow-hidden group animate-in slide-in-from-bottom-8" style={{ animationDelay: `${idx * 100}ms` }}>
                                 <div className="absolute top-0 right-0 w-64 h-full bg-slate-50 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />

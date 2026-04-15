@@ -406,7 +406,7 @@ export default function ApplyProposalPage() {
                                                     <label className="flex items-center justify-between cursor-pointer relative z-10">
                                                         <div className="space-y-2">
                                                             <h4 className="text-2xl font-black tracking-tighter leading-none">Involve Human Patients?</h4>
-                                                            <p className="text-[10px] font-black text-blue-400 uppercase tracking-[0.3em] opacity-80">Requires strict ethical compliance letter</p>
+                                                            <p className="text-[10px] font-black text-blue-400 uppercase tracking-[0.3em] opacity-80">Highly recommended to include ethical compliance letter</p>
                                                         </div>
                                                         <div className="relative">
                                                             <input type="checkbox" className="sr-only" checked={formData.patientsInvolved} onChange={handleInputChange} name="patientsInvolved" />
@@ -495,7 +495,7 @@ export default function ApplyProposalPage() {
                                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
                                                     {[
                                                         { label: 'Full Research Proposal', field: 'proposalPDF', max: '15MB', icon: DocumentTextIcon },
-                                                        { label: 'Ethical Approval Letter', field: 'ethicalLetter', max: '5MB', icon: ShieldCheckIcon },
+                                                        { label: 'Ethical Approval Letter', field: 'ethicalLetter', max: '5MB', icon: ShieldCheckIcon, optional: true },
                                                         { label: 'University Supporting Letter', field: 'universityLetter', max: '5MB', icon: BuildingOfficeIcon },
                                                         { label: 'Additional Credentials', field: 'coInvestigatorFile', max: '5MB', icon: IdentificationIcon, optional: true }
                                                     ].map((doc) => (

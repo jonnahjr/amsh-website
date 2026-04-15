@@ -1,0 +1,9 @@
+# ============================================================
+# AMSH - Apache CORS Headers for Root Backend Directory
+# Ensures all /uploads/* requests get proper CORS headers
+# ============================================================
+
+<IfModule mod_headers.c>
+    # Ensure CORS headers survive proxy passthrough
+    Header always set Access-Control-Allow-Origin "*" "expr=%{REQUEST_URI} =~ m#^/uploads/#"
+</IfModule>

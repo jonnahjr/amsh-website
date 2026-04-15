@@ -60,6 +60,7 @@ const menuItems: MenuGroup[] = [
     },
     {
         group: 'Institutional', items: [
+            { label: 'Partners & MOUs', icon: BuildingLibraryIcon, href: '/admin/institutions', roles: ['SUPER_ADMIN', 'ADMIN'] },
             {
                 label: 'Professional CPD',
                 icon: AcademicCapIcon,

@@ -30,18 +30,19 @@ export default function AdminDashboard() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [activeTab, setActiveTab] = useState<'OVERVIEW' | 'ATTACHMENTS' | 'CPD'>('OVERVIEW');
+    const [timeFilter, setTimeFilter] = useState<'ALL'|'1M'|'3M'|'6M'|'1Y'>('ALL');
 
     useEffect(() => {
         setLoading(true);
         setError(null);
-        analyticsAPI.getOverview()
+        analyticsAPI.getOverview(timeFilter)
             .then(res => setData(res.data))
             .catch((err) => {
                 console.error('Dashboard error:', err);
                 setError('Unable to synchronize with the institutional database. Please verify system connectivity.');
             })
             .finally(() => setLoading(false));
-    }, []);
+    }, [timeFilter]);
 
     const stats = [
         { label: 'Clinical Services', value: data?.stats?.totalServices || '0', change: '+2.5%', trend: 'up', icon: BriefcaseIcon, color: 'primary' },
@@ -146,17 +147,30 @@ export default function AdminDashboard() {
                                 <h3 className="text-2xl font-jakarta font-black text-slate-900 tracking-tight mb-2">Operational Analytics</h3>
                                 <p className="text-[11px] text-slate-400 font-bold uppercase tracking-[0.2em]">Cross-functional performance metrics</p>
                             </div>
-                            <div className="flex bg-slate-50 p-1.5 rounded-2xl border border-slate-100">
-                                {['OVERVIEW', 'ATTACHMENTS', 'CPD'].map((tab) => (
-                                    <button
-                                        key={tab}
-                                        onClick={() => setActiveTab(tab as any)}
-                                        className={`px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === tab ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'text-slate-400 hover:text-slate-700'
-                                            }`}
-                                    >
-                                        {tab}
-                                    </button>
-                                ))}
+                            <div className="flex items-center gap-4">
+                                <select
+                                    value={timeFilter}
+                                    onChange={(e: any) => setTimeFilter(e.target.value)}
+                                    className="px-4 py-2.5 bg-white border border-slate-200/60 rounded-xl shadow-sm focus:ring-4 focus:ring-primary/5 outline-none font-bold text-[10px] uppercase text-slate-600 cursor-pointer hover:border-slate-300 transition-all"
+                                >
+                                    <option value="ALL">All Time</option>
+                                    <option value="1M">Last 1 Month</option>
+                                    <option value="3M">Last 3 Months</option>
+                                    <option value="6M">Last 6 Months</option>
+                                    <option value="1Y">Last Year</option>
+                                </select>
+                                <div className="flex bg-slate-50 p-1.5 rounded-2xl border border-slate-100">
+                                    {['OVERVIEW', 'ATTACHMENTS', 'CPD'].map((tab) => (
+                                        <button
+                                            key={tab}
+                                            onClick={() => setActiveTab(tab as any)}
+                                            className={`px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === tab ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'text-slate-400 hover:text-slate-700'
+                                                }`}
+                                        >
+                                            {tab}
+                                        </button>
+                                    ))}
+                                </div>
                             </div>
                         </div>
 

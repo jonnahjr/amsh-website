@@ -188,7 +188,7 @@ export const newsletterAPI = {
 };
 
 export const analyticsAPI = {
-    getOverview: () => api.get('/analytics/overview'),
+    getOverview: (time?: string) => api.get(`/analytics/overview${time && time !== 'ALL' ? `?time=${time}` : ''}`),
     track: (path: string) => api.post('/analytics/track', { path }).catch(() => { }),
 };
 
@@ -272,6 +272,14 @@ export const departmentCategoriesAPI = {
 export const facebookAPI = {
     getPosts: (params?: any) => api.get('/facebook/posts', { params }),
     sync: () => api.post('/facebook/sync'),
+};
+
+export const institutionsAPI = {
+    getAll: () => api.get('/institutions'),
+    getAdminAll: () => api.get('/institutions/admin'),
+    create: (data: any) => api.post('/institutions', data),
+    update: (id: string, data: any) => api.put(`/institutions/${id}`, data),
+    delete: (id: string) => api.delete(`/institutions/${id}`),
 };
 
 /**

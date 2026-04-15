@@ -21,27 +21,38 @@ import { useEffect, useState } from 'react';
 
 export default function ClinicalAttachmentPage() {
     const [staff, setStaff] = useState<any[]>([]);
+    const [prices, setPrices] = useState({ eth: '2,500', int: '5,000' });
 
     useEffect(() => {
         settingsAPI.getAll().then(res => {
-            if (res.data.settings?.staff_directory) {
-                try {
-                    let rawDir = res.data.settings.staff_directory;
-                    if (typeof rawDir === 'string') {
-                        rawDir = rawDir.trim();
-                        if (rawDir.startsWith("'") || rawDir.includes("':")) {
-                            rawDir = rawDir.replace(/'/g, '"');
+            const settings = res.data.settings;
+            if (settings) {
+                if (settings.clinical_attachment_eth_price) {
+                    setPrices(prev => ({ ...prev, eth: Number(settings.clinical_attachment_eth_price).toLocaleString() }));
+                }
+                if (settings.clinical_attachment_int_price) {
+                    setPrices(prev => ({ ...prev, int: Number(settings.clinical_attachment_int_price).toLocaleString() }));
+                }
+
+                if (settings.staff_directory) {
+                    try {
+                        let rawDir = settings.staff_directory;
+                        if (typeof rawDir === 'string') {
+                            rawDir = rawDir.trim();
+                            if (rawDir.startsWith("'") || rawDir.includes("':")) {
+                                rawDir = rawDir.replace(/'/g, '"');
+                            }
+                            rawDir = rawDir.replace(/,(\s*[\]}])/g, '$1');
                         }
-                        rawDir = rawDir.replace(/,(\s*[\]}])/g, '$1');
+                        const dir = JSON.parse(rawDir);
+                        setStaff(Array.isArray(dir) ? dir : []);
+                    } catch (e) {
+                        console.error('Failed to parse staff directory:', e);
+                        setStaff([]);
                     }
-                    const dir = JSON.parse(rawDir);
-                    setStaff(Array.isArray(dir) ? dir : []);
-                } catch (e) {
-                    console.error('Failed to parse staff directory:', e);
-                    setStaff([]);
                 }
             }
-        }).catch(err => console.error('Failed to load staff settings:', err));
+        }).catch(err => console.error('Failed to load settings:', err));
     }, []);
 
     const defaultStaff = [
@@ -294,7 +305,7 @@ export default function ClinicalAttachmentPage() {
                                 <p className="text-gray-600 text-xs font-semibold leading-relaxed mb-6">
                                     Direct application for healthcare professionals or students seeking unaffiliated clinical exposure.
                                 </p>
-                                <ul className="space-y-4 mb-10 flex-1">
+                                <ul className="space-y-4 mb-4 flex-1">
                                     {[
                                         "Specialist mentorship",
                                         "Custom objectives",
@@ -305,6 +316,22 @@ export default function ClinicalAttachmentPage() {
                                         </li>
                                     ))}
                                 </ul>
+
+                                <div className="mb-8 p-4 bg-emerald-50 rounded-2xl border border-emerald-100/50">
+                                    <h4 className="text-[10px] font-black text-emerald-800 uppercase tracking-widest mb-3 flex items-center gap-2">
+                                        <BanknotesIcon className="w-3.5 h-3.5" /> Investment (2 Weeks - 1 Month)
+                                    </h4>
+                                    <div className="space-y-2">
+                                        <div className="flex justify-between items-center bg-white/50 p-2 rounded-lg">
+                                            <span className="text-[10px] font-bold text-gray-500 uppercase">Ethiopian</span>
+                                            <span className="text-sm font-black text-emerald-700">{prices.eth} ETB</span>
+                                        </div>
+                                        <div className="flex justify-between items-center bg-white/50 p-2 rounded-lg">
+                                            <span className="text-[10px] font-bold text-gray-500 uppercase">International</span>
+                                            <span className="text-sm font-black text-emerald-700">{prices.int} ETB</span>
+                                        </div>
+                                    </div>
+                                </div>
                                 <Link
                                     href="/clinical-attachment/apply?category=SELF_SPONSORED"
                                     className="w-full bg-blue-950 text-white py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest hover:bg-blue-900 transition-all shadow-xl shadow-blue-900/20 flex items-center justify-center mt-auto"

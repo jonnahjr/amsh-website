@@ -1,0 +1,20 @@
+RewriteEngine On
+
+# 1. API - Native PHP Backend
+# Force all requests to /api or /api/ to the PHP handler
+RewriteRule ^api/(.*)$ backend_php/api/index.php?path=$1 [QSA,L]
+
+
+# 2. NEXT.JS STATIC ASSETS - Serve directly via Apache for speed & 404 avoidance
+# This fixes the "Refused to apply style" and "_next/static" 404 errors
+RewriteRule ^_next/static/(.*)$ frontend/.next/static/$1 [L]
+
+# 3. NEXT.JS IMAGES - Serve directly from public folder
+RewriteRule ^uploads/(.*)$ api/uploads/$1 [L]
+
+# 4. FRONTEND - Forward all other requests to Next.js server on port 3000
+RewriteCond %{REQUEST_URI} !^/api/
+RewriteCond %{REQUEST_URI} !^/_next/
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ http://localhost:3000/$1 [P,L]

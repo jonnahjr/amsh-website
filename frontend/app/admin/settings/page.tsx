@@ -29,6 +29,7 @@ import {
     CircleStackIcon,
     BriefcaseIcon,
     SparklesIcon,
+    BanknotesIcon,
 } from '@heroicons/react/24/outline';
 
 const tabs = [
@@ -38,6 +39,7 @@ const tabs = [
     { id: 'contact', label: 'Tactical Presence', icon: MapPinIcon, desc: 'Global contact points and location data' },
     { id: 'social', label: 'Social Spectrum', icon: ShareIcon, desc: 'Connectivity to institutional social feeds' },
     { id: 'broadcast', label: 'Broadcast Protocols', icon: PaperAirplaneIcon, desc: 'SMTP configuration and newsletter gateway' },
+    { id: 'finance', label: 'Financial Hub', icon: BanknotesIcon, desc: 'Clinical attachment rates and banking protocols' },
     { id: 'staff', label: 'Staff Matrix', icon: UserGroupIcon, desc: 'Institutional leadership and staff directory' },
     { id: 'integrations', label: 'API Protocols', icon: CpuChipIcon, desc: 'Facebook Graph and external microservices' },
     { id: 'security', label: 'Security Firewall', icon: ShieldCheckIcon, desc: 'Maintenance mode and access protocols' },
@@ -671,6 +673,103 @@ export default function AdminSettingsPage() {
                                         />
                                         <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-500"></div>
                                     </label>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {activeTab === 'finance' && (
+                        <div className="space-y-10 animate-in fade-in slide-in-from-right-10 duration-500">
+                            <div className="flex items-center gap-4 border-b border-slate-50 pb-8">
+                                <div className="w-3 h-10 bg-emerald-500 rounded-full" />
+                                <h3 className="text-2xl font-jakarta font-black text-slate-900 tracking-tight">Financial & Administrative Protocols</h3>
+                            </div>
+
+                            <div className="p-10 bg-emerald-50 rounded-[3rem] border border-emerald-100 flex flex-col lg:flex-row items-center gap-8 group">
+                                <div className="w-20 h-20 bg-white text-emerald-600 rounded-[1.75rem] flex items-center justify-center flex-shrink-0 shadow-lg group-hover:scale-110 transition-transform">
+                                    <BanknotesIcon className="w-10 h-10" />
+                                </div>
+                                <div className="flex-1 space-y-4 w-full">
+                                    <label className="block text-[11px] font-black text-emerald-400 uppercase tracking-[0.25em] ml-2">Hospital Bank Account Information</label>
+                                    <input
+                                        type="text"
+                                        className="w-full px-8 py-6 bg-white border-0 rounded-[2rem] focus:ring-[12px] focus:ring-emerald-500/5 transition-all text-sm font-bold outline-none"
+                                        placeholder="Bank Name: Branch : Account No..."
+                                        value={settings.attachment_bank_account || ''}
+                                        onChange={(e) => handleChange('attachment_bank_account', e.target.value)}
+                                    />
+                                    <p className="px-4 text-[10px] text-emerald-600/60 font-medium">This information will be displayed to all private institutional applicants on their billing slip.</p>
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                                <div className="p-8 bg-slate-50 rounded-[2.5rem] border border-slate-100 space-y-4">
+                                    <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Rate: Up to 1 Month</label>
+                                    <div className="relative">
+                                        <input
+                                            type="number"
+                                            className="w-full px-8 py-5 bg-white border-0 rounded-2xl text-lg font-black text-slate-900 focus:ring-4 focus:ring-primary/10 transition-all outline-none"
+                                            value={settings.attachment_rate_1m || ''}
+                                            onChange={(e) => handleChange('attachment_rate_1m', e.target.value)}
+                                        />
+                                        <span className="absolute right-6 top-1/2 -translate-y-1/2 text-[10px] font-black text-slate-300 uppercase">ETB</span>
+                                    </div>
+                                </div>
+                                <div className="p-8 bg-slate-50 rounded-[2.5rem] border border-slate-100 space-y-4">
+                                    <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Rate: 1.5 Months</label>
+                                    <div className="relative">
+                                        <input
+                                            type="number"
+                                            className="w-full px-8 py-5 bg-white border-0 rounded-2xl text-lg font-black text-slate-900 focus:ring-4 focus:ring-primary/10 transition-all outline-none"
+                                            value={settings.attachment_rate_1_5m || ''}
+                                            onChange={(e) => handleChange('attachment_rate_1_5m', e.target.value)}
+                                        />
+                                        <span className="absolute right-6 top-1/2 -translate-y-1/2 text-[10px] font-black text-slate-300 uppercase">ETB</span>
+                                    </div>
+                                </div>
+                                <div className="p-8 bg-slate-50 rounded-[2.5rem] border border-slate-100 space-y-4">
+                                    <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Rate: 2 Months</label>
+                                    <div className="relative">
+                                        <input
+                                            type="number"
+                                            className="w-full px-8 py-5 bg-white border-0 rounded-2xl text-lg font-black text-slate-900 focus:ring-4 focus:ring-primary/10 transition-all outline-none"
+                                            value={settings.attachment_rate_2m || ''}
+                                            onChange={(e) => handleChange('attachment_rate_2m', e.target.value)}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="space-y-6">
+                                <div className="flex items-center gap-4">
+                                    <UserGroupIcon className="w-5 h-5 text-emerald-600" />
+                                    <h4 className="text-[11px] font-black uppercase tracking-[0.3em] text-slate-400">Self-Sponsor (Independent) Attachment Rates</h4>
+                                </div>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                    <div className="p-8 bg-slate-50 rounded-[2.5rem] border border-slate-100 space-y-4">
+                                        <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Ethiopian Profession Rate</label>
+                                        <div className="relative">
+                                            <input
+                                                type="number"
+                                                className="w-full px-8 py-5 bg-white border-0 rounded-2xl text-lg font-black text-slate-900 focus:ring-4 focus:ring-primary/10 transition-all outline-none"
+                                                value={settings.clinical_attachment_eth_price || ''}
+                                                onChange={(e) => handleChange('clinical_attachment_eth_price', e.target.value)}
+                                            />
+                                            <span className="absolute right-6 top-1/2 -translate-y-1/2 text-[10px] font-black text-slate-300 uppercase">ETB</span>
+                                        </div>
+                                    </div>
+                                    <div className="p-8 bg-slate-50 rounded-[2.5rem] border border-slate-100 space-y-4">
+                                        <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">International / Foreign Rate</label>
+                                        <div className="relative">
+                                            <input
+                                                type="number"
+                                                className="w-full px-8 py-5 bg-white border-0 rounded-2xl text-lg font-black text-slate-900 focus:ring-4 focus:ring-primary/10 transition-all outline-none"
+                                                value={settings.clinical_attachment_int_price || ''}
+                                                onChange={(e) => handleChange('clinical_attachment_int_price', e.target.value)}
+                                            />
+                                            <span className="absolute right-6 top-1/2 -translate-y-1/2 text-[10px] font-black text-slate-300 uppercase">ETB</span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

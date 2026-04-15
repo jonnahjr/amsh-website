@@ -238,14 +238,14 @@ export default function PublishResearchPage() {
                                                 <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${files.ethicalApproval ? 'bg-emerald-500 text-white' : 'bg-white text-blue-950'}`}>
                                                     <ShieldCheckIcon className="w-6 h-6" />
                                                 </div>
-                                                <span className="text-[10px] font-black uppercase tracking-widest text-center">{files.ethicalApproval ? 'Approval Loaded' : 'Ethical Letter'}</span>
+                                                <span className="text-[10px] font-black uppercase tracking-widest text-center">{files.ethicalApproval ? 'Approval Loaded' : 'Ethical Letter (Optional)'}</span>
                                                 <input type="file" className="hidden" onChange={(e) => handleFileChange('ethicalApproval', e)} />
                                             </label>
                                             <label className={`p-6 border-2 border-dashed rounded-[32px] flex flex-col items-center gap-3 cursor-pointer transition-all ${files.coverLetter ? 'bg-emerald-50 border-emerald-300' : 'bg-gray-50 border-gray-200 hover:border-blue-400'}`}>
                                                 <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${files.coverLetter ? 'bg-emerald-500 text-white' : 'bg-white text-blue-950'}`}>
                                                     <IdentificationIcon className="w-6 h-6" />
                                                 </div>
-                                                <span className="text-[10px] font-black uppercase tracking-widest text-center">{files.coverLetter ? 'Letter Attached' : 'Author ID/Docs'}</span>
+                                                <span className="text-[10px] font-black uppercase tracking-widest text-center">{files.coverLetter ? 'Letter Attached' : 'Author ID/Docs (Optional)'}</span>
                                                 <input type="file" className="hidden" onChange={(e) => handleFileChange('coverLetter', e)} />
                                             </label>
                                         </div>

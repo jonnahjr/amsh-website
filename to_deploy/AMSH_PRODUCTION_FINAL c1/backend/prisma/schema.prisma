@@ -1,0 +1,518 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-1.1.x", "debian-openssl-3.0.x", "linux-musl", "linux-musl-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  password     String
+  name         String
+  role         String @default("USER")
+  avatar       String?
+  isActive     Boolean  @default(true)
+  lastLogin    DateTime?
+  refreshToken String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  posts       Post[]
+  jobs        Job[]
+  research    Research[]
+  submissions FormSubmission[]
+
+  @@map("users")
+}
+
+model SiteSetting {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String   @db.Text
+  type      String   @default("text") 
+  group     String   @default("general")
+  label     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("site_settings")
+}
+
+model Page {
+  id          String     @id @default(cuid())
+  title       String
+  slug        String     @unique
+  content     String     @db.Text
+  metaTitle   String?
+  metaDesc    String?
+  status      String @default("DRAFT")
+  isHome      Boolean    @default(false)
+  order       Int        @default(0)
+  heroImage   String?
+  template    String     @default("default")
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@map("pages")
+}
+
+model NavItem {
+  id       String    @id @default(cuid())
+  label    String
+  href     String
+  order    Int       @default(0)
+  parentId String?
+  parent   NavItem?  @relation("NavChildren", fields: [parentId], references: [id])
+  children NavItem[] @relation("NavChildren")
+  isActive Boolean   @default(true)
+  target   String    @default("_self")
+  icon     String?
+
+  @@map("nav_items")
+}
+
+model Media {
+  id         String    @id @default(cuid())
+  filename   String
+  originalName String
+  url        String    @db.Text
+  publicId   String?   
+  type       String @default("IMAGE")
+  mimeType   String
+  size       Int       
+  width      Int?
+  height     Int?
+  alt        String?
+  caption    String?
+  folder     String?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  @@map("media")
+}
+
+model Category {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String   @unique
+  color     String   @default("#1B4F8A")
+  posts     Post[]
+  createdAt DateTime @default(now())
+
+  @@map("categories")
+}
+
+model Post {
+  id          String     @id @default(cuid())
+  title       String
+  slug        String     @unique
+  excerpt     String?    @db.Text
+  content     String     @db.Text
+  featuredImage String?
+  type        String   @default("BLOG")
+  status      String @default("DRAFT")
+  authorId    String
+  author      User       @relation(fields: [authorId], references: [id])
+  categoryId  String?
+  category    Category?  @relation(fields: [categoryId], references: [id])
+  tags        String?  @db.Text
+  views       Int        @default(0)
+  isFeatured  Boolean    @default(false)
+  metaTitle   String?
+  metaDesc    String?
+  publishedAt DateTime?
+  eventDate   DateTime?
+  eventLocation String?
+  gallery     String?  @db.Text
+  externalId  String?    @unique 
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@map("posts")
+}
+
+model Department {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String   @db.Text
+  image       String?
+  icon        String?
+  headName    String?
+  headTitle   String?   
+  headProfession String? 
+  headImage   String?
+  categoryId  String?
+  category    DepartmentCategory? @relation(fields: [categoryId], references: [id])
+  categoryName String?  @default("Clinical Departments") 
+  vision      String?  @db.Text
+  mission      String?  @db.Text
+  goal        String?  @db.Text
+  order       Int      @default(0)
+  isActive    Boolean  @default(true)
+  showOnHome  Boolean  @default(false)
+  gallery     String?  @db.Text
+  services    Service[]
+  doctors     Doctor[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("departments")
+}
+
+model DepartmentCategory {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String?
+  image       String?
+  icon        String?
+  gradient    String?  
+  order       Int      @default(0)
+  isActive    Boolean  @default(true)
+  departments Department[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("department_categories")
+}
+
+model Service {
+  id           String     @id @default(cuid())
+  name         String
+  slug         String     @unique
+  description  String     @db.Text
+  content      String?    @db.Text
+  image        String?
+  icon         String?
+  departmentId String?
+  department   Department? @relation(fields: [departmentId], references: [id])
+  headName     String?
+  headTitle    String?
+  headProfession String?
+  headImage    String?
+  vision       String?   @db.Text
+  mission      String?   @db.Text
+  goal         String?   @db.Text
+  highlights   String?   @db.Text
+  order        Int        @default(0)
+  isActive     Boolean    @default(true)
+  showOnHome   Boolean    @default(false)
+  gallery      String?    @db.Text
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  @@map("services")
+}
+
+model ServiceCategory {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String   @db.Text
+  image       String?
+  icon        String?
+  gradient    String?  
+  accentColor String?  
+  order       Int      @default(0)
+  isActive    Boolean  @default(true)
+  deptSlugs   String?  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("service_categories")
+}
+
+model Doctor {
+  id           String     @id @default(cuid())
+  name         String
+  title        String     
+  specialty    String
+  qualification String
+  bio          String?    @db.Text
+  image        String?
+  email        String?
+  phone        String?
+  departmentId String?
+  department   Department? @relation(fields: [departmentId], references: [id])
+  order        Int        @default(0)
+  isActive     Boolean    @default(true)
+  isLeadership Boolean    @default(false)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  @@map("doctors")
+}
+
+model Research {
+  id               String         @id @default(cuid())
+  // Investigator Details
+  investigatorName String?        
+  email            String?        
+  phone            String?        
+  institution      String?        
+  department       String?        
+  position         String?        
+
+  // Research Metadata
+  title            String
+  abstract         String?        @db.Text
+  researchType     String?        // Clinical / Survey / Review / Experimental
+  studyArea        String?        // Psychiatry / Neurology / Public Health
+  studyLocation    String?        
+  startDate        DateTime?      
+  endDate          DateTime?      
+  keywords         String? 
+
+  // Data Collection Details
+  patientsInvolved     Boolean?   @default(false)
+  participantType      String?    // Inpatients / Outpatients / Staff
+  dataCollectionMethod String?    // Interview / Questionnaire / Clinical data
+
+  // Co-Investigators & Supervisor
+  coInvestigators      String?    @db.Text // JSON string
+  supervisorName       String?    
+  supervisorEmail      String?    
+  supervisorInstitution String?   
+
+  // Documents
+  ethicalLetter    String?        
+  universityLetter String?        
+  proposal         String?        
+  coInvestigatorFile String?      // Optional file for co-investigators
+  publishedEthical String?        
+  publishedProposal String?       
+  document         String?        
+
+  // Tracking & Status
+  submissionId     String?        @unique // Readable ID for user
+  status           String         @default("PENDING") // PENDING, UNDER_REVIEW, APPROVED, REJECTED, PUBLISHED
+  reviewerComments String?        @db.Text
+  
+  // Additional fields
+  category         String         @default("General")
+  submittedBy      String?
+  user             User?          @relation(fields: [submittedBy], references: [id])
+  publishedAt      DateTime?
+  journal          String?
+  year             String?
+  doi              String?
+  views            Int            @default(0)
+  downloads        Int            @default(0)
+  requestDate      DateTime?      
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+
+  @@map("research")
+}
+
+model CPDCourse {
+  id           String       @id @default(cuid())
+  title        String
+  description  String       @db.Text
+  content      String?      @db.Text
+  instructor   String
+  duration     String       
+  category     String
+  level        String       @default("Intermediate")
+  image        String?
+  documents    String?  @db.Text
+  startDate    DateTime?
+  endDate      DateTime?
+  location     String?
+  isOnline     Boolean      @default(false)
+  capacity     Int?
+  price        Float        @default(0)
+  cpdPoints    Int          @default(0)
+  status       String @default("DRAFT")
+  registrations CPDRegistration[]
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  @@map("cpd_courses")
+}
+
+model CPDRegistration {
+  id         String    @id @default(cuid())
+  courseId   String
+  course     CPDCourse @relation(fields: [courseId], references: [id])
+  firstName  String
+  lastName   String
+  email      String
+  phone      String
+  profession String
+  workplace  String
+  category   String    @default("PERSONAL") 
+  licenseNo  String?
+  status     String    @default("PENDING") 
+  certificate String?  
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  @@map("cpd_registrations")
+}
+
+model Job {
+  id           String      @id @default(cuid())
+  title        String
+  department   String
+  type         String     @default("FULL_TIME")
+  location     String
+  description  String      @db.Text
+  requirements String      @db.Text
+  benefits     String?     @db.Text
+  salary       String?
+  deadline     DateTime
+  status       String   @default("DRAFT")
+  postedById   String
+  postedBy     User        @relation(fields: [postedById], references: [id])
+  applications JobApplication[]
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  @@map("jobs")
+}
+
+model JobApplication {
+  id          String   @id @default(cuid())
+  jobId       String
+  job         Job      @relation(fields: [jobId], references: [id])
+  firstName   String
+  lastName    String
+  email       String
+  phone       String
+  coverLetter String?  @db.Text
+  cvUrl       String
+  status      String   @default("PENDING") 
+  notes       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("job_applications")
+}
+
+model Form {
+  id          String           @id @default(cuid())
+  title       String
+  description String?
+  fields      String           @db.Text
+  isActive    Boolean          @default(true)
+  isPublic    Boolean          @default(true)
+  submissions FormSubmission[]
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  @@map("forms")
+}
+
+model FormSubmission {
+  id        String   @id @default(cuid())
+  formId    String
+  form      Form     @relation(fields: [formId], references: [id])
+  data      String   @db.Text
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id])
+  ipAddress String?
+  userAgent String?
+  status    String   @default("PENDING")
+  createdAt DateTime @default(now())
+
+  @@map("form_submissions")
+}
+
+model Appointment {
+  id          String            @id @default(cuid())
+  firstName   String
+  lastName    String
+  email       String
+  phone       String
+  department  String
+  doctor      String?
+  date        DateTime
+  time        String
+  reason      String?
+  status      String @default("PENDING")
+  notes       String?
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  @@map("appointments")
+}
+
+model NewsletterSubscriber {
+  id          String   @id @default(cuid())
+  email       String   @unique
+  name        String?
+  isActive    Boolean  @default(true)
+  subscribedAt DateTime @default(now())
+
+  @@map("newsletter_subscribers")
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  subject   String
+  message   String   @db.Text
+  isRead    Boolean  @default(false)
+  isReplied Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@map("contact_messages")
+}
+
+model PageView {
+  id        String   @id @default(cuid())
+  path      String
+  userAgent String?
+  ipAddress String?
+  referer   String?
+  country   String?
+  createdAt DateTime @default(now())
+
+  @@map("page_views")
+}
+
+model VisitorStat {
+  id           String   @id @default(cuid())
+  date         DateTime @unique
+  totalVisits  Int      @default(0)
+  uniqueVisitors Int    @default(0)
+  pageViews    Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("visitor_stats")
+}
+
+model Testimonial {
+  id        String   @id @default(cuid())
+  name      String
+  role      String?
+  content   String   @db.Text
+  rating    Int      @default(5)
+  image     String?
+  isActive  Boolean  @default(true)
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+
+  @@map("testimonials")
+}
+
+model FAQ {
+  id        String   @id @default(cuid())
+  question  String
+  answer    String   @db.Text
+  category  String?
+  order     Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("faqs")
+}

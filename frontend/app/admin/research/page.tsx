@@ -35,9 +35,21 @@ export default function ResearchAdmin() {
     const [proposalSubTab, setProposalSubTab] = useState<'ALL' | 'PENDING' | 'UNDER_REVIEW' | 'APPROVED' | 'REJECTED'>('ALL');
     const [researchSubTab, setResearchSubTab] = useState<'ALL' | 'UNDER_REVIEW' | 'PUBLISHED' | 'REJECTED'>('ALL');
     const [search, setSearch] = useState('');
+    const [timeFilter, setTimeFilter] = useState<'ALL' | '1M' | '3M' | '6M' | '1Y'>('ALL');
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [editingItem, setEditingItem] = useState<any>(null);
     const [viewingDoc, setViewingDoc] = useState<{ title: string; url: string } | null>(null);
+
+    const filterByTime = (items: any[]) => {
+        if (timeFilter === 'ALL') return items;
+        const now = new Date();
+        const past = new Date();
+        if (timeFilter === '1M') past.setMonth(now.getMonth() - 1);
+        if (timeFilter === '3M') past.setMonth(now.getMonth() - 3);
+        if (timeFilter === '6M') past.setMonth(now.getMonth() - 6);
+        if (timeFilter === '1Y') past.setFullYear(now.getFullYear() - 1);
+        return items.filter(r => new Date(r.createdAt) >= past);
+    };
 
     const fetchResearch = async () => {
         setLoading(true);
@@ -150,12 +162,14 @@ export default function ResearchAdmin() {
     // RESEARCH  = submitted via publish form (has journal OR category is MANUSCRIPT)
     const isManuscript = (r: any) => !!r.journal || r.category === 'MANUSCRIPT';
 
-    const allProposals = research.filter(r =>
+    const timeFilteredResearch = filterByTime(research);
+
+    const allProposals = timeFilteredResearch.filter(r =>
         ['PENDING', 'UNDER_REVIEW', 'APPROVED', 'REJECTED'].includes(r.status) &&
         !isManuscript(r) &&
         matchesSearch(r)
     );
-    const allResearchSubmissions = research.filter(r =>
+    const allResearchSubmissions = timeFilteredResearch.filter(r =>
         isManuscript(r) && matchesSearch(r)
     );
     const researchSubmissions = researchSubTab === 'ALL'
@@ -182,7 +196,7 @@ export default function ResearchAdmin() {
         APPROVED: allProposals.filter(r => r.status === 'APPROVED').length,
         REJECTED: allProposals.filter(r => r.status === 'REJECTED').length,
     };
-    const repository = research.filter(r => r.status === 'PUBLISHED' && (
+    const repository = timeFilteredResearch.filter(r => r.status === 'PUBLISHED' && (
         r.title.toLowerCase().includes(search.toLowerCase()) || 
         r.coInvestigators?.toLowerCase().includes(search.toLowerCase()) ||
         r.submissionId?.toLowerCase().includes(search.toLowerCase())
@@ -236,15 +250,29 @@ export default function ResearchAdmin() {
                     </button>
                 </div>
 
-                <div className="relative group min-w-[400px]">
-                    <MagnifyingGlassIcon className="absolute left-6 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-300 group-focus-within:text-primary transition-colors" />
-                    <input
-                        type="text"
-                        placeholder="Scan publications..."
-                        className="w-full pl-14 pr-6 py-3.5 bg-white border border-slate-200/60 rounded-2xl shadow-sm focus:ring-4 focus:ring-primary/5 transition-all outline-none font-semibold text-sm text-slate-600 placeholder:text-slate-300"
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
-                    />
+                <div className="flex items-center gap-4">
+                    <select
+                        value={timeFilter}
+                        onChange={(e: any) => setTimeFilter(e.target.value)}
+                        className="px-4 py-3.5 bg-white border border-slate-200/60 rounded-2xl shadow-sm focus:ring-4 focus:ring-primary/5 outline-none font-bold text-xs text-slate-600 cursor-pointer hover:border-slate-300 transition-all"
+                    >
+                        <option value="ALL">All Time</option>
+                        <option value="1M">Last 1 Month</option>
+                        <option value="3M">Last 3 Months</option>
+                        <option value="6M">Last 6 Months</option>
+                        <option value="1Y">Last Year</option>
+                    </select>
+
+                    <div className="relative group min-w-[300px] xl:min-w-[400px]">
+                        <MagnifyingGlassIcon className="absolute left-6 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-300 group-focus-within:text-primary transition-colors" />
+                        <input
+                            type="text"
+                            placeholder="Scan publications..."
+                            className="w-full pl-14 pr-6 py-3.5 bg-white border border-slate-200/60 rounded-2xl shadow-sm focus:ring-4 focus:ring-primary/5 transition-all outline-none font-semibold text-sm text-slate-600 placeholder:text-slate-300"
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                        />
+                    </div>
                 </div>
             </div>
 

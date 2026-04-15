@@ -8,19 +8,39 @@ const router = Router();
 router.get('/', async (req: Request, res: Response) => {
     try {
         console.log('📡 [API] Fetching site settings...');
+        
+        // Diagnostic: Check if Prisma Client knows about this model
+        if (!(prisma as any).siteSetting) {
+            console.error('❌ [CRITICAL] Prisma Client is out of sync. SiteSetting model is missing.');
+            return res.status(500).json({ 
+                error: 'System Configuration Error', 
+                details: 'Prisma Client is out of sync. Please run "npx prisma generate" on the server.' 
+            });
+        }
+
         const start = Date.now();
-        const settings = await prisma.siteSetting.findMany();
+        const settings = await prisma.siteSetting.findMany().catch(err => {
+            console.error('❌ [DATABASE] SiteSetting table query failed:', err.message);
+            throw err;
+        });
+
         console.log(`✅ [API] Settings fetched in ${Date.now() - start}ms`);
         
         const settingsMap: Record<string, string> = {};
-        settings.forEach(s => { 
-            if (s.key) settingsMap[s.key] = s.value; 
-        });
+        if (settings && Array.isArray(settings)) {
+            settings.forEach(s => { 
+                if (s.key) settingsMap[s.key] = s.value; 
+            });
+        }
         
         res.json({ settings: settingsMap });
     } catch (error: any) {
         console.error('❌ [API] Settings fetch error:', error);
-        res.status(500).json({ error: 'Failed to fetch settings.', details: error.message });
+        res.status(500).json({ 
+            error: 'Failed to fetch settings.', 
+            details: error.message,
+            hint: 'Ensure site_settings table exists. Run FIX_SETTINGS_TABLE.sql'
+        });
     }
 });
 

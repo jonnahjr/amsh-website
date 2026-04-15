@@ -194,6 +194,24 @@ if (Test-Path $FixJsonSrc) {
     Write-Host "  OK: fix_staff_json.js included" -ForegroundColor Green
 }
 
+$InstSqlSrc = Join-Path $ToDeployDir "INIT_INSTITUTIONS.sql"
+if (Test-Path $InstSqlSrc) {
+    Copy-Item $InstSqlSrc $BundleDir -Force
+    Write-Host "  OK: INIT_INSTITUTIONS.sql included" -ForegroundColor Green
+}
+
+$FixSettingsSqlSrc = Join-Path $ToDeployDir "FIX_SETTINGS_TABLE.sql"
+if (Test-Path $FixSettingsSqlSrc) {
+    Copy-Item $FixSettingsSqlSrc $BundleDir -Force
+    Write-Host "  OK: FIX_SETTINGS_TABLE.sql included" -ForegroundColor Green
+}
+
+$UltimateFixSqlSrc = Join-Path $ToDeployDir "ULTIMATE_DATABASE_FIX_V2.sql"
+if (Test-Path $UltimateFixSqlSrc) {
+    Copy-Item $UltimateFixSqlSrc $BundleDir -Force
+    Write-Host "  OK: ULTIMATE_DATABASE_FIX_V2.sql included" -ForegroundColor Green
+}
+
 $ReadmeSrc = Join-Path $ToDeployDir "PRODUCTION_DEPLOYMENT_README.md"
 if (Test-Path $ReadmeSrc) {
     Copy-Item $ReadmeSrc $BundleDir -Force

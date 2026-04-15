@@ -13,3 +13,12 @@ yarn-error.log*
 .idea/
 *.swp
 *.bak
+
+# Build and deployment artifacts
+to_deploy/AMSH_BUILD_*/
+to_deploy/AMSH_PRODUCTION_FINAL/
+to_deploy/frontend_bundle/
+*.zip
+*.zip.bak
+!to_deploy/*.sql
+!backend/amsh-backend-plesk-READY/*.sql

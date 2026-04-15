@@ -107,7 +107,12 @@ export default function PersonalAttachmentsAdmin() {
                     </div>
                 ) : (
                     filtered.map((sub) => {
-                        const data = JSON.parse(sub.data);
+                        let data: any = {};
+                        try {
+                            data = JSON.parse(sub.data);
+                        } catch (e) {
+                            console.error('Data Corruption:', sub.id);
+                        }
                         return (
                             <div key={sub.id} className="bg-white p-6 md:p-8 rounded-[32px] border border-gray-50 shadow-sm hover:shadow-md transition-all group">
                                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
